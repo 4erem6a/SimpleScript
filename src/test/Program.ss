@@ -1,9 +1,6 @@
 import <io>
 import <arrays>
 
-let x = "hello, world"
+let x = function(a, b) return a + b
 
-println(length(x))
-
-foreach (let letter in x)
-    println(letter)
+println(x(1, 2))

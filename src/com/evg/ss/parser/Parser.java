@@ -409,6 +409,8 @@ public final class Parser {
             return new ValueExpression();
         } else if (match(TokenType.Let)) {
             return letExpression();
+        } else if (match(TokenType.Function)) {
+            return anonymousFunction();
         } else if (match(TokenType.Lc)) {
             return array();
         } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
@@ -422,6 +424,17 @@ public final class Parser {
             match(TokenType.Rp);
             return result;
         } else throw new UnexpectedTokenException(current);
+    }
+
+    private Expression anonymousFunction() {
+        consume(TokenType.Lp);
+        final List<String> argNames = new ArrayList<>();
+        do {
+            argNames.add(consume(TokenType.Word).getValue());
+        } while (match(TokenType.Cm));
+        consume(TokenType.Rp);
+        final Statement body = statementOrBlock();
+        return new AnonymousFunctionExpression(argNames.toArray(new String[argNames.size()]), body);
     }
 
     private Expression arrayAccess() {
