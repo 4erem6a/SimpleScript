@@ -1,6 +1,6 @@
 import <io>
 import <arrays>
 
-let x = function(a, b) return a + b
+let arr = ["a", "b", "c"]
 
-println(x(1, 2))
+println("Hello, world!" is string);

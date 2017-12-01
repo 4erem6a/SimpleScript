@@ -207,7 +207,7 @@ public final class BinaryExpression implements Expression {
                 builder.append(string);
             return new StringValue(builder.toString());
         } else if (multiplier == 0)
-            return new StringValue(null);
+            return new StringValue("");
         else return new StringValue(string);
     }
 

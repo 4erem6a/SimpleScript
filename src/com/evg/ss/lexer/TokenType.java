@@ -62,8 +62,11 @@ public enum TokenType {
     Return,     //return
     Foreach,    //foreach
     In,         //in
+    Typeof,     //typeof
     Switch,     //switch
     Case,       //case
+    Type,       //type
+    Is,         //is
 
     //Utility:
     EOF

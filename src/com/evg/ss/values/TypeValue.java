@@ -1,33 +1,46 @@
 package com.evg.ss.values;
 
 public class TypeValue implements Value {
+
+    private Type value;
+
+    public TypeValue(Type value) {
+        this.value = value;
+    }
+
+    public Type getValue() {
+        return value;
+    }
+
     @Override
     public Double asNumber() {
-        return null;
+        return Double.NaN;
     }
 
     @Override
     public Boolean asBoolean() {
-        return null;
+        return false;
     }
 
     @Override
     public String asString() {
-        return null;
+        return value.name();
     }
 
     @Override
     public Object asObject() {
-        return null;
+        return value;
     }
 
     @Override
     public Type getType() {
-        return null;
+        return Type.Type;
     }
 
     @Override
     public int compareTo(Value o) {
-        return 0;
+        if (o instanceof TypeValue && ((TypeValue) o).value == value)
+            return 0;
+        return -1;
     }
 }

@@ -7,12 +7,9 @@ import com.evg.ss.exceptions.UnexpectedTokenException;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lexer.TokenType;
 import com.evg.ss.values.NullValue;
-import com.evg.ss.values.StringValue;
-import com.evg.ss.values.Value;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.IntFunction;
 
 /**
  * @author 4erem6a
@@ -85,11 +82,30 @@ public final class Parser {
             return new ReturnStatement(expression());
         } else if (match(TokenType.Foreach)) {
             return foreach();
+        } else if (match(TokenType.Switch)) {
+            return switchCase();
         } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
             return new FunctionStatement((FunctionExpression) function());
         } else {
             return assignment();
         }
+    }
+
+    private Statement switchCase() {
+        consume(TokenType.Lp);
+        final Expression value = expression();
+        consume(TokenType.Rp);
+        final SwitchStatement switchStatement = new SwitchStatement(value);
+        consume(TokenType.Lb);
+        while (match(TokenType.Case)) {
+            final Expression expression = expression();
+            consume(TokenType.Cl);
+            final Statement body = statementOrBlock();
+            switchStatement.addCase(expression, body);
+            match(TokenType.Sc);
+        }
+        consume(TokenType.Rb);
+        return switchStatement;
     }
 
     private Statement foreach() {
@@ -110,7 +126,10 @@ public final class Parser {
             do argNames.add(consume(TokenType.Word).getValue());
                 while (match(TokenType.Cm));
         match(TokenType.Rp);
-        final Statement body = statementOrBlock();
+        final Statement body;
+        if (match(TokenType.Eq)) {
+            body = new ReturnStatement(expression());
+        } else body = statementOrBlock();
         return new FunctionDefininitionStatement(name, argNames.toArray(new String[argNames.size()]), body);
     }
 
@@ -344,6 +363,10 @@ public final class Parser {
                 result = new BinaryExpression(">=", result, addictive());
                 continue;
             }
+            if (match(TokenType.Is)) {
+                final String type = consume().getValue();
+                return new BinaryExpression("==", new TypeofExpression(result), new ConstTypeExpression(type));
+            }
             break;
         }
         return result;
@@ -409,6 +432,10 @@ public final class Parser {
             return new ValueExpression();
         } else if (match(TokenType.Let)) {
             return letExpression();
+        } else if (match(TokenType.Typeof)) {
+            return typeof();
+        } else if (match(TokenType.Type)) {
+            return type();
         } else if (match(TokenType.Function)) {
             return anonymousFunction();
         } else if (match(TokenType.Lc)) {
@@ -426,6 +453,20 @@ public final class Parser {
         } else throw new UnexpectedTokenException(current);
     }
 
+    private Expression type() {
+        consume(TokenType.Lp);
+        final String type = consume().getValue();
+        consume(TokenType.Rp);
+        return new ConstTypeExpression(type);
+    }
+
+    private Expression typeof() {
+        consume(TokenType.Lp);
+        final Expression expression = expression();
+        consume(TokenType.Rp);
+        return new TypeofExpression(expression);
+    }
+
     private Expression anonymousFunction() {
         consume(TokenType.Lp);
         final List<String> argNames = new ArrayList<>();
@@ -433,7 +474,10 @@ public final class Parser {
             argNames.add(consume(TokenType.Word).getValue());
         } while (match(TokenType.Cm));
         consume(TokenType.Rp);
-        final Statement body = statementOrBlock();
+        final Statement body;
+        if (match(TokenType.Eq)) {
+            body = new ReturnStatement(expression());
+        } else body = statementOrBlock();
         return new AnonymousFunctionExpression(argNames.toArray(new String[argNames.size()]), body);
     }
 
@@ -514,6 +558,12 @@ public final class Parser {
         final Token current = get(0);
         if (!compareTokenType(current, type))
             throw new UnexpectedTokenException(type, current);
+        pos++;
+        return current;
+    }
+
+    private Token consume() {
+        final Token current = get(0);
         pos++;
         return current;
     }

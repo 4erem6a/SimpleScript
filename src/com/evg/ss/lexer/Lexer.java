@@ -74,6 +74,9 @@ public final class Lexer {
         KeyWordMap.put("in", TokenType.In);
         KeyWordMap.put("switch", TokenType.Switch);
         KeyWordMap.put("case", TokenType.Case);
+        KeyWordMap.put("type", TokenType.Type);
+        KeyWordMap.put("typeof", TokenType.Typeof);
+        KeyWordMap.put("is", TokenType.Is);
     }
 
     private final String source;

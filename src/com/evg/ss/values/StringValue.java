@@ -31,6 +31,8 @@ public class StringValue implements Value {
             result = "";
         else if (value instanceof ArrayValue)
             result = value.asString();
+        else if (value instanceof TypeValue)
+            result = value.asString();
         else result = value.asObject().toString();
         return new StringValue(result);
     }

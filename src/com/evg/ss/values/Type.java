@@ -9,11 +9,13 @@ public enum Type {
     Number,
     String,
     Boolean,
-    Pointer,
     Array,
-    Map,
     Function,
+    Type,
+    Null,
+    Map;
 
-    Null
-
+    public TypeValue getTypeValue() {
+        return new TypeValue(this);
+    }
 }
