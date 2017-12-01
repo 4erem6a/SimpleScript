@@ -1,6 +1,13 @@
 import <io>
-import <arrays>
 
-let arr = ["a", "b", "c"]
+let object {
+    lambda: (a, b) -> a + b,
+    method: function(a, b) = a + b,
+    field:  #FF,
+    static constant: 0x11111111
+}
 
-println("Hello, world!" is string);
+println(object.lambda(1, 2));
+println(object.method(3, 4));
+println(object.field);
+println(object.constant);

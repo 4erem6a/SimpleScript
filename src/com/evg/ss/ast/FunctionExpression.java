@@ -1,9 +1,8 @@
 package com.evg.ss.ast;
 
-import com.evg.ss.containers.Functions;
-import com.evg.ss.containers.Variables;
 import com.evg.ss.exceptions.FunctionNotFoundException;
 import com.evg.ss.exceptions.InvalidValueTypeException;
+import com.evg.ss.lib.SS;
 import com.evg.ss.values.FunctionValue;
 import com.evg.ss.values.Value;
 
@@ -24,16 +23,16 @@ public final class FunctionExpression implements Expression {
         Value[] args = new Value[this.args.length];
         for (int i = 0; i < this.args.length; i++)
             args[i] = this.args[i].eval();
-        if (!Functions.exists(name)) {
-            if (!Variables.exists(name))
+        if (!SS.Functions.exists(name)) {
+            if (!SS.Variables.exists(name))
                 throw new FunctionNotFoundException(name);
-            final Value value = Variables.getValue(name);
+            final Value value = SS.Variables.getValue(name);
             if (!(value instanceof FunctionValue))
                 throw new InvalidValueTypeException(value.getType());
             final FunctionValue functionValue = (FunctionValue) value;
             return  functionValue.getValue().execute(args);
         }
-        return Functions.get(name).execute(args);
+        return SS.Functions.get(name).execute(args);
     }
 
     @Override

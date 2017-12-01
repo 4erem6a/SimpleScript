@@ -1,6 +1,6 @@
 package com.evg.ss.ast;
 
-import com.evg.ss.lexer.Scopes;
+import com.evg.ss.lib.SS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +15,9 @@ public final class BlockStatement implements Statement {
 
     @Override
     public void execute() {
-        Scopes.up();
+        SS.Scopes.up();
         statements.forEach(Statement::execute);
-        Scopes.down();
+        SS.Scopes.down();
     }
 
     @Override

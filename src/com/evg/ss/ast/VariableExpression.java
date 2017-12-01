@@ -1,7 +1,7 @@
 package com.evg.ss.ast;
 
-import com.evg.ss.containers.Variables;
 import com.evg.ss.exceptions.VariableNotFoundException;
+import com.evg.ss.lib.SS;
 import com.evg.ss.values.Value;
 
 /**
@@ -17,8 +17,8 @@ public final class VariableExpression implements Expression {
 
     @Override
     public Value eval() {
-        if (Variables.getValue(name) != null)
-            return Variables.getValue(name);
+        if (SS.Variables.getValue(name) != null)
+            return SS.Variables.getValue(name);
         else throw new VariableNotFoundException(name);
     }
 

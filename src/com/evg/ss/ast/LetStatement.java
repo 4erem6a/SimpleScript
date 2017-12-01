@@ -1,7 +1,7 @@
 package com.evg.ss.ast;
 
-import com.evg.ss.containers.Variables;
 import com.evg.ss.exceptions.VariableAlreadyExistsException;
+import com.evg.ss.lib.SS;
 import com.evg.ss.values.NullValue;
 
 public final class LetStatement implements Statement {
@@ -25,8 +25,8 @@ public final class LetStatement implements Statement {
 
     @Override
     public void execute() {
-        if (!Variables.existsTop(name))
-            Variables.put(name, value.eval(), isConst);
+        if (!SS.Variables.existsTop(name))
+            SS.Variables.put(name, value.eval(), isConst);
         else throw new VariableAlreadyExistsException(name);
     }
 

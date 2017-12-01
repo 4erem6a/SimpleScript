@@ -3,7 +3,7 @@ package com.evg.ss.ast;
 import com.evg.ss.exceptions.inner.SSBreakException;
 import com.evg.ss.exceptions.inner.SSContinueException;
 import com.evg.ss.exceptions.inner.SSInnerException;
-import com.evg.ss.lexer.Scopes;
+import com.evg.ss.lib.SS;
 
 public final class ForStatement implements Statement {
 
@@ -19,7 +19,7 @@ public final class ForStatement implements Statement {
 
     @Override
     public void execute() {
-        Scopes.up();
+        SS.Scopes.up();
         if (initialization != null)
             initialization.execute();
         while (condition != null ? condition.eval().asBoolean() : true) {
@@ -38,7 +38,7 @@ public final class ForStatement implements Statement {
             if (iteration != null)
                 iteration.execute();
         }
-        Scopes.down();
+        SS.Scopes.down();
     }
 
     @Override

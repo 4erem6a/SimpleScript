@@ -197,10 +197,21 @@ public final class Parser {
     private Statement assignment() {
         if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lc))
             return arrayAssignment();
+        if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Dt))
+            return mapAssignment();
         final String name = consume(TokenType.Word).getValue();
         consume(TokenType.Eq);
         final Expression value = expression();
         return new AssignmentStatement(name, value);
+    }
+
+    private Statement mapAssignment() {
+        final String name = consume(TokenType.Word).getValue();
+        consume(TokenType.Dt);
+        final String fieldName = consume(TokenType.Word).getValue();
+        consume(TokenType.Eq);
+        final Expression value = expression();
+        return new MapAssignmentStatement(name, fieldName, value);
     }
 
     private Statement arrayAssignment() {
@@ -222,7 +233,9 @@ public final class Parser {
         final String name = consume(TokenType.Word).getValue();
         final Expression value;
         if (!isConst) {
-            if (match(TokenType.Eq)) {
+            if (lookMatch(0, TokenType.Static) || lookMatch(0, TokenType.Lb))
+                value = map();
+            else if (match(TokenType.Eq)) {
                 value = expression();
             } else value = NullValue.NullExpression;
             return new LetStatement(name, value, false);
@@ -406,12 +419,36 @@ public final class Parser {
 
     private Expression unary() {
         if (match(TokenType.Mn)) {
-            return new UnaryExpression("-", primary());
+            return new UnaryExpression("-", objective());
         }
         if (match(TokenType.Pl)) {
-            return new UnaryExpression("+", primary());
+            return new UnaryExpression("+", objective());
         }
-        return primary();
+        return objective();
+    }
+
+    private Expression objective() {
+        Expression result = primary();
+        while (true) {
+            if (match(TokenType.Dt)) {
+                final String field = consume(TokenType.Word).getValue();
+                final List<Expression> args;
+                if (match(TokenType.Lp)) {
+                    args = new ArrayList<>();
+                    if (!match(TokenType.Rp)) {
+                        do args.add(expression()); while (match(TokenType.Cm));
+                        consume(TokenType.Rp);
+                    }
+                } else args = null;
+                final Expression[] argsArray = args == null ? null : args.toArray(new Expression[args.size()]);
+                if (argsArray == null)
+                    result = new MapAccessExpression(result, field);
+                else result = new MapAccessExpression(result, field, argsArray);
+                continue;
+            }
+            break;
+        }
+        return result;
     }
 
     private Expression primary() {
@@ -438,6 +475,10 @@ public final class Parser {
             return type();
         } else if (match(TokenType.Function)) {
             return anonymousFunction();
+        } else if (isLambdaDefinition()) {
+            return lambda();
+        } else if (lookMatch(0, TokenType.Static) || lookMatch(0, TokenType.Lb)) {
+            return map();
         } else if (match(TokenType.Lc)) {
             return array();
         } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
@@ -451,6 +492,60 @@ public final class Parser {
             match(TokenType.Rp);
             return result;
         } else throw new UnexpectedTokenException(current);
+    }
+
+    private Expression lambda() {
+        consume(TokenType.Lp);
+        final List<String> argNames = new ArrayList<>();
+        if (!match(TokenType.Rp)) {
+            do {
+                argNames.add(consume(TokenType.Word).getValue());
+            } while (match(TokenType.Cm));
+            consume(TokenType.Rp);
+        }
+        consume(TokenType.MnAr);
+        final Statement body = new ReturnStatement(expression());
+        return new AnonymousFunctionExpression(argNames.toArray(new String[argNames.size()]), body);
+    }
+
+    private boolean isLambdaDefinition() {
+        boolean result = true;
+        int rollback = 1;
+        if (!match(TokenType.Lp)) return false;
+        if (!match(TokenType.Rp)) {
+            do {
+                rollback++;
+                result = result && match(TokenType.Word);
+                rollback++;
+            } while (match(TokenType.Cm));
+            rollback--;
+        } else if (match(TokenType.Rp)) {
+            rollback++;
+            if (match(TokenType.MnAr))
+                rollback++;
+            else result = false;
+        } else result = false;
+
+        pos -= rollback;
+        return result;
+    }
+
+    private Expression map() {
+        final boolean isStatic = match(TokenType.Static);
+        final MapExpression map = new MapExpression(isStatic);
+        consume(TokenType.Lb);
+        if (!match(TokenType.Rb)) {
+            do {
+                final boolean isFieldStatic = match(TokenType.Static);
+                final String fieldName = consume(TokenType.Word).getValue();
+                if (match(TokenType.Cl)) {
+                    final Expression fieldValue = expression();
+                    map.addField(fieldName, isFieldStatic, fieldValue);
+                } else map.addField(fieldName, isFieldStatic, NullValue.NullExpression);
+            } while (match(TokenType.Cm));
+            consume(TokenType.Rb);
+        }
+        return map;
     }
 
     private Expression type() {
@@ -470,10 +565,12 @@ public final class Parser {
     private Expression anonymousFunction() {
         consume(TokenType.Lp);
         final List<String> argNames = new ArrayList<>();
-        do {
-            argNames.add(consume(TokenType.Word).getValue());
-        } while (match(TokenType.Cm));
-        consume(TokenType.Rp);
+        if (!match(TokenType.Rp)) {
+            do {
+                argNames.add(consume(TokenType.Word).getValue());
+            } while (match(TokenType.Cm));
+            consume(TokenType.Rp);
+        }
         final Statement body;
         if (match(TokenType.Eq)) {
             body = new ReturnStatement(expression());
@@ -535,13 +632,6 @@ public final class Parser {
         if (!lookMatch(0, type)) return false;
         pos++;
         return true;
-    }
-
-    private boolean lookMultiMatch(int pos, TokenType... types) {
-        for (TokenType type : types)
-            if (lookMatch(pos, type))
-                return true;
-        return false;
     }
 
     private boolean lookMatch(int pos, TokenType type) {

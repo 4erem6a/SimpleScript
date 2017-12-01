@@ -1,6 +1,6 @@
 package com.evg.ss.lib.modules.IO;
 
-import com.evg.ss.containers.Functions;
+import com.evg.ss.lib.SS;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.lib.modules.SSModuleInfo;
 import com.evg.ss.values.NullValue;
@@ -22,9 +22,9 @@ public final class IOModule implements SSModule {
 
     @Override
     public void init() {
-        Functions.put("print", this::print);
-        Functions.put("println", this::println);
-        Functions.put("input", this::input);
+        SS.Functions.put("print", this::print);
+        SS.Functions.put("println", this::println);
+        SS.Functions.put("input", this::input);
     }
 
     private Value print(Value... args) {

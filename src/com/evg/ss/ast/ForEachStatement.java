@@ -1,11 +1,10 @@
 package com.evg.ss.ast;
 
-import com.evg.ss.containers.Variables;
 import com.evg.ss.exceptions.InvalidValueTypeException;
 import com.evg.ss.exceptions.inner.SSBreakException;
 import com.evg.ss.exceptions.inner.SSContinueException;
 import com.evg.ss.exceptions.inner.SSInnerException;
-import com.evg.ss.lexer.Scopes;
+import com.evg.ss.lib.SS;
 import com.evg.ss.values.ArrayValue;
 import com.evg.ss.values.StringValue;
 import com.evg.ss.values.Value;
@@ -24,7 +23,7 @@ public final class ForEachStatement implements Statement {
 
     @Override
     public void execute() {
-        Scopes.up();
+        SS.Scopes.up();
         iteratorDefinition.execute();
         final String name = ((LetStatement) iteratorDefinition).getName();
         final Value value = target.eval();
@@ -36,7 +35,7 @@ public final class ForEachStatement implements Statement {
         else throw new InvalidValueTypeException(value.getType());
         for (Value iteration : array.getValue()) {
             try {
-                Variables.set(name, iteration);
+                SS.Variables.set(name, iteration);
                 body.execute();
             } catch (SSInnerException e) {
                 if (e instanceof SSBreakException)
@@ -47,7 +46,7 @@ public final class ForEachStatement implements Statement {
                 throw e;
             }
         }
-        Scopes.down();
+        SS.Scopes.down();
     }
 
     @Override

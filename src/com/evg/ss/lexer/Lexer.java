@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class Lexer {
     //Operator characters:
-    private static final String OperatorChars = "(){}[]/*-+=&|^~!?<>|:,;";
+    private static final String OperatorChars = "(){}[]/*-+=&|^~!?<>|:.,;";
     private static final String Quotes = "'\"`";
     private static final Map<String, TokenType> OperatorTokenMap = new HashMap<>();
 
@@ -31,8 +31,6 @@ public final class Lexer {
         OperatorTokenMap.put("+", TokenType.Pl);
         OperatorTokenMap.put("=", TokenType.Eq);
         OperatorTokenMap.put("&", TokenType.Am);
-        OperatorTokenMap.put(",", TokenType.Cm);
-        OperatorTokenMap.put(";", TokenType.Sc);
         OperatorTokenMap.put("|", TokenType.Vb);
         OperatorTokenMap.put("^", TokenType.Cr);
         OperatorTokenMap.put("~", TokenType.Tl);
@@ -46,7 +44,11 @@ public final class Lexer {
         OperatorTokenMap.put(">=", TokenType.ArEq);
         OperatorTokenMap.put("==", TokenType.EqEq);
         OperatorTokenMap.put("!=", TokenType.ExEq);
+        OperatorTokenMap.put("->", TokenType.MnAr);
         OperatorTokenMap.put(":", TokenType.Cl);
+        OperatorTokenMap.put(".", TokenType.Dt);
+        OperatorTokenMap.put(",", TokenType.Cm);
+        OperatorTokenMap.put(";", TokenType.Sc);
     }
 
     private static final Map<String, TokenType> KeyWordMap = new HashMap<>();
@@ -77,6 +79,7 @@ public final class Lexer {
         KeyWordMap.put("type", TokenType.Type);
         KeyWordMap.put("typeof", TokenType.Typeof);
         KeyWordMap.put("is", TokenType.Is);
+        KeyWordMap.put("static", TokenType.Static);
     }
 
     private final String source;

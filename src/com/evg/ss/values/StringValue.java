@@ -33,6 +33,8 @@ public class StringValue implements Value {
             result = value.asString();
         else if (value instanceof TypeValue)
             result = value.asString();
+        else if (value instanceof MapValue)
+            result = value.asString();
         else result = value.asObject().toString();
         return new StringValue(result);
     }

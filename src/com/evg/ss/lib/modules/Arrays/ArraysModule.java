@@ -1,8 +1,8 @@
 package com.evg.ss.lib.modules.Arrays;
 
-import com.evg.ss.containers.Functions;
 import com.evg.ss.exceptions.ArgumentCountMismatchException;
 import com.evg.ss.exceptions.InvalidValueTypeException;
+import com.evg.ss.lib.SS;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.lib.modules.SSModuleInfo;
 import com.evg.ss.values.*;
@@ -20,7 +20,7 @@ public final class ArraysModule implements SSModule {
 
     @Override
     public void init() {
-        Functions.put("length", this::length);
+        SS.Functions.put("length", this::length);
     }
 
     private Value length(Value... args) {

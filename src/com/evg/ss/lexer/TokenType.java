@@ -38,7 +38,9 @@ public enum TokenType {
     ArEq,       //>=
     EqEq,       //==
     ExEq,       //!=
+    MnAr,       //->
     Cl,         //:
+    Dt,         //.
     Cm,         //,
     Sc,         //;
 
@@ -67,6 +69,7 @@ public enum TokenType {
     Case,       //case
     Type,       //type
     Is,         //is
+    Static,     //static
 
     //Utility:
     EOF

@@ -1,7 +1,7 @@
 package com.evg.ss.ast;
 
-import com.evg.ss.containers.Variables;
 import com.evg.ss.exceptions.VariableNotFoundException;
+import com.evg.ss.lib.SS;
 
 public final class AssignmentStatement implements Statement {
 
@@ -15,8 +15,8 @@ public final class AssignmentStatement implements Statement {
 
     @Override
     public void execute() {
-        if (Variables.exists(name))
-            Variables.set(name, value.eval());
+        if (SS.Variables.exists(name))
+            SS.Variables.set(name, value.eval());
         else throw new VariableNotFoundException(name);
     }
 

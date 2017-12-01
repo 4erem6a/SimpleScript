@@ -14,6 +14,10 @@ public class ArrayValue implements Value {
         this.value = values;
     }
 
+    public ArrayValue(int size) {
+        this.value = new Value[size];
+    }
+
     public int length() {
         return value.length;
     }
