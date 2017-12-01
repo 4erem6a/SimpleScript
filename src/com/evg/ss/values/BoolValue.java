@@ -32,8 +32,8 @@ public class BoolValue implements Value {
     }
 
     @Override
-    public Types getType() {
-        return Types.Boolean;
+    public Type getType() {
+        return Type.Boolean;
     }
 
     @Override

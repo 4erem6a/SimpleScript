@@ -9,6 +9,10 @@ public final class LetStatement implements Statement {
     private final Expression value;
     private final boolean isConst;
 
+    public String getName() {
+        return name;
+    }
+
     public LetStatement(String name, Expression value, boolean isConst) {
         this.name = name;
         this.value = value;

@@ -10,6 +10,6 @@ public interface Value extends Comparable<Value> {
     String asString();
     Object asObject();
 
-    Types getType();
+    Type getType();
 
 }

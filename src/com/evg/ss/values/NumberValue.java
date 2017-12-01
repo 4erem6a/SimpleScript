@@ -32,8 +32,8 @@ public class NumberValue implements Value {
     }
 
     @Override
-    public Types getType() {
-        return Types.Number;
+    public Type getType() {
+        return Type.Number;
     }
 
     @Override

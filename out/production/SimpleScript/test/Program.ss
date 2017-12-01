@@ -1,3 +1,9 @@
-import <std>;
+import <io>
+import <arrays>
 
-println(10, 20, 30, '\n', `{let a = 10} + {let b = 20} = {a + b}`);
+let x = "hello, world"
+
+println(length(x))
+
+foreach (let letter in x)
+    println(letter)

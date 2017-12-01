@@ -1,15 +1,6 @@
 package com.evg.ss.values;
 
-import com.evg.ss.ast.Expression;
-import com.evg.ss.ast.ValueExpression;
-
-/**
- * @author 4erem6a
- */
-public class NullValue implements Value {
-
-    public static final Expression NullExpression = new ValueExpression();
-
+public class TypeValue implements Value {
     @Override
     public Double asNumber() {
         return null;
@@ -32,7 +23,7 @@ public class NullValue implements Value {
 
     @Override
     public Type getType() {
-        return Type.Null;
+        return null;
     }
 
     @Override

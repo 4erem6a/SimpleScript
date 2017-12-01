@@ -11,6 +11,14 @@ public class StringValue implements Value {
         this.value = value;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     public static StringValue asStringValue(Value value) {
         final String result;
         if (value instanceof NumberValue)
@@ -20,9 +28,21 @@ public class StringValue implements Value {
         else if (value instanceof StringValue)
             result = value.asString();
         else if (value instanceof NullValue)
-            result = null;
+            result = "";
+        else if (value instanceof ArrayValue)
+            result = value.asString();
         else result = value.asObject().toString();
         return new StringValue(result);
+    }
+
+    public ArrayValue asCharArray() {
+        final char[] chars = value.toCharArray();
+        final Value[] values = new Value[chars.length];
+        for (int i = 0; i < chars.length; i++) {
+            final String string = new String(new char[] {chars[i]});
+            values[i] = new StringValue(string);
+        }
+        return new ArrayValue(values);
     }
 
     @Override
@@ -56,8 +76,8 @@ public class StringValue implements Value {
     }
 
     @Override
-    public Types getType() {
-        return Types.String;
+    public Type getType() {
+        return Type.String;
     }
 
     @Override

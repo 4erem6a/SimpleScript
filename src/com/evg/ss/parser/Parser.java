@@ -7,10 +7,12 @@ import com.evg.ss.exceptions.UnexpectedTokenException;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lexer.TokenType;
 import com.evg.ss.values.NullValue;
+import com.evg.ss.values.StringValue;
 import com.evg.ss.values.Value;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntFunction;
 
 /**
  * @author 4erem6a
@@ -63,8 +65,6 @@ public final class Parser {
             return let();
         } else if (match(TokenType.If)) {
             return ifElse();
-        } else if (match(TokenType.Print)) {
-            return new PrintStatement(expression());
         } else if (match(TokenType.For)) {
             return forStatement();
         } else if (match(TokenType.While)) {
@@ -79,11 +79,39 @@ public final class Parser {
             return block();
         } else if (match(TokenType.Import)) {
             return module();
+        } else if (match(TokenType.Function)) {
+            return functionDefinition();
+        } else if (match(TokenType.Return)) {
+            return new ReturnStatement(expression());
+        } else if (match(TokenType.Foreach)) {
+            return foreach();
         } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
             return new FunctionStatement((FunctionExpression) function());
         } else {
             return assignment();
         }
+    }
+
+    private Statement foreach() {
+        consume(TokenType.Lp);
+        final Statement iteratorDefinition = notEqualsLet();
+        consume(TokenType.In);
+        final Expression target = express();
+        consume(TokenType.Rp);
+        final Statement body = statementOrBlock();
+        return new ForEachStatement(iteratorDefinition, target, body);
+    }
+
+    private Statement functionDefinition() {
+        final String name = consume(TokenType.Word).getValue();
+        final List<String> argNames = new ArrayList<>();
+        consume(TokenType.Lp);
+        if (!match(TokenType.Rp))
+            do argNames.add(consume(TokenType.Word).getValue());
+                while (match(TokenType.Cm));
+        match(TokenType.Rp);
+        final Statement body = statementOrBlock();
+        return new FunctionDefininitionStatement(name, argNames.toArray(new String[argNames.size()]), body);
     }
 
     private Statement module() {
@@ -116,7 +144,7 @@ public final class Parser {
         UnitedStatement iteration = new UnitedStatement();
         if (!match(TokenType.Sc)) {
             do
-                initialization.addStatement(let());
+                initialization.addStatement(notConstLet());
             while (match(TokenType.Cm));
             consume(TokenType.Sc);
         } else initialization = null;
@@ -148,10 +176,25 @@ public final class Parser {
     }
 
     private Statement assignment() {
+        if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lc))
+            return arrayAssignment();
         final String name = consume(TokenType.Word).getValue();
         consume(TokenType.Eq);
         final Expression value = expression();
         return new AssignmentStatement(name, value);
+    }
+
+    private Statement arrayAssignment() {
+        final String name = consume(TokenType.Word).getValue();
+        final List<Expression> indices = new ArrayList<>();
+        consume(TokenType.Lc);
+        do {
+            indices.add(expression());
+            consume(TokenType.Rc);
+        } while (match(TokenType.Lc));
+        consume(TokenType.Eq);
+        final Expression value = expression();
+        return new ArrayAssignmentStatement(name, indices.toArray(new Expression[indices.size()]), value);
     }
 
     private Statement let() {
@@ -169,6 +212,22 @@ public final class Parser {
             value = expression();
             return new LetStatement(name, value, true);
         }
+    }
+
+    private Statement notConstLet() {
+        match(TokenType.Let);
+        final String name = consume(TokenType.Word).getValue();
+        final Expression value;
+        if (match(TokenType.Eq)) {
+            value = expression();
+        } else value = NullValue.NullExpression;
+        return new LetStatement(name, value, false);
+    }
+
+    private Statement notEqualsLet() {
+        match(TokenType.Let);
+        final String name = consume(TokenType.Word).getValue();
+        return new LetStatement(name);
     }
 
     private Expression expression() {
@@ -350,8 +409,12 @@ public final class Parser {
             return new ValueExpression();
         } else if (match(TokenType.Let)) {
             return letExpression();
+        } else if (match(TokenType.Lc)) {
+            return array();
         } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
             return function();
+        } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lc)) {
+            return arrayAccess();
         } else if (match(TokenType.Word)) {
             return new VariableExpression(current.getValue());
         } else if (match(TokenType.Lp)) {
@@ -359,6 +422,26 @@ public final class Parser {
             match(TokenType.Rp);
             return result;
         } else throw new UnexpectedTokenException(current);
+    }
+
+    private Expression arrayAccess() {
+        final String name = consume(TokenType.Word).getValue();
+        final List<Expression> indices = new ArrayList<>();
+        consume(TokenType.Lc);
+        do {
+            indices.add(expression());
+            consume(TokenType.Rc);
+        } while (match(TokenType.Lc));
+        return new ArrayAccessExpression(name, indices.toArray(new Expression[indices.size()]));
+    }
+
+    private Expression array() {
+        if (match(TokenType.Rc))
+            return new ArrayExpression();
+        final List<Expression> expressions = new ArrayList<>();
+        do expressions.add(expression()); while (match(TokenType.Cm));
+        consume(TokenType.Rc);
+        return new ArrayExpression(expressions.toArray(new Expression[expressions.size()]));
     }
 
     private Expression function() {

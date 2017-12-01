@@ -17,6 +17,8 @@ public enum TokenType {
     Rp,         //)
     Lb,         //{
     Rb,         //}
+    Lc,         //[
+    Rc,         //]
     Pl,         //+
     Mn,         //-
     St,         //*
@@ -56,7 +58,12 @@ public enum TokenType {
     Continue,   //continue
     Block,      //block
     Import,     //import
-    Print,      //print
+    Function,   //function
+    Return,     //return
+    Foreach,    //foreach
+    In,         //in
+    Switch,     //switch
+    Case,       //case
 
     //Utility:
     EOF
