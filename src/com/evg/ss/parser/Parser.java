@@ -492,6 +492,8 @@ public final class Parser {
             return type();
         } else if (match(TokenType.Function)) {
             return anonymousFunction();
+        } else if (match(TokenType.ClCl)) {
+            return new FunctionReferenceExpression(consume(TokenType.Word).getValue());
         } else if (match(TokenType.Lc)) {
             return array();
         } else if (isLambdaDefinition()) {

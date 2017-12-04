@@ -11,35 +11,13 @@ import java.util.function.Consumer;
 
 public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
 
-    public static final MapValue MAP_BASE = new MapValue();
-    public static final MapValue MAP_EMPTY = createEmpty();
-
-    private Value ssToArray(Value... args) {
-        Arguments.checkArgcOrDie(args, 0);
-        return toArray();
-    }
-
-    private Value ssSize(Value... args) {
-        Arguments.checkArgcOrDie(args, 0);
-        return new NumberValue(map.size());
-    }
-
     private Map<Value, Value> map = new HashMap<>();
 
     public MapValue(MapValue map) {
         map.forEach(e -> this.map.put(e.getKey(), e.getValue()));
     }
 
-    public MapValue() {
-        this.put(new StringValue("toArray"), new FunctionValue(this::ssToArray));
-        this.put(new StringValue("size"), new FunctionValue(this::ssSize));
-    }
-
-    private static MapValue createEmpty() {
-        final MapValue value = new MapValue();
-        value.map = new HashMap<>();
-        return value;
-    }
+    public MapValue() {}
 
     public boolean containsKey(Value key) {
         return map.containsKey(key);
@@ -72,6 +50,10 @@ public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
                     .build());
         }
         return builder.build();
+    }
+
+    public int size() {
+        return map.size();
     }
 
     @Override

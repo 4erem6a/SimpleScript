@@ -22,12 +22,12 @@ public final class ArraysModule implements SSModule {
     @Override
     public void init() {
 
-        final MapValue module = SSMapBuilder.create()
-                .setMethod("length", this::length)
-                .setMethod("resize", this::resize)
-                .build();
+        final SSMapBuilder module = SSMapBuilder.create();
 
-        SS.Variables.put(IMPORT_NAME, module, true);
+        module.setMethod("length", this::length);
+        module.setMethod("resize", this::resize);
+
+        SS.Variables.put(IMPORT_NAME, module.build(), true);
 
     }
 

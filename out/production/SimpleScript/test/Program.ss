@@ -1,10 +1,10 @@
 import <io>
 import <arrays>
 import <maps>
+import <utils>
 
-let map {
-    io.println : "Hello, world!"
-}
+let $ = io.println;
 
-io.println(map.(io.println))
+function add(a, b) = a + b;
 
+$(utils.hashCode({}))

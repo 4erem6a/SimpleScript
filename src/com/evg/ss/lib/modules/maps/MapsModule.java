@@ -3,8 +3,9 @@ package com.evg.ss.lib.modules.maps;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.lib.modules.SSModuleInfo;
+import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
-import com.evg.ss.values.MapValue;
+import com.evg.ss.values.*;
 
 public final class MapsModule implements SSModule {
 
@@ -17,15 +18,27 @@ public final class MapsModule implements SSModule {
         return new SSModuleInfo(NAME, IMPORT_NAME, AUTHOR);
     }
 
+    public static final MapValue MAP_EMPTY = new MapValue();
+
     @Override
     public void init() {
 
-        final MapValue module = SSMapBuilder.create()
-                .setField("MAP_EMPTY", MapValue.MAP_EMPTY)
-                .setField("MAP_BASE", MapValue.MAP_BASE)
-                .build();
+        final SSMapBuilder module = SSMapBuilder.create();
 
-        SS.Variables.put(IMPORT_NAME, module, true);
+        module.setField("MAP_EMPTY", MAP_EMPTY);
+        module.setMethod("toArray", MapsModule::ssToArray);
+        module.setMethod("size", MapsModule::ssSize);
 
+        SS.Variables.put(IMPORT_NAME, module.build(), true);
+    }
+
+    private static Value ssToArray(Value... args) {
+        Arguments.checkArgTypesOrDie(args, Type.Map);
+        return ((MapValue) args[0]).toArray();
+    }
+
+    private static Value ssSize(Value... args) {
+        Arguments.checkArgTypesOrDie(args, Type.Map);
+        return new NumberValue(((MapValue) args[0]).size());
     }
 }
