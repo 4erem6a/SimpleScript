@@ -1,7 +1,9 @@
 package com.evg.ss.exceptions;
 
+import com.evg.ss.values.Value;
+
 public final class FieldNotFoundException extends SSExecutionException {
-    public FieldNotFoundException(String name) {
-        super(String.format("Field named '%s' does not exists in current object.", name));
+    public FieldNotFoundException(Value key) {
+        super(String.format("Field '%s' does not exists in current object.", key));
     }
 }

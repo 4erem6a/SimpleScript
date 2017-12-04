@@ -80,6 +80,7 @@ public final class Lexer {
         KeyWordMap.put("typeof", TokenType.Typeof);
         KeyWordMap.put("is", TokenType.Is);
         KeyWordMap.put("static", TokenType.Static);
+        KeyWordMap.put("extends", TokenType.Extends);
     }
 
     private final String source;

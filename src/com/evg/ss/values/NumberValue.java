@@ -40,4 +40,14 @@ public class NumberValue implements Value {
     public int compareTo(Value o) {
         return Double.compare(value, o.asNumber());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Value && ((Value) obj).compareTo(this) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return getType().ordinal() | asNumber().intValue();
+    }
 }

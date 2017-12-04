@@ -1,30 +1,36 @@
 package com.evg.ss.ast;
 
+import com.evg.ss.exceptions.InvalidValueTypeException;
 import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
-import javafx.util.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public final class MapExpression implements Expression {
 
-    private boolean isStatic;
-    private Map<String, Pair<Expression, Boolean>> map = new HashMap<>();
+    private Map<Expression, Expression> map = new HashMap<>();
+    private Expression base = null;
 
-    public MapExpression(boolean isStatic) {
-        this.isStatic = isStatic;
+    public void addField(Expression key, Expression value) {
+        map.put(key, value);
     }
 
-    public void addField(String name, Boolean isStatic, Expression expression) {
-        map.put(name, new Pair<>(expression, isStatic));
+    public void setBase(Expression expression) {
+        this.base = expression;
     }
 
     @Override
     public Value eval() {
-        final MapValue map = new MapValue(isStatic);
-        for (Map.Entry<String, Pair<Expression, Boolean>> entry : this.map.entrySet())
-            map.putField(entry.getKey(), entry.getValue().getKey().eval(), entry.getValue().getValue());
+        final MapValue map;
+        if (base != null) {
+            final Value baseValue = base.eval();
+            if (!(baseValue instanceof MapValue))
+                throw new InvalidValueTypeException(baseValue.getType());
+            else map = new MapValue((MapValue) baseValue);
+        } else map = new MapValue();
+        for (Map.Entry<Expression, Expression> entry : this.map.entrySet())
+            map.put(entry.getKey().eval(), entry.getValue().eval());
         return map;
     }
 }

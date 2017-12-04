@@ -40,4 +40,14 @@ public class BoolValue implements Value {
     public int compareTo(Value o) {
         return Boolean.compare(value, o.asBoolean());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Value && ((Value) obj).compareTo(this) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return getType().ordinal() | Boolean.valueOf(value).hashCode();
+    }
 }

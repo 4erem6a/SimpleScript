@@ -10,25 +10,17 @@ import java.util.Arrays;
 
 public final class ArrayAccessExpression implements Expression {
 
-    private Value value;
-    private String name;
+    private Expression expression;
     private Expression[] indices;
 
-    public ArrayAccessExpression(String name, Expression... indices) {
-        this.name = name;
+    public ArrayAccessExpression(Expression expression, Expression... indices) {
+        this.expression = expression;
         this.indices = indices;
-        this.value = null;
-    }
-
-    public ArrayAccessExpression(Value value, Expression... indices) {
-        this.value = value;
-        this.indices = indices;
-        this.name = null;
     }
 
     @Override
     public Value eval() {
-        if (value == null) value = new VariableExpression(name).eval();
+        final Value value = expression.eval();
         final ArrayValue arrayValue;
         if (value instanceof StringValue)
             arrayValue = ((StringValue) value).asCharArray();
@@ -37,10 +29,10 @@ public final class ArrayAccessExpression implements Expression {
         else throw new InvalidValueTypeException(value.getType());
         final int index = indices[0].eval().asNumber().intValue();
         if (index < 0 || index >= arrayValue.length())
-            throw new IndexOutOfBoundsException(name, index);
+            throw new IndexOutOfBoundsException(index);
         final Value result = arrayValue.get(index);
         if (indices.length > 1)
-            return new ArrayAccessExpression(result,
+            return new ArrayAccessExpression(() -> result,
                     Arrays.stream(indices)
                             .skip(1)
                             .toArray(Expression[]::new)).eval();

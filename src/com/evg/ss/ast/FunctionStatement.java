@@ -2,9 +2,9 @@ package com.evg.ss.ast;
 
 public final class FunctionStatement implements Statement {
 
-    private FunctionExpression expression;
+    private FunctionCallExpression expression;
 
-    public FunctionStatement(FunctionExpression expression) {
+    public FunctionStatement(FunctionCallExpression expression) {
         this.expression = expression;
     }
 

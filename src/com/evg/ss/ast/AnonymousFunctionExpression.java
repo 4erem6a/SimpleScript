@@ -25,7 +25,7 @@ public final class AnonymousFunctionExpression implements Expression {
     private Value execute(Value... args) {
         SS.Scopes.up();
         if (args.length != argNames.length)
-            throw new ArgumentCountMismatchException("", args.length);
+            throw new ArgumentCountMismatchException(args.length);
         for (int i = 0; i < argNames.length; i++)
             SS.Variables.put(argNames[i], args[i], false);
         try {

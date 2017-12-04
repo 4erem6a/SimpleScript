@@ -22,7 +22,7 @@ public class NullValue implements Value {
 
     @Override
     public String asString() {
-        return null;
+        return "";
     }
 
     @Override
@@ -38,5 +38,15 @@ public class NullValue implements Value {
     @Override
     public int compareTo(Value o) {
         return 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Value && ((Value) obj).compareTo(this) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return getType().ordinal();
     }
 }

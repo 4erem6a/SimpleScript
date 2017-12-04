@@ -7,12 +7,12 @@ import com.evg.ss.values.Value;
 public final class MapAssignmentStatement implements Statement {
 
     private String name;
-    private String field;
+    private Expression key;
     private Expression value;
 
-    public MapAssignmentStatement(String name, String field, Expression value) {
+    public MapAssignmentStatement(String name, Expression key, Expression value) {
         this.name = name;
-        this.field = field;
+        this.key = key;
         this.value = value;
     }
 
@@ -22,6 +22,6 @@ public final class MapAssignmentStatement implements Statement {
         if (!(value instanceof MapValue))
             throw new InvalidValueTypeException(value.getType());
         final MapValue map = (MapValue) value;
-        map.setField(field, this.value.eval(), false);
+        map.put(key.eval(), this.value.eval());
     }
 }

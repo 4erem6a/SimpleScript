@@ -43,4 +43,14 @@ public class TypeValue implements Value {
             return 0;
         return -1;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Value && ((Value) obj).compareTo(this) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return getType().ordinal() | value.hashCode();
+    }
 }

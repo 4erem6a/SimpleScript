@@ -26,7 +26,7 @@ public class FunctionValue implements Value {
 
     @Override
     public String asString() {
-        return "";
+        return getType().toString().toLowerCase();
     }
 
     @Override
@@ -45,5 +45,20 @@ public class FunctionValue implements Value {
             if (((FunctionValue) o).getValue() == value)
                 return 0;
         return -1;
+    }
+
+    @Override
+    public String toString() {
+        return asString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Value && ((Value) obj).compareTo(this) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return getType().ordinal() | value.hashCode();
     }
 }

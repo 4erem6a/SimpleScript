@@ -30,7 +30,11 @@ public final class UnaryExpression implements Expression {
         UnaryPlus,
         UnaryMinus,
         BitwiseNot,
-        LogicalNot
+        LogicalNot,
+        PrefixIncrement,
+        PrefixDecrement,
+        PostfixIncrement,
+        PostfixDecrement
     }
 
     public static Map<String, UnaryOperations> OperationsMap = new HashMap<>();

@@ -10,6 +10,11 @@ public class ArrayValue implements Value {
         return value;
     }
 
+    public void resize(int size) {
+        final Value[] newValue = new Value[size];
+        System.arraycopy(value, 0, newValue, 0, newValue.length > value.length ? value.length : newValue.length);
+    }
+
     public ArrayValue(Value... values) {
         this.value = values;
     }
@@ -66,5 +71,18 @@ public class ArrayValue implements Value {
         if (!(o instanceof ArrayValue))
             return -1;
         else return Arrays.compare(value, ((ArrayValue) o).value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Value && ((Value) obj).compareTo(this) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = getType().ordinal();
+        for (Value value : value)
+            hash |= value.hashCode();
+        return hash;
     }
 }

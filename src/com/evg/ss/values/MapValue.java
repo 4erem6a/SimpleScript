@@ -1,10 +1,7 @@
 package com.evg.ss.values;
 
-import com.evg.ss.exceptions.ArgumentCountMismatchException;
-import com.evg.ss.exceptions.StaticFieldAccessException;
-import com.evg.ss.exceptions.StaticMapAccessException;
-import com.evg.ss.lib.Function;
-import com.evg.ss.lib.Variable;
+import com.evg.ss.util.args.Arguments;
+import com.evg.ss.util.builders.SSArrayBuilder;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,98 +9,76 @@ import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class MapValue implements Value, Iterable<Map.Entry<String, Variable>> {
+public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
 
-    private boolean isStatic;
-    private Map<String, Variable> map;
-
-    public MapValue(boolean isStatic) {
-        this.map = new HashMap<>();
-        addSystemFields();
-        this.isStatic = isStatic;
+    private Value ssToArray(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
+        return toArray();
     }
 
-    private void addSystemFields() {
-        setField("isStatic", new BoolValue(isStatic), true);
-        setMethod("toArray", this::toArray, true);
-        setMethod("size", this::size, true);
+    private Value ssSize(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
+        return new NumberValue(map.size());
     }
 
-    private Value toArray(Value... values) {
-        if (values.length > 0)
-            throw new ArgumentCountMismatchException("toArray", values.length);
-        return mapToPairs(this);
+    private Map<Value, Value> map = new HashMap<>();
+
+    public MapValue(MapValue map) {
+        this.map = new HashMap<>(map.map);
+        this.put(new StringValue("toArray"), new FunctionValue(this::ssToArray));
+        this.put(new StringValue("size"), new FunctionValue(this::ssSize));
     }
 
-    private ArrayValue mapToPairs(MapValue value) {
-        int index = 0;
-        final ArrayValue array = new ArrayValue(value.size());
-        for (Map.Entry<String, Variable> pair : this) {
-            final ArrayValue pairArray = new ArrayValue(2);
-            pairArray.set(0, new StringValue(pair.getKey()));
-            final Value pairValue = pair.getValue().getValue();
-            if (pairValue instanceof MapValue)
-                pairArray.set(1, mapToPairs((MapValue) pairValue));
-            else pairArray.set(1, pairValue);
-            array.set(index++, pairArray);
+    public MapValue() {
+        this.put(new StringValue("toArray"), new FunctionValue(this::ssToArray));
+        this.put(new StringValue("size"), new FunctionValue(this::ssSize));
+    }
+
+    public boolean containsKey(Value key) {
+        return map.containsKey(key);
+    }
+
+    public void put(Value key, Value value) {
+        map.put(key, value);
+    }
+
+    public Value get(Value key) {
+        return map.get(key);
+    }
+
+    public Map<Value, Value> getMap() {
+        return new HashMap<>(map);
+    }
+
+    public ArrayValue toArray() {
+        final SSArrayBuilder builder = SSArrayBuilder.create();
+        for (Map.Entry<Value, Value> entry : this) {
+            final Value key = entry.getKey() instanceof MapValue
+                    ? ((MapValue) entry.getKey()).toArray()
+                    : entry.getKey();
+            final Value value = entry.getValue() instanceof MapValue
+                    ? ((MapValue) entry.getValue()).toArray()
+                    : entry.getValue();
+            builder.setElement(SSArrayBuilder.create()
+                    .setElement(key)
+                    .setElement(value)
+                    .build());
         }
-        return array;
-    }
-
-    private Value size(Value... values) {
-        if (values.length > 0)
-            throw new ArgumentCountMismatchException("size", values.length);
-        return new NumberValue(size());
-    }
-
-    public int size() {
-        return map.size();
-    }
-
-    public Value get(String name) {
-        if (!map.containsKey(name))
-            return null;
-        return map.get(name).getValue();
-    }
-
-    public boolean exists(String name) {
-        return get(name) != null;
-    }
-
-    public void setField(String name, Value value, boolean isStatic) {
-        if (this.isStatic)
-            throw new StaticMapAccessException();
-        if (map.containsKey(name))
-            if (map.get(name).isConst())
-                throw new StaticFieldAccessException(name);
-        map.put(name, new Variable(value, isStatic));
-    }
-
-    public void setMethod(String name, Function value, boolean isStatic) {
-        if (this.isStatic)
-            throw new StaticMapAccessException();
-        if (map.containsKey(name))
-            if (map.get(name).isConst())
-                throw new StaticFieldAccessException(name);
-        map.put(name, new Variable(new FunctionValue(value), isStatic));
-    }
-
-    public void putField(String name, Value value, boolean isStatic) {
-        map.put(name, new Variable(value, isStatic));
+        return builder.build();
     }
 
     @Override
-    public Iterator<Map.Entry<String, Variable>> iterator() {
+    public Iterator<Map.Entry<Value, Value>> iterator() {
         return map.entrySet().iterator();
     }
 
     @Override
-    public void forEach(Consumer<? super Map.Entry<String, Variable>> action) {
+    public void forEach(Consumer<? super Map.Entry<Value, Value>> action) {
         map.entrySet().forEach(action);
     }
 
     @Override
-    public Spliterator<Map.Entry<String, Variable>> spliterator() {
+    public Spliterator<Map.Entry<Value, Value>> spliterator() {
         return map.entrySet().spliterator();
     }
 
@@ -118,8 +93,8 @@ public class MapValue implements Value, Iterable<Map.Entry<String, Variable>> {
     }
 
     @Override
-    public java.lang.String asString() {
-        return mapToPairs(this).asString();
+    public String asString() {
+        return toArray().asString();
     }
 
     @Override
@@ -135,7 +110,20 @@ public class MapValue implements Value, Iterable<Map.Entry<String, Variable>> {
     @Override
     public int compareTo(Value o) {
         if (o instanceof MapValue)
-            return ((MapValue) o).map.equals(map) ? 0 : -1;
+            return ((MapValue) o).toArray().compareTo(toArray());
+        if (o instanceof ArrayValue)
+            return o.compareTo(toArray());
         return -1;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Value && ((Value) obj).compareTo(this) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return getType().ordinal() | toArray().hashCode();
+    }
+
 }

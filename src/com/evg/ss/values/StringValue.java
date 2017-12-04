@@ -23,19 +23,8 @@ public class StringValue implements Value {
         final String result;
         if (value instanceof NumberValue)
             result = value.asNumber().toString();
-        else if (value instanceof BoolValue)
-            result = value.asBoolean().toString();
-        else if (value instanceof StringValue)
-            result = value.asString();
-        else if (value instanceof NullValue)
-            result = "";
-        else if (value instanceof ArrayValue)
-            result = value.asString();
-        else if (value instanceof TypeValue)
-            result = value.asString();
-        else if (value instanceof MapValue)
-            result = value.asString();
-        else result = value.asObject().toString();
+        else if (value != null) result = value.asString();
+        else result = new NullValue().asString();
         return new StringValue(result);
     }
 
@@ -87,5 +76,20 @@ public class StringValue implements Value {
     @Override
     public int compareTo(Value o) {
         return value.compareTo(o.asString());
+    }
+
+    @Override
+    public String toString() {
+        return asString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Value && ((Value) obj).compareTo(this) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return getType().ordinal() | value.hashCode();
     }
 }

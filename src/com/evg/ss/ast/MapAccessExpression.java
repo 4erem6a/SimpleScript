@@ -11,36 +11,22 @@ import java.util.Arrays;
 public final class MapAccessExpression implements Expression {
 
     private Expression map;
-    private String field;
-    private Expression[] args;
+    private Expression key;
 
-    public MapAccessExpression(Expression map, String field) {
+    public MapAccessExpression(Expression map, Expression key) {
         this.map = map;
-        this.field = field;
-        this.args = null;
-    }
-
-    public MapAccessExpression(Expression map, String field, Expression... args) {
-        this.map = map;
-        this.field = field;
-        this.args = args;
+        this.key = key;
     }
 
     @Override
     public Value eval() {
         final Value value = map.eval();
+        final Value key = this.key.eval();
         if (!(value instanceof MapValue))
             throw new InvalidValueTypeException(value.getType());
         final MapValue map = (MapValue) value;
-        if (!map.exists(field))
-            throw new FieldNotFoundException(field);
-        if (args == null)
-            return map.get(field);
-        else {
-            final Value method = map.get(field);
-            if (!(method instanceof FunctionValue))
-                throw new InvalidValueTypeException(method.getType());
-            return ((FunctionValue) method).getValue().execute(Arrays.stream(args).map(Expression::eval).toArray(Value[]::new));
-        }
+        if (!map.containsKey(key))
+            throw new FieldNotFoundException(key);
+        return map.get(key);
     }
 }

@@ -70,6 +70,7 @@ public enum TokenType {
     Type,       //type
     Is,         //is
     Static,     //static
+    Extends,    //extends
 
     //Utility:
     EOF

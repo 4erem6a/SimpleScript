@@ -29,7 +29,7 @@ public final class Parser {
     }
 
     public Statement parse() {
-        final BlockStatement program = new BlockStatement();
+        final UnitedStatement program = new UnitedStatement();
         while (!match(TokenType.EOF)) {
             program.addStatement(statement());
             match(TokenType.Sc);
@@ -85,7 +85,7 @@ public final class Parser {
         } else if (match(TokenType.Switch)) {
             return switchCase();
         } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
-            return new FunctionStatement((FunctionExpression) function());
+            return new FunctionStatement((FunctionCallExpression) function());
         } else {
             return assignment();
         }
@@ -124,7 +124,7 @@ public final class Parser {
         consume(TokenType.Lp);
         if (!match(TokenType.Rp))
             do argNames.add(consume(TokenType.Word).getValue());
-                while (match(TokenType.Cm));
+            while (match(TokenType.Cm));
         match(TokenType.Rp);
         final Statement body;
         if (match(TokenType.Eq)) {
@@ -208,10 +208,10 @@ public final class Parser {
     private Statement mapAssignment() {
         final String name = consume(TokenType.Word).getValue();
         consume(TokenType.Dt);
-        final String fieldName = consume(TokenType.Word).getValue();
+        final Expression field = mapAccessKey();
         consume(TokenType.Eq);
         final Expression value = expression();
-        return new MapAssignmentStatement(name, fieldName, value);
+        return new MapAssignmentStatement(name, field, value);
     }
 
     private Statement arrayAssignment() {
@@ -233,7 +233,7 @@ public final class Parser {
         final String name = consume(TokenType.Word).getValue();
         final Expression value;
         if (!isConst) {
-            if (lookMatch(0, TokenType.Static) || lookMatch(0, TokenType.Lb))
+            if (match(TokenType.Lb))
                 value = map();
             else if (match(TokenType.Eq)) {
                 value = expression();
@@ -419,36 +419,64 @@ public final class Parser {
 
     private Expression unary() {
         if (match(TokenType.Mn)) {
-            return new UnaryExpression("-", objective());
+            return new UnaryExpression("-", postfix());
         }
         if (match(TokenType.Pl)) {
-            return new UnaryExpression("+", objective());
+            return new UnaryExpression("+", postfix());
         }
-        return objective();
+        return postfix();
     }
 
-    private Expression objective() {
+    private Expression postfix() {
         Expression result = primary();
         while (true) {
             if (match(TokenType.Dt)) {
-                final String field = consume(TokenType.Word).getValue();
-                final List<Expression> args;
-                if (match(TokenType.Lp)) {
-                    args = new ArrayList<>();
-                    if (!match(TokenType.Rp)) {
-                        do args.add(expression()); while (match(TokenType.Cm));
-                        consume(TokenType.Rp);
-                    }
-                } else args = null;
-                final Expression[] argsArray = args == null ? null : args.toArray(new Expression[args.size()]);
-                if (argsArray == null)
-                    result = new MapAccessExpression(result, field);
-                else result = new MapAccessExpression(result, field, argsArray);
+                final Expression field = mapAccessKey();
+                result = new MapAccessExpression(result, field);
+                continue;
+            }
+            if (match(TokenType.Lc)) {
+                final List<Expression> indices = new ArrayList<>();
+                do {
+                    indices.add(expression());
+                    consume(TokenType.Rc);
+                } while (match(TokenType.Lc));
+                result = new ArrayAccessExpression(result, indices.toArray(new Expression[indices.size()]));
+                continue;
+            }
+            if (match(TokenType.Lp)) {
+                final List<Expression> args = new ArrayList<>();
+                if (!match(TokenType.Rp)) {
+                    do args.add(expression()); while (match(TokenType.Cm));
+                    consume(TokenType.Rp);
+                }
+                final Expression[] argsArray = args.toArray(new Expression[args.size()]);
+                result = new FunctionCallExpression(result, argsArray);
                 continue;
             }
             break;
         }
         return result;
+    }
+
+    private Expression mapAccessKey() {
+        final Expression field;
+        if (lookMatch(0, TokenType.Word))
+            field = new ValueExpression(consume(TokenType.Word).getValue());
+        else {
+            consume(TokenType.Lp);
+            field = expression();
+            consume(TokenType.Rp);
+        }
+        return field;
+    }
+
+    private Expression mapDefinitionKey() {
+        final Expression field;
+        if (lookMatch(0, TokenType.Word))
+            field = new ValueExpression(consume(TokenType.Word).getValue());
+        else field = expression();
+        return field;
     }
 
     private Expression primary() {
@@ -475,16 +503,14 @@ public final class Parser {
             return type();
         } else if (match(TokenType.Function)) {
             return anonymousFunction();
-        } else if (isLambdaDefinition()) {
-            return lambda();
-        } else if (lookMatch(0, TokenType.Static) || lookMatch(0, TokenType.Lb)) {
-            return map();
         } else if (match(TokenType.Lc)) {
             return array();
-        } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
-            return function();
-        } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lc)) {
-            return arrayAccess();
+        } else if (isLambdaDefinition()) {
+            return lambda();
+        } else if (match(TokenType.Lb)) {
+            return map();
+//        } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
+//            return function();
         } else if (match(TokenType.Word)) {
             return new VariableExpression(current.getValue());
         } else if (match(TokenType.Lp)) {
@@ -512,38 +538,40 @@ public final class Parser {
         boolean result = true;
         int rollback = 1;
         if (!match(TokenType.Lp)) return false;
-        if (!match(TokenType.Rp)) {
+        if (!lookMatch(0, TokenType.Rp)) {
             do {
                 rollback++;
                 result = result && match(TokenType.Word);
                 rollback++;
             } while (match(TokenType.Cm));
             rollback--;
-        } else if (match(TokenType.Rp)) {
-            rollback++;
-            if (match(TokenType.MnAr))
+        } else {
+            if (match(TokenType.Rp)) {
                 rollback++;
-            else result = false;
-        } else result = false;
-
+                if (match(TokenType.MnAr))
+                    rollback++;
+                else result = false;
+            } else result = false;
+        }
         pos -= rollback;
         return result;
     }
 
     private Expression map() {
-        final boolean isStatic = match(TokenType.Static);
-        final MapExpression map = new MapExpression(isStatic);
-        consume(TokenType.Lb);
+        final MapExpression map = new MapExpression();
         if (!match(TokenType.Rb)) {
             do {
-                final boolean isFieldStatic = match(TokenType.Static);
-                final String fieldName = consume(TokenType.Word).getValue();
-                if (match(TokenType.Cl)) {
-                    final Expression fieldValue = expression();
-                    map.addField(fieldName, isFieldStatic, fieldValue);
-                } else map.addField(fieldName, isFieldStatic, NullValue.NullExpression);
+                if (match(TokenType.Rb))
+                    return map;
+                final Expression key = mapDefinitionKey();
+                final Expression value = match(TokenType.Cl) ? expression() : NullValue.NullExpression;
+                map.addField(key, value);
             } while (match(TokenType.Cm));
             consume(TokenType.Rb);
+        }
+        if (match(TokenType.Extends)) {
+            final Expression base = expression();
+            map.setBase(base);
         }
         return map;
     }
@@ -578,17 +606,6 @@ public final class Parser {
         return new AnonymousFunctionExpression(argNames.toArray(new String[argNames.size()]), body);
     }
 
-    private Expression arrayAccess() {
-        final String name = consume(TokenType.Word).getValue();
-        final List<Expression> indices = new ArrayList<>();
-        consume(TokenType.Lc);
-        do {
-            indices.add(expression());
-            consume(TokenType.Rc);
-        } while (match(TokenType.Lc));
-        return new ArrayAccessExpression(name, indices.toArray(new Expression[indices.size()]));
-    }
-
     private Expression array() {
         if (match(TokenType.Rc))
             return new ArrayExpression();
@@ -606,7 +623,7 @@ public final class Parser {
             do args.add(expression()); while (match(TokenType.Cm));
             consume(TokenType.Rp);
         }
-        return new FunctionExpression(name, args.toArray(new Expression[args.size()]));
+        return new FunctionCallExpression(new VariableExpression(name), args.toArray(new Expression[args.size()]));
     }
 
     private Expression interpolated() {

@@ -38,12 +38,12 @@ public final class ArrayAssignmentStatement implements Statement {
         arrayValue = (ArrayValue) target;
         final int index = indices[0].eval().asNumber().intValue();
         if (index < 0 || index >= arrayValue.length())
-            throw new IndexOutOfBoundsException(name, index);
+            throw new IndexOutOfBoundsException(index);
         if (indices.length == 1) {
             arrayValue.set(index, value.eval());
             return;
         }
-        new ArrayAssignmentStatement(new ArrayAccessExpression(arrayValue, indices[0]).eval(),
+        new ArrayAssignmentStatement(new ArrayAccessExpression(() -> arrayValue, indices[0]).eval(),
                 Arrays.stream(indices)
                     .skip(1)
                     .toArray(Expression[]::new),
