@@ -1,8 +1,8 @@
 package com.evg.ss.lib.modules;
 
-public interface SSModule {
+public abstract class SSModule {
 
-    SSModuleInfo getModuleInfo();
-    void init();
+    public abstract SSModuleInfo getModuleInfo();
+    public abstract void init();
 
 }

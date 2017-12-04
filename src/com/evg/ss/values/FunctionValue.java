@@ -1,6 +1,7 @@
 package com.evg.ss.values;
 
 import com.evg.ss.lib.Function;
+import com.evg.ss.lib.SSFunction;
 
 public class FunctionValue implements Value {
 
@@ -41,10 +42,7 @@ public class FunctionValue implements Value {
 
     @Override
     public int compareTo(Value o) {
-        if (o instanceof FunctionValue)
-            if (((FunctionValue) o).getValue() == value)
-                return 0;
-        return -1;
+        return o.hashCode() - hashCode();
     }
 
     @Override

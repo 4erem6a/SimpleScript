@@ -7,7 +7,7 @@ import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
-public final class MapsModule implements SSModule {
+public final class MapsModule extends SSModule {
 
     private static final String NAME = "Maps";
     private static final String IMPORT_NAME = "maps";

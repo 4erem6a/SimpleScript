@@ -10,7 +10,7 @@ import com.evg.ss.values.Value;
 
 import java.util.Scanner;
 
-public final class IOModule implements SSModule {
+public final class IOModule extends SSModule {
 
     private static final String NAME = "IO";
     private static final String IMPORT_NAME = "io";

@@ -8,7 +8,7 @@ import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.NumberValue;
 import com.evg.ss.values.Value;
 
-public final class UtilityModule implements SSModule {
+public final class UtilityModule extends SSModule {
 
     private static final String NAME = "Utilities";
     private static final String IMPORT_NAME = "utils";

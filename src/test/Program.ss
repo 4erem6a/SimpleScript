@@ -1,10 +1,10 @@
 import <io>
-import <arrays>
-import <maps>
 import <utils>
 
-let $ = io.println;
+let object = {}
 
-function add(a, b) = a + b;
+let key = (a, b) -> a + b
 
-$(utils.hashCode({}))
+object.(key) = 10
+
+io.println(object.((a, b) -> a + b))

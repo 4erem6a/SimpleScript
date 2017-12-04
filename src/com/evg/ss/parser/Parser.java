@@ -133,7 +133,7 @@ public final class Parser {
         if (match(TokenType.Eq)) {
             body = new ReturnStatement(expression());
         } else body = statementOrBlock();
-        return new FunctionDefininitionStatement(name, argNames.toArray(new String[argNames.size()]), body);
+        return new FunctionDefinitionStatement(name, argNames.toArray(new String[argNames.size()]), body);
     }
 
     private Statement module() {

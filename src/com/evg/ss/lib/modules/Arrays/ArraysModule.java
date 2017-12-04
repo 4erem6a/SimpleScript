@@ -8,7 +8,7 @@ import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
-public final class ArraysModule implements SSModule {
+public final class ArraysModule extends SSModule {
 
     private static final String NAME = "Arrays";
     private static final String IMPORT_NAME = "arrays";
