@@ -14,55 +14,37 @@ public final class BinaryExpression implements Expression {
 
     private final Expression left, right;
     private final BinaryOperations operation;
-    private final String operationKey;
 
-    public BinaryExpression(String operation, Expression left, Expression right) {
+    public BinaryExpression(BinaryOperations operation, Expression left, Expression right) {
         this.left = left;
         this.right = right;
-        if (!OperationsMap.containsKey(operation))
-            throw new UnknownOperatorException(operation, UnknownOperatorException.OperatorTypes.Binary);
-        this.operation = OperationsMap.get(operation);
-        this.operationKey = operation;
+        this.operation = operation;
     }
 
     public enum BinaryOperations {
-        Addition,
-        Subtraction,
-        Division,
-        Multiplication,
+        Addition("+"),
+        Subtraction("-"),
+        Division("/"),
+        Multiplication("*"),
+        Modulo("%"),
 
-        BitwiseOr,
-        BitwiseAnd,
-        BitwiseXor,
+        BitwiseOr("|"),
+        BitwiseAnd("&"),
+        BitwiseXor("^"),
 
-        LogicalOr,
-        LogicalAnd,
+        LogicalOr("||"),
+        LogicalAnd("&&"),
 
-        LessThen,
-        GreaterThen,
-        GreaterThenOrEquals,
-        LessThenOrEquals,
-        Equals,
-        NotEquals
-    }
-
-    private static Map<String, BinaryOperations> OperationsMap = new HashMap<>();
-    static {
-        OperationsMap.put("+", BinaryOperations.Addition);
-        OperationsMap.put("-", BinaryOperations.Subtraction);
-        OperationsMap.put("/", BinaryOperations.Division);
-        OperationsMap.put("*", BinaryOperations.Multiplication);
-        OperationsMap.put("|", BinaryOperations.BitwiseOr);
-        OperationsMap.put("&", BinaryOperations.BitwiseAnd);
-        OperationsMap.put("^", BinaryOperations.BitwiseXor);
-        OperationsMap.put("||", BinaryOperations.LogicalOr);
-        OperationsMap.put("&&", BinaryOperations.LogicalAnd);
-        OperationsMap.put("<", BinaryOperations.LessThen);
-        OperationsMap.put(">", BinaryOperations.GreaterThen);
-        OperationsMap.put(">=", BinaryOperations.GreaterThenOrEquals);
-        OperationsMap.put("<=", BinaryOperations.LessThenOrEquals);
-        OperationsMap.put("==", BinaryOperations.Equals);
-        OperationsMap.put("!=", BinaryOperations.NotEquals);
+        LessThen("<"),
+        GreaterThen(">"),
+        GreaterThenOrEquals(">="),
+        LessThenOrEquals("<="),
+        Equals("=="),
+        NotEquals("!=");
+        public String key;
+        BinaryOperations(String operationKey) {
+            this.key = operationKey;
+        }
     }
 
     @Override
@@ -78,6 +60,8 @@ public final class BinaryExpression implements Expression {
                 return divide(leftValue, rightValue);
             case Multiplication:
                 return multiply(leftValue, rightValue);
+            case Modulo:
+                return mod(leftValue, rightValue);
             case BitwiseOr:
                 return new NumberValue(leftValue.asNumber().intValue() | rightValue.asNumber().intValue());
             case BitwiseAnd:
@@ -97,7 +81,7 @@ public final class BinaryExpression implements Expression {
             case LessThenOrEquals:
                 return new BoolValue(leftValue.compareTo(rightValue) <= 0);
             case Equals:
-                return new BoolValue(leftValue.compareTo(rightValue) == 0);
+            return new BoolValue(leftValue.compareTo(rightValue) == 0);
             case NotEquals:
                 return new BoolValue(leftValue.compareTo(rightValue) != 0);
             default:
@@ -211,6 +195,12 @@ public final class BinaryExpression implements Expression {
         else return new StringValue(string);
     }
 
+    private Value mod(Value left, Value right) {
+        if (!(left instanceof NumberValue) || !(right instanceof NumberValue))
+            return new NullValue();
+        return new NumberValue(left.asNumber() % right.asNumber());
+    }
+
     private Value subtract(Value leftValue, Value rightValue) {
         if (leftValue instanceof NullValue || rightValue instanceof NullValue)
             return new NullValue();
@@ -248,6 +238,6 @@ public final class BinaryExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("[%s %s %s]", left, operationKey, right);
+        return String.format("[%s %s %s]", left, operation.key, right);
     }
 }

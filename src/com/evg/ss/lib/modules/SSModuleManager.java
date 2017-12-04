@@ -1,8 +1,9 @@
 package com.evg.ss.lib.modules;
 
 import com.evg.ss.exceptions.ModuleNotFoundException;
-import com.evg.ss.lib.modules.Arrays.ArraysModule;
-import com.evg.ss.lib.modules.IO.IOModule;
+import com.evg.ss.lib.modules.arrays.ArraysModule;
+import com.evg.ss.lib.modules.io.IOModule;
+import com.evg.ss.lib.modules.maps.MapsModule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public final class SSModuleManager {
     static {
         registerModule(new IOModule());
         registerModule(new ArraysModule());
+        registerModule(new MapsModule());
     }
 
     public static void registerModule(SSModule module) {

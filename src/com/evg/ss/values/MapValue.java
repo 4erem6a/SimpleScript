@@ -11,6 +11,9 @@ import java.util.function.Consumer;
 
 public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
 
+    public static final MapValue MAP_BASE = new MapValue();
+    public static final MapValue MAP_EMPTY = createEmpty();
+
     private Value ssToArray(Value... args) {
         Arguments.checkArgcOrDie(args, 0);
         return toArray();
@@ -24,14 +27,18 @@ public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
     private Map<Value, Value> map = new HashMap<>();
 
     public MapValue(MapValue map) {
-        this.map = new HashMap<>(map.map);
-        this.put(new StringValue("toArray"), new FunctionValue(this::ssToArray));
-        this.put(new StringValue("size"), new FunctionValue(this::ssSize));
+        map.forEach(e -> this.map.put(e.getKey(), e.getValue()));
     }
 
     public MapValue() {
         this.put(new StringValue("toArray"), new FunctionValue(this::ssToArray));
         this.put(new StringValue("size"), new FunctionValue(this::ssSize));
+    }
+
+    private static MapValue createEmpty() {
+        final MapValue value = new MapValue();
+        value.map = new HashMap<>();
+        return value;
     }
 
     public boolean containsKey(Value key) {

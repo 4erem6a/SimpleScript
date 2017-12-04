@@ -27,6 +27,7 @@ public final class Lexer {
         OperatorTokenMap.put("]", TokenType.Rc);
         OperatorTokenMap.put("/", TokenType.Sl);
         OperatorTokenMap.put("*", TokenType.St);
+        OperatorTokenMap.put("%", TokenType.Pr);
         OperatorTokenMap.put("-", TokenType.Mn);
         OperatorTokenMap.put("+", TokenType.Pl);
         OperatorTokenMap.put("=", TokenType.Eq);
@@ -43,8 +44,11 @@ public final class Lexer {
         OperatorTokenMap.put("<=", TokenType.AlEq);
         OperatorTokenMap.put(">=", TokenType.ArEq);
         OperatorTokenMap.put("==", TokenType.EqEq);
+        OperatorTokenMap.put("++", TokenType.PlPl);
+        OperatorTokenMap.put("--", TokenType.MnMn);
         OperatorTokenMap.put("!=", TokenType.ExEq);
         OperatorTokenMap.put("->", TokenType.MnAr);
+        OperatorTokenMap.put("::", TokenType.ClCl);
         OperatorTokenMap.put(":", TokenType.Cl);
         OperatorTokenMap.put(".", TokenType.Dt);
         OperatorTokenMap.put(",", TokenType.Cm);

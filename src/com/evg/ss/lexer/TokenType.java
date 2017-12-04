@@ -23,6 +23,7 @@ public enum TokenType {
     Mn,         //-
     St,         //*
     Sl,         ///
+    Pr,         //%
     Eq,         //=
     Am,         //&
     Vb,         //|
@@ -37,8 +38,11 @@ public enum TokenType {
     AlEq,       //<=
     ArEq,       //>=
     EqEq,       //==
+    PlPl,       //++
+    MnMn,       //--
     ExEq,       //!=
     MnAr,       //->
+    ClCl,       //::
     Cl,         //:
     Dt,         //.
     Cm,         //,

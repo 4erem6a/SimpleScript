@@ -8,7 +8,7 @@ import com.evg.ss.values.Value;
 
 import java.util.Arrays;
 
-public final class MapAccessExpression implements Expression {
+public final class MapAccessExpression implements Expression, Accessible {
 
     private Expression map;
     private Expression key;
@@ -27,6 +27,22 @@ public final class MapAccessExpression implements Expression {
         final MapValue map = (MapValue) value;
         if (!map.containsKey(key))
             throw new FieldNotFoundException(key);
+        return map.get(key);
+    }
+
+    @Override
+    public Value get() {
+        return eval();
+    }
+
+    @Override
+    public Value set(Value newValue) {
+        final Value value = map.eval();
+        final Value key = this.key.eval();
+        if (!(value instanceof MapValue))
+            throw new InvalidValueTypeException(value.getType());
+        final MapValue map = (MapValue) value;
+        map.put(key, newValue);
         return map.get(key);
     }
 }

@@ -1,5 +1,6 @@
 package com.evg.ss.ast;
 
+import com.evg.ss.exceptions.InvalidAssignmentTargetException;
 import com.evg.ss.exceptions.UnknownOperatorException;
 import com.evg.ss.values.BoolValue;
 import com.evg.ss.values.NullValue;
@@ -16,33 +17,25 @@ public final class UnaryExpression implements Expression {
 
     private final UnaryOperations operator;
     private final Expression expression;
-    private final String operationKey;
 
-    public UnaryExpression(String operator, Expression expression) {
-        if (!OperationsMap.containsKey(operator))
-            throw new UnknownOperatorException(operator, UnknownOperatorException.OperatorTypes.Unary);
-        this.operator = OperationsMap.get(operator);
+    public UnaryExpression(UnaryOperations operator, Expression expression) {
+        this.operator = operator;
         this.expression = expression;
-        this.operationKey = operator;
     }
 
     public enum UnaryOperations {
-        UnaryPlus,
-        UnaryMinus,
-        BitwiseNot,
-        LogicalNot,
-        PrefixIncrement,
-        PrefixDecrement,
-        PostfixIncrement,
-        PostfixDecrement
-    }
-
-    public static Map<String, UnaryOperations> OperationsMap = new HashMap<>();
-    static {
-        OperationsMap.put("+", UnaryOperations.UnaryPlus);
-        OperationsMap.put("-", UnaryOperations.UnaryMinus);
-        OperationsMap.put("~", UnaryOperations.BitwiseNot);
-        OperationsMap.put("!", UnaryOperations.LogicalNot);
+        UnaryPlus("+"),
+        UnaryMinus("-"),
+        BitwiseNot("~"),
+        LogicalNot("!"),
+        PrefixIncrement("++"),
+        PrefixDecrement("--"),
+        PostfixIncrement("++"),
+        PostfixDecrement("--");
+        public String key;
+        UnaryOperations(String operationKey) {
+            this.key = operationKey;
+        }
     }
 
     @Override
@@ -57,9 +50,38 @@ public final class UnaryExpression implements Expression {
                 return new NumberValue(~value.asNumber().intValue());
             case LogicalNot:
                 return new BoolValue(!value.asBoolean());
+            case PrefixIncrement:
+            case PrefixDecrement:
+            case PostfixIncrement:
+            case PostfixDecrement:
+                return changeValue(operator);
             default:
                 return new NullValue();
         }
+    }
+
+    private Value changeValue(UnaryOperations operation) {
+        if (!(expression instanceof Accessible))
+            throw new InvalidAssignmentTargetException();
+        if (operation == UnaryOperations.PrefixIncrement) {
+            ((Accessible) expression).set(new NumberValue(((Accessible) expression).get().asNumber() + 1));
+            return ((Accessible) expression).get();
+        }
+        if (operation == UnaryOperations.PostfixIncrement) {
+            final Value value = ((Accessible) expression).get();
+            ((Accessible) expression).set(new NumberValue(((Accessible) expression).get().asNumber() + 1));
+            return value;
+        }
+        if (operation == UnaryOperations.PrefixDecrement) {
+            ((Accessible) expression).set(new NumberValue(((Accessible) expression).get().asNumber() - 1));
+            return ((Accessible) expression).get();
+        }
+        if (operation == UnaryOperations.PostfixDecrement) {
+            final Value value = ((Accessible) expression).get();
+            ((Accessible) expression).set(new NumberValue(((Accessible) expression).get().asNumber() - 1));
+            return value;
+        }
+        return new NullValue();
     }
 
     private Value negateValue(Value value) {
@@ -70,6 +92,6 @@ public final class UnaryExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("%s%s", operationKey, expression);
+        return String.format("%s%s", operator.key, expression);
     }
 }

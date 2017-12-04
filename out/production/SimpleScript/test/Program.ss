@@ -1,12 +1,10 @@
 import <io>
 import <arrays>
+import <maps>
 
-let x = () -> 10;
+let map {
+    io.println : "Hello, world!"
+}
 
-println(x())
+io.println(map.(io.println))
 
-let map {} extends {a: 10}
-
-map.a = map.a + 20;
-
-println(map.a)

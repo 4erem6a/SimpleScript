@@ -1,8 +1,10 @@
-package com.evg.ss.lib.modules.IO;
+package com.evg.ss.lib.modules.io;
 
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.lib.modules.SSModuleInfo;
+import com.evg.ss.util.builders.SSMapBuilder;
+import com.evg.ss.values.MapValue;
 import com.evg.ss.values.NullValue;
 import com.evg.ss.values.StringValue;
 import com.evg.ss.values.Value;
@@ -22,9 +24,15 @@ public final class IOModule implements SSModule {
 
     @Override
     public void init() {
-        SS.Functions.put("print", this::print);
-        SS.Functions.put("println", this::println);
-        SS.Functions.put("input", this::input);
+
+        final MapValue module = SSMapBuilder.create()
+                .setMethod("print", this::print)
+                .setMethod("println", this::println)
+                .setMethod("input", this::input)
+                .build();
+
+        SS.Variables.put(IMPORT_NAME, module, true);
+
     }
 
     private Value print(Value... args) {

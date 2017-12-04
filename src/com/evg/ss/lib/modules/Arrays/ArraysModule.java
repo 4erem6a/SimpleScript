@@ -1,6 +1,5 @@
-package com.evg.ss.lib.modules.Arrays;
+package com.evg.ss.lib.modules.arrays;
 
-import com.evg.ss.exceptions.ArgumentCountMismatchException;
 import com.evg.ss.exceptions.InvalidValueTypeException;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.modules.SSModule;
@@ -22,11 +21,14 @@ public final class ArraysModule implements SSModule {
 
     @Override
     public void init() {
-        final MapValue arrays = SSMapBuilder.create()
+
+        final MapValue module = SSMapBuilder.create()
                 .setMethod("length", this::length)
                 .setMethod("resize", this::resize)
                 .build();
-        SS.Variables.put("arrays", arrays, true);
+
+        SS.Variables.put(IMPORT_NAME, module, true);
+
     }
 
     private Value length(Value... args) {

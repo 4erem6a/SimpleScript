@@ -1,6 +1,7 @@
 package com.evg.ss.parser;
 
 import com.evg.ss.ast.*;
+import com.evg.ss.ast.BinaryExpression.BinaryOperations;
 import com.evg.ss.exceptions.UnknownCharacterException;
 import com.evg.ss.exceptions.InvalidInterpolationException;
 import com.evg.ss.exceptions.UnexpectedTokenException;
@@ -10,6 +11,8 @@ import com.evg.ss.values.NullValue;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.evg.ss.ast.UnaryExpression.*;
 
 /**
  * @author 4erem6a
@@ -87,7 +90,7 @@ public final class Parser {
         } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
             return new FunctionStatement((FunctionCallExpression) function());
         } else {
-            return assignment();
+            return new ExpressionStatement(expression());
         }
     }
 
@@ -174,7 +177,7 @@ public final class Parser {
         } else condition = null;
         if (!match(TokenType.Rp)) {
             do
-                iteration.addStatement(assignment());
+                iteration.addStatement(new ExpressionStatement(expression()));
             while (match(TokenType.Cm));
             consume(TokenType.Rp);
         } else iteration = null;
@@ -192,39 +195,7 @@ public final class Parser {
             elseStatement = statementOrBlock();
         else elseStatement = null;
         return new IfStatement(condition, ifStatement, elseStatement);
-    }
 
-    private Statement assignment() {
-        if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lc))
-            return arrayAssignment();
-        if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Dt))
-            return mapAssignment();
-        final String name = consume(TokenType.Word).getValue();
-        consume(TokenType.Eq);
-        final Expression value = expression();
-        return new AssignmentStatement(name, value);
-    }
-
-    private Statement mapAssignment() {
-        final String name = consume(TokenType.Word).getValue();
-        consume(TokenType.Dt);
-        final Expression field = mapAccessKey();
-        consume(TokenType.Eq);
-        final Expression value = expression();
-        return new MapAssignmentStatement(name, field, value);
-    }
-
-    private Statement arrayAssignment() {
-        final String name = consume(TokenType.Word).getValue();
-        final List<Expression> indices = new ArrayList<>();
-        consume(TokenType.Lc);
-        do {
-            indices.add(expression());
-            consume(TokenType.Rc);
-        } while (match(TokenType.Lc));
-        consume(TokenType.Eq);
-        final Expression value = expression();
-        return new ArrayAssignmentStatement(name, indices.toArray(new Expression[indices.size()]), value);
     }
 
     private Statement let() {
@@ -263,10 +234,10 @@ public final class Parser {
     }
 
     private Expression expression() {
-        return ternary();
+        return low();
     }
 
-    private Expression ternary() {
+    private Expression low() {
         Expression result = logicalOr();
         while (true) {
             if (match(TokenType.Qm)) {
@@ -274,6 +245,10 @@ public final class Parser {
                 consume(TokenType.Cl);
                 final Expression ifFalse = logicalOr();
                 result = new TernaryExpression(result, ifTrue, ifFalse);
+                continue;
+            }
+            if (match(TokenType.Eq)) {
+                result = new AssignmentExpression(result, logicalOr());
                 continue;
             }
             break;
@@ -285,7 +260,7 @@ public final class Parser {
         Expression result = logicalAnd();
         while (true) {
             if (match(TokenType.VbVb)) {
-                result = new BinaryExpression("||", result, logicalAnd());
+                result = new BinaryExpression(BinaryOperations.LogicalOr, result, logicalAnd());
                 continue;
             }
             break;
@@ -297,7 +272,7 @@ public final class Parser {
         Expression result = bitwiseOr();
         while (true) {
             if (match(TokenType.AmAm)) {
-                result = new BinaryExpression("&&", result, bitwiseOr());
+                result = new BinaryExpression(BinaryOperations.LogicalAnd, result, bitwiseOr());
                 continue;
             }
             break;
@@ -309,7 +284,7 @@ public final class Parser {
         Expression result = bitwiseXor();
         while (true) {
             if (match(TokenType.Vb)) {
-                result = new BinaryExpression("|", result, bitwiseXor());
+                result = new BinaryExpression(BinaryOperations.BitwiseOr, result, bitwiseXor());
                 continue;
             }
             break;
@@ -321,7 +296,7 @@ public final class Parser {
         Expression result = bitwiseAnd();
         while (true) {
             if (match(TokenType.Cr)) {
-                result = new BinaryExpression("^", result, bitwiseAnd());
+                result = new BinaryExpression(BinaryOperations.BitwiseXor, result, bitwiseAnd());
                 continue;
             }
             break;
@@ -333,7 +308,7 @@ public final class Parser {
         Expression result = equality();
         while (true) {
             if (match(TokenType.Am)) {
-                result = new BinaryExpression("&", result, equality());
+                result = new BinaryExpression(BinaryOperations.BitwiseAnd, result, equality());
                 continue;
             }
             break;
@@ -345,11 +320,11 @@ public final class Parser {
         Expression result = comparison();
         while (true) {
             if (match(TokenType.EqEq)) {
-                result = new BinaryExpression("==", result, comparison());
+                result = new BinaryExpression(BinaryOperations.Equals, result, comparison());
                 continue;
             }
             if (match(TokenType.ExEq)) {
-                result = new BinaryExpression("!=", result, comparison());
+                result = new BinaryExpression(BinaryOperations.NotEquals, result, comparison());
                 continue;
             }
             break;
@@ -361,24 +336,24 @@ public final class Parser {
         Expression result = addictive();
         while (true) {
             if (match(TokenType.Al)) {
-                result = new BinaryExpression("<", result, addictive());
+                result = new BinaryExpression(BinaryOperations.LessThen, result, addictive());
                 continue;
             }
             if (match(TokenType.Ar)) {
-                result = new BinaryExpression(">", result, addictive());
+                result = new BinaryExpression(BinaryOperations.GreaterThen, result, addictive());
                 continue;
             }
             if (match(TokenType.AlEq)) {
-                result = new BinaryExpression("<=", result, addictive());
+                result = new BinaryExpression(BinaryOperations.LessThenOrEquals, result, addictive());
                 continue;
             }
             if (match(TokenType.ArEq)) {
-                result = new BinaryExpression(">=", result, addictive());
+                result = new BinaryExpression(BinaryOperations.GreaterThenOrEquals, result, addictive());
                 continue;
             }
             if (match(TokenType.Is)) {
                 final String type = consume().getValue();
-                return new BinaryExpression("==", new TypeofExpression(result), new ConstTypeExpression(type));
+                return new BinaryExpression(BinaryOperations.Equals, new TypeofExpression(result), new ConstTypeExpression(type));
             }
             break;
         }
@@ -389,11 +364,11 @@ public final class Parser {
         Expression result = multiplicative();
         while (true) {
             if (match(TokenType.Pl)) {
-                result = new BinaryExpression("+", result, multiplicative());
+                result = new BinaryExpression(BinaryOperations.Addition, result, multiplicative());
                 continue;
             }
             if (match(TokenType.Mn)) {
-                result = new BinaryExpression("-", result, multiplicative());
+                result = new BinaryExpression(BinaryOperations.Subtraction, result, multiplicative());
                 continue;
             }
             break;
@@ -405,11 +380,11 @@ public final class Parser {
         Expression result = unary();
         while (true) {
             if (match(TokenType.St)) {
-                result = new BinaryExpression("*", result, unary());
+                result = new BinaryExpression(BinaryOperations.Multiplication, result, unary());
                 continue;
             }
             if (match(TokenType.Sl)) {
-                result = new BinaryExpression("/", result, unary());
+                result = new BinaryExpression(BinaryOperations.Division, result, unary());
                 continue;
             }
             break;
@@ -419,10 +394,16 @@ public final class Parser {
 
     private Expression unary() {
         if (match(TokenType.Mn)) {
-            return new UnaryExpression("-", postfix());
+            return new UnaryExpression(UnaryOperations.UnaryMinus, postfix());
         }
         if (match(TokenType.Pl)) {
-            return new UnaryExpression("+", postfix());
+            return new UnaryExpression(UnaryOperations.UnaryPlus, postfix());
+        }
+        if (match(TokenType.PlPl)) {
+            return new UnaryExpression(UnaryOperations.PrefixIncrement, postfix());
+        }
+        if (match(TokenType.MnMn)) {
+            return new UnaryExpression(UnaryOperations.PrefixDecrement, postfix());
         }
         return postfix();
     }
@@ -454,6 +435,14 @@ public final class Parser {
                 result = new FunctionCallExpression(result, argsArray);
                 continue;
             }
+            if (match(TokenType.PlPl)) {
+                result = new UnaryExpression(UnaryOperations.PostfixIncrement, result);
+                continue;
+            }
+            if (match(TokenType.MnMn)) {
+                result = new UnaryExpression(UnaryOperations.PostfixDecrement, result);
+                continue;
+            }
             break;
         }
         return result;
@@ -473,7 +462,7 @@ public final class Parser {
 
     private Expression mapDefinitionKey() {
         final Expression field;
-        if (lookMatch(0, TokenType.Word))
+        if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Cl))
             field = new ValueExpression(consume(TokenType.Word).getValue());
         else field = expression();
         return field;
@@ -509,15 +498,15 @@ public final class Parser {
             return lambda();
         } else if (match(TokenType.Lb)) {
             return map();
-//        } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
-//            return function();
         } else if (match(TokenType.Word)) {
             return new VariableExpression(current.getValue());
         } else if (match(TokenType.Lp)) {
             Expression result = expression();
             match(TokenType.Rp);
             return result;
-        } else throw new UnexpectedTokenException(current);
+        } else {
+            throw new UnexpectedTokenException(current);
+        }
     }
 
     private Expression lambda() {
