@@ -5,16 +5,16 @@
 * Comments
 * Variables
 * Constants
-* Scopes (Variables/Functions)
 * Functions
+* Scopes (Variables/Functions)
 * Modules (build-in)
 * Anonymous functions
 * Lambda-expressions
-* Objects
-* Static objects & fields
-* Type management
+* Type checking
+* Maps
+* Map inheritance
 ## Roadmap:
-* Object inheritance
+* Type conversion (module/build-in)
 * Modules (user-defined)
 * Require/Exports statements
 * Pattern matching
@@ -22,6 +22,7 @@
 ## Current:
 * IO(`<io>`): Console input/output
 * Arrays(`<arrays>`): Utility functions for ararys
+* Maps(`<maps>`): Advances map management
+* Utilities(`<utils>`)
 ## Roadmap:
-* Collections(`<collections>`): Advanced collections
-* Stream(`<stream>`): StreamApi for SS
+* Lists(`<lists>`): Lists
