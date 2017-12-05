@@ -32,7 +32,7 @@ public final class Parser {
     }
 
     public Statement parse() {
-        final UnitedStatement program = new UnitedStatement();
+        final BlockStatement program = new BlockStatement();
         while (!match(TokenType.EOF)) {
             program.addStatement(statement());
             match(TokenType.Sc);
@@ -77,8 +77,8 @@ public final class Parser {
             return new ContinueStatement();
         } else if (match(TokenType.Block)) {
             return block();
-        } else if (match(TokenType.Import)) {
-            return module();
+        } else if (match(TokenType.Require)) {
+            return requireStatement();
         } else if (match(TokenType.Function)) {
             return functionDefinition();
         } else if (match(TokenType.Return)) {
@@ -87,6 +87,10 @@ public final class Parser {
             return foreach();
         } else if (match(TokenType.Switch)) {
             return switchCase();
+        } else if (match(TokenType.Exports)) {
+            return new ExportsStatement(expression());
+        } else if (match(TokenType.Ar)) {
+            return new ExpressionStatement(expression());
         } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
             return new FunctionStatement((FunctionCallExpression) function());
         } else {
@@ -136,11 +140,39 @@ public final class Parser {
         return new FunctionDefinitionStatement(name, argNames.toArray(new String[argNames.size()]), body);
     }
 
-    private Statement module() {
-        consume(TokenType.Al);
-        final String name = consume(TokenType.Word).getValue();
-        consume(TokenType.Ar);
-        return new ImportStatement(name);
+    private Statement requireStatement() {
+        final String name;
+        final String variable;
+        final boolean external;
+        external = match(TokenType.External);
+        consume(TokenType.Lp);
+        if (external)
+            name = consume(TokenType.String).getValue();
+        else if (lookMatch(0, TokenType.Word) || lookMatch(0, TokenType.String))
+            name = consume().getValue();
+        else throw new UnexpectedTokenException(get(0));
+        consume(TokenType.Rp);
+        if (external) {
+            consume(TokenType.As);
+            variable = consume(TokenType.String).getValue();
+        } else if (match(TokenType.As))
+            variable = consume(TokenType.String).getValue();
+        else variable = null;
+        return new RequireStatementExpression(name, variable, external);
+    }
+
+    private Expression requireExpression() {
+        final String name;
+        final boolean external;
+        external = match(TokenType.External);
+        consume(TokenType.Lp);
+        if (external)
+            name = consume(TokenType.String).getValue();
+        else if (lookMatch(0, TokenType.Word) || lookMatch(0, TokenType.String))
+            name = consume().getValue();
+        else throw new UnexpectedTokenException(get(0));
+        consume(TokenType.Rp);
+        return new RequireStatementExpression(name, external);
     }
 
     private Statement doWhileStatement() {
@@ -387,6 +419,10 @@ public final class Parser {
                 result = new BinaryExpression(BinaryOperations.Division, result, unary());
                 continue;
             }
+            if (match(TokenType.Pr)) {
+                result = new BinaryExpression(BinaryOperations.Modulo, result, unary());
+                continue;
+            }
             break;
         }
         return result;
@@ -492,6 +528,8 @@ public final class Parser {
             return type();
         } else if (match(TokenType.Function)) {
             return anonymousFunction();
+        } else if (match(TokenType.Require)) {
+            return requireExpression();
         } else if (match(TokenType.ClCl)) {
             return new FunctionReferenceExpression(consume(TokenType.Word).getValue());
         } else if (match(TokenType.Lc)) {

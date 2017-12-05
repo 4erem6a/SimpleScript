@@ -1,7 +1,6 @@
 package com.evg.ss.ast;
 
 import com.evg.ss.exceptions.inner.SSReturnException;
-import com.evg.ss.lib.modules.SSModuleManager;
 
 public final class ReturnStatement implements Statement {
 

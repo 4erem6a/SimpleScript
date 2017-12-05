@@ -1,36 +1,23 @@
 package com.evg.ss.lib.modules.io;
 
-import com.evg.ss.lib.SS;
 import com.evg.ss.lib.modules.SSModule;
-import com.evg.ss.lib.modules.SSModuleInfo;
 import com.evg.ss.util.builders.SSMapBuilder;
+import com.evg.ss.values.MapValue;
 import com.evg.ss.values.NullValue;
 import com.evg.ss.values.StringValue;
 import com.evg.ss.values.Value;
 
 import java.util.Scanner;
 
-public final class IOModule extends SSModule {
-
-    private static final String NAME = "IO";
-    private static final String IMPORT_NAME = "io";
-    private static final String AUTHOR = "4erem6a";
+public final class io extends SSModule {
 
     @Override
-    public SSModuleInfo getModuleInfo() {
-        return new SSModuleInfo(NAME, IMPORT_NAME, AUTHOR);
-    }
-
-    @Override
-    public void init() {
-
-        final SSMapBuilder module = SSMapBuilder.create();
-        module.setMethod("print", this::print);
-        module.setMethod("println", this::println);
-        module.setMethod("input", this::input);
-
-        SS.Variables.put(IMPORT_NAME, module.build(), true);
-
+    public MapValue require() {
+        final SSMapBuilder builder = SSMapBuilder.create();
+        builder.setMethod("print", this::print);
+        builder.setMethod("println", this::println);
+        builder.setMethod("input", this::input);
+        return builder.build();
     }
 
     private Value print(Value... args) {

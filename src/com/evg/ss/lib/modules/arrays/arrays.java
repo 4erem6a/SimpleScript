@@ -1,34 +1,19 @@
 package com.evg.ss.lib.modules.arrays;
 
 import com.evg.ss.exceptions.InvalidValueTypeException;
-import com.evg.ss.lib.SS;
 import com.evg.ss.lib.modules.SSModule;
-import com.evg.ss.lib.modules.SSModuleInfo;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
-public final class ArraysModule extends SSModule {
-
-    private static final String NAME = "Arrays";
-    private static final String IMPORT_NAME = "arrays";
-    private static final String AUTHOR = "4erem6a";
+public final class arrays extends SSModule {
 
     @Override
-    public SSModuleInfo getModuleInfo() {
-        return new SSModuleInfo(NAME, IMPORT_NAME, AUTHOR);
-    }
-
-    @Override
-    public void init() {
-
-        final SSMapBuilder module = SSMapBuilder.create();
-
-        module.setMethod("length", this::length);
-        module.setMethod("resize", this::resize);
-
-        SS.Variables.put(IMPORT_NAME, module.build(), true);
-
+    public MapValue require() {
+        final SSMapBuilder builder = SSMapBuilder.create();
+        builder.setMethod("length", this::length);
+        builder.setMethod("resize", this::resize);
+        return builder.build();
     }
 
     private Value length(Value... args) {

@@ -63,7 +63,7 @@ public enum TokenType {
     Break,      //break
     Continue,   //continue
     Block,      //block
-    Import,     //import
+    Require,    //require
     Function,   //function
     Return,     //return
     Foreach,    //foreach
@@ -73,8 +73,10 @@ public enum TokenType {
     Case,       //case
     Type,       //type
     Is,         //is
-    Static,     //static
     Extends,    //extends
+    Exports,    //exports
+    External,   //external
+    As,         //as
 
     //Utility:
     EOF

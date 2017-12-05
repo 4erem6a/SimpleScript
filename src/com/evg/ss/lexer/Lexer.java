@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class Lexer {
     //Operator characters:
-    private static final String OperatorChars = "(){}[]/*-+=&|^~!?<>|:.,;";
+    private static final String OperatorChars = "(){}[]/*%-+=&|^~!?<>|:.,;";
     private static final String Quotes = "'\"`";
     private static final Map<String, TokenType> OperatorTokenMap = new HashMap<>();
 
@@ -73,7 +73,7 @@ public final class Lexer {
         KeyWordMap.put("break", TokenType.Break);
         KeyWordMap.put("continue", TokenType.Continue);
         KeyWordMap.put("block", TokenType.Block);
-        KeyWordMap.put("import", TokenType.Import);
+        KeyWordMap.put("require", TokenType.Require);
         KeyWordMap.put("function", TokenType.Function);
         KeyWordMap.put("return", TokenType.Return);
         KeyWordMap.put("foreach", TokenType.Foreach);
@@ -83,8 +83,10 @@ public final class Lexer {
         KeyWordMap.put("type", TokenType.Type);
         KeyWordMap.put("typeof", TokenType.Typeof);
         KeyWordMap.put("is", TokenType.Is);
-        KeyWordMap.put("static", TokenType.Static);
         KeyWordMap.put("extends", TokenType.Extends);
+        KeyWordMap.put("exports", TokenType.Exports);
+        KeyWordMap.put("external", TokenType.External);
+        KeyWordMap.put("as", TokenType.As);
     }
 
     private final String source;

@@ -1,10 +1,4 @@
-import <io>
-import <utils>
+require external("src/test/Module.ss") as "module"
+require(io)
 
-let object = {}
-
-let key = (a, b) -> a + b
-
-object.(key) = 10
-
-io.println(object.((a, b) -> a + b))
+io.println(module.add(1, 2))
