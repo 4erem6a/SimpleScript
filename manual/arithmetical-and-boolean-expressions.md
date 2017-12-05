@@ -1,4 +1,4 @@
-# Arithmetical & boolean expressions:
+# Arithmetical & boolean operations:
 
 Here is the list of arithmetical and boolean operations you can perform:
 
