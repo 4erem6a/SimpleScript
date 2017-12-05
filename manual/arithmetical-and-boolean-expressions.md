@@ -22,7 +22,14 @@ Priority : operation : operator
 
 ```
 Priority : operation : operator
-3 : logical negation   : 
+3 : logical negation   : !
+6 : greater then       : >
+6 : less then          : <
+6 : greater then or eq : >=
+6 : less then or eq    : <=
+7 : equals             : ==
+7 : not equals         : !=
+
 ```
 
 
