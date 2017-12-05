@@ -6,6 +6,8 @@ Here is the list of arithmetical and boolean operations you can perform:
 
 ```
 Priority : operation : operator
+3 : number negation    : -
+3 : bitwise negation   : ~
 4 : multiplication     : *
 4 : division           : /
 4 : modulo             : %
