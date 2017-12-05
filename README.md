@@ -34,7 +34,4 @@
 * ## Roadmap:
 * Lists\(`<lists>`\): Lists
 
-### See language manual at 
-
-
-
+### See language manual at [gitBook](https://www.gitbook.com/book/4erem6a/simplescript-manual).
