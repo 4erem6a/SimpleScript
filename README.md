@@ -13,10 +13,10 @@
 * Type checking
 * Maps
 * Map inheritance
+* Require/Exports statements
+* Modules (user-defined)
 ## Roadmap:
 * Type conversion (module/build-in)
-* Modules (user-defined)
-* Require/Exports statements
 * Pattern matching
 # Modules:
 ## Current:
