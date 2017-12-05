@@ -22,15 +22,19 @@
   ## Roadmap:
 * Type conversion \(module/build-in\)
 * Pattern matching
+
   # Modules:
 
   ## Current:
+
 * IO\(`<io>`\): Console input/output
 * Arrays\(`<arrays>`\): Utility functions for ararys
 * Maps\(`<maps>`\): Advances map management
 * Utilities\(`<utils>`\)
 * ## Roadmap:
 * Lists\(`<lists>`\): Lists
+
+### See language manual at 
 
 
 
