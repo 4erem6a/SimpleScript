@@ -22,7 +22,7 @@ Priority : operation : operator
 
 ```
 Priority : operation : operator
-1 :
+3 : logical negation   : 
 ```
 
 
