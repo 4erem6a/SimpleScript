@@ -6,21 +6,21 @@ Here is the list of arithmetical and boolean operations you can perform:
 
 ```
 Priority : operation : operator
-1 : multiplication     : *
-1 : division           : /
-1 : modulo             : %
-2 : addition           : +
-2 : subtraction        : -
-3 : bitwise and        : &
-3 : bitwise xor        : ^
-3 : bitwise or         : |
+4 : multiplication     : *
+4 : division           : /
+4 : modulo             : %
+5 : addition           : +
+5 : subtraction        : -
+8 : bitwise and        : &
+9 : bitwise xor        : ^
+10: bitwise or         : |
 ```
 
 ## Boolean operations:
 
 ```
 Priority : operation : operator
-1 : 
+1 :
 ```
 
 
