@@ -29,7 +29,8 @@ Priority : operation : operator
 6 : less then or eq    : <=
 7 : equals             : ==
 7 : not equals         : !=
-
+11: logical and        : &&
+12: logical or         : ||
 ```
 
 
