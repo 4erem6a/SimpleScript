@@ -1,7 +1,7 @@
 package com.evg.ss.parser;
 
-import com.evg.ss.ast.*;
-import com.evg.ss.ast.BinaryExpression.BinaryOperations;
+import com.evg.ss.parser.ast.*;
+import com.evg.ss.parser.ast.BinaryExpression.BinaryOperations;
 import com.evg.ss.exceptions.UnknownCharacterException;
 import com.evg.ss.exceptions.InvalidInterpolationException;
 import com.evg.ss.exceptions.UnexpectedTokenException;
@@ -12,25 +12,18 @@ import com.evg.ss.values.NullValue;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.evg.ss.ast.UnaryExpression.*;
+import static com.evg.ss.parser.ast.UnaryExpression.*;
 
 /**
  * @author 4erem6a
  */
-public final class Parser {
-
-    private static final Token EOF = new Token(TokenType.EOF, "");
-
-    private final List<Token> tokens;
-    private final int size;
-
-    private int pos;
+public final class Parser extends AbstractParser {
 
     public Parser(List<Token> tokens) {
-        this.tokens = tokens;
-        this.size = tokens.size();
+        super(tokens);
     }
 
+    @Override
     public Statement parse() {
         final BlockStatement program = new BlockStatement();
         while (!match(TokenType.EOF)) {
@@ -40,6 +33,7 @@ public final class Parser {
         return program;
     }
 
+    @Override
     public Expression express() {
         return expression();
     }
@@ -674,37 +668,4 @@ public final class Parser {
         return new LetExpression(name, value);
     }
 
-    private boolean match(TokenType type) {
-        if (!lookMatch(0, type)) return false;
-        pos++;
-        return true;
-    }
-
-    private boolean lookMatch(int pos, TokenType type) {
-        return compareTokenType(get(pos), type);
-    }
-
-    private Token get(int relativePosition) {
-        final int position = pos + relativePosition;
-        if (position >= size) return EOF;
-        return tokens.get(position);
-    }
-
-    private Token consume(TokenType type) {
-        final Token current = get(0);
-        if (!compareTokenType(current, type))
-            throw new UnexpectedTokenException(type, current);
-        pos++;
-        return current;
-    }
-
-    private Token consume() {
-        final Token current = get(0);
-        pos++;
-        return current;
-    }
-
-    private boolean compareTokenType(Token token, TokenType type) {
-        return token.getType() == type;
-    }
 }

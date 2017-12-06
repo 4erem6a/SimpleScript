@@ -3,7 +3,6 @@ package com.evg.ss.lexer;
 import com.evg.ss.exceptions.InvalidTokenDefinitionException;
 import com.evg.ss.exceptions.UnknownCharacterException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,98 +10,89 @@ import java.util.Map;
 /**
  * @author 4erem6a
  */
-public final class Lexer {
+public final class Lexer extends AbstractLexer {
     //Operator characters:
-    private static final String OperatorChars = "(){}[]/*%-+=&|^~!?<>|:.,;";
-    private static final String Quotes = "'\"`";
-    private static final Map<String, TokenType> OperatorTokenMap = new HashMap<>();
+    private static final String OPERATOR_CHARS = "(){}[]/*%-+=&|^~!?<>|:.,;";
+    private static final String QUOTES = "'\"`";
+    private static final Map<String, TokenType> OPERATOR_TOKEN_MAP = new HashMap<>();
 
     //Operator initialization:
     static {
-        OperatorTokenMap.put("(", TokenType.Lp);
-        OperatorTokenMap.put(")", TokenType.Rp);
-        OperatorTokenMap.put("{", TokenType.Lb);
-        OperatorTokenMap.put("}", TokenType.Rb);
-        OperatorTokenMap.put("[", TokenType.Lc);
-        OperatorTokenMap.put("]", TokenType.Rc);
-        OperatorTokenMap.put("/", TokenType.Sl);
-        OperatorTokenMap.put("*", TokenType.St);
-        OperatorTokenMap.put("%", TokenType.Pr);
-        OperatorTokenMap.put("-", TokenType.Mn);
-        OperatorTokenMap.put("+", TokenType.Pl);
-        OperatorTokenMap.put("=", TokenType.Eq);
-        OperatorTokenMap.put("&", TokenType.Am);
-        OperatorTokenMap.put("|", TokenType.Vb);
-        OperatorTokenMap.put("^", TokenType.Cr);
-        OperatorTokenMap.put("~", TokenType.Tl);
-        OperatorTokenMap.put("!", TokenType.Ex);
-        OperatorTokenMap.put("?", TokenType.Qm);
-        OperatorTokenMap.put("<", TokenType.Al);
-        OperatorTokenMap.put(">", TokenType.Ar);
-        OperatorTokenMap.put("||", TokenType.VbVb);
-        OperatorTokenMap.put("&&", TokenType.AmAm);
-        OperatorTokenMap.put("<=", TokenType.AlEq);
-        OperatorTokenMap.put(">=", TokenType.ArEq);
-        OperatorTokenMap.put("==", TokenType.EqEq);
-        OperatorTokenMap.put("++", TokenType.PlPl);
-        OperatorTokenMap.put("--", TokenType.MnMn);
-        OperatorTokenMap.put("!=", TokenType.ExEq);
-        OperatorTokenMap.put("->", TokenType.MnAr);
-        OperatorTokenMap.put("::", TokenType.ClCl);
-        OperatorTokenMap.put(":", TokenType.Cl);
-        OperatorTokenMap.put(".", TokenType.Dt);
-        OperatorTokenMap.put(",", TokenType.Cm);
-        OperatorTokenMap.put(";", TokenType.Sc);
+        OPERATOR_TOKEN_MAP.put("(", TokenType.Lp);
+        OPERATOR_TOKEN_MAP.put(")", TokenType.Rp);
+        OPERATOR_TOKEN_MAP.put("{", TokenType.Lb);
+        OPERATOR_TOKEN_MAP.put("}", TokenType.Rb);
+        OPERATOR_TOKEN_MAP.put("[", TokenType.Lc);
+        OPERATOR_TOKEN_MAP.put("]", TokenType.Rc);
+        OPERATOR_TOKEN_MAP.put("/", TokenType.Sl);
+        OPERATOR_TOKEN_MAP.put("*", TokenType.St);
+        OPERATOR_TOKEN_MAP.put("%", TokenType.Pr);
+        OPERATOR_TOKEN_MAP.put("-", TokenType.Mn);
+        OPERATOR_TOKEN_MAP.put("+", TokenType.Pl);
+        OPERATOR_TOKEN_MAP.put("=", TokenType.Eq);
+        OPERATOR_TOKEN_MAP.put("&", TokenType.Am);
+        OPERATOR_TOKEN_MAP.put("|", TokenType.Vb);
+        OPERATOR_TOKEN_MAP.put("^", TokenType.Cr);
+        OPERATOR_TOKEN_MAP.put("~", TokenType.Tl);
+        OPERATOR_TOKEN_MAP.put("!", TokenType.Ex);
+        OPERATOR_TOKEN_MAP.put("?", TokenType.Qm);
+        OPERATOR_TOKEN_MAP.put("<", TokenType.Al);
+        OPERATOR_TOKEN_MAP.put(">", TokenType.Ar);
+        OPERATOR_TOKEN_MAP.put("||", TokenType.VbVb);
+        OPERATOR_TOKEN_MAP.put("&&", TokenType.AmAm);
+        OPERATOR_TOKEN_MAP.put("<=", TokenType.AlEq);
+        OPERATOR_TOKEN_MAP.put(">=", TokenType.ArEq);
+        OPERATOR_TOKEN_MAP.put("==", TokenType.EqEq);
+        OPERATOR_TOKEN_MAP.put("++", TokenType.PlPl);
+        OPERATOR_TOKEN_MAP.put("--", TokenType.MnMn);
+        OPERATOR_TOKEN_MAP.put("!=", TokenType.ExEq);
+        OPERATOR_TOKEN_MAP.put("->", TokenType.MnAr);
+        OPERATOR_TOKEN_MAP.put("::", TokenType.ClCl);
+        OPERATOR_TOKEN_MAP.put(":", TokenType.Cl);
+        OPERATOR_TOKEN_MAP.put(".", TokenType.Dt);
+        OPERATOR_TOKEN_MAP.put(",", TokenType.Cm);
+        OPERATOR_TOKEN_MAP.put(";", TokenType.Sc);
     }
 
-    private static final Map<String, TokenType> KeyWordMap = new HashMap<>();
+    private static final Map<String, TokenType> KEYWORD_MAP = new HashMap<>();
 
     //Keyword initialization:
     static {
-        KeyWordMap.put("true", TokenType.True);
-        KeyWordMap.put("false", TokenType.False);
-        KeyWordMap.put("null", TokenType.Null);
-        KeyWordMap.put("nan", TokenType.Nan);
-        KeyWordMap.put("let", TokenType.Let);
-        KeyWordMap.put("const", TokenType.Const);
-        KeyWordMap.put("if", TokenType.If);
-        KeyWordMap.put("else", TokenType.Else);
-        KeyWordMap.put("for", TokenType.For);
-        KeyWordMap.put("do", TokenType.Do);
-        KeyWordMap.put("while", TokenType.While);
-        KeyWordMap.put("break", TokenType.Break);
-        KeyWordMap.put("continue", TokenType.Continue);
-        KeyWordMap.put("block", TokenType.Block);
-        KeyWordMap.put("require", TokenType.Require);
-        KeyWordMap.put("function", TokenType.Function);
-        KeyWordMap.put("return", TokenType.Return);
-        KeyWordMap.put("foreach", TokenType.Foreach);
-        KeyWordMap.put("in", TokenType.In);
-        KeyWordMap.put("switch", TokenType.Switch);
-        KeyWordMap.put("case", TokenType.Case);
-        KeyWordMap.put("type", TokenType.Type);
-        KeyWordMap.put("typeof", TokenType.Typeof);
-        KeyWordMap.put("is", TokenType.Is);
-        KeyWordMap.put("extends", TokenType.Extends);
-        KeyWordMap.put("exports", TokenType.Exports);
-        KeyWordMap.put("external", TokenType.External);
-        KeyWordMap.put("as", TokenType.As);
+        KEYWORD_MAP.put("true", TokenType.True);
+        KEYWORD_MAP.put("false", TokenType.False);
+        KEYWORD_MAP.put("null", TokenType.Null);
+        KEYWORD_MAP.put("nan", TokenType.Nan);
+        KEYWORD_MAP.put("let", TokenType.Let);
+        KEYWORD_MAP.put("const", TokenType.Const);
+        KEYWORD_MAP.put("if", TokenType.If);
+        KEYWORD_MAP.put("else", TokenType.Else);
+        KEYWORD_MAP.put("for", TokenType.For);
+        KEYWORD_MAP.put("do", TokenType.Do);
+        KEYWORD_MAP.put("while", TokenType.While);
+        KEYWORD_MAP.put("break", TokenType.Break);
+        KEYWORD_MAP.put("continue", TokenType.Continue);
+        KEYWORD_MAP.put("block", TokenType.Block);
+        KEYWORD_MAP.put("require", TokenType.Require);
+        KEYWORD_MAP.put("function", TokenType.Function);
+        KEYWORD_MAP.put("return", TokenType.Return);
+        KEYWORD_MAP.put("foreach", TokenType.Foreach);
+        KEYWORD_MAP.put("in", TokenType.In);
+        KEYWORD_MAP.put("switch", TokenType.Switch);
+        KEYWORD_MAP.put("case", TokenType.Case);
+        KEYWORD_MAP.put("type", TokenType.Type);
+        KEYWORD_MAP.put("typeof", TokenType.Typeof);
+        KEYWORD_MAP.put("is", TokenType.Is);
+        KEYWORD_MAP.put("extends", TokenType.Extends);
+        KEYWORD_MAP.put("exports", TokenType.Exports);
+        KEYWORD_MAP.put("external", TokenType.External);
+        KEYWORD_MAP.put("as", TokenType.As);
     }
-
-    private final String source;
-    private final int sourceLength;
-
-    private final List<Token> tokens;
-
-    private int position;
 
     public Lexer(String source) {
-        this.source = source;
-        sourceLength = source.length();
-
-        tokens = new ArrayList<>();
+        super(source);
     }
 
+    @Override
     public List<Token> tokenize() {
         while (position < sourceLength) {
             final Character current = peek(0);
@@ -116,9 +106,9 @@ public final class Lexer {
                 tokenizeNumber();
             else if (Character.isLetter(current) || current == '$' || current == '_')
                 tokenizeWord();
-            else if (Quotes.indexOf(current) != -1 || current == '@')
+            else if (QUOTES.indexOf(current) != -1 || current == '@')
                 tokenizeString();
-            else if (OperatorChars.contains(current.toString()))
+            else if (OPERATOR_CHARS.contains(current.toString()))
                 tokenizeOperator();
             else {
                 if ("\n\t\r\b\f ".indexOf(current) == -1)
@@ -145,8 +135,8 @@ public final class Lexer {
         }
         while (true) {
             final String operator = buffer.toString();
-            if (!operator.isEmpty() && !OperatorTokenMap.containsKey(operator + current)) {
-                addToken(OperatorTokenMap.get(operator));
+            if (!operator.isEmpty() && !OPERATOR_TOKEN_MAP.containsKey(operator + current)) {
+                addToken(OPERATOR_TOKEN_MAP.get(operator));
                 return;
             }
             buffer.append(current);
@@ -226,8 +216,8 @@ public final class Lexer {
             current = next();
         }
         final String word = buffer.toString();
-        if (KeyWordMap.containsKey(word))
-            addToken(KeyWordMap.get(word));
+        if (KEYWORD_MAP.containsKey(word))
+            addToken(KEYWORD_MAP.get(word));
         else addToken(TokenType.Word, buffer.toString());
     }
 
@@ -238,7 +228,7 @@ public final class Lexer {
             next();
         } else isPureString = false;
         char quote = peek(0);
-        if (Quotes.indexOf(quote) == -1)
+        if (QUOTES.indexOf(quote) == -1)
             throw new UnknownCharacterException(quote, calculatePosition());
         final StringBuilder buffer = new StringBuilder();
         char current = next();
@@ -304,39 +294,5 @@ public final class Lexer {
             current = peekLocal(++position, string);
         }
         return buffer.toString();
-    }
-
-    private char peekLocal(int position, String string) {
-        if (position >= string.length()) return '\0';
-        return string.charAt(position);
-    }
-
-    private char next() {
-        position++;
-        return peek(0);
-    }
-
-    private char peek(int relativePosition) {
-        final int position = this.position + relativePosition;
-        if (position >= sourceLength) return '\0';
-        return source.charAt(position);
-    }
-
-    private Position calculatePosition() {
-        String substring = source.substring(0, position);
-        final int line = (int)substring.chars().filter(ch -> ch == '\n').count() + 1;
-        if (source.indexOf('\n') > position)
-            substring = source.substring(0, position);
-        else substring = source.substring(substring.lastIndexOf('\n') + 1, position);
-        final int sym = substring.length() + 1;
-        return new Position(line, sym);
-    }
-
-    private void addToken(TokenType type) {
-        addToken(type, "");
-    }
-
-    private void addToken(TokenType type, String text) {
-        tokens.add(new Token(type, text, calculatePosition()));
     }
 }

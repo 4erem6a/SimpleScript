@@ -1,7 +1,7 @@
 package com.evg.ss.lib;
 
-import com.evg.ss.containers.FunctionMap;
-import com.evg.ss.containers.VariableMap;
+import com.evg.ss.lib.containers.FunctionMap;
+import com.evg.ss.lib.containers.VariableMap;
 import com.evg.ss.values.Value;
 
 public final class SS {

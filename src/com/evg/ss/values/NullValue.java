@@ -1,7 +1,7 @@
 package com.evg.ss.values;
 
-import com.evg.ss.ast.Expression;
-import com.evg.ss.ast.ValueExpression;
+import com.evg.ss.parser.ast.Expression;
+import com.evg.ss.parser.ast.ValueExpression;
 
 /**
  * @author 4erem6a

@@ -1,6 +1,7 @@
 package com.evg.ss.lib.modules;
 
-import com.evg.ss.ast.Statement;
+import com.evg.ss.SimpleScript;
+import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.exceptions.ModuleLoadingException;
 import com.evg.ss.exceptions.ModuleNotFoundException;
 import com.evg.ss.exceptions.inner.SSExportsException;
@@ -21,7 +22,7 @@ public abstract class SSModule {
     public static Value require(String name) {
         final String className = String.format(MODULE_PACKAGE, name, name);
         try {
-            return ((SSModule)Class.forName(className).getDeclaredConstructor().newInstance()).require();
+            return ((SSModule) Class.forName(className).getDeclaredConstructor().newInstance()).require();
         } catch (ClassNotFoundException e) {
             throw new ModuleNotFoundException(name);
         } catch (Exception e) {
@@ -31,14 +32,10 @@ public abstract class SSModule {
 
     public static Value requireExternal(String name) {
         try {
-            final String externalSource = new String(Files.readAllBytes(Paths.get(name)), "UTF-8");
-            final Statement externalProgram = new Parser(new Lexer(externalSource).tokenize()).parse();
-            try {
-                externalProgram.execute();
-            } catch (SSExportsException e) {
-                SS.Scopes.down();
-                return e.getValue();
-            }
+            SimpleScript.fromFile(name).execute();
+        } catch (SSExportsException exports) {
+            SS.Scopes.down();
+            return exports.getValue();
         } catch (IOException e) {
             throw new ModuleNotFoundException(name);
         } catch (Exception e) {

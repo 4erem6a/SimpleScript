@@ -1,6 +1,3 @@
-require external("src/test/Module.ss") as "module"
-require(io)
+require external(@"src\test\Module.ss") as "module"
 
-2 + 2
-
-io.println(module.add(1, 2))
+module.$(module.sub(10, 2));

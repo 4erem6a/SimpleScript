@@ -19,7 +19,7 @@ public final class Arguments {
         if (args.length != types.length)
             throw new ArgumentCountMismatchException(args.length, types.length);
         for (int i = 0; i < args.length; i++) {
-            if (args[i].getType() != types[i])
+            if (types[i] != null && args[i].getType() != types[i])
                 throw new ArgumentTypeMismatchException(args[i].getType(), types[i]);
         }
     }
