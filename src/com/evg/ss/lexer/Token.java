@@ -6,9 +6,9 @@ package com.evg.ss.lexer;
 public final class Token {
     private TokenType type;
     private String value;
-    private Position position;
+    private SourcePosition position;
 
-    public Token(TokenType type, String value, Position position) {
+    public Token(TokenType type, String value, SourcePosition position) {
         this.type = type;
         this.value = value;
         this.position = position;
@@ -40,11 +40,11 @@ public final class Token {
         this.value = value;
     }
 
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
 
-    public void setPosition(Position position) {
+    public void setPosition(SourcePosition position) {
         this.position = position;
     }
 

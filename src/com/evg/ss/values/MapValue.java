@@ -1,6 +1,5 @@
 package com.evg.ss.values;
 
-import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSArrayBuilder;
 
 import java.util.HashMap;
@@ -17,7 +16,8 @@ public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
         map.forEach(e -> this.map.put(e.getKey(), e.getValue()));
     }
 
-    public MapValue() {}
+    public MapValue() {
+    }
 
     public boolean containsKey(Value key) {
         return map.containsKey(key);
@@ -33,6 +33,10 @@ public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
 
     public Map<Value, Value> getMap() {
         return new HashMap<>(map);
+    }
+
+    public void setMap(MapValue map) {
+        this.map = map.map;
     }
 
     public ArrayValue toArray() {

@@ -9,15 +9,15 @@ import com.evg.ss.values.Value;
 
 public final class utils extends SSModule {
 
+    private static Value ssHashCode(Value... args) {
+        Arguments.checkArgcOrDie(args, 1);
+        return new NumberValue(args[0].hashCode());
+    }
+
     @Override
     public MapValue require() {
         final SSMapBuilder builder = SSMapBuilder.create();
         builder.setMethod("hashCode", utils::ssHashCode);
         return builder.build();
-    }
-
-    private static Value ssHashCode(Value... args) {
-        Arguments.checkArgcOrDie(args, 1);
-        return new NumberValue(args[0].hashCode());
     }
 }

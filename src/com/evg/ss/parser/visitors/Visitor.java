@@ -6,7 +6,7 @@ public interface Visitor {
 
     void visit(AnonymousFunctionExpression target);
 
-    void visit(ArrayAccessExpression target);
+    void visit(ContainerAccessExpression target);
 
     void visit(ArrayExpression target);
 
@@ -47,8 +47,6 @@ public interface Visitor {
     void visit(LetExpression target);
 
     void visit(LetStatement target);
-
-    void visit(MapAccessExpression target);
 
     void visit(MapExpression target);
 

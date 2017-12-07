@@ -7,6 +7,7 @@ public abstract class SSException extends RuntimeException {
     public SSException(String message) {
         super(message);
     }
+
     public SSException() {
         super();
     }

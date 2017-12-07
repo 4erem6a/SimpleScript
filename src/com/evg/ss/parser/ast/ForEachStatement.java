@@ -5,11 +5,11 @@ import com.evg.ss.exceptions.inner.SSBreakException;
 import com.evg.ss.exceptions.inner.SSContinueException;
 import com.evg.ss.exceptions.inner.SSInnerException;
 import com.evg.ss.lib.SS;
+import com.evg.ss.parser.visitors.ResultVisitor;
+import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.ArrayValue;
 import com.evg.ss.values.StringValue;
 import com.evg.ss.values.Value;
-import com.evg.ss.parser.visitors.ResultVisitor;
-import com.evg.ss.parser.visitors.Visitor;
 
 public final class ForEachStatement implements Statement {
 

@@ -13,7 +13,7 @@ public class BoolValue implements Value {
 
     @Override
     public Double asNumber() {
-        return (double)(value ? 1 : 0);
+        return (double) (value ? 1 : 0);
     }
 
     @Override

@@ -7,6 +7,7 @@ public abstract class SSLexerException extends SSException {
     public SSLexerException(String message) {
         super(message);
     }
+
     public SSLexerException() {
         super();
     }

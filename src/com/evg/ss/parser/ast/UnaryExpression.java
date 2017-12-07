@@ -1,12 +1,12 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.InvalidAssignmentTargetException;
+import com.evg.ss.parser.visitors.ResultVisitor;
+import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.BoolValue;
 import com.evg.ss.values.NullValue;
 import com.evg.ss.values.NumberValue;
 import com.evg.ss.values.Value;
-import com.evg.ss.parser.visitors.ResultVisitor;
-import com.evg.ss.parser.visitors.Visitor;
 
 /**
  * @author 4erem6a
@@ -19,21 +19,6 @@ public final class UnaryExpression implements Expression {
     public UnaryExpression(UnaryOperations operator, Expression expression) {
         this.operator = operator;
         this.expression = expression;
-    }
-
-    public enum UnaryOperations {
-        UnaryPlus("+"),
-        UnaryMinus("-"),
-        BitwiseNot("~"),
-        LogicalNot("!"),
-        PrefixIncrement("++"),
-        PrefixDecrement("--"),
-        PostfixIncrement("++"),
-        PostfixDecrement("--");
-        public String key;
-        UnaryOperations(String operationKey) {
-            this.key = operationKey;
-        }
     }
 
     @Override
@@ -105,5 +90,21 @@ public final class UnaryExpression implements Expression {
 
     public Expression getExpression() {
         return expression;
+    }
+
+    public enum UnaryOperations {
+        UnaryPlus("+"),
+        UnaryMinus("-"),
+        BitwiseNot("~"),
+        LogicalNot("!"),
+        PrefixIncrement("++"),
+        PrefixDecrement("--"),
+        PostfixIncrement("++"),
+        PostfixDecrement("--");
+        public String key;
+
+        UnaryOperations(String operationKey) {
+            this.key = operationKey;
+        }
     }
 }

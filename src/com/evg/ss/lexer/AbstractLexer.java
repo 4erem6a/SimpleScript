@@ -37,14 +37,14 @@ public abstract class AbstractLexer {
         return source.charAt(position);
     }
 
-    protected Position calculatePosition() {
+    protected SourcePosition calculatePosition() {
         String substring = source.substring(0, position);
-        final int line = (int)substring.chars().filter(ch -> ch == '\n').count() + 1;
+        final int line = (int) substring.chars().filter(c -> c == '\n').count() + 1;
         if (source.indexOf('\n') > position)
             substring = source.substring(0, position);
         else substring = source.substring(substring.lastIndexOf('\n') + 1, position);
-        final int sym = substring.length() + 1;
-        return new Position(line, sym);
+        final int col = substring.length() + 1;
+        return new SourcePosition(line, col);
     }
 
     protected void addToken(TokenType type) {

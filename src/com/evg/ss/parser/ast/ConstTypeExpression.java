@@ -1,9 +1,9 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.values.Type;
-import com.evg.ss.values.Value;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
+import com.evg.ss.values.Type;
+import com.evg.ss.values.Value;
 
 public final class ConstTypeExpression implements Expression {
 
@@ -11,11 +11,6 @@ public final class ConstTypeExpression implements Expression {
 
     public ConstTypeExpression(String type) {
         this.type = getType(type);
-    }
-
-    @Override
-    public Value eval() {
-        return type.getTypeValue();
     }
 
     private static Type getType(String type) {
@@ -37,9 +32,14 @@ public final class ConstTypeExpression implements Expression {
             case "boolean":
             case "bool":
                 return Type.Boolean;
-                default:
-                    return Type.Null;
+            default:
+                return Type.Null;
         }
+    }
+
+    @Override
+    public Value eval() {
+        return type.getTypeValue();
     }
 
     @Override

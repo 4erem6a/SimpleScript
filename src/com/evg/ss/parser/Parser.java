@@ -1,18 +1,19 @@
 package com.evg.ss.parser;
 
-import com.evg.ss.parser.ast.*;
-import com.evg.ss.parser.ast.BinaryExpression.BinaryOperations;
-import com.evg.ss.exceptions.UnknownCharacterException;
 import com.evg.ss.exceptions.InvalidInterpolationException;
 import com.evg.ss.exceptions.UnexpectedTokenException;
+import com.evg.ss.exceptions.UnknownCharacterException;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lexer.TokenType;
+import com.evg.ss.parser.ast.*;
+import com.evg.ss.parser.ast.BinaryExpression.BinaryOperations;
 import com.evg.ss.values.NullValue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.evg.ss.parser.ast.UnaryExpression.*;
+import static com.evg.ss.parser.ast.RequireStatementExpression.RequireMode;
+import static com.evg.ss.parser.ast.UnaryExpression.UnaryOperations;
 
 /**
  * @author 4erem6a
@@ -135,38 +136,32 @@ public final class Parser extends AbstractParser {
     }
 
     private Statement requireStatement() {
-        final String name;
         final String variable;
-        final boolean external;
-        external = match(TokenType.External);
+        final boolean external = match(TokenType.External);
+        final boolean local = !external && match(TokenType.Local);
         consume(TokenType.Lp);
-        if (external)
-            name = consume(TokenType.String).getValue();
-        else if (lookMatch(0, TokenType.Word) || lookMatch(0, TokenType.String))
-            name = consume().getValue();
-        else throw new UnexpectedTokenException(get(0));
+        final String name = consume(TokenType.String).getValue();
         consume(TokenType.Rp);
         if (external) {
             consume(TokenType.As);
             variable = consume(TokenType.String).getValue();
+            return new RequireStatementExpression(name, variable, RequireMode.EXTERNAL);
         } else if (match(TokenType.As))
             variable = consume(TokenType.String).getValue();
         else variable = null;
-        return new RequireStatementExpression(name, variable, external);
+        return new RequireStatementExpression(name, variable, local ? RequireMode.LOCAL : RequireMode.MODULE);
     }
 
     private Expression requireExpression() {
         final String name;
-        final boolean external;
-        external = match(TokenType.External);
+        final boolean external = match(TokenType.External);
+        final boolean local = !external && match(TokenType.Local);
         consume(TokenType.Lp);
-        if (external)
-            name = consume(TokenType.String).getValue();
-        else if (lookMatch(0, TokenType.Word) || lookMatch(0, TokenType.String))
-            name = consume().getValue();
-        else throw new UnexpectedTokenException(get(0));
+        name = consume(TokenType.String).getValue();
         consume(TokenType.Rp);
-        return new RequireStatementExpression(name, external);
+        return new RequireStatementExpression(name, external
+                ? RequireMode.EXTERNAL : local
+                ? RequireMode.LOCAL : RequireMode.MODULE);
     }
 
     private Statement doWhileStatement() {
@@ -443,16 +438,13 @@ public final class Parser extends AbstractParser {
         while (true) {
             if (match(TokenType.Dt)) {
                 final Expression field = mapAccessKey();
-                result = new MapAccessExpression(result, field);
+                result = new ContainerAccessExpression(result, field);
                 continue;
             }
             if (match(TokenType.Lc)) {
-                final List<Expression> indices = new ArrayList<>();
-                do {
-                    indices.add(expression());
-                    consume(TokenType.Rc);
-                } while (match(TokenType.Lc));
-                result = new ArrayAccessExpression(result, indices.toArray(new Expression[indices.size()]));
+                final Expression key = expression();
+                consume(TokenType.Rc);
+                result = new ContainerAccessExpression(result, key);
                 continue;
             }
             if (match(TokenType.Lp)) {
@@ -568,6 +560,10 @@ public final class Parser extends AbstractParser {
                 rollback++;
             } while (match(TokenType.Cm));
             rollback--;
+            if (!lookMatch(0, TokenType.Rp)) {
+                pos -= rollback;
+                return false;
+            }
         } else {
             if (match(TokenType.Rp)) {
                 rollback++;

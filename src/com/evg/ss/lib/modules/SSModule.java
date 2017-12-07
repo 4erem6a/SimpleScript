@@ -1,19 +1,16 @@
 package com.evg.ss.lib.modules;
 
 import com.evg.ss.SimpleScript;
-import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.exceptions.ModuleLoadingException;
 import com.evg.ss.exceptions.ModuleNotFoundException;
 import com.evg.ss.exceptions.inner.SSExportsException;
-import com.evg.ss.lexer.Lexer;
+import com.evg.ss.lib.Linker;
 import com.evg.ss.lib.SS;
-import com.evg.ss.parser.Parser;
 import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Objects;
 
 public abstract class SSModule {
 
@@ -28,6 +25,10 @@ public abstract class SSModule {
         } catch (Exception e) {
             throw new ModuleLoadingException(name, e);
         }
+    }
+
+    public static Value requireLocal(String name) {
+        return requireExternal(Objects.requireNonNull(Linker.getLink(name)).toString());
     }
 
     public static Value requireExternal(String name) {

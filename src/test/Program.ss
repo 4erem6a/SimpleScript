@@ -1,3 +1,4 @@
-require external(@"src\test\Module.ss") as "module"
+require local("module")
+require("io")
 
-module.$(module.sub(10, 2));
+io.println(module.add(1, 2))

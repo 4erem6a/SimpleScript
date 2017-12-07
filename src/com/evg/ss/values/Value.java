@@ -7,13 +7,6 @@ import com.evg.ss.lib.Function;
  */
 public interface Value extends Comparable<Value> {
 
-    Double asNumber();
-    Boolean asBoolean();
-    String asString();
-    Object asObject();
-
-    Type getType();
-
     static Value of(double value) {
         return new NumberValue(value);
     }
@@ -37,5 +30,15 @@ public interface Value extends Comparable<Value> {
     static Value of(Type value) {
         return new TypeValue(value);
     }
+
+    Double asNumber();
+
+    Boolean asBoolean();
+
+    String asString();
+
+    Object asObject();
+
+    Type getType();
 
 }

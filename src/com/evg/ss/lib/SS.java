@@ -8,7 +8,8 @@ public final class SS {
 
     public static final class Scopes {
 
-        private Scopes() {}
+        private Scopes() {
+        }
 
         public static void up() {
             Variables.up();
@@ -28,7 +29,8 @@ public final class SS {
 
         private static FunctionMap top = new FunctionMap(null);
 
-        private Functions() {}
+        private Functions() {
+        }
 
         public static boolean exists(String name) {
             return get(name) != null;
@@ -66,7 +68,8 @@ public final class SS {
 
         private static VariableMap top = new VariableMap(null);
 
-        private Variables() {}
+        private Variables() {
+        }
 
         public static boolean exists(String name) {
             return get(name) != null;

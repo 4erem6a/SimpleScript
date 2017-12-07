@@ -1,8 +1,8 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.values.*;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
+import com.evg.ss.values.*;
 import javafx.util.Pair;
 
 /**
@@ -17,32 +17,6 @@ public final class BinaryExpression implements Expression {
         this.left = left;
         this.right = right;
         this.operation = operation;
-    }
-
-    public enum BinaryOperations {
-        Addition("+"),
-        Subtraction("-"),
-        Division("/"),
-        Multiplication("*"),
-        Modulo("%"),
-
-        BitwiseOr("|"),
-        BitwiseAnd("&"),
-        BitwiseXor("^"),
-
-        LogicalOr("||"),
-        LogicalAnd("&&"),
-
-        LessThen("<"),
-        GreaterThen(">"),
-        GreaterThenOrEquals(">="),
-        LessThenOrEquals("<="),
-        Equals("=="),
-        NotEquals("!=");
-        public String key;
-        BinaryOperations(String operationKey) {
-            this.key = operationKey;
-        }
     }
 
     @Override
@@ -79,7 +53,7 @@ public final class BinaryExpression implements Expression {
             case LessThenOrEquals:
                 return new BoolValue(leftValue.compareTo(rightValue) <= 0);
             case Equals:
-            return new BoolValue(leftValue.compareTo(rightValue) == 0);
+                return new BoolValue(leftValue.compareTo(rightValue) == 0);
             case NotEquals:
                 return new BoolValue(leftValue.compareTo(rightValue) != 0);
             default:
@@ -161,7 +135,7 @@ public final class BinaryExpression implements Expression {
                 return new NumberValue(leftNumber * rightNumber);
             } else if (rightValue instanceof StringValue) {
                 final String rightString = rightValue.asString();
-                return multiplyString(rightString, (int)leftNumber);
+                return multiplyString(rightString, (int) leftNumber);
             } else return new NullValue();
         } else return new NullValue();
     }
@@ -212,7 +186,7 @@ public final class BinaryExpression implements Expression {
             } else {
                 final double rightDouble = rightValue.asNumber();
                 if (leftString.length() > rightDouble && rightDouble > 0)
-                    return new StringValue(leftString.substring(0, leftString.length() - (int)rightDouble));
+                    return new StringValue(leftString.substring(0, leftString.length() - (int) rightDouble));
                 else return new StringValue(leftString);
             }
         } else if (leftValue instanceof BoolValue)
@@ -255,5 +229,32 @@ public final class BinaryExpression implements Expression {
     @Override
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
+    }
+
+    public enum BinaryOperations {
+        Addition("+"),
+        Subtraction("-"),
+        Division("/"),
+        Multiplication("*"),
+        Modulo("%"),
+
+        BitwiseOr("|"),
+        BitwiseAnd("&"),
+        BitwiseXor("^"),
+
+        LogicalOr("||"),
+        LogicalAnd("&&"),
+
+        LessThen("<"),
+        GreaterThen(">"),
+        GreaterThenOrEquals(">="),
+        LessThenOrEquals("<="),
+        Equals("=="),
+        NotEquals("!=");
+        public String key;
+
+        BinaryOperations(String operationKey) {
+            this.key = operationKey;
+        }
     }
 }

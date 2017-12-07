@@ -6,9 +6,7 @@ import com.evg.ss.values.MapValue;
 import com.evg.ss.values.NullValue;
 import com.evg.ss.values.StringValue;
 import com.evg.ss.values.Value;
-import test.Main;
 
-import java.io.File;
 import java.util.Scanner;
 
 public final class io extends SSModule {

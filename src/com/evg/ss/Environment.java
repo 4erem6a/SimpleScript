@@ -8,6 +8,9 @@ import java.util.Map;
 
 public final class Environment {
 
+    public static final String EXECUTABLE_PATH = "EXECUTABLE_PATH";
+    public static final String EXECUTABLE_DIR = "EXECUTABLE_DIR";
+
     private static final Map<String, Variable> VARIABLES = new HashMap<>();
 
     public static boolean setEnvVariable(String name, Value value) {

@@ -1,6 +1,7 @@
 package com.evg.ss.lib.containers;
 
-import com.evg.ss.exceptions.*;
+import com.evg.ss.exceptions.FunctionAlreadyExistsException;
+import com.evg.ss.exceptions.FunctionNotFoundException;
 import com.evg.ss.lib.Function;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public final class FunctionMap implements ScopedMap<String, Function> {
             map.remove(key);
             map.put(key, value);
         } else if (parent != null) parent.set(key, value);
-            else throw new FunctionNotFoundException(key);
+        else throw new FunctionNotFoundException(key);
     }
 
     public void put(String key, Function value) {

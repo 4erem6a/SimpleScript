@@ -1,10 +1,21 @@
 package com.evg.ss.values;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
-public class ArrayValue implements Value {
+public class ArrayValue implements Value, Iterable<Value> {
 
     private Value[] value;
+
+    public ArrayValue(Value... values) {
+        this.value = values;
+    }
+
+    public ArrayValue(int size) {
+        this.value = new Value[size];
+    }
 
     public Value[] getValue() {
         return value;
@@ -13,14 +24,6 @@ public class ArrayValue implements Value {
     public void resize(int size) {
         final Value[] newValue = new Value[size];
         System.arraycopy(value, 0, newValue, 0, newValue.length > value.length ? value.length : newValue.length);
-    }
-
-    public ArrayValue(Value... values) {
-        this.value = values;
-    }
-
-    public ArrayValue(int size) {
-        this.value = new Value[size];
     }
 
     public int length() {
@@ -84,5 +87,20 @@ public class ArrayValue implements Value {
         for (Value value : value)
             hash |= value.hashCode();
         return hash;
+    }
+
+    @Override
+    public Iterator<Value> iterator() {
+        return Arrays.stream(value).iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Value> action) {
+        Arrays.stream(value).forEach(action);
+    }
+
+    @Override
+    public Spliterator<Value> spliterator() {
+        return Arrays.stream(value).spliterator();
     }
 }

@@ -37,7 +37,7 @@ public final class VariableMap implements ScopedMap<String, Variable> {
             map.remove(key);
             map.put(key, new Variable(value.getValue(), false));
         } else if (parent != null) parent.set(key, value);
-            else throw new VariableNotFoundException(key);
+        else throw new VariableNotFoundException(key);
     }
 
     public void put(String key, Variable value) {

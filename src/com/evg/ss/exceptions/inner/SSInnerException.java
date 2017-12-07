@@ -7,7 +7,8 @@ public abstract class SSInnerException extends SSException {
         super(message);
     }
 
-    public SSInnerException() {}
+    public SSInnerException() {
+    }
 
     public abstract String onInvalidUsage();
 }

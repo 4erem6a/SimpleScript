@@ -7,6 +7,7 @@ public abstract class SSParserException extends SSException {
     public SSParserException(String message) {
         super(message);
     }
+
     public SSParserException() {
         super();
     }

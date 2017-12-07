@@ -6,7 +6,7 @@ public interface ResultVisitor<TResult> {
 
     TResult visit(AnonymousFunctionExpression target);
 
-    TResult visit(ArrayAccessExpression target);
+    TResult visit(ContainerAccessExpression target);
 
     TResult visit(ArrayExpression target);
 
@@ -47,8 +47,6 @@ public interface ResultVisitor<TResult> {
     TResult visit(LetExpression target);
 
     TResult visit(LetStatement target);
-
-    TResult visit(MapAccessExpression target);
 
     TResult visit(MapExpression target);
 

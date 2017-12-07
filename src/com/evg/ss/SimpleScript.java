@@ -1,12 +1,12 @@
 package com.evg.ss;
 
-import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.exceptions.SSExecutionException;
 import com.evg.ss.exceptions.SSLexerException;
 import com.evg.ss.exceptions.SSParserException;
 import com.evg.ss.lexer.Lexer;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.parser.Parser;
+import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.parser.visitors.FunctionAdder;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -21,6 +21,7 @@ import java.util.List;
 public final class SimpleScript {
 
     private static final List<Visitor> DEFAULT_VISITORS = new ArrayList<>();
+
     static {
         DEFAULT_VISITORS.add(new FunctionAdder());
     }
@@ -29,15 +30,6 @@ public final class SimpleScript {
 
     private SimpleScript(Statement program) {
         this.program = program;
-    }
-
-    public void execute() throws SSExecutionException {
-        DEFAULT_VISITORS.forEach(program::accept);
-        program.execute();
-    }
-
-    public void accept(Visitor visitor) {
-        program.accept(visitor);
     }
 
     public static SimpleScript fromSource(String source) throws SSParserException, SSLexerException {
@@ -52,17 +44,43 @@ public final class SimpleScript {
         return new SimpleScript(program);
     }
 
-    public static SimpleScript fromFile(File file) throws IOException, SSParserException, SSLexerException{
+    public static SimpleScript fromFile(File file) throws IOException, SSParserException, SSLexerException {
         return fromFile(file.toPath());
     }
 
-    public static SimpleScript fromFile(Path path) throws IOException, SSParserException, SSLexerException{
+    public static SimpleScript fromFile(Path path) throws IOException, SSParserException, SSLexerException {
         return fromFile(path.toString());
     }
 
-    public static SimpleScript fromFile(String path) throws IOException, SSParserException, SSLexerException{
-        final String source = Files.readAllLines(Paths.get(path)).stream().reduce(String::concat).get();
+    public static SimpleScript fromFile(String path, String charset) throws IOException, SSParserException, SSLexerException {
+        final String source = new String(Files.readAllBytes(Paths.get(path)), charset);
         return fromSource(source);
+    }
+
+    public static SimpleScript fromFile(File file, String charset) throws IOException, SSParserException, SSLexerException {
+        return fromFile(file.toPath(), charset);
+    }
+
+    public static SimpleScript fromFile(Path path, String charset) throws IOException, SSParserException, SSLexerException {
+        return fromFile(path.toString(), charset);
+    }
+
+    public static SimpleScript fromFile(String path) throws IOException, SSParserException, SSLexerException {
+        final String source = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
+        return fromSource(source);
+    }
+
+    public Statement getProgram() {
+        return program;
+    }
+
+    public void execute() throws SSExecutionException {
+        DEFAULT_VISITORS.forEach(program::accept);
+        program.execute();
+    }
+
+    public void accept(Visitor visitor) {
+        program.accept(visitor);
     }
 
 }

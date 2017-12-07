@@ -12,9 +12,9 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(ArrayAccessExpression target) {
-        target.getExpression().accept(this);
-        Arrays.stream(target.getIndices()).forEach(i -> i.accept(this));
+    public void visit(ContainerAccessExpression target) {
+        target.getTarget().accept(this);
+        target.getKey().accept(this);
     }
 
     @Override
@@ -40,13 +40,16 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(BreakStatement target) { }
+    public void visit(BreakStatement target) {
+    }
 
     @Override
-    public void visit(ConstTypeExpression target) { }
+    public void visit(ConstTypeExpression target) {
+    }
 
     @Override
-    public void visit(ContinueStatement target) { }
+    public void visit(ContinueStatement target) {
+    }
 
     @Override
     public void visit(DoWhileStatement target) {
@@ -91,7 +94,8 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(FunctionReferenceExpression target) { }
+    public void visit(FunctionReferenceExpression target) {
+    }
 
     @Override
     public void visit(FunctionStatement target) {
@@ -107,7 +111,8 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(InterpolatedStringExpression target) { }
+    public void visit(InterpolatedStringExpression target) {
+    }
 
     @Override
     public void visit(LetExpression target) {
@@ -120,18 +125,16 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(MapAccessExpression target) {
-        target.getMap().accept(this);
-        target.getKey().accept(this);
-    }
-
-    @Override
     public void visit(MapExpression target) {
-        target.getMap().forEach((k, v) -> { k.accept(this); v.accept(this); });
+        target.getMap().forEach((k, v) -> {
+            k.accept(this);
+            v.accept(this);
+        });
     }
 
     @Override
-    public void visit(RequireStatementExpression target) { }
+    public void visit(RequireStatementExpression target) {
+    }
 
     @Override
     public void visit(ReturnStatement target) {
@@ -141,7 +144,10 @@ public abstract class AbstractVisitor implements Visitor {
     @Override
     public void visit(SwitchStatement target) {
         target.getValue().accept(this);
-        target.getCases().forEach(c -> { c.getValue().accept(this); c.getBody().accept(this); });
+        target.getCases().forEach(c -> {
+            c.getValue().accept(this);
+            c.getBody().accept(this);
+        });
     }
 
     @Override
@@ -167,10 +173,12 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(ValueExpression target) { }
+    public void visit(ValueExpression target) {
+    }
 
     @Override
-    public void visit(VariableExpression target) { }
+    public void visit(VariableExpression target) {
+    }
 
     @Override
     public void visit(WhileStatement target) {

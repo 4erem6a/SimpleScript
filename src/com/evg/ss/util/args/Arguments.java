@@ -15,12 +15,21 @@ public final class Arguments {
         throw new ArgumentCountMismatchException(args.length, required);
     }
 
+    public static void checkArgTypesOrDie(Value[] args, Class... types) {
+        if (args.length != types.length)
+            throw new ArgumentCountMismatchException(args.length, types.length);
+        for (int i = 0; i < args.length; i++) {
+            if (types[i] != null && !args[i].getClass().equals(types[i]))
+                throw new ArgumentTypeMismatchException();
+        }
+    }
+
     public static void checkArgTypesOrDie(Value[] args, Type... types) {
         if (args.length != types.length)
             throw new ArgumentCountMismatchException(args.length, types.length);
         for (int i = 0; i < args.length; i++) {
             if (types[i] != null && args[i].getType() != types[i])
-                throw new ArgumentTypeMismatchException(args[i].getType(), types[i]);
+                throw new ArgumentTypeMismatchException();
         }
     }
 

@@ -1,8 +1,8 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.values.*;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
+import com.evg.ss.values.*;
 
 /**
  * @author 4erem6a

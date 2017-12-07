@@ -15,6 +15,7 @@ public final class Lexer extends AbstractLexer {
     private static final String OPERATOR_CHARS = "(){}[]/*%-+=&|^~!?<>|:.,;";
     private static final String QUOTES = "'\"`";
     private static final Map<String, TokenType> OPERATOR_TOKEN_MAP = new HashMap<>();
+    private static final Map<String, TokenType> KEYWORD_MAP = new HashMap<>();
 
     //Operator initialization:
     static {
@@ -54,8 +55,6 @@ public final class Lexer extends AbstractLexer {
         OPERATOR_TOKEN_MAP.put(";", TokenType.Sc);
     }
 
-    private static final Map<String, TokenType> KEYWORD_MAP = new HashMap<>();
-
     //Keyword initialization:
     static {
         KEYWORD_MAP.put("true", TokenType.True);
@@ -86,10 +85,15 @@ public final class Lexer extends AbstractLexer {
         KEYWORD_MAP.put("exports", TokenType.Exports);
         KEYWORD_MAP.put("external", TokenType.External);
         KEYWORD_MAP.put("as", TokenType.As);
+        KEYWORD_MAP.put("local", TokenType.Local);
     }
 
     public Lexer(String source) {
         super(source);
+    }
+
+    private static boolean isHexNumber(char current) {
+        return "abcdef".indexOf(Character.toLowerCase(current)) != -1;
     }
 
     @Override
@@ -127,8 +131,7 @@ public final class Lexer extends AbstractLexer {
             if (next == '/') {
                 skipComment();
                 return;
-            }
-            else if (next == '*') {
+            } else if (next == '*') {
                 skipMultilineComment();
                 return;
             }
@@ -175,10 +178,6 @@ public final class Lexer extends AbstractLexer {
         }
         final Long number = Long.parseLong(buffer.toString(), 16);
         addToken(TokenType.Number, number.toString());
-    }
-
-    private static boolean isHexNumber(char current) {
-        return "abcdef".indexOf(Character.toLowerCase(current)) != -1;
     }
 
     private void tokenizeBinaryNumber() {

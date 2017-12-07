@@ -77,6 +77,7 @@ public enum TokenType {
     Exports,    //exports
     External,   //external
     As,         //as
+    Local,      //local
 
     //Utility:
     EOF

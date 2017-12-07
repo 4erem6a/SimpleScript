@@ -10,7 +10,8 @@ public final class SSArrayBuilder {
 
     private List<Value> values = new ArrayList<>();
 
-    private SSArrayBuilder() {}
+    private SSArrayBuilder() {
+    }
 
     public static SSArrayBuilder create() {
         return new SSArrayBuilder();

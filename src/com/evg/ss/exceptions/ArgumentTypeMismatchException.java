@@ -7,4 +7,8 @@ public final class ArgumentTypeMismatchException extends SSExecutionException {
         super(String.format("Argument type mismatch: expected %s but got %s.",
                 expected.toString().toLowerCase(), got.toString().toLowerCase()));
     }
+
+    public ArgumentTypeMismatchException() {
+        super("Argument type mismatch.");
+    }
 }

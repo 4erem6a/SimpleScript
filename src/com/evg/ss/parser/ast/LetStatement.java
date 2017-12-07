@@ -2,18 +2,14 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.VariableAlreadyExistsException;
 import com.evg.ss.lib.SS;
-import com.evg.ss.values.NullValue;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
+import com.evg.ss.values.NullValue;
 
 public final class LetStatement implements Statement {
     private final String name;
     private final Expression value;
     private final boolean isConst;
-
-    public String getName() {
-        return name;
-    }
 
     public LetStatement(String name, Expression value, boolean isConst) {
         this.name = name;
@@ -23,6 +19,10 @@ public final class LetStatement implements Statement {
 
     public LetStatement(String name) {
         this(name, NullValue.NullExpression, false);
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

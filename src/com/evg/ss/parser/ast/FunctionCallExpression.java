@@ -2,10 +2,10 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.InvalidValueTypeException;
 import com.evg.ss.lib.SS;
-import com.evg.ss.values.FunctionValue;
-import com.evg.ss.values.Value;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
+import com.evg.ss.values.FunctionValue;
+import com.evg.ss.values.Value;
 
 import java.util.Arrays;
 
