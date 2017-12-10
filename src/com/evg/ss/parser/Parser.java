@@ -2,6 +2,7 @@ package com.evg.ss.parser;
 
 import com.evg.ss.exceptions.execution.InvalidInterpolationException;
 import com.evg.ss.exceptions.lexer.UnknownCharacterException;
+import com.evg.ss.exceptions.parser.SSParserException;
 import com.evg.ss.exceptions.parser.UnexpectedTokenException;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lexer.TokenType;
@@ -25,7 +26,7 @@ public final class Parser extends AbstractParser {
     }
 
     @Override
-    public Statement parse() {
+    public Statement parse() throws SSParserException {
         final BlockStatement program = new BlockStatement();
         while (!match(TokenType.EOF)) {
             program.addStatement(statement());
@@ -35,7 +36,7 @@ public final class Parser extends AbstractParser {
     }
 
     @Override
-    public Expression express() {
+    public Expression express() throws SSParserException {
         return expression();
     }
 

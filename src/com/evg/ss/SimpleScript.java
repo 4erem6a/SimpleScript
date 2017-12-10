@@ -1,6 +1,7 @@
 package com.evg.ss;
 
 import com.evg.ss.exceptions.SSException;
+import com.evg.ss.exceptions.execution.SSExecutionException;
 import com.evg.ss.exceptions.lexer.SSLexerException;
 import com.evg.ss.exceptions.parser.SSParserException;
 import com.evg.ss.lexer.Lexer;
@@ -44,17 +45,17 @@ public final class SimpleScript {
 
     public static Version VERSION = new Version(1, 5, 4, 3);
 
-    private List<Token> tokens = new ArrayList<>();
+    private List<Token> tokens;
 
     private SimpleScript(List<Token> tokens) {
         this.tokens = tokens;
     }
 
-    public static SimpleScript fromSource(String source) throws SSParserException, SSLexerException {
+    public static SimpleScript fromSource(String source) throws SSLexerException {
         return new SimpleScript(new Lexer(source).tokenize());
     }
 
-    public static SimpleScript fromTokenList(List<Token> tokens) throws SSParserException {
+    public static SimpleScript fromTokenList(List<Token> tokens) {
         return new SimpleScript(tokens);
     }
 
@@ -62,7 +63,7 @@ public final class SimpleScript {
         return new CompiledScript(program);
     }
 
-    public static SimpleScript fromFile(File file) throws IOException, SSParserException, SSLexerException {
+    public static SimpleScript fromFile(File file) throws IOException, SSLexerException {
         return fromFile(file.toPath());
     }
 
@@ -70,25 +71,25 @@ public final class SimpleScript {
         return fromFile(path.toString());
     }
 
-    public static SimpleScript fromFile(String path, String charset) throws IOException, SSParserException, SSLexerException {
+    public static SimpleScript fromFile(String path, String charset) throws IOException, SSLexerException {
         final String source = new String(Files.readAllBytes(Paths.get(path)), charset);
         return fromSource(source);
     }
 
-    public static SimpleScript fromFile(File file, String charset) throws IOException, SSParserException, SSLexerException {
+    public static SimpleScript fromFile(File file, String charset) throws IOException, SSLexerException {
         return fromFile(file.toPath(), charset);
     }
 
-    public static SimpleScript fromFile(Path path, String charset) throws IOException, SSParserException, SSLexerException {
+    public static SimpleScript fromFile(Path path, String charset) throws IOException, SSLexerException {
         return fromFile(path.toString(), charset);
     }
 
-    public static SimpleScript fromFile(String path) throws IOException, SSParserException, SSLexerException {
+    public static SimpleScript fromFile(String path) throws IOException, SSLexerException {
         final String source = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
         return fromSource(source);
     }
 
-    public CompiledScript compile() {
+    public CompiledScript compile() throws SSParserException {
         return new CompiledScript(new Parser(tokens).parse());
     }
 
@@ -110,7 +111,7 @@ public final class SimpleScript {
         return true;
     }
 
-    public Expression express() {
+    public Expression express() throws SSParserException {
         return new Parser(tokens).express();
     }
 
@@ -151,7 +152,7 @@ public final class SimpleScript {
             this.program = program;
         }
 
-        public void execute() {
+        public void execute() throws SSExecutionException {
             DEFAULT_VISITORS.forEach(program::accept);
             program.execute();
         }

@@ -9,10 +9,16 @@ import java.util.stream.IntStream;
 
 public final class Arguments {
 
-    public static int checkArgcOrDie(Value[] args, int... required) {
+    public static int checkArgcOrDie(Object[] args, int... required) {
         if (IntStream.of(required).anyMatch(i -> i == args.length))
             return IntStream.of(required).filter(i -> i == args.length).findFirst().getAsInt();
         throw new ArgumentCountMismatchException(args.length, required);
+    }
+
+    public static int checkArgc(Object[] args, int... required) {
+        if (IntStream.of(required).anyMatch(i -> i == args.length))
+            return IntStream.of(required).filter(i -> i == args.length).findFirst().getAsInt();
+        return -1;
     }
 
     public static void checkArgTypesOrDie(Value[] args, Class... types) {

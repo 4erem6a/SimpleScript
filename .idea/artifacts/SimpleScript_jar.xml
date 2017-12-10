@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SimpleScript:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SimpleScript_jar</output-path>
+    <root id="archive" name="SimpleScript.jar">
+      <element id="module-output" name="SimpleScript" />
+    </root>
+  </artifact>
+</component>
