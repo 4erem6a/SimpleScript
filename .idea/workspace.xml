@@ -15,8 +15,8 @@
       <file leaf-file-name="program.ss" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/program.ss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="4" column="17" lean-forward="false" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+            <state relative-caret-position="264">
+              <caret line="11" column="59" lean-forward="true" selection-start-line="11" selection-start-column="59" selection-end-line="11" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -40,6 +40,11 @@
       <find>map</find>
       <find>low</find>
       <find>require</find>
+      <find>target</find>
+      <find>source</find>
+      <find>version</find>
+      <find>java</find>
+      <find>9</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -50,9 +55,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/errors/SSError.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/inner/SSErrorException.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/errors/SSErrorException.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/Environment.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/processing/InvalidInterpolationException.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/util/interpolation/InterpolatedString.java" />
@@ -92,7 +94,6 @@
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/interpreter/interpreter.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/SSModule.java" />
         <option value="$PROJECT_DIR$/src/test/module.ss" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lexer/TokenType.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lexer/Lexer.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/Parser.java" />
@@ -101,6 +102,10 @@
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/visitors/ResultVisitor.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/visitors/AbstractVisitor.java" />
         <option value="$PROJECT_DIR$/src/test/program.ss" />
+        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/values/ArrayValue.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/math/math.java" />
       </list>
     </option>
   </component>
@@ -163,6 +168,12 @@
               <item name="SimpleScript" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="SimpleScript" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SimpleScript" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -174,8 +185,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="SearchEverywhereHistoryKey" value="settings&#9;ACTION&#9;ShowSettings&#10;decrease&#9;ACTION&#9;EditorDecreaseFontSize&#10;font&#9;ACTION&#9;EditorDecreaseFontSize&#10;completion&#9;ACTION&#9;CodeCompletionGroup&#10;blacklist&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;black list&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;format&#9;ACTION&#9;ReformatCode" />
@@ -347,7 +358,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25026512" sideWeight="0.50208336" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25026512" sideWeight="0.49791667" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25026512" sideWeight="0.49791667" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -407,15 +418,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk-9/lib/src.zip!/java.base/java/lang/Throwable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1566">
-          <caret line="114" column="13" lean-forward="false" selection-start-line="114" selection-start-column="13" selection-end-line="114" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/exceptions/errors/SSError.java" />
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/ThRun.java" />
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/exceptions/errors/SSErrorException.java" />
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/SSErrorManager.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -703,7 +705,7 @@
         <state relative-caret-position="360">
           <caret line="15" column="38" lean-forward="false" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -721,7 +723,7 @@
         <state relative-caret-position="600">
           <caret line="25" column="1" lean-forward="true" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -730,14 +732,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
           <caret line="12" column="63" lean-forward="false" selection-start-line="12" selection-start-column="63" selection-end-line="12" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="25" column="77" lean-forward="false" selection-start-line="25" selection-start-column="77" selection-end-line="25" selection-end-column="77" />
           <folding />
         </state>
       </provider>
@@ -787,13 +781,13 @@
         <state relative-caret-position="467">
           <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#371#372#0" expanded="true" />
-            <element signature="e#403#404#0" expanded="true" />
-            <element signature="e#632#633#0" expanded="true" />
-            <element signature="e#667#668#0" expanded="true" />
-            <element signature="e#752#753#0" expanded="true" />
-            <element signature="e#794#795#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#371#372#0" expanded="false" />
+            <element signature="e#403#404#0" expanded="false" />
+            <element signature="e#632#633#0" expanded="false" />
+            <element signature="e#667#668#0" expanded="false" />
+            <element signature="e#752#753#0" expanded="false" />
+            <element signature="e#794#795#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -814,10 +808,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/modules/math/math.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="27" column="82" lean-forward="false" selection-start-line="27" selection-start-column="82" selection-end-line="27" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/ArrayValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="75" column="65" lean-forward="false" selection-start-line="75" selection-start-column="65" selection-end-line="75" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="44" column="60" lean-forward="false" selection-start-line="44" selection-start-column="60" selection-end-line="44" selection-end-column="60" />
+          <folding>
+            <element signature="e#1150#1151#0" expanded="true" />
+            <element signature="e#1239#1240#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1097">
+          <caret line="473" column="61" lean-forward="true" selection-start-line="473" selection-start-column="61" selection-end-line="473" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/program.ss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="17" lean-forward="false" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        <state relative-caret-position="264">
+          <caret line="11" column="59" lean-forward="true" selection-start-line="11" selection-start-column="59" selection-end-line="11" selection-end-column="59" />
           <folding />
         </state>
       </provider>
@@ -862,7 +891,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8</last-edited>
+          <last-edited>9</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

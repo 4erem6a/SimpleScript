@@ -26,7 +26,6 @@ public final class math extends SSModule {
         math.setMethod("exp", args -> Value.of(Math.exp(args[0].asNumber())));
         math.setMethod("expm1", args -> Value.of(Math.expm1(args[0].asNumber())));
         math.setMethod("floor", args -> Value.of(Math.floor(args[0].asNumber())));
-        math.setMethod("fma", args -> Value.of(Math.fma(args[0].asNumber(), args[1].asNumber(), args[2].asNumber())));
         math.setMethod("getExponent", args -> Value.of(Math.getExponent(args[0].asNumber())));
         math.setMethod("hypot", args -> Value.of(Math.hypot(args[0].asNumber(), args[1].asNumber())));
         math.setMethod("IEEERemainder", args -> Value.of(Math.IEEEremainder(args[0].asNumber(), args[1].asNumber())));

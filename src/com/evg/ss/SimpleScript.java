@@ -23,7 +23,26 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Runtime.Version VERSION = Runtime.Version.parse("1.5.4.3");
+    public static class Version {
+        private int release;
+        private int major;
+        private int minor;
+        private int build;
+
+        public Version(int release, int major, int minor, int build) {
+            this.release = release;
+            this.major = major;
+            this.minor = minor;
+            this.build = build;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%d.%d.%d.%d", release, major, minor, build);
+        }
+    }
+
+    public static Version VERSION = new Version(1, 5, 4, 3);
 
     private List<Token> tokens = new ArrayList<>();
 

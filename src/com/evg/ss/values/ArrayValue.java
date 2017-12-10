@@ -73,7 +73,18 @@ public class ArrayValue implements Value, Iterable<Value> {
     public int compareTo(Value o) {
         if (!(o instanceof ArrayValue))
             return -1;
-        else return Arrays.compare(value, ((ArrayValue) o).value);
+        else return compareArrays(value, ((ArrayValue) o).value);
+    }
+
+    private int compareArrays(Value[] a1, Value[] a2) {
+        if (a1.length > a2.length)
+            return a1.length - a2.length;
+        if (a2.length > a1.length)
+            return a2.length - a1.length;
+        int result = 0;
+        for (int i = 0; i < a1.length; i++)
+            result += a1[i].compareTo(a2[i]);
+        return result;
     }
 
     @Override
