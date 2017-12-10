@@ -1,4 +1,4 @@
-package com.evg.ss.exceptions;
+package com.evg.ss.exceptions.parser;
 
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lexer.TokenType;

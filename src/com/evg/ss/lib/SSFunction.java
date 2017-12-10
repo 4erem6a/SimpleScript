@@ -1,6 +1,6 @@
 package com.evg.ss.lib;
 
-import com.evg.ss.exceptions.ArgumentCountMismatchException;
+import com.evg.ss.exceptions.execution.ArgumentCountMismatchException;
 import com.evg.ss.exceptions.inner.SSReturnException;
 import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.values.NullValue;

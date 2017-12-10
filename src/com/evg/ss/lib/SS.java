@@ -40,6 +40,10 @@ public final class SS {
             return top.contains(name);
         }
 
+        public static boolean existsMain(String name) {
+            return getMainScope().contains(name);
+        }
+
         public static Function get(String name) {
             return top.get(name);
         }
@@ -50,6 +54,13 @@ public final class SS {
 
         public static void put(String name, Function value) {
             top.put(name, value);
+        }
+
+        private static FunctionMap getMainScope() {
+            FunctionMap current = top;
+            while (current.getParent() != null)
+                current = current.getParent();
+            return current;
         }
 
         public static void up() {
@@ -79,6 +90,10 @@ public final class SS {
             return top.contains(name);
         }
 
+        public static boolean existsMain(String name) {
+            return getMainScope().contains(name);
+        }
+
         public static Value getValue(String name) {
             final Variable var = top.get(name);
             return var != null ? var.getValue() : null;
@@ -94,6 +109,13 @@ public final class SS {
 
         public static void put(String name, Value value, boolean isConst) {
             top.put(name, new Variable(value, isConst));
+        }
+
+        private static VariableMap getMainScope() {
+            VariableMap current = top;
+            while (current.getParent() != null)
+                current = current.getParent();
+            return current;
         }
 
         public static void up() {

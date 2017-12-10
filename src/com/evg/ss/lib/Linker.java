@@ -1,7 +1,7 @@
 package com.evg.ss.lib;
 
 import com.evg.ss.Environment;
-import com.evg.ss.exceptions.ModuleLoadingException;
+import com.evg.ss.exceptions.execution.ModuleLoadingException;
 
 import java.io.File;
 import java.nio.file.Path;

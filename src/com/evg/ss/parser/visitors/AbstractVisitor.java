@@ -185,4 +185,8 @@ public abstract class AbstractVisitor implements Visitor {
         target.getCondition().accept(this);
         target.getBody().accept(this);
     }
+
+    @Override
+    public void visit(NameofExpression nameofExpression) {
+    }
 }

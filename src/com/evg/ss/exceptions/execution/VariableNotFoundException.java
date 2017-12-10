@@ -1,4 +1,4 @@
-package com.evg.ss.exceptions;
+package com.evg.ss.exceptions.execution;
 
 public final class VariableNotFoundException extends SSExecutionException {
     public VariableNotFoundException(String name) {

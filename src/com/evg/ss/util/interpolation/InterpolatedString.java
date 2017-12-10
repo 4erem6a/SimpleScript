@@ -1,12 +1,8 @@
 package com.evg.ss.util.interpolation;
 
-import com.evg.ss.lexer.Lexer;
-import com.evg.ss.lexer.Token;
-import com.evg.ss.parser.Parser;
-import com.evg.ss.values.StringValue;
-import com.evg.ss.values.Value;
+import com.evg.ss.SimpleScript;
+import com.evg.ss.exceptions.execution.InvalidInterpolationException;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,16 +15,19 @@ public final class InterpolatedString {
         this.string = string;
     }
 
+    private static String cutPlaceholders(String string) {
+        return string.replace('{', ' ').replace('}', ' ').trim();
+    }
+
     public String calculate() {
         final Pattern pattern = Pattern.compile(InterpolatedString.pattern);
         Matcher matcher = pattern.matcher(string);
         while (matcher.find()) {
-            final String group = matcher.group();
-            final String body = group.substring(1, group.length() - 1);
-            final List<Token> tokens = new Lexer(body).tokenize();
-            final Value value = new Parser(tokens).express().eval();
-            final String result = StringValue.asStringValue(value).asString();
-            string = matcher.replaceFirst(result == null ? "" : result);
+            final String source = cutPlaceholders(matcher.group());
+            final SimpleScript ss = SimpleScript.fromSource(source);
+            if (!ss.isExpressible())
+                throw new InvalidInterpolationException(source);
+            string = matcher.replaceFirst(ss.express().eval().asString());
             matcher = pattern.matcher(string);
         }
         return string;

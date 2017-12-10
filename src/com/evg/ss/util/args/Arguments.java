@@ -1,7 +1,7 @@
 package com.evg.ss.util.args;
 
-import com.evg.ss.exceptions.ArgumentCountMismatchException;
-import com.evg.ss.exceptions.ArgumentTypeMismatchException;
+import com.evg.ss.exceptions.execution.ArgumentCountMismatchException;
+import com.evg.ss.exceptions.execution.ArgumentTypeMismatchException;
 import com.evg.ss.values.Type;
 import com.evg.ss.values.Value;
 

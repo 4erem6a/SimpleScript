@@ -1,8 +1,8 @@
 package com.evg.ss.lib.modules;
 
 import com.evg.ss.SimpleScript;
-import com.evg.ss.exceptions.ModuleLoadingException;
-import com.evg.ss.exceptions.ModuleNotFoundException;
+import com.evg.ss.exceptions.execution.ModuleLoadingException;
+import com.evg.ss.exceptions.execution.ModuleNotFoundException;
 import com.evg.ss.exceptions.inner.SSExportsException;
 import com.evg.ss.lib.Linker;
 import com.evg.ss.lib.SS;
@@ -33,7 +33,7 @@ public abstract class SSModule {
 
     public static Value requireExternal(String name) {
         try {
-            SimpleScript.fromFile(name).execute();
+            SimpleScript.fromFile(name).compile().execute();
         } catch (SSExportsException exports) {
             SS.Scopes.down();
             return exports.getValue();

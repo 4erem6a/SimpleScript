@@ -1,6 +1,6 @@
 package com.evg.ss.lib.modules.lists;
 
-import com.evg.ss.exceptions.IndexOutOfBoundsException;
+import com.evg.ss.exceptions.execution.IndexOutOfBoundsException;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;

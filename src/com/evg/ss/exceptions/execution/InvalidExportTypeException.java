@@ -1,4 +1,4 @@
-package com.evg.ss.exceptions;
+package com.evg.ss.exceptions.execution;
 
 public final class InvalidExportTypeException extends SSExecutionException {
     public InvalidExportTypeException() {

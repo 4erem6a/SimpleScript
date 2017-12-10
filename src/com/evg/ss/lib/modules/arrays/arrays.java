@@ -1,6 +1,6 @@
 package com.evg.ss.lib.modules.arrays;
 
-import com.evg.ss.exceptions.InvalidValueTypeException;
+import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;

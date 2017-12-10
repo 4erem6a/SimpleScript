@@ -1,7 +1,7 @@
 package com.evg.ss.lib.containers;
 
-import com.evg.ss.exceptions.FunctionAlreadyExistsException;
-import com.evg.ss.exceptions.FunctionNotFoundException;
+import com.evg.ss.exceptions.execution.FunctionAlreadyExistsException;
+import com.evg.ss.exceptions.execution.FunctionNotFoundException;
 import com.evg.ss.lib.Function;
 
 import java.util.HashMap;

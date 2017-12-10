@@ -1,6 +1,6 @@
 package com.evg.ss.parser;
 
-import com.evg.ss.exceptions.UnexpectedTokenException;
+import com.evg.ss.exceptions.parser.UnexpectedTokenException;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lexer.TokenType;
 import com.evg.ss.parser.ast.Expression;

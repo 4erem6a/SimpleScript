@@ -1,7 +1,7 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.ConstantAccessException;
-import com.evg.ss.exceptions.VariableNotFoundException;
+import com.evg.ss.exceptions.execution.ConstantAccessException;
+import com.evg.ss.exceptions.execution.VariableNotFoundException;
 import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;

@@ -1,4 +1,6 @@
-package com.evg.ss.exceptions;
+package com.evg.ss.exceptions.parser;
+
+import com.evg.ss.exceptions.SSException;
 
 /**
  * @author 4erem6a

@@ -1,8 +1,8 @@
 package com.evg.ss.parser;
 
-import com.evg.ss.exceptions.InvalidInterpolationException;
-import com.evg.ss.exceptions.UnexpectedTokenException;
-import com.evg.ss.exceptions.UnknownCharacterException;
+import com.evg.ss.exceptions.execution.InvalidInterpolationException;
+import com.evg.ss.exceptions.lexer.UnknownCharacterException;
+import com.evg.ss.exceptions.parser.UnexpectedTokenException;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lexer.TokenType;
 import com.evg.ss.parser.ast.*;
@@ -139,9 +139,9 @@ public final class Parser extends AbstractParser {
         final String variable;
         final boolean external = match(TokenType.External);
         final boolean local = !external && match(TokenType.Local);
-        consume(TokenType.Lp);
+        final boolean isParenSurrounded = match(TokenType.Lp);
         final String name = consume(TokenType.String).getValue();
-        consume(TokenType.Rp);
+        if (isParenSurrounded) consume(TokenType.Rp);
         if (external) {
             consume(TokenType.As);
             variable = consume(TokenType.String).getValue();
@@ -153,12 +153,11 @@ public final class Parser extends AbstractParser {
     }
 
     private Expression requireExpression() {
-        final String name;
         final boolean external = match(TokenType.External);
         final boolean local = !external && match(TokenType.Local);
-        consume(TokenType.Lp);
-        name = consume(TokenType.String).getValue();
-        consume(TokenType.Rp);
+        final boolean isParenSurrounded = match(TokenType.Lp);
+        final String name = consume(TokenType.String).getValue();
+        if (isParenSurrounded) consume(TokenType.Rp);
         return new RequireStatementExpression(name, external
                 ? RequireMode.EXTERNAL : local
                 ? RequireMode.LOCAL : RequireMode.MODULE);
@@ -512,6 +511,8 @@ public final class Parser extends AbstractParser {
             return typeof();
         } else if (match(TokenType.Type)) {
             return type();
+        } else if (match(TokenType.Nameof)) {
+            return nameof();
         } else if (match(TokenType.Function)) {
             return anonymousFunction();
         } else if (match(TokenType.Require)) {
@@ -533,6 +534,13 @@ public final class Parser extends AbstractParser {
         } else {
             throw new UnexpectedTokenException(current);
         }
+    }
+
+    private Expression nameof() {
+        consume(TokenType.Lp);
+        final String name = consume(TokenType.Word).getValue();
+        consume(TokenType.Rp);
+        return new NameofExpression(name);
     }
 
     private Expression lambda() {

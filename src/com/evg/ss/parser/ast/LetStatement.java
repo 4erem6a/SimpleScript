@@ -1,6 +1,6 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.VariableAlreadyExistsException;
+import com.evg.ss.exceptions.execution.VariableAlreadyExistsException;
 import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;

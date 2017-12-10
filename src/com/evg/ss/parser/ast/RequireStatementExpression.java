@@ -1,6 +1,6 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.ModuleLoadingException;
+import com.evg.ss.exceptions.execution.ModuleLoadingException;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.parser.visitors.ResultVisitor;

@@ -78,6 +78,7 @@ public enum TokenType {
     External,   //external
     As,         //as
     Local,      //local
+    Nameof,     //nameof
 
     //Utility:
     EOF

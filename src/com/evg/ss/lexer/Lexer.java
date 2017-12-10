@@ -1,7 +1,7 @@
 package com.evg.ss.lexer;
 
-import com.evg.ss.exceptions.InvalidTokenDefinitionException;
-import com.evg.ss.exceptions.UnknownCharacterException;
+import com.evg.ss.exceptions.lexer.InvalidTokenDefinitionException;
+import com.evg.ss.exceptions.lexer.UnknownCharacterException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -86,6 +86,7 @@ public final class Lexer extends AbstractLexer {
         KEYWORD_MAP.put("external", TokenType.External);
         KEYWORD_MAP.put("as", TokenType.As);
         KEYWORD_MAP.put("local", TokenType.Local);
+        KEYWORD_MAP.put("nameof", TokenType.Nameof);
     }
 
     public Lexer(String source) {
@@ -172,8 +173,9 @@ public final class Lexer extends AbstractLexer {
     private void tokenizeHexNumber() {
         final StringBuilder buffer = new StringBuilder();
         char current = next();
-        while (Character.isDigit(current) || isHexNumber(current)) {
-            buffer.append(current);
+        while (Character.isDigit(current) || isHexNumber(current) || current == '_') {
+            if (current != '_')
+                buffer.append(current);
             current = next();
         }
         final Long number = Long.parseLong(buffer.toString(), 16);
@@ -184,8 +186,9 @@ public final class Lexer extends AbstractLexer {
         next();
         final StringBuilder buffer = new StringBuilder();
         char current = next();
-        while (current == '0' || current == '1') {
-            buffer.append(current);
+        while (current == '0' || current == '1' || current == '_') {
+            if (current != '_')
+                buffer.append(current);
             current = next();
         }
         final Long number = Long.parseLong(buffer.toString(), 2);
@@ -195,10 +198,11 @@ public final class Lexer extends AbstractLexer {
     private void tokenizeNumber() {
         final StringBuilder buffer = new StringBuilder();
         char current = peek(0);
-        while (Character.isDigit(current) || current == '.') {
+        while (Character.isDigit(current) || current == '.' || current == '_') {
             if (current == '.')
                 throw new InvalidTokenDefinitionException(TokenType.Number, calculatePosition());
-            buffer.append(current);
+            if (current != '_')
+                buffer.append(current);
             current = next();
         }
         if (buffer.charAt(0) == '.')
@@ -210,7 +214,7 @@ public final class Lexer extends AbstractLexer {
     private void tokenizeWord() {
         final StringBuilder buffer = new StringBuilder();
         char current = peek(0);
-        while (Character.isLetter(current) || current == '$' || current == '_') {
+        while (Character.isLetter(current) || Character.isDigit(current) || current == '$' || current == '_') {
             buffer.append(current);
             current = next();
         }
@@ -227,6 +231,12 @@ public final class Lexer extends AbstractLexer {
             next();
         } else isPureString = false;
         char quote = peek(0);
+        if (peek(1) == quote) {
+            next();
+            next();
+            addToken(quote == '`' ? TokenType.InterpolatedString : TokenType.String);
+            return;
+        }
         if (QUOTES.indexOf(quote) == -1)
             throw new UnknownCharacterException(quote, calculatePosition());
         final StringBuilder buffer = new StringBuilder();
@@ -270,6 +280,10 @@ public final class Lexer extends AbstractLexer {
                         continue;
                     case 'b':
                         buffer.append('\b');
+                        current = peekLocal(++position, string);
+                        continue;
+                    case '0':
+                        buffer.append('\0');
                         current = peekLocal(++position, string);
                         continue;
                     case '\'':

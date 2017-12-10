@@ -1,4 +1,4 @@
-package com.evg.ss.exceptions;
+package com.evg.ss.exceptions.execution;
 
 public final class FunctionNotFoundException extends SSExecutionException {
     public FunctionNotFoundException(String name) {

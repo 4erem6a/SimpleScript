@@ -1,4 +1,4 @@
-package com.evg.ss.exceptions;
+package com.evg.ss.exceptions.lexer;
 
 import com.evg.ss.lexer.SourcePosition;
 

@@ -1,8 +1,8 @@
 package com.evg.ss.lib.containers;
 
-import com.evg.ss.exceptions.ConstantAccessException;
-import com.evg.ss.exceptions.VariableAlreadyExistsException;
-import com.evg.ss.exceptions.VariableNotFoundException;
+import com.evg.ss.exceptions.execution.ConstantAccessException;
+import com.evg.ss.exceptions.execution.VariableAlreadyExistsException;
+import com.evg.ss.exceptions.execution.VariableNotFoundException;
 import com.evg.ss.lib.Variable;
 
 import java.util.HashMap;

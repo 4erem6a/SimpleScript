@@ -70,4 +70,5 @@ public interface ResultVisitor<TResult> {
 
     TResult visit(WhileStatement target);
 
+    TResult visit(NameofExpression nameofExpression);
 }

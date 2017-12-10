@@ -1,25 +1,24 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.execution.FunctionNotFoundException;
+import com.evg.ss.exceptions.execution.VariableNotFoundException;
 import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
-import com.evg.ss.values.FunctionValue;
 import com.evg.ss.values.Value;
 
-public final class FunctionReferenceExpression implements Expression {
+public class NameofExpression implements Expression {
 
     private String name;
 
-    public FunctionReferenceExpression(String name) {
+    public NameofExpression(String name) {
         this.name = name;
     }
 
     @Override
     public Value eval() {
-        if (SS.Functions.exists(name))
-            return new FunctionValue(SS.Functions.get(name));
-        throw new FunctionNotFoundException(name);
+        if (SS.Variables.exists(name))
+            return Value.of(name);
+        throw new VariableNotFoundException(name);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.evg.ss.exceptions;
+package com.evg.ss.exceptions.execution;
 
 public final class IndexOutOfBoundsException extends SSExecutionException {
     public IndexOutOfBoundsException(int index) {

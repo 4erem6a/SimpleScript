@@ -1,8 +1,7 @@
+require "math"
+require "environment"
+
 exports {
-    add: (a, b) -> a + b,
-    sub: (a, b) -> a - b,
-    mlt: (a, b) -> a * b,
-    div: (a, b) -> a / b,
-    mod: (a, b) -> a % b,
-    $: (arg) -> require("io").println(arg)
+    version : environment.getVariable("CURRENT_LANG_VERSION"),
+    pi : math.Pi
 }

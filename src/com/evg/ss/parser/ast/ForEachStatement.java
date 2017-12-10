@@ -1,6 +1,6 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.InvalidValueTypeException;
+import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.exceptions.inner.SSBreakException;
 import com.evg.ss.exceptions.inner.SSContinueException;
 import com.evg.ss.exceptions.inner.SSInnerException;

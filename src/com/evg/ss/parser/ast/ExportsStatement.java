@@ -1,6 +1,6 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.InvalidExportTypeException;
+import com.evg.ss.exceptions.execution.InvalidExportTypeException;
 import com.evg.ss.exceptions.inner.SSExportsException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;

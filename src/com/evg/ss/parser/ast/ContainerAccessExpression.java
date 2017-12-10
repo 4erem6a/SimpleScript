@@ -1,8 +1,8 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.FieldNotFoundException;
-import com.evg.ss.exceptions.IndexOutOfBoundsException;
-import com.evg.ss.exceptions.InvalidValueTypeException;
+import com.evg.ss.exceptions.execution.FieldNotFoundException;
+import com.evg.ss.exceptions.execution.IndexOutOfBoundsException;
+import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.ArrayValue;
