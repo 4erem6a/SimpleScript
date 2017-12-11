@@ -27,14 +27,17 @@
 
   ## Current:
 
-* IO\(`<io>`\): Console input/output
-
-* Arrays\(`<arrays>`\): Utility functions for ararys
-
-* Maps\(`<maps>`\): Advances map management
-* Utilities\(`<utils>`\)
+* IO\(`"io"`\)
+* Arrays\(`"arrays"`\)
+* Maps\(`"maps"`\)
+* Utilities\(`"utils"`\)
+* Lists\(`"lists"`\)
+* Interpreter\(`"interpreter"`\)
+* Environment\(`"environment"`\)
+* Math\(`"math"`\)
 * ## Roadmap:
-* Lists\(`<lists>`\): Lists
+* Desktop\(`"desktop"`\)
+* Types\(`"types"`\)
 
 ### See language manual at [gitBook](https://www.gitbook.com/book/4erem6a/simplescript-manual).
 
