@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.exceptions.execution.InvalidTypeNameException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Type;
@@ -28,12 +29,12 @@ public final class ConstTypeExpression implements Expression {
             case "type":
                 return Type.Type;
             case "null":
-                return Type.String;
+                return Type.Null;
             case "boolean":
             case "bool":
                 return Type.Boolean;
             default:
-                return Type.Null;
+                throw new InvalidTypeNameException(type);
         }
     }
 

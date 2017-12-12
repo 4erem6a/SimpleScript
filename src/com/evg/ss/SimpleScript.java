@@ -24,7 +24,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 5, 7, 2);
+    public static Version VERSION = new Version(1, 6, 0, 0);
     private List<Token> tokens;
 
     private SimpleScript(List<Token> tokens) {

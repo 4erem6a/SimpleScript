@@ -17,7 +17,7 @@ public final class Desktop {
     private static final Map<String, SSExecutionFlags> EXECUTION_FLAGS_MAP = new HashMap<>();
     public static List<Value> PROGRAM_ARGS;
     private static List<String> ARGS;
-    private static boolean LOG;
+    private static boolean LOG, DEBUG;
     private static Path PROGRAM_PATH;
     private static List<SSExecutionFlags> EXECUTION_FLAGS;
 
@@ -26,6 +26,7 @@ public final class Desktop {
         EXECUTION_FLAGS_MAP.put("-p", SSExecutionFlags.GET_PROGRAM);
         EXECUTION_FLAGS_MAP.put("-e", SSExecutionFlags.EXECUTE);
         EXECUTION_FLAGS_MAP.put("-l", SSExecutionFlags.LOG);
+        EXECUTION_FLAGS_MAP.put("-d", SSExecutionFlags.DEBUG);
     }
 
     public static void main(String[] args) throws IOException {
@@ -49,11 +50,12 @@ public final class Desktop {
                 PROGRAM_ARGS = tail.stream().skip(tail.indexOf(arg)).map(Value::of).collect(Collectors.toList());
                 break;
             }
-            if (flags.contains(arg))
+            if (flags.contains(EXECUTION_FLAGS_MAP.get(arg)))
                 exitWithMessage("Error: duplicate execution flags.");
             flags.add(EXECUTION_FLAGS_MAP.get(arg));
         }
         LOG = flags.contains(SSExecutionFlags.LOG);
+        DEBUG = flags.contains(SSExecutionFlags.DEBUG);
         PROGRAM_PATH = path;
         EXECUTION_FLAGS = flags;
     }
@@ -69,14 +71,14 @@ public final class Desktop {
             final SimpleScript script = SimpleScript.fromFile(programPath);
             execute(script);
         } catch (SSLexerException e) {
-            exitWithMessage("Error: \n\t%s", e.getMessage());
+            except(e);
         }
     }
 
     public static void execute(SimpleScript script) {
         log("Parsing source code ...");
         if (!script.isCompilabe())
-            exitWithMessage("Error: \n\t%s", Objects.requireNonNull(script.tryCompile()).getMessage());
+            except(script.tryCompile());
         if (ARGS.size() > 1) {
             if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-t")))
                 getTokens(script);
@@ -108,6 +110,12 @@ public final class Desktop {
             System.out.println(String.format(message, format));
     }
 
+    private static void except(Exception e) {
+        if (DEBUG)
+            e.printStackTrace();
+        exitWithMessage("Error: \n\t%s\n\t%s", e.getClass().getSimpleName(), e.getMessage());
+    }
+
     private static void exitWithMessage(String message, Object... format) {
         System.err.println(String.format(message, format));
         System.exit(0);
@@ -117,7 +125,8 @@ public final class Desktop {
         GET_TOKENS,
         GET_PROGRAM,
         EXECUTE,
-        LOG
+        LOG,
+        DEBUG
     }
 
 }

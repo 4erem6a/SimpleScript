@@ -1,25 +1,49 @@
 package com.evg.ss.lib;
 
 import com.evg.ss.exceptions.execution.ArgumentCountMismatchException;
+import com.evg.ss.exceptions.execution.ArgumentTypeMismatchException;
+import com.evg.ss.exceptions.execution.UnexpectedDefaultArgumentException;
 import com.evg.ss.exceptions.inner.SSReturnException;
+import com.evg.ss.parser.ast.ArgumentExpression;
 import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.values.NullValue;
 import com.evg.ss.values.Value;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class SSFunction implements Function {
 
-    private final List<String> argNames;
+    private final List<Argument> args;
     private final Statement body;
 
-    public SSFunction(List<String> argNames, Statement body) {
-        this.argNames = argNames;
+    public SSFunction(ArgumentExpression[] args, Statement body) {
+        this.args = Arrays.stream(args).map(ArgumentExpression::getArgument).collect(Collectors.toList());
         this.body = body;
+        for (int i = 0; i < this.args.size() - 2; i++)
+            if (this.args.get(i).hasValue() && !this.args.get(i + 1).hasValue())
+                throw new UnexpectedDefaultArgumentException();
     }
 
-    public int getArgc() {
-        return argNames.size();
+    private void tryValidateArgs(Value... args) {
+        final int minArgc = (int)this.args.stream().filter(arg -> !arg.hasValue()).count();
+        final int maxArgc = this.args.size();
+        if (args.length < minArgc || args.length > maxArgc)
+            throw new ArgumentCountMismatchException(args.length < minArgc ? minArgc : maxArgc, args.length);
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].getType() != this.args.get(i).getType() && this.args.get(i).getType() != null)
+                throw new ArgumentTypeMismatchException(this.args.get(i).getType(), args[i].getType());
+        }
+    }
+
+    public boolean validateArgs(Value... args) {
+        try {
+            tryValidateArgs(args);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     public Statement getBody() {
@@ -28,11 +52,19 @@ public final class SSFunction implements Function {
 
     @Override
     public Value execute(Value... args) {
-        if (args.length != getArgc())
-            throw new ArgumentCountMismatchException(args.length, getArgc());
+        tryValidateArgs(args);
+        final List<Value> argList = Arrays.stream(args).collect(Collectors.toList());
+        if (argList.size() != this.args.size()) {
+            final int idx = this.args.size() - (this.args.size() - argList.size());
+            for (int i = idx; i < this.args.size(); i++) {
+                final Argument arg = this.args.get(i);
+                final Value value = arg.getValue().eval();
+                argList.add(value);
+            }
+        }
         SS.Scopes.up();
-        for (int i = 0; i < getArgc(); i++)
-            SS.Variables.put(argNames.get(i), args[i], false);
+        for (int i = 0; i < argList.size(); i++)
+            SS.Variables.put(this.args.get(i).getName(), argList.get(i), false);
         try {
             body.execute();
         } catch (SSReturnException e) {
@@ -45,6 +77,6 @@ public final class SSFunction implements Function {
 
     @Override
     public int hashCode() {
-        return getArgc() | argNames.stream().mapToInt(String::hashCode).reduce((a, b) -> a | b).getAsInt();
+        return args.size() | args.stream().mapToInt(Argument::hashCode).reduce((a, b) -> a | b).getAsInt();
     }
 }

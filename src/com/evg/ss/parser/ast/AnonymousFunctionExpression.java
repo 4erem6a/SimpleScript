@@ -11,21 +11,17 @@ import java.util.stream.Collectors;
 
 public final class AnonymousFunctionExpression implements Expression {
 
-    private String[] argNames;
+    private ArgumentExpression[] args;
     private Statement body;
 
-    public AnonymousFunctionExpression(String[] argNames, Statement body) {
-        this.argNames = argNames;
+    public AnonymousFunctionExpression(ArgumentExpression[] args, Statement body) {
+        this.args = args;
         this.body = body;
     }
 
     @Override
     public Value eval() {
-        return new FunctionValue(new SSFunction(Arrays.stream(argNames).collect(Collectors.toList()), body));
-    }
-
-    public String[] getArgNames() {
-        return argNames;
+        return new FunctionValue(new SSFunction(args, body));
     }
 
     public Statement getBody() {

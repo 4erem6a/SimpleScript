@@ -11,18 +11,18 @@ import java.util.stream.Collectors;
 public final class FunctionDefinitionStatement implements Statement {
 
     private String name;
-    private String[] argNames;
     private Statement body;
+    private ArgumentExpression[] args;
 
-    public FunctionDefinitionStatement(String name, String[] argNames, Statement body) {
+    public FunctionDefinitionStatement(String name, ArgumentExpression[] args, Statement body) {
         this.name = name;
-        this.argNames = argNames;
         this.body = body;
+        this.args = args;
     }
 
     @Override
     public void execute() {
-        SS.Functions.put(name, new SSFunction(Arrays.stream(argNames).collect(Collectors.toList()), body));
+        SS.Functions.put(name, new SSFunction(args, body));
     }
 
     @Override

@@ -121,19 +121,33 @@ public final class Parser extends AbstractParser {
         return new ForEachStatement(iteratorDefinition, target, body);
     }
 
+    private ArgumentExpression argument() {
+        final String name = consume(TokenType.Word).getValue();
+        final ConstTypeExpression type;
+        final Expression value;
+        if (match(TokenType.Cl))
+            type = (ConstTypeExpression) typename();
+        else type = null;
+        if (match(TokenType.Eq))
+            value = value();
+        else value = null;
+        return new ArgumentExpression(name, type, value);
+    }
+
     private Statement functionDefinition() {
         final String name = consume(TokenType.Word).getValue();
-        final List<String> argNames = new ArrayList<>();
+        final List<ArgumentExpression> args = new ArrayList<>();
         consume(TokenType.Lp);
         if (!match(TokenType.Rp))
-            do argNames.add(consume(TokenType.Word).getValue());
+            do
+                args.add(argument());
             while (match(TokenType.Cm));
         match(TokenType.Rp);
         final Statement body;
-        if (match(TokenType.Eq)) {
+        if (match(TokenType.MnAr)) {
             body = new ReturnStatement(expression());
         } else body = statementOrBlock();
-        return new FunctionDefinitionStatement(name, argNames.toArray(new String[argNames.size()]), body);
+        return new FunctionDefinitionStatement(name, args.toArray(new ArgumentExpression[0]), body);
     }
 
     private Statement requireStatement() {
@@ -233,7 +247,7 @@ public final class Parser extends AbstractParser {
             return new LetStatement(name, value, false);
         } else {
             consume(TokenType.Eq);
-            value = expression();
+            value = value();
             return new LetStatement(name, value, true);
         }
     }
@@ -492,31 +506,15 @@ public final class Parser extends AbstractParser {
 
     private Expression primary() {
         final Token current = get(0);
-        if (match(TokenType.Number)) {
-            return new ValueExpression(Double.parseDouble(current.getValue()));
-        } else if (match(TokenType.Nan)) {
-            return new ValueExpression(Double.NaN);
-        } else if (match(TokenType.String)) {
-            return new ValueExpression(current.getValue());
-        } else if (match(TokenType.InterpolatedString)) {
+        if (match(TokenType.InterpolatedString)) {
             return interpolated();
-        } else if (match(TokenType.True)) {
-            return new ValueExpression(true);
-        } else if (match(TokenType.False)) {
-            return new ValueExpression(false);
-        } else if (match(TokenType.Null)) {
-            return new ValueExpression();
         } else if (match(TokenType.Let)) {
             return letExpression();
         } else if (match(TokenType.Typeof)) {
             return typeof();
-        } else if (match(TokenType.Type)) {
-            return type();
         } else if (match(TokenType.Nameof)) {
             return nameof();
-        } else if (match(TokenType.Function)) {
-            return anonymousFunction();
-        } else if (match(TokenType.Require)) {
+        }  else if (match(TokenType.Require)) {
             return requireExpression();
         } else if (match(TokenType.ClCl)) {
             return new FunctionReferenceExpression(consume(TokenType.Word).getValue());
@@ -532,9 +530,29 @@ public final class Parser extends AbstractParser {
             Expression result = expression();
             match(TokenType.Rp);
             return result;
-        } else {
-            throw new UnexpectedTokenException(current);
         }
+        return value();
+    }
+
+    private Expression value() {
+        final Token current = get(0);
+        if (match(TokenType.Number)) {
+            return new ValueExpression(Double.parseDouble(current.getValue()));
+        } else if (match(TokenType.Nan)) {
+            return new ValueExpression(Double.NaN);
+        } else if (match(TokenType.String)) {
+            return new ValueExpression(current.getValue());
+        } else if (match(TokenType.True)) {
+            return new ValueExpression(true);
+        } else if (match(TokenType.False)) {
+            return new ValueExpression(false);
+        } else if (match(TokenType.Null)) {
+            return new ValueExpression();
+        } else if (match(TokenType.Type)) {
+            return type();
+        } else if (match(TokenType.Function)) {
+            return anonymousFunction();
+        } else throw new UnexpectedTokenException(current);
     }
 
     private Expression nameof() {
@@ -545,17 +563,16 @@ public final class Parser extends AbstractParser {
     }
 
     private Expression lambda() {
+        final List<ArgumentExpression> args = new ArrayList<>();
         consume(TokenType.Lp);
-        final List<String> argNames = new ArrayList<>();
-        if (!match(TokenType.Rp)) {
-            do {
-                argNames.add(consume(TokenType.Word).getValue());
-            } while (match(TokenType.Cm));
-            consume(TokenType.Rp);
-        }
-        consume(TokenType.MnAr);
+        if (!match(TokenType.Rp))
+            do
+                args.add(argument());
+            while (match(TokenType.Cm));
+        match(TokenType.Rp);
+        match(TokenType.MnAr);
         final Statement body = new ReturnStatement(expression());
-        return new AnonymousFunctionExpression(argNames.toArray(new String[argNames.size()]), body);
+        return new AnonymousFunctionExpression(args.toArray(new ArgumentExpression[0]), body);
     }
 
     private boolean isLambdaDefinition() {
@@ -611,6 +628,11 @@ public final class Parser extends AbstractParser {
         return new ConstTypeExpression(type);
     }
 
+    private Expression typename() {
+        final String type = consume().getValue();
+        return new ConstTypeExpression(type);
+    }
+
     private Expression typeof() {
         consume(TokenType.Lp);
         final Expression expression = expression();
@@ -619,19 +641,18 @@ public final class Parser extends AbstractParser {
     }
 
     private Expression anonymousFunction() {
+        final List<ArgumentExpression> args = new ArrayList<>();
         consume(TokenType.Lp);
-        final List<String> argNames = new ArrayList<>();
-        if (!match(TokenType.Rp)) {
-            do {
-                argNames.add(consume(TokenType.Word).getValue());
-            } while (match(TokenType.Cm));
-            consume(TokenType.Rp);
-        }
+        if (!match(TokenType.Rp))
+            do
+                args.add(argument());
+            while (match(TokenType.Cm));
+        match(TokenType.Rp);
         final Statement body;
-        if (match(TokenType.Eq)) {
+        if (match(TokenType.MnAr)) {
             body = new ReturnStatement(expression());
         } else body = statementOrBlock();
-        return new AnonymousFunctionExpression(argNames.toArray(new String[argNames.size()]), body);
+        return new AnonymousFunctionExpression(args.toArray(new ArgumentExpression[0]), body);
     }
 
     private Expression array() {

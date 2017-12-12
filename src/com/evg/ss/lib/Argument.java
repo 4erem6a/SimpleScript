@@ -3,29 +3,40 @@ package com.evg.ss.lib;
 import com.evg.ss.parser.ast.Expression;
 import com.evg.ss.values.Type;
 
-@Deprecated
-public class Argument {
+public final class Argument {
 
     private final String name;
-    private final Expression defaultValue;
-    private final Type requiredType;
+    private final Expression value;
+    private final Type type;
 
-    public Argument(String name) {
-        this(name, null);
-    }
-
-    public Argument(String name, Expression defaultValue) {
-        this(name, defaultValue, null);
-    }
-
-    public Argument(String name, Expression defaultValue, Type requiredType) {
+    public Argument(String name, Expression value, Type type) {
         this.name = name;
-        this.defaultValue = defaultValue;
-        this.requiredType = requiredType;
+        this.value = value;
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Expression getValue() {
+        return value;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public boolean hasType() {
+        return type != null;
+    }
+
+    public boolean hasValue() {
+        return value != null;
     }
 
     @Override
     public int hashCode() {
-        return requiredType.ordinal() | name.hashCode() | defaultValue.hashCode();
+        return name.hashCode() & (hasType() ? type.hashCode() : 1);
     }
 }
