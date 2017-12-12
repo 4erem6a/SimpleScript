@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public final class Desktop {
 
     private static final Map<String, SSExecutionFlags> EXECUTION_FLAGS_MAP = new HashMap<>();
-    public static List<Value> PROGRAM_ARGS;
+    private static List<Value> PROGRAM_ARGS;
     private static List<String> ARGS;
     private static boolean LOG, DEBUG;
     private static Path PROGRAM_PATH;
@@ -30,7 +30,7 @@ public final class Desktop {
     }
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 1)
+        if (args.length < 2)
             exitWithMessage("Error: invalid argument count.");
         ARGS = Arrays.asList(args);
         validate();
@@ -66,6 +66,8 @@ public final class Desktop {
         log("Setting environment variables ...");
         Environment.putEnvVariable(Environment.EXECUTABLE_PATH, Value.of(programPath.toString()), true);
         Environment.putEnvVariable(Environment.EXECUTABLE_DIR, Value.of(programDir.toString()), true);
+        Environment.putEnvVariable(Environment.PROGRAM_ARGS, Value.of(PROGRAM_ARGS.toArray(new Value[0])), true);
+
         try {
             log("Generating tokens ...");
             final SimpleScript script = SimpleScript.fromFile(programPath);
@@ -79,14 +81,12 @@ public final class Desktop {
         log("Parsing source code ...");
         if (!script.isCompilabe())
             except(script.tryCompile());
-        if (ARGS.size() > 1) {
-            if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-t")))
-                getTokens(script);
-            if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-p")))
-                getProgram(script);
-            if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-e")))
-                run(script);
-        } else run(script);
+        if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-t")))
+            getTokens(script);
+        if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-p")))
+            getProgram(script);
+        if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-e")))
+            run(script);
     }
 
     private static void run(SimpleScript script) {
@@ -119,6 +119,7 @@ public final class Desktop {
     private static void exitWithMessage(String message, Object... format) {
         System.err.println(String.format(message, format));
         System.exit(0);
+
     }
 
     public enum SSExecutionFlags {

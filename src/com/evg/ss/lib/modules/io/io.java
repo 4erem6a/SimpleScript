@@ -37,6 +37,6 @@ public final class io extends SSModule {
 
     private Value input(Value... args) {
         print(args);
-        return new StringValue(new Scanner(System.in).next());
+        return new StringValue(new Scanner(System.in).nextLine());
     }
 }

@@ -11,6 +11,7 @@ public final class Environment {
     public static final String EXECUTABLE_PATH = "EXECUTABLE_PATH";
     public static final String EXECUTABLE_DIR = "EXECUTABLE_DIR";
     public static final String CURRENT_LANG_VERSION = "CURRENT_LANG_VERSION";
+    public static final String PROGRAM_ARGS = "PROGRAM_ARGS";
 
     private static final Map<String, Variable> VARIABLES = new HashMap<>();
 

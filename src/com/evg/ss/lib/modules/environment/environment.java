@@ -15,7 +15,13 @@ public final class environment extends SSModule {
         final SSMapBuilder environment = SSMapBuilder.create();
         environment.setMethod("setVariable", this::setEnvVariable);
         environment.setMethod("getVariable", this::getEnvVariable);
+        environment.setMethod("exists", this::exists);
         return environment.build();
+    }
+
+    private Value exists(Value... args) {
+        Arguments.checkArgTypesOrDie(args, Type.String);
+        return Value.of(Environment.envVariableExists(args[0].asString()));
     }
 
     private Value setEnvVariable(Value... args) {
