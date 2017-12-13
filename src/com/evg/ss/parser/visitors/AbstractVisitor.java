@@ -187,6 +187,12 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(NameofExpression nameofExpression) {
+    public void visit(AsExpression target) {
+        target.getTarget().accept(this);
+        target.getType().accept(this);
+    }
+
+    @Override
+    public void visit(NameofExpression targer) {
     }
 }

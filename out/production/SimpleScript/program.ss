@@ -1,5 +1,5 @@
 require "io"
+require "environment" as "env"
+require "interpreter" as "ss"
 
-function add(a : number = 1, b : number = 2) -> a + b
-
-io.println(add(1, 2))
+io.println(10 as string)

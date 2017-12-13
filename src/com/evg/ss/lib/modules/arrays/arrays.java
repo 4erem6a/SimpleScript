@@ -18,8 +18,8 @@ public final class arrays extends SSModule {
 
     private Value length(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
-        if (Arguments.checkArgTypes(args, Type.Array) ||
-                Arguments.checkArgTypes(args, Type.String))
+        if (!Arguments.checkArgTypes(args, Type.Array) &&
+                !Arguments.checkArgTypes(args, Type.String))
             throw new InvalidValueTypeException(args[0].getType());
         final ArrayValue array = args[0] instanceof StringValue ?
                 ((StringValue) args[0]).asCharArray() :
@@ -29,8 +29,8 @@ public final class arrays extends SSModule {
 
     private Value resize(Value... args) {
         Arguments.checkArgcOrDie(args, 2);
-        if (Arguments.checkArgTypes(args, Type.Array, Type.Number) ||
-                Arguments.checkArgTypes(args, Type.String, Type.Number))
+        if (!Arguments.checkArgTypes(args, Type.Array, Type.Number) &&
+                !Arguments.checkArgTypes(args, Type.String, Type.Number))
             throw new InvalidValueTypeException(args[0].getType());
         final ArrayValue array = args[0] instanceof StringValue ?
                 ((StringValue) args[0]).asCharArray() :

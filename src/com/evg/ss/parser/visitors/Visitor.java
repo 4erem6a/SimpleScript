@@ -71,4 +71,6 @@ public interface Visitor {
     void visit(WhileStatement target);
 
     void visit(NameofExpression nameofExpression);
+
+    void visit(AsExpression asExpression);
 }

@@ -2,11 +2,15 @@ package com.evg.ss.lib.modules.interpreter;
 
 import com.evg.ss.SimpleScript;
 import com.evg.ss.exceptions.execution.FunctionExecutionException;
+import com.evg.ss.lib.CallStack;
+import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
+
+import java.util.Deque;
 
 public class interpreter extends SSModule {
 
@@ -26,7 +30,30 @@ public class interpreter extends SSModule {
         interpreter.setMethod("setVariable", this::setVariable);
         interpreter.setMethod("variableExists", this::variableExists);
         interpreter.setMethod("functionExists", this::functionExists);
+        interpreter.setMethod("setFunction", this::setFunction);
+        interpreter.setMethod("getFunction", this::getFunction);
+        interpreter.setMethod("requireStackTrace", this::requireStackTrace);
         return interpreter.build();
+    }
+
+    private Value requireStackTrace(Value... values) {
+        Arguments.checkArgcOrDie(values, 0);
+        final Deque<CallStack.CallInfo> stackTrace = CallStack.getCalls();
+        return Value.of(stackTrace.stream().map(CallStack.CallInfo::toString).map(Value::of).toArray(Value[]::new));
+    }
+
+    private Value getFunction(Value... values) {
+        Arguments.checkArgTypesOrDie(values, StringValue.class);
+        final String name = values[0].asString();
+        return Value.of(SS.Functions.get(name));
+    }
+
+    private Value setFunction(Value... values) {
+        Arguments.checkArgTypesOrDie(values, StringValue.class, FunctionValue.class);
+        final String name = values[0].asString();
+        final Function function = ((FunctionValue) values[1]).getValue();
+        SS.Functions.put(name, function);
+        return new NullValue();
     }
 
     private Value getVariable(Value... values) {

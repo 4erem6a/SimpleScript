@@ -1,7 +1,7 @@
 package com.evg.ss.parser;
 
+import com.evg.ss.exceptions.SSException;
 import com.evg.ss.exceptions.execution.InvalidInterpolationException;
-import com.evg.ss.exceptions.lexer.UnknownCharacterException;
 import com.evg.ss.exceptions.parser.SSParserException;
 import com.evg.ss.exceptions.parser.UnexpectedTokenException;
 import com.evg.ss.lexer.Token;
@@ -9,6 +9,7 @@ import com.evg.ss.lexer.TokenType;
 import com.evg.ss.parser.ast.*;
 import com.evg.ss.parser.ast.BinaryExpression.BinaryOperations;
 import com.evg.ss.values.NullValue;
+import com.evg.ss.values.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -387,8 +388,12 @@ public final class Parser extends AbstractParser {
                 continue;
             }
             if (match(TokenType.Is)) {
-                final String type = consume().getValue();
-                return new BinaryExpression(BinaryOperations.Equals, new TypeofExpression(result), new ConstTypeExpression(type));
+                result = new BinaryExpression(BinaryOperations.Equals, new TypeofExpression(result), typename());
+                continue;
+            }
+            if (match(TokenType.As)) {
+                result = new AsExpression(result, typename());
+                continue;
             }
             break;
         }
@@ -680,7 +685,7 @@ public final class Parser extends AbstractParser {
         final String string = token.getValue();
         try {
             return new InterpolatedStringExpression(string);
-        } catch (UnknownCharacterException e) {
+        } catch (SSException e) {
             throw new InvalidInterpolationException(token.getPosition(), string);
         }
     }

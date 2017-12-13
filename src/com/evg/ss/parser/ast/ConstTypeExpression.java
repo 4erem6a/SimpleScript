@@ -19,7 +19,8 @@ public final class ConstTypeExpression implements Expression {
             case "function":
                 return Type.Function;
             case "object":
-                return Type.Object;
+            case "map":
+                return Type.Map;
             case "number":
                 return Type.Number;
             case "array":

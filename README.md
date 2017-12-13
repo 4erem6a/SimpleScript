@@ -19,8 +19,8 @@
 * Map inheritance
 * Require/Exports statements
 * Modules \(user-defined\)
-  ## Roadmap:
 * Type conversion \(module/build-in\)
+  ## Roadmap:
 * Pattern matching
 
   # Modules:
@@ -36,10 +36,6 @@
 * Environment\(`"environment"`\)
 * Math\(`"math"`\)
 * ## Roadmap:
-* Desktop\(`"desktop"`\)
 * Types\(`"types"`\)
 
 ### See language manual at [gitBook](https://www.gitbook.com/book/4erem6a/simplescript-manual).
-
-
-

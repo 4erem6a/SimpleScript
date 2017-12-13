@@ -2,7 +2,6 @@ package desktop;
 
 import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
-import com.evg.ss.exceptions.lexer.SSLexerException;
 import com.evg.ss.values.Value;
 
 import java.io.IOException;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
 public final class Desktop {
 
     private static final Map<String, SSExecutionFlags> EXECUTION_FLAGS_MAP = new HashMap<>();
-    private static List<Value> PROGRAM_ARGS;
+    private static List<Value> PROGRAM_ARGS = new ArrayList<>();
     private static List<String> ARGS;
     private static boolean LOG, DEBUG;
     private static Path PROGRAM_PATH;
@@ -47,8 +46,8 @@ public final class Desktop {
         final List<String> tail = ARGS.stream().skip(1).collect(Collectors.toList());
         for (String arg : tail) {
             if (!EXECUTION_FLAGS_MAP.containsKey(arg)) {
-                PROGRAM_ARGS = tail.stream().skip(tail.indexOf(arg)).map(Value::of).collect(Collectors.toList());
-                break;
+                PROGRAM_ARGS.add(Value.of(arg));
+                continue;
             }
             if (flags.contains(EXECUTION_FLAGS_MAP.get(arg)))
                 exitWithMessage("Error: duplicate execution flags.");
@@ -72,14 +71,14 @@ public final class Desktop {
             log("Generating tokens ...");
             final SimpleScript script = SimpleScript.fromFile(programPath);
             execute(script);
-        } catch (SSLexerException e) {
+        } catch (Exception e) {
             except(e);
         }
     }
 
     public static void execute(SimpleScript script) {
         log("Parsing source code ...");
-        if (!script.isCompilabe())
+        if (!script.isCompilable())
             except(script.tryCompile());
         if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-t")))
             getTokens(script);

@@ -7,6 +7,7 @@ import com.evg.ss.exceptions.inner.SSReturnException;
 import com.evg.ss.parser.ast.ArgumentExpression;
 import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.values.NullValue;
+import com.evg.ss.values.Type;
 import com.evg.ss.values.Value;
 
 import java.util.Arrays;
@@ -15,8 +16,14 @@ import java.util.stream.Collectors;
 
 public final class SSFunction implements Function {
 
+    private String name = null;
     private final List<Argument> args;
     private final Statement body;
+
+    public SSFunction(String name, ArgumentExpression[] args, Statement body) {
+        this(args, body);
+        this.name = name;
+    }
 
     public SSFunction(ArgumentExpression[] args, Statement body) {
         this.args = Arrays.stream(args).map(ArgumentExpression::getArgument).collect(Collectors.toList());
@@ -62,6 +69,7 @@ public final class SSFunction implements Function {
                 argList.add(value);
             }
         }
+        CallStack.enter(name == null ? "$lambda" : name, this);
         SS.Scopes.up();
         for (int i = 0; i < argList.size(); i++)
             SS.Variables.put(this.args.get(i).getName(), argList.get(i), false);
@@ -72,11 +80,21 @@ public final class SSFunction implements Function {
             return e.getValue();
         }
         SS.Scopes.down();
+        CallStack.exit();
         return new NullValue();
+    }
+
+    private String getLambdaName() {
+        return String.format("$lambda:%d", hashCode());
     }
 
     @Override
     public int hashCode() {
-        return args.size() | args.stream().mapToInt(Argument::hashCode).reduce((a, b) -> a | b).getAsInt();
+        return Type.Function.ordinal() | args.size() | (args.size() > 0 ? args.stream().mapToInt(Argument::hashCode).reduce((a, b) -> a | b).getAsInt() : 0);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("function[%s]:%s", name != null ? name : "$lambda", hashCode());
     }
 }

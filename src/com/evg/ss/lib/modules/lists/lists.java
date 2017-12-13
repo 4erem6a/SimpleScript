@@ -4,10 +4,7 @@ import com.evg.ss.exceptions.execution.IndexOutOfBoundsException;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
-import com.evg.ss.values.ArrayValue;
-import com.evg.ss.values.MapValue;
-import com.evg.ss.values.NullValue;
-import com.evg.ss.values.NumberValue;
+import com.evg.ss.values.*;
 
 import java.util.Arrays;
 
@@ -52,6 +49,10 @@ public final class lists extends SSModule {
             if (index < 0 || index >= list.size())
                 throw new IndexOutOfBoundsException(index);
             return list.get(index);
+        });
+        builder.setMethod("size", v -> {
+            Arguments.checkArgcOrDie(v, 0);
+            return Value.of(list.size());
         });
         builder.setMethod("toArray", v -> {
             Arguments.checkArgcOrDie(v, 0);

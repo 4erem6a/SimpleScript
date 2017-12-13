@@ -24,7 +24,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 6, 0, 0);
+    public static Version VERSION = new Version(1, 6, 1, 0);
     private List<Token> tokens;
 
     private SimpleScript(List<Token> tokens) {
@@ -82,7 +82,7 @@ public final class SimpleScript {
         return null;
     }
 
-    public boolean isCompilabe() {
+    public boolean isCompilable() {
         try {
             new Parser(tokens).parse();
         } catch (SSException e) {
