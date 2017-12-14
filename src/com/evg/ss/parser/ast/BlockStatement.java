@@ -15,6 +15,14 @@ public final class BlockStatement implements Statement {
         statements.add(statement);
     }
 
+    public BlockStatement(List<Statement> statements) {
+        this.statements = statements;
+    }
+
+    public BlockStatement() {
+
+    }
+
     @Override
     public void execute() {
         SS.Scopes.up();

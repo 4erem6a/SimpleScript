@@ -83,6 +83,10 @@ public final class UnaryExpression implements Expression {
         visitor.visit(this);
     }
 
+    public UnaryOperations getOperator() {
+        return operator;
+    }
+
     @Override
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
@@ -101,8 +105,10 @@ public final class UnaryExpression implements Expression {
         PrefixDecrement("--"),
         PostfixIncrement("++"),
         PostfixDecrement("--");
-        public String key;
-
+        private String key;
+        public String getKey() {
+            return key;
+        }
         UnaryOperations(String operationKey) {
             this.key = operationKey;
         }

@@ -1,14 +1,8 @@
 //SimpleScript:
 require "io"
-require "arrays"
-require "lists"
+require local "module"
 
+function say(msg : string)
+    -> io.println(msg)
 
-
-/*
-    function Object() {
-        this.lol = "kek"
-    }
-
-    let x = new Object()
-*/
+say("Hello, world!")

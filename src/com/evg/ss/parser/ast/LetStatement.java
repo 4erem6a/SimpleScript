@@ -32,6 +32,10 @@ public final class LetStatement implements Statement {
         else throw new VariableAlreadyExistsException(name);
     }
 
+    public boolean isConst() {
+        return isConst;
+    }
+
     @Override
     public String toString() {
         return String.format("let %s%s = %s\n", isConst ? "const " : "", name, value);

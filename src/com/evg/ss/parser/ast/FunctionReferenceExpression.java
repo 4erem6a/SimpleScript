@@ -22,6 +22,10 @@ public final class FunctionReferenceExpression implements Expression {
         throw new FunctionNotFoundException(name);
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

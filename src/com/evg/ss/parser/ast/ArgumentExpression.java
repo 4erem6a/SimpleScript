@@ -21,4 +21,15 @@ public final class ArgumentExpression {
         return new Argument(name, defaultValue, type);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Expression getDefaultValue() {
+        return defaultValue;
+    }
+
+    public ConstTypeExpression getRequiredType() {
+        return requiredType;
+    }
 }

@@ -5,9 +5,6 @@ import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 public final class FunctionDefinitionStatement implements Statement {
 
     private String name;
@@ -18,6 +15,14 @@ public final class FunctionDefinitionStatement implements Statement {
         this.name = name;
         this.body = body;
         this.args = args;
+    }
+
+    public ArgumentExpression[] getArgs() {
+        return args;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

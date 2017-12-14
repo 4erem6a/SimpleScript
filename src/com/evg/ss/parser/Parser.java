@@ -11,6 +11,8 @@ import com.evg.ss.parser.ast.BinaryExpression.BinaryOperations;
 import com.evg.ss.values.NullValue;
 import com.evg.ss.values.Type;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -585,6 +587,10 @@ public final class Parser extends AbstractParser {
         int rollback = 1;
         if (!match(TokenType.Lp)) return false;
         if (!lookMatch(0, TokenType.Rp)) {
+            if (!lookMatch(0, TokenType.Word)) {
+                pos -= rollback;
+                return false;
+            }
             do {
                 rollback++;
                 result = result && match(TokenType.Word);
@@ -628,9 +634,9 @@ public final class Parser extends AbstractParser {
 
     private Expression type() {
         consume(TokenType.Lp);
-        final String type = consume().getValue();
+        final ConstTypeExpression type = (ConstTypeExpression) typename();
         consume(TokenType.Rp);
-        return new ConstTypeExpression(type);
+        return new TypeExpression(type);
     }
 
     private Expression typename() {

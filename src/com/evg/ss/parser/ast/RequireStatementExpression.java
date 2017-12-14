@@ -42,6 +42,18 @@ public final class RequireStatementExpression implements Statement, Expression {
         return module;
     }
 
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public String getVariableName() {
+        return variableName;
+    }
+
+    public RequireMode getMode() {
+        return mode;
+    }
+
     @Override
     public String toString() {
         return String.format("require(%s) as '%s'\n", moduleName, variableName);

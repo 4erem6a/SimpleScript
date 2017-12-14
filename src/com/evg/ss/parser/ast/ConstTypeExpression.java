@@ -39,6 +39,10 @@ public final class ConstTypeExpression implements Expression {
         }
     }
 
+    public Type getType() {
+        return type;
+    }
+
     @Override
     public Value eval() {
         return type.getTypeValue();

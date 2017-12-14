@@ -1,24 +1,20 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.execution.VariableNotFoundException;
-import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Value;
 
-public class NameofExpression implements Expression {
+public final class TypeExpression implements Expression {
 
-    private String name;
+    private ConstTypeExpression type;
 
-    public NameofExpression(String name) {
-        this.name = name;
+    public TypeExpression(ConstTypeExpression type) {
+        this.type = type;
     }
 
     @Override
     public Value eval() {
-        if (SS.Variables.exists(name))
-            return Value.of(name);
-        throw new VariableNotFoundException(name);
+        return type.getType().getTypeValue();
     }
 
     @Override
@@ -31,7 +27,7 @@ public class NameofExpression implements Expression {
         return visitor.visit(this);
     }
 
-    public String getName() {
-        return name;
+    public ConstTypeExpression getType() {
+        return type;
     }
 }

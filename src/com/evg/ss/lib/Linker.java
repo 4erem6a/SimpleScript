@@ -37,4 +37,7 @@ public final class Linker {
         return null;
     }
 
+    public static Map<String, Path> getLinks() {
+        return new HashMap<>(links);
+    }
 }

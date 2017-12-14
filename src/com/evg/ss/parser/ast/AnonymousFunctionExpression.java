@@ -28,6 +28,10 @@ public final class AnonymousFunctionExpression implements Expression {
         return body;
     }
 
+    public ArgumentExpression[] getArgs() {
+        return args;
+    }
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

@@ -193,6 +193,11 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(NameofExpression targer) {
+    public void visit(NameofExpression target) {
+    }
+
+    @Override
+    public void visit(TypeExpression typeExpression) {
+
     }
 }

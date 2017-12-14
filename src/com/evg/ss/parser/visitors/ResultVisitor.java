@@ -73,4 +73,6 @@ public interface ResultVisitor<TResult> {
     TResult visit(NameofExpression nameofExpression);
 
     TResult visit(AsExpression asExpression);
+
+    TResult visit(TypeExpression typeExpression);
 }

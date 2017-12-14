@@ -226,6 +226,10 @@ public final class BinaryExpression implements Expression {
         return right;
     }
 
+    public BinaryOperations getOperation() {
+        return operation;
+    }
+
     @Override
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
@@ -251,8 +255,10 @@ public final class BinaryExpression implements Expression {
         LessThenOrEquals("<="),
         Equals("=="),
         NotEquals("!=");
-        public String key;
-
+        private String key;
+        public String getKey() {
+            return key;
+        }
         BinaryOperations(String operationKey) {
             this.key = operationKey;
         }

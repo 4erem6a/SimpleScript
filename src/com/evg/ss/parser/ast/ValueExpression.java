@@ -32,6 +32,10 @@ public class ValueExpression implements Expression {
         return value;
     }
 
+    public Value getValue() {
+        return value;
+    }
+
     @Override
     public String toString() {
         return value.asString();

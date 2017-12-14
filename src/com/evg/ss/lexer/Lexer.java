@@ -201,7 +201,7 @@ public final class Lexer extends AbstractLexer {
         final StringBuilder buffer = new StringBuilder();
         char current = peek(0);
         while (Character.isDigit(current) || current == '.' || current == '_') {
-            if (current == '.')
+            if (current == '.' && buffer.indexOf(".") != -1)
                 throw new InvalidTokenDefinitionException(TokenType.Number, calculatePosition());
             if (current != '_')
                 buffer.append(current);

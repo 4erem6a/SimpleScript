@@ -6,6 +6,7 @@ import com.evg.ss.lexer.TokenType;
 import com.evg.ss.parser.ast.Expression;
 import com.evg.ss.parser.ast.Statement;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public abstract class AbstractParser {

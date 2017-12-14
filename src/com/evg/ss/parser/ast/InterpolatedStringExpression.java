@@ -23,6 +23,10 @@ public final class InterpolatedStringExpression extends ValueExpression {
         return String.format("$[%s]", string);
     }
 
+    public String getString() {
+        return string;
+    }
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

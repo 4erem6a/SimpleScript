@@ -2,6 +2,7 @@ package desktop;
 
 import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
+import com.evg.ss.lib.mssp.MSCVisitor;
 import com.evg.ss.values.Value;
 
 import java.io.IOException;
@@ -100,7 +101,7 @@ public final class Desktop {
 
     private static void getProgram(SimpleScript script) {
         System.out.println("PROGRAM: ");
-        System.out.println(script.compile().getProgram().toString());
+        System.out.println(script.compile().getProgram().accept(new MSCVisitor()));
         System.out.println("END.");
     }
 

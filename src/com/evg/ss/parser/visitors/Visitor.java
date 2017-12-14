@@ -73,4 +73,6 @@ public interface Visitor {
     void visit(NameofExpression nameofExpression);
 
     void visit(AsExpression asExpression);
+
+    void visit(TypeExpression typeExpression);
 }
