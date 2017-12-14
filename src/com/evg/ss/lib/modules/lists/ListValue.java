@@ -17,6 +17,10 @@ public class ListValue extends MapValue {
         setMap(base);
     }
 
+    public ListValue(ListValue list) {
+        this.list = list.list;
+    }
+
     public ListValue() {
         this.list = new ArrayList<>();
     }

@@ -1,4 +1,14 @@
+//SimpleScript:
 require "io"
-require "environment" as "env"
-require "interpreter" as "ss"
+require "arrays"
+require "lists"
 
+
+
+/*
+    function Object() {
+        this.lol = "kek"
+    }
+
+    let x = new Object()
+*/

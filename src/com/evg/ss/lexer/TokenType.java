@@ -79,6 +79,8 @@ public enum TokenType {
     As,         //as
     Local,      //local
     Nameof,     //nameof
+    Import,     //import
+    New,        //new
 
     //Utility:
     EOF

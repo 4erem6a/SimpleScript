@@ -1,10 +1,14 @@
 package com.evg.ss.lib.modules.arrays;
 
+import com.evg.ss.exceptions.execution.InvalidValueException;
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
+import com.evg.ss.util.builders.SSArrayBuilder;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
+
+import java.util.Arrays;
 
 public final class arrays extends SSModule {
 
@@ -13,6 +17,33 @@ public final class arrays extends SSModule {
         final SSMapBuilder builder = SSMapBuilder.create();
         builder.setMethod("length", this::length);
         builder.setMethod("resize", this::resize);
+        builder.setMethod("create", this::create);
+        return builder.build();
+    }
+
+    private Value create(Value... values) {
+        for (Value value : values)
+            Arguments.checkArgTypesOrDie(new Value[] {value}, Type.Number);
+        final int[] sizeArr = Arrays.stream(values).mapToInt(v -> v.asNumber().intValue()).toArray();
+        for (int size : sizeArr)
+            if (size < 1)
+                throw new InvalidValueException(Value.of(size));
+        return createArray(values, 0);
+    }
+
+    private ArrayValue createArray(Value[] args, int index) {
+        final int size = args[index].asNumber().intValue();
+        final int last = args.length - 1;
+        final SSArrayBuilder builder = SSArrayBuilder.create();
+        if (index == last) {
+            for (int i = 0; i < size; i++) {
+                builder.setElement(Value.of(0));
+            }
+        } else if (index < last) {
+            for (int i = 0; i < size; i++) {
+                builder.setElement(createArray(args, index + 1));
+            }
+        }
         return builder.build();
     }
 

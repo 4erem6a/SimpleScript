@@ -21,6 +21,8 @@
 * Modules \(user-defined\)
 * Type conversion \(module/build-in\)
   ## Roadmap:
+* JavaScript-like constructors (this/new)
+* Field import
 * Pattern matching
 
   # Modules:

@@ -17,9 +17,7 @@ public final class TernaryExpression implements Expression {
     @Override
     public Value eval() {
         final boolean condition = this.condition.eval().asBoolean();
-        final Value onTrue = this.onTrue.eval();
-        final Value onFalse = this.onFalse.eval();
-        return condition ? onTrue : onFalse;
+        return condition ? onTrue.eval() : onFalse.eval();
     }
 
     @Override
