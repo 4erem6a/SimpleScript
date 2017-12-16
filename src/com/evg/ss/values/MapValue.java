@@ -16,8 +16,7 @@ public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
         map.forEach(e -> this.map.put(e.getKey(), e.getValue()));
     }
 
-    public MapValue() {
-    }
+    public MapValue() {}
 
     public boolean containsKey(Value key) {
         return map.containsKey(key);

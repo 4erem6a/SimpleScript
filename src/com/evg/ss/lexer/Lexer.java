@@ -89,6 +89,7 @@ public final class Lexer extends AbstractLexer {
         KEYWORD_MAP.put("nameof", TokenType.Nameof);
         KEYWORD_MAP.put("import", TokenType.Import);
         KEYWORD_MAP.put("new", TokenType.New);
+        KEYWORD_MAP.put("this", TokenType.This);
     }
 
     public Lexer(String source) {

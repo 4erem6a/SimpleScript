@@ -20,9 +20,9 @@
 * Require/Exports statements
 * Modules \(user-defined\)
 * Type conversion \(module/build-in\)
-  ## Roadmap:
-* JavaScript-like constructors (this/new)
 * Field import
+* JavaScript-like constructors \(this/new\)
+  ## Roadmap:
 * Pattern matching
 
   # Modules:

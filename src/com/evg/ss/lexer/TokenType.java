@@ -81,6 +81,7 @@ public enum TokenType {
     Nameof,     //nameof
     Import,     //import
     New,        //new
+    This,       //this
 
     //Utility:
     EOF

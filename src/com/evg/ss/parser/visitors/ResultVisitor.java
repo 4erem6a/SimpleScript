@@ -75,4 +75,10 @@ public interface ResultVisitor<TResult> {
     TResult visit(AsExpression asExpression);
 
     TResult visit(TypeExpression typeExpression);
+
+    TResult visit(ImportStatement importStatement);
+
+    TResult visit(ThisExpression thisExpression);
+
+    TResult visit(NewExpression newExpression);
 }

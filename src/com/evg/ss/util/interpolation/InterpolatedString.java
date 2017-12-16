@@ -15,7 +15,7 @@ public final class InterpolatedString {
         this.string = string;
     }
 
-    private static String cutPlaceholders(String string) {
+    private static String cutBraces(String string) {
         return string.replace('{', ' ').replace('}', ' ').trim();
     }
 
@@ -23,7 +23,7 @@ public final class InterpolatedString {
         final Pattern pattern = Pattern.compile(InterpolatedString.pattern);
         Matcher matcher = pattern.matcher(string);
         while (matcher.find()) {
-            final String source = cutPlaceholders(matcher.group());
+            final String source = cutBraces(matcher.group());
             final SimpleScript ss = SimpleScript.fromSource(source);
             if (!ss.isExpressible())
                 throw new InvalidInterpolationException(source);

@@ -75,4 +75,10 @@ public interface Visitor {
     void visit(AsExpression asExpression);
 
     void visit(TypeExpression typeExpression);
+
+    void visit(ImportStatement importStatement);
+
+    void visit(ThisExpression thisExpression);
+
+    void visit(NewExpression newExpression);
 }

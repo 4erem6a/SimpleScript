@@ -2,7 +2,7 @@ package desktop;
 
 import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
-import com.evg.ss.lib.mssp.MSCVisitor;
+import com.evg.ss.lib.msc.MSCVisitor;
 import com.evg.ss.values.Value;
 
 import java.io.IOException;

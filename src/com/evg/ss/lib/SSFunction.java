@@ -6,6 +6,7 @@ import com.evg.ss.exceptions.execution.UnexpectedDefaultArgumentException;
 import com.evg.ss.exceptions.inner.SSReturnException;
 import com.evg.ss.parser.ast.ArgumentExpression;
 import com.evg.ss.parser.ast.Statement;
+import com.evg.ss.values.MapValue;
 import com.evg.ss.values.NullValue;
 import com.evg.ss.values.Type;
 import com.evg.ss.values.Value;
@@ -14,23 +15,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class SSFunction implements Function {
+public final class SSFunction implements ConstructorFunction {
 
     private String name = null;
     private final List<Argument> args;
     private final Statement body;
+    private MapValue callContext;
 
-    public SSFunction(String name, ArgumentExpression[] args, Statement body) {
-        this(args, body);
+    public SSFunction(MapValue callContext, String name, ArgumentExpression[] args, Statement body) {
+        this(callContext, args, body);
         this.name = name;
     }
 
-    public SSFunction(ArgumentExpression[] args, Statement body) {
+    public SSFunction(MapValue callContext, ArgumentExpression[] args, Statement body) {
         this.args = Arrays.stream(args).map(ArgumentExpression::getArgument).collect(Collectors.toList());
         this.body = body;
         for (int i = 0; i < this.args.size() - 2; i++)
             if (this.args.get(i).hasValue() && !this.args.get(i + 1).hasValue())
                 throw new UnexpectedDefaultArgumentException();
+        this.callContext = callContext == null ? new MapValue() : callContext;
     }
 
     private void tryValidateArgs(Value... args) {
@@ -73,15 +76,28 @@ public final class SSFunction implements Function {
         SS.Scopes.up();
         for (int i = 0; i < argList.size(); i++)
             SS.Variables.put(this.args.get(i).getName(), argList.get(i), false);
+        SS.CallContext.up(callContext);
         try {
             body.execute();
         } catch (SSReturnException e) {
+            SS.CallContext.down();
             SS.Scopes.down();
             return e.getValue();
         }
+        SS.CallContext.down();
         SS.Scopes.down();
         CallStack.exit();
         return new NullValue();
+    }
+
+    @Override
+    public MapValue executeAsNew(Value... args) {
+        final MapValue context = this.callContext;
+        this.callContext = new MapValue();
+        execute(args);
+        final MapValue result = this.callContext;
+        this.callContext = context;
+        return result;
     }
 
     private String getLambdaName() {

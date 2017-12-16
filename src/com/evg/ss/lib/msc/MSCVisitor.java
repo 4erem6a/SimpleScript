@@ -1,4 +1,4 @@
-package com.evg.ss.lib.mssp;
+package com.evg.ss.lib.msc;
 
 import com.evg.ss.parser.ast.*;
 import com.evg.ss.parser.visitors.ResultVisitor;
@@ -22,14 +22,14 @@ public class MSCVisitor implements ResultVisitor<String> {
                 argBuilder.append(String.format("=%s", arg.getDefaultValue().accept(this)));
             builder.append(argBuilder.append(',').toString());
         }
-        return builder.deleteCharAt(builder.length() - 1).toString();
+        return args.length > 0 ? builder.deleteCharAt(builder.length() - 1).toString() : "";
     }
 
     private String processArgs(Expression... args) {
         final StringBuilder builder = new StringBuilder();
         for (Expression arg : args)
             builder.append(arg.accept(this)).append(",");
-        return builder.deleteCharAt(builder.length() - 1).toString();
+        return args.length > 0 ? builder.deleteCharAt(builder.length() - 1).toString() : "";
     }
 
     @Override
@@ -180,7 +180,7 @@ public class MSCVisitor implements ResultVisitor<String> {
         final StringBuilder builder = new StringBuilder();
         for (Map.Entry<Expression, Expression> entry : target.getMap().entrySet())
             builder.append(entry.getKey().accept(this)).append(":").append(entry.getValue().accept(this)).append(",");
-        return String.format("{%s}", builder.deleteCharAt(builder.length() - 1).toString());
+        return String.format("{%s}", target.getMap().entrySet().size() > 0 ? builder.deleteCharAt(builder.length() - 1).toString() : "");
     }
 
     @Override
@@ -293,5 +293,20 @@ public class MSCVisitor implements ResultVisitor<String> {
     @Override
     public String visit(TypeExpression typeExpression) {
         return String.format("type(%s)", typeExpression.getType().accept(this));
+    }
+
+    @Override
+    public String visit(ImportStatement importStatement) {
+        return String.format("import %s", importStatement.getPath().accept(this));
+    }
+
+    @Override
+    public String visit(ThisExpression thisExpression) {
+        return "this";
+    }
+
+    @Override
+    public String visit(NewExpression newExpression) {
+        return String.format("new %s", newExpression.getFunctionCall().accept(this));
     }
 }

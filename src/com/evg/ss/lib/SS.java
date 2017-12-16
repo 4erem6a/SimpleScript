@@ -2,9 +2,40 @@ package com.evg.ss.lib;
 
 import com.evg.ss.lib.containers.FunctionMap;
 import com.evg.ss.lib.containers.VariableMap;
+import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 
 public final class SS {
+
+    // FIXME: 16.12.2017 call context
+    public static final class CallContext {
+
+        private CallContext parent;
+        private MapValue context;
+
+        private CallContext(CallContext parent, MapValue context) {
+            this.parent = parent;
+            this.context = context;
+        }
+
+        private CallContext(MapValue context) {
+            this(null, context);
+        }
+
+        private static CallContext callContext = null;
+
+        public static void up(MapValue context) {
+            callContext = new CallContext(callContext, context);
+        }
+
+        public static void down() {
+            callContext = callContext.parent;
+        }
+
+        public static MapValue get() {
+            return callContext == null ? null : callContext.context;
+        }
+    }
 
     public static final class Scopes {
 
@@ -24,8 +55,6 @@ public final class SS {
     }
 
     public static final class Functions {
-
-        public static final Functions INSTANCE = new Functions();
 
         private static FunctionMap top = new FunctionMap(null);
 
@@ -74,8 +103,6 @@ public final class SS {
     }
 
     public static final class Variables {
-
-        public static final Variables INSTANCE = new Variables();
 
         private static VariableMap top = new VariableMap(null);
 

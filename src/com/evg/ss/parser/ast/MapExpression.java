@@ -1,6 +1,7 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
+import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.MapValue;
@@ -31,8 +32,11 @@ public final class MapExpression implements Expression {
                 throw new InvalidValueTypeException(baseValue.getType());
             else map = new MapValue((MapValue) baseValue);
         } else map = new MapValue();
-        for (Map.Entry<Expression, Expression> entry : this.map.entrySet())
+        SS.CallContext.up(map);
+        for (Map.Entry<Expression, Expression> entry : this.map.entrySet()) {
             map.put(entry.getKey().eval(), entry.getValue().eval());
+        }
+        SS.CallContext.down();
         return map;
     }
 

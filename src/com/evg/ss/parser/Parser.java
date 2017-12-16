@@ -90,6 +90,8 @@ public final class Parser extends AbstractParser {
             return new ExportsStatement(expression());
         } else if (match(TokenType.Ar)) {
             return new ExpressionStatement(expression());
+        } else if (match(TokenType.Import)) {
+            return new ImportStatement(expression());
         } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
             return new FunctionStatement((FunctionCallExpression) function());
         } else {
@@ -440,16 +442,23 @@ public final class Parser extends AbstractParser {
 
     private Expression unary() {
         if (match(TokenType.Mn)) {
-            return new UnaryExpression(UnaryOperations.UnaryMinus, postfix());
+            return new UnaryExpression(UnaryOperations.UnaryMinus, allocation());
         }
         if (match(TokenType.Pl)) {
-            return new UnaryExpression(UnaryOperations.UnaryPlus, postfix());
+            return new UnaryExpression(UnaryOperations.UnaryPlus, allocation());
         }
         if (match(TokenType.PlPl)) {
-            return new UnaryExpression(UnaryOperations.PrefixIncrement, postfix());
+            return new UnaryExpression(UnaryOperations.PrefixIncrement, allocation());
         }
         if (match(TokenType.MnMn)) {
-            return new UnaryExpression(UnaryOperations.PrefixDecrement, postfix());
+            return new UnaryExpression(UnaryOperations.PrefixDecrement, allocation());
+        }
+        return allocation();
+    }
+
+    private Expression allocation() {
+        if (match(TokenType.New)) {
+            return new NewExpression(expression());
         }
         return postfix();
     }
@@ -523,6 +532,8 @@ public final class Parser extends AbstractParser {
             return nameof();
         }  else if (match(TokenType.Require)) {
             return requireExpression();
+        } else if (match(TokenType.This)) {
+            return new ThisExpression();
         } else if (match(TokenType.ClCl)) {
             return new FunctionReferenceExpression(consume(TokenType.Word).getValue());
         } else if (match(TokenType.Lc)) {

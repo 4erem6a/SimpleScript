@@ -24,6 +24,7 @@ public class ArrayValue implements Value, Iterable<Value> {
     public void resize(int size) {
         final Value[] newValue = new Value[size];
         System.arraycopy(value, 0, newValue, 0, newValue.length > value.length ? value.length : newValue.length);
+        this.value = newValue;
     }
 
     public int length() {

@@ -194,10 +194,26 @@ public abstract class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(NameofExpression target) {
+
     }
 
     @Override
-    public void visit(TypeExpression typeExpression) {
+    public void visit(TypeExpression target) {
 
+    }
+
+    @Override
+    public void visit(ImportStatement importStatement) {
+        importStatement.getPath().accept(this);
+    }
+
+    @Override
+    public void visit(ThisExpression thisExpression) {
+
+    }
+
+    @Override
+    public void visit(NewExpression newExpression) {
+        newExpression.getFunctionCall().accept(this);
     }
 }

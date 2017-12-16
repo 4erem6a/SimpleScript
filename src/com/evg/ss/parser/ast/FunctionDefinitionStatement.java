@@ -27,7 +27,7 @@ public final class FunctionDefinitionStatement implements Statement {
 
     @Override
     public void execute() {
-        SS.Functions.put(name, new SSFunction(name, args, body));
+        SS.Functions.put(name, new SSFunction(null, name, args, body));
     }
 
     @Override

@@ -1,10 +1,13 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
+import com.evg.ss.lib.ConstructorFunction;
+import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.FunctionValue;
+import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 
 import java.util.Arrays;
@@ -13,6 +16,7 @@ public final class FunctionCallExpression implements Expression {
 
     private Expression function;
     private Expression[] args;
+    private boolean isNew = false;
 
     public FunctionCallExpression(Expression function, Expression... args) {
         this.function = function;
@@ -35,7 +39,17 @@ public final class FunctionCallExpression implements Expression {
         }
         if (!(functionValue instanceof FunctionValue))
             throw new InvalidValueTypeException(functionValue.getType());
-        return ((FunctionValue) functionValue).getValue().execute(args);
+        final Function function = ((FunctionValue) functionValue).getValue();
+        if (isNew)
+            return function instanceof ConstructorFunction
+                    ? ((ConstructorFunction) function).executeAsNew(args)
+                    : new MapValue();
+        return function.execute(args);
+    }
+
+    public FunctionCallExpression setNew() {
+        this.isNew = true;
+        return this;
     }
 
     @Override

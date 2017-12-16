@@ -6,6 +6,7 @@ import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.ArrayValue;
+import com.evg.ss.values.FunctionValue;
 import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 

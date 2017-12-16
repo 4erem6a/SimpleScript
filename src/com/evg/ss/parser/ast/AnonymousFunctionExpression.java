@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.SS;
 import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
@@ -21,7 +22,7 @@ public final class AnonymousFunctionExpression implements Expression {
 
     @Override
     public Value eval() {
-        return new FunctionValue(new SSFunction(args, body));
+        return new FunctionValue(new SSFunction(SS.CallContext.get(), args, body));
     }
 
     public Statement getBody() {
