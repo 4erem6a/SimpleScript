@@ -10,6 +10,7 @@ public final class SS {
     // FIXME: 16.12.2017 call context
     public static final class CallContext {
 
+        private static CallContext callContext = null;
         private CallContext parent;
         private MapValue context;
 
@@ -21,8 +22,6 @@ public final class SS {
         private CallContext(MapValue context) {
             this(null, context);
         }
-
-        private static CallContext callContext = null;
 
         public static void up(MapValue context) {
             callContext = new CallContext(callContext, context);

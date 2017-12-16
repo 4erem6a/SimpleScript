@@ -106,11 +106,13 @@ public final class UnaryExpression implements Expression {
         PostfixIncrement("++"),
         PostfixDecrement("--");
         private String key;
-        public String getKey() {
-            return key;
-        }
+
         UnaryOperations(String operationKey) {
             this.key = operationKey;
+        }
+
+        public String getKey() {
+            return key;
         }
     }
 }

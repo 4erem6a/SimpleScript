@@ -1,7 +1,8 @@
 //SimpleScript v1.7:
 //Quick SS implementation of `lists` module:
 import require("io").println    //SS v1.7: Field import
-
+require local "lists"
+println(lists)
 function List() {
 
     import require("arrays").resize

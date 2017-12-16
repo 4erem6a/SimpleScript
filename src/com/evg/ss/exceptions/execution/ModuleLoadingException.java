@@ -8,7 +8,9 @@ public final class ModuleLoadingException extends SSExecutionException {
     }
 
     public ModuleLoadingException(String name, Exception innerException) {
-        this(name);
+        super(String.format("Unable to load module '%s':\n\t\t%s\n\t\t%s", name,
+                innerException.getClass().getSimpleName(),
+                innerException.getMessage()));
         this.innerException = innerException;
     }
 

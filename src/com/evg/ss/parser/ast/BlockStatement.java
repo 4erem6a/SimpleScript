@@ -11,16 +11,16 @@ public final class BlockStatement implements Statement {
 
     private List<Statement> statements = new ArrayList<>();
 
-    public void addStatement(Statement statement) {
-        statements.add(statement);
-    }
-
     public BlockStatement(List<Statement> statements) {
         this.statements = statements;
     }
 
     public BlockStatement() {
 
+    }
+
+    public void addStatement(Statement statement) {
+        statements.add(statement);
     }
 
     @Override

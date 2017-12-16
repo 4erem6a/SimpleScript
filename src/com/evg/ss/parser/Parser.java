@@ -9,10 +9,7 @@ import com.evg.ss.lexer.TokenType;
 import com.evg.ss.parser.ast.*;
 import com.evg.ss.parser.ast.BinaryExpression.BinaryOperations;
 import com.evg.ss.values.NullValue;
-import com.evg.ss.values.Type;
 
-import java.sql.Time;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -530,7 +527,7 @@ public final class Parser extends AbstractParser {
             return typeof();
         } else if (match(TokenType.Nameof)) {
             return nameof();
-        }  else if (match(TokenType.Require)) {
+        } else if (match(TokenType.Require)) {
             return requireExpression();
         } else if (match(TokenType.This)) {
             return new ThisExpression();

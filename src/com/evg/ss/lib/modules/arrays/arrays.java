@@ -23,7 +23,7 @@ public final class arrays extends SSModule {
 
     private Value create(Value... values) {
         for (Value value : values)
-            Arguments.checkArgTypesOrDie(new Value[] {value}, Type.Number);
+            Arguments.checkArgTypesOrDie(new Value[]{value}, Type.Number);
         final int[] sizeArr = Arrays.stream(values).mapToInt(v -> v.asNumber().intValue()).toArray();
         for (int size : sizeArr)
             if (size < 1)

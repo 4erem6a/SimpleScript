@@ -256,11 +256,13 @@ public final class BinaryExpression implements Expression {
         Equals("=="),
         NotEquals("!=");
         private String key;
-        public String getKey() {
-            return key;
-        }
+
         BinaryOperations(String operationKey) {
             this.key = operationKey;
+        }
+
+        public String getKey() {
+            return key;
         }
     }
 }

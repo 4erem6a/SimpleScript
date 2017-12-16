@@ -16,6 +16,20 @@ public class Converter {
         this.to = to;
     }
 
+    private static Value array2bool(Value array) {
+        return Value.of(Arrays.stream(((ArrayValue) array).getValue()).map(Value::asBoolean).reduce((a, b) -> a && b).get());
+    }
+
+    private static Value array2map(Value array) {
+        final List<Value> values = Arrays.stream(((ArrayValue) array).getValue()).collect(Collectors.toList());
+        if (values.size() % 2 != 0)
+            values.add(new NullValue());
+        final SSMapBuilder mapBuilder = SSMapBuilder.create();
+        for (int i = 0; i < values.size(); i += 2)
+            mapBuilder.setField(values.get(i), values.get(i + 1));
+        return mapBuilder.build();
+    }
+
     public Value convert(Value target) {
         switch (from) {
             case Number:
@@ -111,19 +125,5 @@ public class Converter {
                 }
         }
         return new NullValue();
-    }
-
-    private static Value array2bool(Value array) {
-        return Value.of(Arrays.stream(((ArrayValue) array).getValue()).map(Value::asBoolean).reduce((a, b) -> a && b).get());
-    }
-
-    private static Value array2map(Value array) {
-        final List<Value> values = Arrays.stream(((ArrayValue) array).getValue()).collect(Collectors.toList());
-        if (values.size() % 2 != 0)
-            values.add(new NullValue());
-        final SSMapBuilder mapBuilder = SSMapBuilder.create();
-        for (int i = 0; i < values.size(); i += 2)
-            mapBuilder.setField(values.get(i), values.get(i + 1));
-        return mapBuilder.build();
     }
 }

@@ -7,9 +7,6 @@ import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.FunctionValue;
 import com.evg.ss.values.Value;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 public final class AnonymousFunctionExpression implements Expression {
 
     private ArgumentExpression[] args;

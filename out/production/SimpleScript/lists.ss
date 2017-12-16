@@ -1,0 +1,3 @@
+exports {
+    msg: 10
+}

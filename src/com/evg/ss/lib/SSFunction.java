@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 
 public final class SSFunction implements ConstructorFunction {
 
-    private String name = null;
     private final List<Argument> args;
     private final Statement body;
+    private String name = null;
     private MapValue callContext;
 
     public SSFunction(MapValue callContext, String name, ArgumentExpression[] args, Statement body) {
@@ -37,7 +37,7 @@ public final class SSFunction implements ConstructorFunction {
     }
 
     private void tryValidateArgs(Value... args) {
-        final int minArgc = (int)this.args.stream().filter(arg -> !arg.hasValue()).count();
+        final int minArgc = (int) this.args.stream().filter(arg -> !arg.hasValue()).count();
         final int maxArgc = this.args.size();
         if (args.length < minArgc || args.length > maxArgc)
             throw new ArgumentCountMismatchException(args.length < minArgc ? minArgc : maxArgc, args.length);
