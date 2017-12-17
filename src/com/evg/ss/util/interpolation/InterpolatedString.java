@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public final class InterpolatedString {
 
-    private final static String pattern = "\\{[^{}]*}";
+    private final static String PATTERN = "\\{[^{}]*}";
     private String string;
 
     public InterpolatedString(String string) {
@@ -20,7 +20,7 @@ public final class InterpolatedString {
     }
 
     public String calculate() {
-        final Pattern pattern = Pattern.compile(InterpolatedString.pattern);
+        final Pattern pattern = Pattern.compile(InterpolatedString.PATTERN);
         Matcher matcher = pattern.matcher(string);
         while (matcher.find()) {
             final String source = cutBraces(matcher.group());

@@ -2,16 +2,19 @@ package com.evg.ss;
 
 import com.evg.ss.exceptions.SSException;
 import com.evg.ss.exceptions.execution.SSExecutionException;
+import com.evg.ss.exceptions.inner.SSExportsException;
 import com.evg.ss.exceptions.lexer.SSLexerException;
 import com.evg.ss.exceptions.parser.SSParserException;
 import com.evg.ss.lexer.Lexer;
 import com.evg.ss.lexer.Token;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.Parser;
 import com.evg.ss.parser.ast.Expression;
 import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.parser.visitors.FunctionAdder;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
+import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 
 import java.io.File;
@@ -24,7 +27,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 6, 0, 0);
+    public static Version VERSION = new Version(1, 7, 2, 1);
     private List<Token> tokens;
 
     private SimpleScript(List<Token> tokens) {
@@ -154,6 +157,19 @@ public final class SimpleScript {
         public void execute() throws SSExecutionException {
             DEFAULT_VISITORS.forEach(program::accept);
             program.execute();
+        }
+
+        public String toMSC() {
+            return new MSCGenerator(this).generate();
+        }
+
+        public MapValue require() {
+            try {
+                program.execute();
+            } catch (SSExportsException e) {
+                return (MapValue) e.getValue();
+            }
+            return null;
         }
 
         public Statement getProgram() {

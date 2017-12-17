@@ -18,6 +18,7 @@ public final class arrays extends SSModule {
         builder.setMethod("length", this::length);
         builder.setMethod("resize", this::resize);
         builder.setMethod("create", this::create);
+        builder.setMethod("copy", this::copy);
         return builder.build();
     }
 
@@ -68,5 +69,29 @@ public final class arrays extends SSModule {
                 ((ArrayValue) args[0]);
         array.resize(args[1].asNumber().intValue());
         return array;
+    }
+
+    private Value copy(Value... args) {
+        Arguments.checkArgcOrDie(args, 5);
+        if (!Arguments.checkArgTypes(args, Type.Array, Type.Number, Type.Array, Type.Number, Type.Number) &&
+                !Arguments.checkArgTypes(args, Type.String, Type.Number, Type.String, Type.Number, Type.Number))
+            throw new InvalidValueTypeException(args[0].getType());
+        final ArrayValue from = args[0] instanceof StringValue ?
+                ((StringValue) args[0]).asCharArray() :
+                ((ArrayValue) args[0]);
+        final ArrayValue to = args[2] instanceof StringValue ?
+                ((StringValue) args[2]).asCharArray() :
+                ((ArrayValue) args[2]);
+        final int fromIdx = args[1].asNumber().intValue();
+        final int toIdx = args[3].asNumber().intValue();
+        final int length = args[4].asNumber().intValue();
+        if (fromIdx < 0 || fromIdx >= from.length())
+            throw new InvalidValueException(args[1]);
+        if (toIdx < 0 || toIdx >= to.length())
+            throw new InvalidValueException(args[3]);
+        if (length < 0)
+            throw new InvalidValueException(args[4]);
+        System.arraycopy(from.getValue(), fromIdx, to.getValue(), toIdx, length);
+        return to;
     }
 }
