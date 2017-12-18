@@ -2,6 +2,7 @@ package com.evg.ss.parser;
 
 import com.evg.ss.exceptions.SSException;
 import com.evg.ss.exceptions.execution.InvalidInterpolationException;
+import com.evg.ss.exceptions.parser.ParserException;
 import com.evg.ss.exceptions.parser.SSParserException;
 import com.evg.ss.exceptions.parser.UnexpectedTokenException;
 import com.evg.ss.lexer.Token;
@@ -124,16 +125,19 @@ public final class Parser extends AbstractParser {
     }
 
     private ArgumentExpression argument() {
+        final boolean variadic = match(TokenType.Params);
         final String name = consume(TokenType.Word).getValue();
         final ConstTypeExpression type;
         final Expression value;
         if (match(TokenType.Cl))
             type = (ConstTypeExpression) typename();
         else type = null;
-        if (match(TokenType.Eq))
+        if (match(TokenType.Eq)) {
+            if (variadic)
+                throw new ParserException("Variadic arguments can't have any default value.");
             value = value();
-        else value = null;
-        return new ArgumentExpression(name, type, value);
+        } else value = null;
+        return new ArgumentExpression(name, variadic, type, value);
     }
 
     private Statement functionDefinition() {

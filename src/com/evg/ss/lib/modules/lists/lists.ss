@@ -1,6 +1,6 @@
 //SimpleScript'StdLibrary: lists
-//Implemented in SS v1.7
-//Version: 1.0
+//Implemented in SS v1.7.2:
+//Version: 1.1
 function List(size : number = 0) {                  //List constructor
 
     require "arrays"
@@ -11,6 +11,17 @@ function List(size : number = 0) {                  //List constructor
 
     this.toArray = function() -> this.array
     this.get = function(idx : number) -> this.array[idx]
+    this.size = () -> require("arrays").length(this.array)
+
+    this.sequence = function() {
+
+        require "sequences"
+
+        let result = new sequences.Sequence()
+        result.list = this
+        return result
+
+    }
 
     this.add = function(value) {                    //Add element to the list
 
@@ -90,9 +101,16 @@ function fromArray(array : array) {                 //Create new list from array
 
 }
 
+function of(params args) {                          //Create new list from sequence of elements
+
+    return fromArray(args)
+
+}
+
 exports {
 
-    List: ::List,
-    fromArray: ::fromArray
+    List:       ::List,
+    fromArray:  ::fromArray,
+    of:         ::of
 
 }

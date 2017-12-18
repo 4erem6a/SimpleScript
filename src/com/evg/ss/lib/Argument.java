@@ -8,9 +8,11 @@ public final class Argument {
     private final String name;
     private final Expression value;
     private final Type type;
+    private final boolean isVariadic;
 
-    public Argument(String name, Expression value, Type type) {
+    public Argument(String name, boolean isVariadic, Expression value, Type type) {
         this.name = name;
+        this.isVariadic = isVariadic;
         this.value = value;
         this.type = type;
     }
@@ -33,6 +35,10 @@ public final class Argument {
 
     public boolean hasValue() {
         return value != null;
+    }
+
+    public boolean isVariadic() {
+        return isVariadic;
     }
 
     @Override

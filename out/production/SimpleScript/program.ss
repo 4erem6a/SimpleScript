@@ -1,14 +1,8 @@
-//SimpleScript v1.7:
+//SimpleScript v1.7.2:
 require "io"
 require "lists"
-import io.println
+require "sequences"
 
-let list = new lists.List()
+let seq = lists.of(1, 2, 3, 4, 5).sequence()
 
-list.add(1)
-list.add(2)
-list.add(true)
-list.insert("msg", 2)
-list.remove(2)
-
-println(list.toArray())
+io.println(seq.map((e) -> (e % 2 == 0)).add(6, 7, 8, 9).array())

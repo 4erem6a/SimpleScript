@@ -2,6 +2,7 @@ package desktop;
 
 import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
+import com.evg.ss.lib.CallStack;
 import com.evg.ss.lib.msc.MSCVisitor;
 import com.evg.ss.values.Value;
 
@@ -113,7 +114,7 @@ public final class Desktop {
     private static void except(Exception e) {
         if (DEBUG)
             e.printStackTrace();
-        exitWithMessage("Error: \n\t%s\n\t%s", e.getClass().getSimpleName(), e.getMessage());
+        exitWithMessage("Error: \n\t%s\n\t%s\nStackTrace: \n%s", e.getClass().getSimpleName(), e.getMessage(), CallStack.getCalls());
     }
 
     private static void exitWithMessage(String message, Object... format) {

@@ -43,6 +43,10 @@ public enum TokenType {
     ExEq,       //!=
     MnAr,       //->
     ClCl,       //::
+    ArAr,       //>>
+    AlAl,       //<<
+    ArArAr,     //>>>
+    DtDtDt,     //...
     Cl,         //:
     Dt,         //.
     Cm,         //,
@@ -82,6 +86,7 @@ public enum TokenType {
     Import,     //import
     New,        //new
     This,       //this
+    Params,     //params
 
     //Utility:
     EOF
