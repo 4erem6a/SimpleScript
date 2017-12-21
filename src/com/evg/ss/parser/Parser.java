@@ -14,7 +14,7 @@ import com.evg.ss.values.NullValue;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.evg.ss.parser.ast.RequireStatementExpression.RequireMode;
+import static com.evg.ss.parser.ast.RequireExpression.RequireMode;
 import static com.evg.ss.parser.ast.UnaryExpression.UnaryOperations;
 
 /**
@@ -90,8 +90,6 @@ public final class Parser extends AbstractParser {
             return new ExpressionStatement(expression());
         } else if (match(TokenType.Import)) {
             return new ImportStatement(expression());
-        } else if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Lp)) {
-            return new FunctionStatement((FunctionCallExpression) function());
         } else {
             return new ExpressionStatement(expression());
         }
@@ -166,11 +164,11 @@ public final class Parser extends AbstractParser {
         if (external) {
             consume(TokenType.As);
             variable = consume(TokenType.String).getValue();
-            return new RequireStatementExpression(name, variable, RequireMode.EXTERNAL);
+            return new RequireStatement(name, variable, RequireMode.EXTERNAL);
         } else if (match(TokenType.As))
             variable = consume(TokenType.String).getValue();
         else variable = null;
-        return new RequireStatementExpression(name, variable, local ? RequireMode.LOCAL : RequireMode.MODULE);
+        return new RequireStatement(name, variable, local ? RequireMode.LOCAL : RequireMode.MODULE);
     }
 
     private Expression requireExpression() {
@@ -179,7 +177,7 @@ public final class Parser extends AbstractParser {
         final boolean isParenSurrounded = match(TokenType.Lp);
         final String name = consume(TokenType.String).getValue();
         if (isParenSurrounded) consume(TokenType.Rp);
-        return new RequireStatementExpression(name, external
+        return new RequireExpression(name, external
                 ? RequireMode.EXTERNAL : local
                 ? RequireMode.LOCAL : RequireMode.MODULE);
     }

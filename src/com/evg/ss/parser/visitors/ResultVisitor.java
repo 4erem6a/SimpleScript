@@ -38,8 +38,6 @@ public interface ResultVisitor<TResult> {
 
     TResult visit(FunctionReferenceExpression target);
 
-    TResult visit(FunctionStatement target);
-
     TResult visit(IfStatement target);
 
     TResult visit(InterpolatedStringExpression target);
@@ -50,7 +48,7 @@ public interface ResultVisitor<TResult> {
 
     TResult visit(MapExpression target);
 
-    TResult visit(RequireStatementExpression target);
+    TResult visit(RequireStatement target);
 
     TResult visit(ReturnStatement target);
 
@@ -81,4 +79,6 @@ public interface ResultVisitor<TResult> {
     TResult visit(ThisExpression thisExpression);
 
     TResult visit(NewExpression newExpression);
+
+    TResult visit(RequireExpression requireExpression);
 }

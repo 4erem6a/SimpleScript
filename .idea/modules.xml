@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SimpleScript.iml" filepath="$PROJECT_DIR$/SimpleScript.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SimpleScriptLanguage.iml" filepath="$PROJECT_DIR$/SimpleScriptLanguage.iml" />
     </modules>
   </component>
 </project>

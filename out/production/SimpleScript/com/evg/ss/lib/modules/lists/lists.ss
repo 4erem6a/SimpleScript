@@ -1,17 +1,23 @@
-//SimpleScript'StdLibrary: lists
-//Implemented in SS v1.7.2:
-//Version: 1.1
-function List(size : number = 0) {                  //List constructor
+//SimpleScript'StandardLibrary: lists
+//Version: 1.2
+/*Dependencies:
+ *  arrays
+ *  sequences
+ */
+require "arrays"
 
-    require "arrays"
-    import arrays.length
-    import arrays.create
+import arrays.length
+import arrays.create
+import arrays.resize
+import arrays.copy
+
+function List(size : number = 0) {
 
     this.array = (size > 0 ? create(size) : [])
 
     this.toArray = function() -> this.array
     this.get = function(idx : number) -> this.array[idx]
-    this.size = () -> require("arrays").length(this.array)
+    this.size = () -> length(this.array)
 
     this.sequence = function() {
 
@@ -23,22 +29,14 @@ function List(size : number = 0) {                  //List constructor
 
     }
 
-    this.add = function(value) {                    //Add element to the list
-
-        require "arrays"
-        import arrays.length
-        import arrays.resize
+    this.add = function(value) {
 
         this.array = resize(this.array, length(this.array) + 1)
         this.array[length(this.array) - 1] = value
 
     }
 
-    this.addAll = function(array : array) {         //Add elements from array to the list
-
-        require "arrays"
-        import arrays.length
-        import arrays.resize
+    this.addAll = function(array : array) {
 
         let oldLength = length(this.array)
         this.array = resize(this.array, oldLength + length(array))
@@ -48,11 +46,7 @@ function List(size : number = 0) {                  //List constructor
 
     }
 
-    this.remove = function(value) {                 //Remove element from the list by value
-
-        require "arrays"
-        import arrays.length
-        import arrays.copy
+    this.remove = function(value) {
 
         for (let i = 0; i < length(this.array); i++)
             if (this.array[i] == value) {
@@ -62,24 +56,14 @@ function List(size : number = 0) {                  //List constructor
 
     }
 
-    this.removeAt = function(idx : number) {        //Remove element from the list by index
-
-        require "arrays"
-        import arrays.length
-        import arrays.resize
-        import arrays.copy
+    this.removeAt = function(idx : number) {
 
         copy(this.array, idx + 1, this.array, idx, length(this.array) - (idx + 1))
         this.array = resize(this.array, length(this.array) - 1)
 
     }
 
-    this.insert = function(value, idx : number) {   //Insert element to the list
-
-        require "arrays"
-        import arrays.length
-        import arrays.resize
-        import arrays.copy
+    this.insert = function(value, idx : number) {
 
         let oldLength = length(this.array)
         this.array = resize(this.array, oldLength + 1)
@@ -90,7 +74,7 @@ function List(size : number = 0) {                  //List constructor
 
 }
 
-function fromArray(array : array) {                 //Create new list from array elements
+function fromArray(array : array) {
 
     let list = new List()
 
@@ -101,7 +85,7 @@ function fromArray(array : array) {                 //Create new list from array
 
 }
 
-function of(params args) {                          //Create new list from sequence of elements
+function of(params args) {
 
     return fromArray(args)
 

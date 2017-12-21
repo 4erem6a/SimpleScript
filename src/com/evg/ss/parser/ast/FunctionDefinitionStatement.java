@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.visitors.ResultVisitor;
@@ -25,9 +26,13 @@ public final class FunctionDefinitionStatement implements Statement {
         return name;
     }
 
+    public Function getFunction() {
+        return new SSFunction(null, name, args, body);
+    }
+
     @Override
     public void execute() {
-        SS.Functions.put(name, new SSFunction(null, name, args, body));
+        SS.Functions.put(name, getFunction());
     }
 
     @Override

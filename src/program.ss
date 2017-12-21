@@ -1,8 +1,11 @@
 //SimpleScript v1.7.2:
 require "io"
 require "lists"
-require "sequences"
 
-let seq = lists.of(1, 2, 3, 4, 5).sequence()
+import lists.of
 
-io.println(seq.map((e) -> (e % 2 == 0)).add(6, 7, 8, 9).array())
+io.println(of(1, 2, 3, 4).sequence().filter((e) -> e % 2 == 0).array())
+
+io.println(of([1, 2], [3, 4]).sequence().flatMap((e) -> [e[0], e[1]]).array())
+
+of(1, 2, 3, 4).sequence().map((e) -> ++e).forEach(io.println)

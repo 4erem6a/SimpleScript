@@ -1,5 +1,6 @@
 package com.evg.ss.parser.visitors;
 
+import com.evg.ss.linter.LintException;
 import com.evg.ss.parser.ast.*;
 
 import java.util.Arrays;
@@ -98,11 +99,6 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(FunctionStatement target) {
-        target.getExpression().accept(this);
-    }
-
-    @Override
     public void visit(IfStatement target) {
         target.getCondition().accept(this);
         target.getIfStatement().accept(this);
@@ -133,7 +129,8 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(RequireStatementExpression target) {
+    public void visit(RequireStatement target) {
+        target.getExpression().accept(this);
     }
 
     @Override
@@ -177,7 +174,7 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(VariableExpression target) {
+    public void visit(VariableExpression target) throws LintException {
     }
 
     @Override
@@ -203,17 +200,21 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(ImportStatement importStatement) {
-        importStatement.getPath().accept(this);
+    public void visit(ImportStatement target) {
+        target.getPath().accept(this);
     }
 
     @Override
-    public void visit(ThisExpression thisExpression) {
+    public void visit(ThisExpression target) {
 
     }
 
     @Override
-    public void visit(NewExpression newExpression) {
-        newExpression.getFunctionCall().accept(this);
+    public void visit(NewExpression target) {
+        target.getFunctionCall().accept(this);
+    }
+
+    @Override
+    public void visit(RequireExpression target) {
     }
 }

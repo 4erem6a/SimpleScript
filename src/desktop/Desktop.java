@@ -2,8 +2,10 @@ package desktop;
 
 import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
+import com.evg.ss.exceptions.execution.SSExecutionException;
 import com.evg.ss.lib.CallStack;
 import com.evg.ss.lib.msc.MSCVisitor;
+import com.evg.ss.linter.LintException;
 import com.evg.ss.values.Value;
 
 import java.io.IOException;
@@ -68,20 +70,38 @@ public final class Desktop {
         Environment.putEnvVariable(Environment.EXECUTABLE_PATH, Value.of(programPath.toString()), true);
         Environment.putEnvVariable(Environment.EXECUTABLE_DIR, Value.of(programDir.toString()), true);
         Environment.putEnvVariable(Environment.PROGRAM_ARGS, Value.of(PROGRAM_ARGS.toArray(new Value[0])), true);
+        log("Complete\n");
 
         try {
-            log("Generating tokens ...");
+            log("Generating tokens ... ");
             final SimpleScript script = SimpleScript.fromFile(programPath);
-            execute(script);
+            log("Complete\n");
+            parse(script);
         } catch (Exception e) {
             except(e);
         }
     }
 
-    public static void execute(SimpleScript script) {
-        log("Parsing source code ...");
+    private static void parse(SimpleScript script) {
+        log("Parsing source code ... ");
         if (!script.isCompilable())
             except(script.tryCompile());
+        log("Complete\n");
+        lint(script);
+    }
+
+    private static void lint(SimpleScript script) {
+        log("Running lint ... ");
+        try {
+            script.compile().lint();
+        } catch (LintException e) {
+            exitWithMessage("Lint error: \n\t%s", e.getMessage());
+        }
+        log("Complete\n");
+        execute(script);
+    }
+
+    public static void execute(SimpleScript script) {
         if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-t")))
             getTokens(script);
         if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-p")))
@@ -108,13 +128,18 @@ public final class Desktop {
 
     private static void log(String message, Object... format) {
         if (LOG)
-            System.out.println(String.format(message, format));
+            System.out.printf(message, format);
     }
 
     private static void except(Exception e) {
         if (DEBUG)
             e.printStackTrace();
-        exitWithMessage("Error: \n\t%s\n\t%s\nStackTrace: \n%s", e.getClass().getSimpleName(), e.getMessage(), CallStack.getCalls());
+        if (e instanceof SSExecutionException)
+            exitWithMessage("Error: \n\t%s\n\t%s\nStackTrace: \n%s",
+                    e.getClass().getSimpleName(),
+                    e.getMessage(),
+                    CallStack.getCalls().stream().map(call -> call.toString() + "\n"));
+        else exitWithMessage("Error: \n\t%s\n\t%s\n", e.getClass().getSimpleName(), e.getMessage());
     }
 
     private static void exitWithMessage(String message, Object... format) {

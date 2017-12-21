@@ -16,6 +16,19 @@ public abstract class SSModule {
 
     private static final String MODULE_PACKAGE = "com.evg.ss.lib.modules.%s.%s";
 
+    public static String getModuleClassName(String name) {
+        return String.format(MODULE_PACKAGE, name, name);
+    }
+
+    public static boolean isModuleExists(String name) {
+        try {
+            Class.forName(getModuleClassName(name));
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
+
     public static Value require(String name) {
         final String className = String.format(MODULE_PACKAGE, name, name);
         try {

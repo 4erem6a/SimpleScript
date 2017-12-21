@@ -1,20 +1,22 @@
-//SimpleScript'StdLibrary: sequences\sequence
-function Sequence() {
+//SimpleScript'StandardLibrary: sequences
+//Version: 1.2
+/*Dependencies:
+ *  arrays
+ *  sequences
+ */
+require "lists"
 
-    require "lists"
-    import lists.List
-    import lists.fromArray
-    import lists.of
+import lists.List
+import lists.fromArray
+import lists.of
+
+function Sequence() {
 
     this.list = new List()
 
     this.count = () -> list.size()
 
-    this.setList = function(list) {
-
-        this.list = list
-
-    }
+    this.setList = function(list) this.list = list
 
     this.array = () -> this.list.array
 
@@ -23,15 +25,11 @@ function Sequence() {
         foreach (let item in items)
             this.list.add(item)
 
-
-        return self(this)
+        return this
 
     }
 
     this.skip = function(count : number) {
-
-        require "lists"
-        import lists.List
 
         let result = new List()
         for (let i = count; i < this.list.size(); i++)
@@ -39,14 +37,11 @@ function Sequence() {
 
         this.list = result
 
-        return self(this)
+        return this
 
     }
 
     this.limit = function(count : number) {
-
-        require "lists"
-        import lists.List
 
         let result = new List()
         for (let i = 0; i < count; i++)
@@ -54,7 +49,7 @@ function Sequence() {
 
         this.list = result
 
-        return self(this)
+        return this
 
     }
 
@@ -65,50 +60,58 @@ function Sequence() {
 
         callback(head, tail)
 
-        return self(this)
+        return this
 
     }
 
     this.map = function(callback : function) {
 
-        let result = new Sequence()
+        let list = new List()
 
         foreach (let item in this.list.array)
-            result.list.add(callback(item))
+            list.add(callback(item))
 
-        return result;
+        this.list = list
+
+        return this
 
     }
 
     this.flatMap = function(callback : function) {
 
-        let result = new Sequence()
+        let list = new List()
 
         foreach (let item in this.list.array)
-            result.list.addAll(callback(item))
+            list.addAll(callback(item))
 
-        return result;
+        this.list = list
+
+        return this
+
+    }
+
+    this.filter = function(callback : function) {
+
+        let list = new List()
+
+        foreach (let item in this.list.array)
+            if (callback(item))
+                list.add(item)
+
+        this.list = list
+
+        return this
 
     }
 
     this.forEach = function(callback : function) {
 
-        let result = new Sequence()
-
         foreach (let item in this.list.array)
             callback(item)
 
+        return this
+
     }
-
-}
-
-function self(sequence) {
-
-    let result = new Sequence()
-
-    result.list = sequence.list
-
-    return result
 
 }
 

@@ -2,6 +2,8 @@
   <dictionary name="Sviri">
     <words>
       <w>iter</w>
+      <w>linter</w>
+      <w>linters</w>
       <w>nameof</w>
       <w>unlinkable</w>
     </words>

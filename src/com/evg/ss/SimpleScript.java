@@ -8,6 +8,8 @@ import com.evg.ss.exceptions.parser.SSParserException;
 import com.evg.ss.lexer.Lexer;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lib.msc.MSCGenerator;
+import com.evg.ss.linter.LintException;
+import com.evg.ss.linter.Linter;
 import com.evg.ss.parser.Parser;
 import com.evg.ss.parser.ast.Expression;
 import com.evg.ss.parser.ast.Statement;
@@ -27,7 +29,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 7, 2, 2);
+    public static Version VERSION = new Version(1, 7, 3, 0);
     private List<Token> tokens;
 
     private SimpleScript(List<Token> tokens) {
@@ -157,6 +159,10 @@ public final class SimpleScript {
         public void execute() throws SSExecutionException {
             DEFAULT_VISITORS.forEach(program::accept);
             program.execute();
+        }
+
+        public void lint() throws LintException {
+            new Linter(this).lint();
         }
 
         public String toMSC() {

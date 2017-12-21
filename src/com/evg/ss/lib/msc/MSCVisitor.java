@@ -139,11 +139,6 @@ public class MSCVisitor implements ResultVisitor<String> {
     }
 
     @Override
-    public String visit(FunctionStatement target) {
-        return target.getExpression().accept(this);
-    }
-
-    @Override
     public String visit(IfStatement target) {
         final Statement _else = target.getElseStatement();
         return String.format("if(%s)%s%s",
@@ -184,8 +179,8 @@ public class MSCVisitor implements ResultVisitor<String> {
     }
 
     @Override
-    public String visit(RequireStatementExpression target) {
-        final RequireStatementExpression.RequireMode mode = target.getMode();
+    public String visit(RequireExpression target) {
+        final RequireExpression.RequireMode mode = target.getMode();
         final StringBuilder builder = new StringBuilder("require ");
         switch (mode) {
             case LOCAL:
@@ -308,5 +303,10 @@ public class MSCVisitor implements ResultVisitor<String> {
     @Override
     public String visit(NewExpression newExpression) {
         return String.format("new %s", newExpression.getFunctionCall().accept(this));
+    }
+
+    @Override
+    public String visit(RequireStatement target) {
+        return target.getExpression().accept(this);
     }
 }

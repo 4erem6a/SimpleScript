@@ -1,5 +1,6 @@
 package com.evg.ss.parser.visitors;
 
+import com.evg.ss.linter.LintException;
 import com.evg.ss.parser.ast.*;
 
 public interface Visitor {
@@ -38,8 +39,6 @@ public interface Visitor {
 
     void visit(FunctionReferenceExpression target);
 
-    void visit(FunctionStatement target);
-
     void visit(IfStatement target);
 
     void visit(InterpolatedStringExpression target);
@@ -50,7 +49,7 @@ public interface Visitor {
 
     void visit(MapExpression target);
 
-    void visit(RequireStatementExpression target);
+    void visit(RequireStatement target);
 
     void visit(ReturnStatement target);
 
@@ -66,7 +65,7 @@ public interface Visitor {
 
     void visit(ValueExpression target);
 
-    void visit(VariableExpression target);
+    void visit(VariableExpression target) throws LintException;
 
     void visit(WhileStatement target);
 
@@ -81,4 +80,6 @@ public interface Visitor {
     void visit(ThisExpression thisExpression);
 
     void visit(NewExpression newExpression);
+
+    void visit(RequireExpression requireExpression);
 }

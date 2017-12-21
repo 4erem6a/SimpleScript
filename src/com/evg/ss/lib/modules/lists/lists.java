@@ -1,23 +1,17 @@
 package com.evg.ss.lib.modules.lists;
 
 import com.evg.ss.SimpleScript;
-import com.evg.ss.exceptions.execution.ModuleLoadingException;
 import com.evg.ss.lib.modules.SSModule;
+import com.evg.ss.util.Utils;
 import com.evg.ss.values.MapValue;
-
-import java.io.IOException;
 
 public final class lists extends SSModule {
 
-    private static final String LIBRARY_PATH = "src\\com\\evg\\ss\\lib\\modules\\lists\\lists.ss";
+    private static final String FILENAME = "lists.ss";
 
     @Override
     public MapValue require() {
-        try {
-            return SimpleScript.fromFile(LIBRARY_PATH).compile().require();
-        } catch (IOException e) {
-            throw new ModuleLoadingException("lists", e);
-        }
+        final String source = Utils.istream2string(getClass().getResourceAsStream(FILENAME));
+        return SimpleScript.fromSource(source).compile().require();
     }
-
 }

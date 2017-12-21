@@ -23,6 +23,10 @@ public class ValueExpression implements Expression {
         this.value = new StringValue(value);
     }
 
+    public ValueExpression(Value value) {
+        this.value = value;
+    }
+
     public ValueExpression() {
         this.value = new NullValue();
     }
