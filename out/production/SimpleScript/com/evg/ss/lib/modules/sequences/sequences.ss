@@ -1,5 +1,5 @@
 //SimpleScript'StandardLibrary: sequences
-//Version: 1.2
+//Version: 1.3
 /*Dependencies:
  *  arrays
  *  sequences
@@ -104,12 +104,66 @@ function Sequence() {
 
     }
 
-    this.forEach = function(callback : function) {
+    this.reduce = function(callback : function) {
+
+        while (this.count() > 1) {
+
+            let first = this.list.get(0)
+            let second = this.list.get(1)
+
+            this.list.removeAt(0)
+            this.list.removeAt(1)
+
+            this.list.insert(callback(first, second), 0)
+
+        }
+
+        return this
+
+    }
+
+    this.anyMatch = function(callback : function) {
+
+        foreach (let item in this.list.array)
+            if (callback(item)) return true
+
+        return false
+
+    }
+
+    this.noMatch = function(callback : function) {
+
+        foreach (let item in this.list.array)
+            if (callback(item)) return false
+
+        return true
+
+    }
+
+    this.distinct = function(callback : function) {
+
+        for (let i = 0; i < this.count(); i++)
+            for (let j = 0; j < this.count(); j++)
+                if (this.list.get(i) == this.list.get(j) && i != j)
+                    this.list.removeAt(j)
+
+        return this
+
+    }
+
+    this.forEach = peek(callback : function) {
 
         foreach (let item in this.list.array)
             callback(item)
 
         return this
+
+    }
+
+    this.forEach = function(callback : function) {
+
+        foreach (let item in this.list.array)
+            callback(item)
 
     }
 

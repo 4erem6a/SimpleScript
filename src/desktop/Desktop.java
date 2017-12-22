@@ -138,7 +138,7 @@ public final class Desktop {
             exitWithMessage("Error: \n\t%s\n\t%s\nStackTrace: \n%s",
                     e.getClass().getSimpleName(),
                     e.getMessage(),
-                    CallStack.getCalls().stream().map(call -> call.toString() + "\n"));
+                    CallStack.getCalls().stream().map(call -> call.toString() + "\n").reduce(String::concat).get());
         else exitWithMessage("Error: \n\t%s\n\t%s\n", e.getClass().getSimpleName(), e.getMessage());
     }
 

@@ -1,5 +1,5 @@
 //SimpleScript'StandardLibrary: lists
-//Version: 1.2
+//Version: 1.3
 /*Dependencies:
  *  arrays
  *  sequences
@@ -69,6 +69,26 @@ function List(size : number = 0) {
         this.array = resize(this.array, oldLength + 1)
         copy(this.array, idx, this.array, idx + 1, oldLength - idx)
         this.array[idx] = value
+
+    }
+
+    this.firstIndexOf = function(value) {
+
+        for (let i = 0; i < this.size(); i++)
+            if (value == this.get(i))
+                return i
+
+        return -1
+
+    }
+
+    this.lastIndexOf = function(value) {
+
+        for (let i = this.size() - 1; i >= 0; i--)
+            if (value == this.get(i))
+                return i
+
+        return -1
 
     }
 
