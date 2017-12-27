@@ -2,11 +2,14 @@
 require "io"
 require "lists"
 require "sequences"
+require "interpreter" as "$"
 
 import io.println
 
-let list = new lists.List([1, 2, 3, [1, 2, 3]])
-let sequence = sequences.fromList(list)
+println(new Constructor())
 
+function Constructor() {
 
-println(sequence.distinct().noMatch((e) -> e is array))
+    $.callContext.get().x = 10
+
+}

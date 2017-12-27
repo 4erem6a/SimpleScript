@@ -18,12 +18,17 @@ public class interpreter extends SSModule {
     public MapValue require() {
         final SSMapBuilder scopes = SSMapBuilder.create();
         final SSMapBuilder interpreter = SSMapBuilder.create();
+        final SSMapBuilder callContext = SSMapBuilder.create();
+        callContext.setMethod("up", this::callContextUp);
+        callContext.setMethod("down", this::callContextDown);
+        callContext.setMethod("get", this::getCallContext);
         scopes.setField("CURRENT", Value.of(0));
         scopes.setField("GLOBAL", Value.of(1));
         scopes.setField("MAIN", Value.of(2));
         scopes.setMethod("up", this::scopesUp);
         scopes.setMethod("down", this::scopesDown);
         interpreter.setField("scopes", scopes.build());
+        interpreter.setField("callContext", callContext.build());
         interpreter.setField("version", Value.of(SimpleScript.VERSION.toString()));
         interpreter.setMethod("eval", this::eval);
         interpreter.setMethod("getVariable", this::getVariable);
@@ -34,6 +39,24 @@ public class interpreter extends SSModule {
         interpreter.setMethod("getFunction", this::getFunction);
         interpreter.setMethod("requireStackTrace", this::requireStackTrace);
         return interpreter.build();
+    }
+
+    private Value callContextUp(Value... values) {
+        Arguments.checkArgTypesOrDie(values, MapValue.class);
+        SS.CallContext.up(((MapValue) values[0]));
+        return new NullValue();
+    }
+
+    private Value callContextDown(Value... values) {
+        Arguments.checkArgcOrDie(values, 0);
+        SS.CallContext.down();
+        return new NullValue();
+    }
+
+    private Value getCallContext(Value... values) {
+        Arguments.checkArgcOrDie(values, 0);
+        final MapValue context = SS.CallContext.get();
+        return (context == null ? new NullValue() : context);
     }
 
     private Value requireStackTrace(Value... values) {
