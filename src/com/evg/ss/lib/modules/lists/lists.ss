@@ -2,119 +2,119 @@
 //Version: 1.3
 /*Dependencies:
  *  arrays
- *  sequences
  */
-require "arrays"
+function List(array : array = []) {
 
-import arrays.length
-import arrays.create
-import arrays.resize
-import arrays.copy
+    this.array = array
 
-function List(size : number = 0) {
+    this.size = () -> require("arrays").length(this.array)
+    this.toArray = () -> this.array
+    this.sequence = () -> require("sequences").fromList(this)
 
-    this.array = (size > 0 ? create(size) : [])
+    this.get = function(index : number) {
+        require "arrays"
+        if (index < 0 || index >= arrays.length(this.array))
+            return null
+        return this.array[index]
+    }
 
-    this.toArray = function() -> this.array
-    this.get = function(idx : number) -> this.array[idx]
-    this.size = () -> length(this.array)
-
-    this.sequence = function() {
-
-        require "sequences"
-
-        let result = new sequences.Sequence()
-        result.list = this
-        return result
-
+    this.set = function(index : number, value) {
+        require "arrays"
+        if (index >= 0 && index < arrays.length(this.array))
+            this.array[index] = value
     }
 
     this.add = function(value) {
-
-        this.array = resize(this.array, length(this.array) + 1)
-        this.array[length(this.array) - 1] = value
-
+        require "arrays"
+        let oldLength = arrays.length(this.array)
+        this.array = arrays.resize(this.array, oldLength + 1)
+        this.array[oldLength] = value
     }
 
-    this.addAll = function(array : array) {
-
-        let oldLength = length(this.array)
-        this.array = resize(this.array, oldLength + length(array))
-
-        for (let i = 0; i < length(array); i++)
-            this.array[i + oldLength] = array[i]
-
+    this.addAll = function(values : array) {
+        foreach (let item in values)
+            this.add(item)
     }
 
-    this.remove = function(value) {
-
-        for (let i = 0; i < length(this.array); i++)
+    this.removeFirst = function(value) {
+        require "arrays"
+        for (let i = 0; i < arrays.length(this.array); i++) {
             if (this.array[i] == value) {
                 this.removeAt(i)
                 break
             }
-
+        }
     }
 
-    this.removeAt = function(idx : number) {
-
-        copy(this.array, idx + 1, this.array, idx, length(this.array) - (idx + 1))
-        this.array = resize(this.array, length(this.array) - 1)
-
+    this.removeLast = function(value) {
+        require "arrays"
+        for (let i = arrays.length(this.array) - 1; i >= 0; i--) {
+            if (this.array[i] == value) {
+                this.removeAt(i)
+                break
+            }
+        }
     }
 
-    this.insert = function(value, idx : number) {
+    this.removeAll = function(value) {
+        require "arrays"
+        for (let i = 0; i < arrays.length(this.array); i++)
+            if (this.array[i] == value)
+                this.removeAt(i)
+    }
 
-        let oldLength = length(this.array)
-        this.array = resize(this.array, oldLength + 1)
-        copy(this.array, idx, this.array, idx + 1, oldLength - idx)
-        this.array[idx] = value
+    this.removeAt = function(index : number) {
+        require "arrays"
+        if (index < 0 || index >= arrays.length(this.array))
+            return null
+        let tailLength = arrays.length(this.array) - (index + 1)
+        if (tailLength > 0)
+            arrays.copy(this.array, index + 1, this.array, index, tailLength)
+        this.array = arrays.resize(this.array, arrays.length(this.array) - 1)
+    }
 
+    this.insert = function(index : number, value) {
+        require "arrays"
+        if (index < 0 || index >= arrays.length(this.array))
+            return null
+        this.array = arrays.resize(this.array, arrays.length(this.array) + 1)
+        let tailLength = arrays.length(this.array) - (index + 1)
+        if (tailLength > 0)
+            arrays.copy(this.array, index, this.array, index + 1, tailLength)
+        this.array[index] = value
     }
 
     this.firstIndexOf = function(value) {
-
-        for (let i = 0; i < this.size(); i++)
-            if (value == this.get(i))
+        require "arrays"
+        for (let i = 0; i < arrays.length(this.array); i++)
+            if (this.array[i] == value)
                 return i
-
         return -1
-
     }
 
     this.lastIndexOf = function(value) {
-
-        for (let i = this.size() - 1; i >= 0; i--)
-            if (value == this.get(i))
+        require "arrays"
+        for (let i = arrays.length(this.array) - 1; i >= 0; i--)
+            if (this.array[i] == value)
                 return i
-
         return -1
+    }
 
+    this.first = function() {
+        return (this.size() >= 1 ? this.get(0) : null)
+    }
+
+    this.firstOrDefault = function(default) {
+        return (this.size() >= 1 ? this.get(0) : default)
     }
 
 }
 
-function fromArray(array : array) {
-
-    let list = new List()
-
-    foreach (let item in array)
-        list.add(item)
-
-    return list
-
-}
-
-function of(params args) {
-
-    return fromArray(args)
-
+function of(params items) {
+    return new List(items)
 }
 
 exports {
-
-    List:       ::List,
-    fromArray:  ::fromArray,
-    of:         ::of
-
+    List: ::List,
+    of:   ::of
 }

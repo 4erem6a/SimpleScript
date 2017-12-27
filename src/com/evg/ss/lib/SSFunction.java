@@ -6,11 +6,9 @@ import com.evg.ss.exceptions.execution.UnexpectedDefaultArgumentException;
 import com.evg.ss.exceptions.execution.UnexpectedVariadicArgumentException;
 import com.evg.ss.exceptions.inner.SSReturnException;
 import com.evg.ss.parser.ast.ArgumentExpression;
+import com.evg.ss.parser.ast.Expression;
 import com.evg.ss.parser.ast.Statement;
-import com.evg.ss.values.MapValue;
-import com.evg.ss.values.NullValue;
-import com.evg.ss.values.Type;
-import com.evg.ss.values.Value;
+import com.evg.ss.values.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +44,7 @@ public final class SSFunction implements ConstructorFunction {
         final int minArgc = (int) this.args.stream().filter(arg -> !arg.hasValue() && !arg.isVariadic()).count();
         final int maxArgc = (isVariadic ? args.length : this.args.size());
         if (args.length < minArgc || args.length > maxArgc)
-            throw new ArgumentCountMismatchException(args.length < minArgc ? minArgc : maxArgc, args.length);
+            throw new ArgumentCountMismatchException(args.length, args.length < minArgc ? minArgc : maxArgc);
         if (!isVariadic) {
             for (int i = 0; i < args.length; i++) {
                 if (args[i].getType() != this.args.get(i).getType() && this.args.get(i).getType() != null)
@@ -73,10 +71,6 @@ public final class SSFunction implements ConstructorFunction {
         return true;
     }
 
-    public Statement getBody() {
-        return body;
-    }
-
     @Override
     public Value execute(Value... args) {
         tryValidateArgs(args);
@@ -93,8 +87,10 @@ public final class SSFunction implements ConstructorFunction {
             final int idx = this.args.size() - (this.args.size() - argList.size());
             for (int i = idx; i < this.args.size(); i++) {
                 final Argument arg = this.args.get(i);
-                final Value value = arg.getValue().eval();
-                argList.add(value);
+                final Expression argValue = arg.getValue();
+                if (argValue != null)
+                    argList.add(argValue.eval());
+                else argList.add(new ArrayValue());
             }
         }
         CallStack.enter(name == null ? "$lambda" : name, this);
@@ -137,5 +133,9 @@ public final class SSFunction implements ConstructorFunction {
     @Override
     public String toString() {
         return String.format("function[%s]:%s", name != null ? name : "$lambda", hashCode());
+    }
+
+    public Statement getBody() {
+        return body;
     }
 }

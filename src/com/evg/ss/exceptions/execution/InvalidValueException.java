@@ -5,6 +5,6 @@ import com.evg.ss.values.Value;
 
 public class InvalidValueException extends SSException {
     public InvalidValueException(Value value) {
-        super(String.format("Invalid value: %s.", value));
+        super(String.format("Invalid value: %s.", value.asString()));
     }
 }

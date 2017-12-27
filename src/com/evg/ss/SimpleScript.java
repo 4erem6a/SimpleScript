@@ -7,6 +7,7 @@ import com.evg.ss.exceptions.lexer.SSLexerException;
 import com.evg.ss.exceptions.parser.SSParserException;
 import com.evg.ss.lexer.Lexer;
 import com.evg.ss.lexer.Token;
+import com.evg.ss.lib.SS;
 import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.linter.LintException;
 import com.evg.ss.linter.Linter;
@@ -29,7 +30,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 7, 3, 1);
+    public static Version VERSION = new Version(1, 7, 10, 0);
     private List<Token> tokens;
 
     private SimpleScript(List<Token> tokens) {
@@ -171,8 +172,11 @@ public final class SimpleScript {
 
         public MapValue require() {
             try {
+                SS.Scopes.up();
                 program.execute();
+                SS.Scopes.down();
             } catch (SSExportsException e) {
+                SS.Scopes.down();
                 return (MapValue) e.getValue();
             }
             return null;

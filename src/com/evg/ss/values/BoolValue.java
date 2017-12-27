@@ -38,7 +38,7 @@ public class BoolValue implements Value {
 
     @Override
     public int compareTo(Value o) {
-        return Boolean.compare(value, o.asBoolean());
+        return o.getType() == Type.Null ? -1 : Boolean.compare(value, o.asBoolean());
     }
 
     @Override

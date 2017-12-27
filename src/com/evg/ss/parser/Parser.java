@@ -533,14 +533,10 @@ public final class Parser extends AbstractParser {
             return requireExpression();
         } else if (match(TokenType.This)) {
             return new ThisExpression();
-        } else if (match(TokenType.ClCl)) {
-            return new FunctionReferenceExpression(consume(TokenType.Word).getValue());
-        } else if (match(TokenType.Lc)) {
-            return array();
         } else if (isLambdaDefinition()) {
             return lambda();
-        } else if (match(TokenType.Lb)) {
-            return map();
+        } else if (match(TokenType.ClCl)) {
+            return new FunctionReferenceExpression(consume(TokenType.Word).getValue());
         } else if (match(TokenType.Word)) {
             return new VariableExpression(current.getValue());
         } else if (match(TokenType.Lp)) {
@@ -567,6 +563,10 @@ public final class Parser extends AbstractParser {
             return new ValueExpression();
         } else if (match(TokenType.Type)) {
             return type();
+        } else if (match(TokenType.Lc)) {
+            return array();
+        } else if (match(TokenType.Lb)) {
+            return map();
         } else if (match(TokenType.Function)) {
             return anonymousFunction();
         } else throw new UnexpectedTokenException(current);

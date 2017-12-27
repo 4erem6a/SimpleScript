@@ -132,13 +132,14 @@ public final class Desktop {
     }
 
     private static void except(Exception e) {
+        final Optional<String> stackTrace = CallStack.getCalls().stream().map(call -> call.toString() + "\n").reduce(String::concat);
         if (DEBUG)
             e.printStackTrace();
         if (e instanceof SSExecutionException)
             exitWithMessage("Error: \n\t%s\n\t%s\nStackTrace: \n%s",
                     e.getClass().getSimpleName(),
                     e.getMessage(),
-                    CallStack.getCalls().stream().map(call -> call.toString() + "\n").reduce(String::concat).get());
+                    stackTrace.orElse("--- no calls ---"));
         else exitWithMessage("Error: \n\t%s\n\t%s\n", e.getClass().getSimpleName(), e.getMessage());
     }
 

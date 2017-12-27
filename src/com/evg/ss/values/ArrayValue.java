@@ -41,7 +41,7 @@ public class ArrayValue implements Value, Iterable<Value> {
 
     @Override
     public Double asNumber() {
-        return (double) length();
+        return Double.NaN;
     }
 
     @Override
