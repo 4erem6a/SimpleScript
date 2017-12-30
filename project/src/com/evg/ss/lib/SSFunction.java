@@ -53,6 +53,10 @@ public final class SSFunction implements ConstructorFunction {
         } else {
             for (int i = 0; i < args.length; i++) {
                 final Argument arg;
+                if (i == this.args.size() - 1 && args[i].getType() == Type.Array)
+                    if (this.args.get(i).hasType())
+                        throw new ArgumentTypeMismatchException(this.args.get(i).getType(), Type.Array);
+                    else break;
                 if (i >= this.args.size())
                     arg = this.args.get(this.args.size() - 1);
                 else arg = this.args.get(i);
@@ -74,25 +78,7 @@ public final class SSFunction implements ConstructorFunction {
     @Override
     public Value execute(Value... args) {
         tryValidateArgs(args);
-        final List<Value> argList = new ArrayList<>();
-        for (int i = 0; i < args.length; i++) {
-            if (this.args.get(i).isVariadic()) {
-                final List<Value> variadicArgList = new ArrayList<>();
-                for (; i < args.length; i++)
-                    variadicArgList.add(args[i]);
-                argList.add(Value.of(variadicArgList.toArray(new Value[0])));
-            } else argList.add(args[i]);
-        }
-        if (argList.size() != this.args.size()) {
-            final int idx = this.args.size() - (this.args.size() - argList.size());
-            for (int i = idx; i < this.args.size(); i++) {
-                final Argument arg = this.args.get(i);
-                final Expression argValue = arg.getValue();
-                if (argValue != null)
-                    argList.add(argValue.eval());
-                else argList.add(new ArrayValue());
-            }
-        }
+        final List<Value> argList = processArguments(args);
         CallStack.enter(name == null ? "$lambda" : name, this);
         SS.Scopes.up();
         for (int i = 0; i < argList.size(); i++)
@@ -109,6 +95,38 @@ public final class SSFunction implements ConstructorFunction {
         SS.Scopes.down();
         CallStack.exit();
         return new NullValue();
+    }
+
+    private List<Value> processArguments(Value[] args) {
+        /*
+            function f(k, params x) -> x[k] //:2
+            f(1, 2, 3, 4, 5) //:5
+            /**
+                f(1, [2, 3, 4, 5]) -> (1, [2, 3, 4, 5])
+                f(1, 2, 3, 4, 5) -> (1, [2, 3, 4, 5])
+                f(1) -> (1, [])
+            **
+         */
+        final List<Value> argList = new ArrayList<>();
+        for (int i = 0; i < args.length; i++) {
+            if (this.args.get(i).isVariadic() && args[i].getType() != Type.Array) {
+                final List<Value> variadicArgList = new ArrayList<>();
+                for (; i < args.length; i++)
+                    variadicArgList.add(args[i]);
+                argList.add(Value.of(variadicArgList.toArray(new Value[0])));
+            } else argList.add(args[i]);
+        }
+        if (argList.size() != this.args.size()) {
+            final int idx = this.args.size() - (this.args.size() - argList.size());
+            for (int i = idx; i < this.args.size(); i++) {
+                final Argument arg = this.args.get(i);
+                final Expression argValue = arg.getValue();
+                if (argValue != null)
+                    argList.add(argValue.eval());
+                else argList.add(new ArrayValue());
+            }
+        }
+        return argList;
     }
 
     @Override

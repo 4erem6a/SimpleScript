@@ -1,15 +1,10 @@
-//SimpleScript v1.7.10:
+//SimpleScript v1.7.11:
 require "io"
-require "lists"
-require "sequences"
-require "interpreter" as "$"
 
 import io.println
 
-println(new Constructor())
+println(ff(10, f([10, 20, 30])))
 
-function Constructor() {
+function f(x) -> [x, x]
 
-    $.callContext.get().x = 10
-
-}
+function ff(x, params y) -> [x, y]
