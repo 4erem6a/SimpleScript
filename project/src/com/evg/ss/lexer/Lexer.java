@@ -52,7 +52,6 @@ public final class Lexer extends AbstractLexer {
         OPERATOR_TOKEN_MAP.put(">>", TokenType.ArAr);
         OPERATOR_TOKEN_MAP.put("<<", TokenType.AlAl);
         OPERATOR_TOKEN_MAP.put(">>>", TokenType.ArArAr);
-        OPERATOR_TOKEN_MAP.put("...", TokenType.DtDtDt);
         OPERATOR_TOKEN_MAP.put(":", TokenType.Cl);
         OPERATOR_TOKEN_MAP.put(".", TokenType.Dt);
         OPERATOR_TOKEN_MAP.put(",", TokenType.Cm);
@@ -94,7 +93,7 @@ public final class Lexer extends AbstractLexer {
         KEYWORD_MAP.put("import", TokenType.Import);
         KEYWORD_MAP.put("new", TokenType.New);
         KEYWORD_MAP.put("this", TokenType.This);
-        KEYWORD_MAP.put("params", TokenType.Params);
+        KEYWORD_MAP.put("locked", TokenType.Locked);
     }
 
     public Lexer(String source) {

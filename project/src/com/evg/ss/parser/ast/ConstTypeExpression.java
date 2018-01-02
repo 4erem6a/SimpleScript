@@ -9,9 +9,11 @@ import com.evg.ss.values.Value;
 public final class ConstTypeExpression implements Expression {
 
     private Type type;
+    private String typename;
 
     public ConstTypeExpression(String type) {
         this.type = getType(type);
+        this.typename = type;
     }
 
     private static Type getType(String type) {
@@ -37,6 +39,10 @@ public final class ConstTypeExpression implements Expression {
             default:
                 throw new InvalidTypeNameException(type);
         }
+    }
+
+    public String getTypename() {
+        return typename;
     }
 
     public Type getType() {

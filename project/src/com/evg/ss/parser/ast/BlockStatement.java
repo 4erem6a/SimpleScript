@@ -10,13 +10,13 @@ import java.util.List;
 public final class BlockStatement implements Statement {
 
     private List<Statement> statements = new ArrayList<>();
+    private boolean locked;
 
     public BlockStatement(List<Statement> statements) {
         this.statements = statements;
     }
 
     public BlockStatement() {
-
     }
 
     public void addStatement(Statement statement) {
@@ -25,9 +25,16 @@ public final class BlockStatement implements Statement {
 
     @Override
     public void execute() {
-        SS.Scopes.up();
-        statements.forEach(Statement::execute);
-        SS.Scopes.down();
+        if (locked) {
+            SS.Scopes scopes = SS.Scopes.get();
+            SS.Scopes.reset();
+            statements.forEach(Statement::execute);
+            SS.Scopes.set(scopes);
+        } else {
+            SS.Scopes.up();
+            statements.forEach(Statement::execute);
+            SS.Scopes.down();
+        }
     }
 
     @Override
@@ -51,5 +58,13 @@ public final class BlockStatement implements Statement {
     @Override
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }

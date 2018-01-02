@@ -7,7 +7,6 @@ import com.evg.ss.values.Value;
 
 public final class SS {
 
-    // FIXME: 16.12.2017 call context
     public static final class CallContext {
 
         private static CallContext callContext = null;
@@ -34,11 +33,20 @@ public final class SS {
         public static MapValue get() {
             return callContext == null ? null : callContext.context;
         }
+
+        public static void set(MapValue context) {
+            callContext.context.setMap(context);
+        }
     }
 
     public static final class Scopes {
 
-        private Scopes() {
+        private final FunctionMap functions;
+        private final VariableMap variables;
+
+        public Scopes(FunctionMap functions, VariableMap variables) {
+            this.functions = functions;
+            this.variables = variables;
         }
 
         public static void up() {
@@ -51,6 +59,27 @@ public final class SS {
             Variables.down();
         }
 
+        public static void reset() {
+            Functions.set(new FunctionMap(null));
+            Variables.set(new VariableMap(null));
+        }
+
+        public static Scopes get() {
+            return new Scopes(Functions.get(), Variables.get());
+        }
+
+        public static void set(Scopes scopes) {
+            Functions.set(scopes.functions);
+            Variables.set(scopes.variables);
+        }
+
+        public FunctionMap getFunctions() {
+            return functions;
+        }
+
+        public VariableMap getVariables() {
+            return variables;
+        }
     }
 
     public static final class Functions {
@@ -98,6 +127,14 @@ public final class SS {
         public static void down() {
             if (top.getParent() != null)
                 top = top.getParent();
+        }
+
+        public static FunctionMap get() {
+            return top;
+        }
+
+        public static void set(FunctionMap top) {
+            Functions.top = top;
         }
     }
 
@@ -151,6 +188,14 @@ public final class SS {
         public static void down() {
             if (top.getParent() != null)
                 top = top.getParent();
+        }
+
+        public static VariableMap get() {
+            return top;
+        }
+
+        public static void set(VariableMap top) {
+            Variables.top = top;
         }
     }
 }

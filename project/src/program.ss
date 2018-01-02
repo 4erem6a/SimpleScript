@@ -1,10 +1,10 @@
-//SimpleScript v1.7.11:
+//SimpleScript v1.8:
 require "io"
+require "lists"
+require "sequences"
 
-import io.println
+let list = new lists.List(1, 2, 3, 4)
 
-println(ff(10, f([10, 20, 30])))
+list.toArray()
 
-function f(x) -> [x, x]
-
-function ff(x, params y) -> [x, y]
+io.println(list.sequence().rms())

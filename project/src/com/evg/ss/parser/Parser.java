@@ -90,9 +90,23 @@ public final class Parser extends AbstractParser {
             return new ExpressionStatement(expression());
         } else if (match(TokenType.Import)) {
             return new ImportStatement(expression());
+        } else if (match(TokenType.Locked)) {
+            return lockedStatement();
         } else {
             return new ExpressionStatement(expression());
         }
+    }
+
+    private Statement lockedStatement() {
+        if (match(TokenType.Block)) {
+            BlockStatement block = ((BlockStatement) block());
+            block.setLocked(true);
+            return block;
+        } else if (match(TokenType.Function)) {
+            FunctionDefinitionStatement function = (FunctionDefinitionStatement) functionDefinition();
+            function.setLocked(true);
+            return function;
+        } else throw new UnexpectedTokenException(get(0));
     }
 
     private Statement switchCase() {
@@ -123,10 +137,15 @@ public final class Parser extends AbstractParser {
     }
 
     private ArgumentExpression argument() {
-        final boolean variadic = match(TokenType.Params);
+        final boolean variadic;
         final String name = consume(TokenType.Word).getValue();
         final ConstTypeExpression type;
         final Expression value;
+        if (match(TokenType.Dt)) {
+            consume(TokenType.Dt);
+            consume(TokenType.Dt);
+            variadic = true;
+        } else variadic = false;
         if (match(TokenType.Cl))
             type = (ConstTypeExpression) typename();
         else type = null;
@@ -391,7 +410,7 @@ public final class Parser extends AbstractParser {
                 continue;
             }
             if (match(TokenType.Is)) {
-                result = new BinaryExpression(BinaryOperations.Equals, new TypeofExpression(result), typename());
+                result = new BinaryExpression(BinaryOperations.Is, result, expression());
                 continue;
             }
             if (match(TokenType.As)) {
@@ -569,7 +588,17 @@ public final class Parser extends AbstractParser {
             return map();
         } else if (match(TokenType.Function)) {
             return anonymousFunction();
+        } else if (match(TokenType.Locked)) {
+            return lockedExpression();
         } else throw new UnexpectedTokenException(current);
+    }
+
+    private Expression lockedExpression() {
+        if (match(TokenType.Function)) {
+            AnonymousFunctionExpression function = (AnonymousFunctionExpression) anonymousFunction();
+            function.setLocked(true);
+            return function;
+        } else throw new UnexpectedTokenException(get(0));
     }
 
     private Expression nameof() {
@@ -683,17 +712,6 @@ public final class Parser extends AbstractParser {
         do expressions.add(expression()); while (match(TokenType.Cm));
         consume(TokenType.Rc);
         return new ArrayExpression(expressions.toArray(new Expression[expressions.size()]));
-    }
-
-    private Expression function() {
-        final String name = consume(TokenType.Word).getValue();
-        consume(TokenType.Lp);
-        final List<Expression> args = new ArrayList<>();
-        if (!match(TokenType.Rp)) {
-            do args.add(expression()); while (match(TokenType.Cm));
-            consume(TokenType.Rp);
-        }
-        return new FunctionCallExpression(new VariableExpression(name), args.toArray(new Expression[args.size()]));
     }
 
     private Expression interpolated() {

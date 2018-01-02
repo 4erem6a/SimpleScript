@@ -1,19 +1,20 @@
 //SimpleScript'StandardLibrary: sequences
-//Version: 1.3
+//Version: 1.4
 /*Dependencies:
  *  lists
  */
-function Sequence(base = null) {
+locked function Sequence(base = null) {
+    require "lists"
 
     this.list = (base == null ? new lists.List() : base.list)
 
-    this.count = () -> this.list.size()
-    this.toList = () -> this.list
-    this.toArray = () -> this.list.array
+    this.count = locked function() -> this.list.size()
+    this.toList = locked function() -> this.list
+    this.toArray = locked function() -> this.list.array
 
-    this.copy = () -> new require("sequences").Sequence(this)
+    this.copy = locked function() -> new require("sequences").Sequence(this)
 
-    this.skip = function(count : number) {
+    this.skip = locked function(count : number) {
         if (count < 0 || count >= this.list.size())
             return null
         let result = this.copy()
@@ -22,7 +23,7 @@ function Sequence(base = null) {
         return result
     }
 
-    this.limit = function(count : number) {
+    this.limit = locked function(count : number) {
         if (count <= 0 || count > this.list.size())
             return null
         let result = this.copy()
@@ -32,39 +33,43 @@ function Sequence(base = null) {
         return result
     }
 
-    this.headTail = function(callback : function) {
+    this.headTail = locked function(callback : function) {
+        require "lists"
         let head = this.list.first()
         let tail = (this.list.size() > 1 ? this.skip(1).toList() : new lists.List())
         return callback(head, tail)
     }
 
-    this.map = function(callback : function) {
+    this.map = locked function(callback : function) {
+        require "lists"
         let result = new lists.List()
         foreach (let item in this.toArray())
             result.add(callback(item))
         return require("sequences").fromList(result)
     }
 
-    this.flatMap = function(callback : function) {
+    this.flatMap = locked function(callback : function) {
+        require "lists"
         let result = new lists.List()
         foreach (let item in this.toArray())
             result.addAll(callback(item))
         return require("sequences").fromList(result)
     }
 
-    this.peek = function(callback : function) {
+    this.peek = locked function(callback : function) {
         let result = this.copy()
         foreach (let item in result.toArray())
             callback(item)
         return require("sequences").fromList(result)
     }
 
-    this.forEach = function(callback : function) {
+    this.forEach = locked function(callback : function) {
         foreach (let item in this.toArray())
             callback(item)
     }
 
-    this.filter = function(callback : function) {
+    this.filter = locked function(callback : function) {
+        require "lists"
         let result = new lists.List()
         foreach (let item in this.toArray())
             if (callback(item))
@@ -72,7 +77,7 @@ function Sequence(base = null) {
         return require("sequences").fromList(result)
     }
 
-    this.reduce = function(callback : function) {
+    this.reduce = locked function(callback : function) {
         let result = this.list
         while (result.size() > 1) {
             let first = result.get(0)
@@ -84,26 +89,26 @@ function Sequence(base = null) {
         return result.first()
     }
 
-    this.anyMatch = function(callback : function) {
+    this.anyMatch = locked function(callback : function) {
         foreach (let item in this.toArray())
             if (callback(item)) return true
         return false
     }
 
-    this.noMatch = function(callback : function) {
+    this.noneMatch = locked function(callback : function) {
         foreach (let item in this.toArray())
             if (callback(item)) return false
         return true
     }
 
-    this.allMatch = function(callback : function) {
+    this.allMatch = locked function(callback : function) {
         let result = true
         foreach (let item in this.toArray())
             result = result && callback(item)
         return result
     }
 
-    this.distinct = function() {
+    this.distinct = locked function() {
         for (let i = 0; i < this.count(); i++)
             for (let j = 0; j < this.count(); j++)
                 if (this.list.get(i) == this.list.get(j) && i != j)
@@ -111,7 +116,7 @@ function Sequence(base = null) {
         return this.copy()
     }
 
-    this.sum = function() {
+    this.sum = locked function() {
         let result = 0
         foreach (let item in this.toArray()) {
             let value = result + item
@@ -122,7 +127,7 @@ function Sequence(base = null) {
         return result
     }
 
-    this.min = function() {
+    this.min = locked function() {
         if (this.count() < 1)
             return null
         let min = this.list.first()
@@ -132,7 +137,7 @@ function Sequence(base = null) {
         return min
     }
 
-    this.max = function() {
+    this.max = locked function() {
         if (this.count() < 1)
             return null
         let max = this.list.first()
@@ -142,14 +147,14 @@ function Sequence(base = null) {
         return max
     }
 
-    this.average = function() {
+    this.average = locked function() {
         let sum = this.sum()
         if (sum == null)
             return null
         return sum / this.count()
     }
 
-    this.ms = function() {
+    this.ms = locked function() {
         let result = 0
         foreach (let item in this.toArray()) {
             let value = result + (item * item)
@@ -160,7 +165,7 @@ function Sequence(base = null) {
         return result
     }
 
-    this.rms = function() {
+    this.rms = locked function() {
         let ms = this.ms()
         if (ms == null)
             return null
@@ -168,20 +173,18 @@ function Sequence(base = null) {
     }
 }
 
-function of(params items) -> require("sequences").fromArray(items)
-
-function fromArray(array : array) {
+locked function of(items...) {
     require "sequences"
+    require "lists"
     let result = new sequences.Sequence()
-    result.list = new lists.List(array)
+    result.list = new lists.List(items)
     return result
 }
 
-function fromList(list) -> require("sequences").fromArray(list.toArray())
+locked function fromList(list) -> require("sequences").of(list.toArray())
 
 exports {
     Sequence:   ::Sequence,
     of:         ::of,
-    fromArray:  ::fromArray,
     fromList:   ::fromList
 }

@@ -27,6 +27,7 @@ public class interpreter extends SSModule {
         scopes.setField("MAIN", Value.of(2));
         scopes.setMethod("up", this::scopesUp);
         scopes.setMethod("down", this::scopesDown);
+        scopes.setMethod("getCurrent", this::scopesGet);
         interpreter.setField("scopes", scopes.build());
         interpreter.setField("callContext", callContext.build());
         interpreter.setField("version", Value.of(SimpleScript.VERSION.toString()));
@@ -39,6 +40,18 @@ public class interpreter extends SSModule {
         interpreter.setMethod("getFunction", this::getFunction);
         interpreter.setMethod("requireStackTrace", this::requireStackTrace);
         return interpreter.build();
+    }
+
+    private Value scopesGet(Value... values) {
+        Arguments.checkArgcOrDie(values, 0);
+        final SSMapBuilder scopes = SSMapBuilder.create();
+        final SSMapBuilder variables = SSMapBuilder.create();
+        final SSMapBuilder functions = SSMapBuilder.create();
+        SS.Scopes.get().getVariables().entrySet().forEach(entry -> variables.setField(entry.getKey(), entry.getValue().getValue()));
+        SS.Scopes.get().getFunctions().entrySet().forEach(entry -> functions.setField(entry.getKey(), Value.of(entry.getValue())));
+        scopes.setField("variables", variables.build());
+        scopes.setField("functions", functions.build());
+        return scopes.build();
     }
 
     private Value callContextUp(Value... values) {

@@ -8,6 +8,6 @@ import com.evg.ss.lexer.TokenType;
  */
 public final class InvalidTokenDefinitionException extends SSLexerException {
     public InvalidTokenDefinitionException(TokenType type, SourcePosition position) {
-        super(String.format("Invalid %s token definition at %s.", type.toString().toLowerCase(), position));
+        super(String.format("Invalid '%s' token definition at %s.", type.getName(), position));
     }
 }

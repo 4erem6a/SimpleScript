@@ -63,7 +63,7 @@ public final class Desktop {
         EXECUTION_FLAGS = flags;
     }
 
-    private static void process() throws IOException {
+    private static void process() {
         final Path programPath = PROGRAM_PATH;
         final Path programDir = PROGRAM_PATH.getParent();
         log("Setting environment variables ...");
@@ -122,7 +122,7 @@ public final class Desktop {
 
     private static void getProgram(SimpleScript script) {
         System.out.println("PROGRAM: ");
-        System.out.println(script.compile().getProgram().accept(new MSCVisitor()));
+        System.out.printf("\t%s\n", script.compile().getProgram().accept(new MSCVisitor()));
         System.out.println("END.");
     }
 

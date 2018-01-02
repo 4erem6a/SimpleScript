@@ -5,89 +5,103 @@ package com.evg.ss.lexer;
  */
 public enum TokenType {
     //Identifiers:
-    Word,
+    Word("<word>"),
 
     //Literals:
-    Number,
-    String,
-    InterpolatedString,
+    Number("<number>"),
+    String("<string>"),
+    InterpolatedString("<`string`>"),
 
     //Operators:
-    Lp,         //(
-    Rp,         //)
-    Lb,         //{
-    Rb,         //}
-    Lc,         //[
-    Rc,         //]
-    Pl,         //+
-    Mn,         //-
-    St,         //*
-    Sl,         ///
-    Pr,         //%
-    Eq,         //=
-    Am,         //&
-    Vb,         //|
-    Cr,         //^
-    Tl,         //~
-    Ex,         //!
-    Qm,         //?
-    Al,         //<
-    Ar,         //>
-    VbVb,       //||
-    AmAm,       //&&
-    AlEq,       //<=
-    ArEq,       //>=
-    EqEq,       //==
-    PlPl,       //++
-    MnMn,       //--
-    ExEq,       //!=
-    MnAr,       //->
-    ClCl,       //::
-    ArAr,       //>>
-    AlAl,       //<<
-    ArArAr,     //>>>
-    DtDtDt,     //...
-    Cl,         //:
-    Dt,         //.
-    Cm,         //,
-    Sc,         //;
+    Lp("("),            //(
+    Rp(")"),            //)
+    Lb("{"),            //{
+    Rb("}"),            //}
+    Lc("["),            //[
+    Rc("]"),            //]
+    Pl("+"),            //+
+    Mn("-"),            //-
+    St("*"),            //*
+    Sl("/"),            ///
+    Pr("%"),            //%
+    Eq("="),            //=
+    Am("&"),            //&
+    Vb("|"),            //|
+    Cr("^"),            //^
+    Tl("~"),            //~
+    Ex("!"),            //!
+    Qm("?"),            //?
+    Al(">"),            //<
+    Ar("?"),            //>
+    VbVb("||"),         //||
+    AmAm("&&"),         //&&
+    AlEq("<="),         //<=
+    ArEq(">="),         //>=
+    EqEq("=="),         //==
+    PlPl("++"),         //++
+    MnMn("--"),         //--
+    ExEq("!="),         //!=
+    MnAr("->"),         //->
+    ClCl("::"),         //::
+    ArAr(">>"),         //>>
+    AlAl("<<"),         //<<
+    ArArAr(">>>"),      //>>>
+    Cl(":"),            //:
+    Dt("."),            //.
+    Cm(","),            //,
+    Sc(";"),            //;
 
     //Keywords:
-    True,       //true
-    False,      //false
-    Null,       //null
-    Nan,        //nan
-    Let,        //let
-    Const,      //const
-    If,         //if
-    Else,       //else
-    For,        //for
-    Do,         //do
-    While,      //while
-    Break,      //break
-    Continue,   //continue
-    Block,      //block
-    Require,    //require
-    Function,   //function
-    Return,     //return
-    Foreach,    //foreach
-    In,         //in
-    Typeof,     //typeof
-    Switch,     //switch
-    Case,       //case
-    Type,       //type
-    Is,         //is
-    Extends,    //extends
-    Exports,    //exports
-    External,   //external
-    As,         //as
-    Local,      //local
-    Nameof,     //nameof
-    Import,     //import
-    New,        //new
-    This,       //this
-    Params,     //params
+    True("true"),           //true
+    False("false"),         //false
+    Null("null"),           //null
+    Nan("nan"),             //nan
+    Let("let"),             //let
+    Const("const"),         //const
+    If("if"),               //if
+    Else("else"),           //else
+    For("for"),             //for
+    Do("do"),               //do
+    While("while"),         //while
+    Break("break"),         //break
+    Continue("continue"),   //continue
+    Block("block"),         //block
+    Require("require"),     //require
+    Function("function"),   //function
+    Return("return"),       //return
+    Foreach("foreach"),     //foreach
+    In("in"),               //in
+    Typeof("typeof"),       //typeof
+    Switch("switch"),       //switch
+    Case("case"),           //case
+    Type("type"),           //type
+    Is("is"),               //is
+    Extends("extends"),     //extends
+    Exports("exports"),     //exports
+    External("external"),   //external
+    As("as"),               //as
+    Local("local"),         //local
+    Nameof("nameof"),       //nameof
+    Import("import"),       //import
+    New("new"),             //new
+    This("this"),           //this
+    Locked("locked"),       //locked
 
     //Utility:
-    EOF
+    EOF("end");
+
+    //TokenType:
+    private String name;
+
+    TokenType(String name) {
+        this.name = name;
+    }
+
+    public java.lang.String getName() {
+        return name;
+    }
+
+    public void setName(java.lang.String name) {
+        this.name = name;
+    }
 }

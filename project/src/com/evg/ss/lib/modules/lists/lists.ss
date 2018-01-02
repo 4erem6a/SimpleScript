@@ -1,42 +1,42 @@
 //SimpleScript'StandardLibrary: lists
-//Version: 1.3
+//Version: 1.4
 /*Dependencies:
  *  arrays
  */
-function List(array : array = []) {
+locked function List(array...) {
 
     this.array = array
 
-    this.size = () -> require("arrays").length(this.array)
-    this.toArray = () -> this.array
-    this.sequence = () -> require("sequences").fromList(this)
+    this.size = locked function() -> require("arrays").length(this.array)
+    this.toArray = locked function() -> this.array
+    this.sequence = locked function() -> require("sequences").fromList(this)
 
-    this.get = function(index : number) {
+    this.get = locked function(index : number) {
         require "arrays"
         if (index < 0 || index >= arrays.length(this.array))
             return null
         return this.array[index]
     }
 
-    this.set = function(index : number, value) {
+    this.set = locked function(index : number, value) {
         require "arrays"
         if (index >= 0 && index < arrays.length(this.array))
             this.array[index] = value
     }
 
-    this.add = function(value) {
+    this.add = locked function(value) {
         require "arrays"
         let oldLength = arrays.length(this.array)
         this.array = arrays.resize(this.array, oldLength + 1)
         this.array[oldLength] = value
     }
 
-    this.addAll = function(values : array) {
+    this.addAll = locked function(values : array) {
         foreach (let item in values)
             this.add(item)
     }
 
-    this.removeFirst = function(value) {
+    this.removeFirst = locked function(value) {
         require "arrays"
         for (let i = 0; i < arrays.length(this.array); i++) {
             if (this.array[i] == value) {
@@ -46,7 +46,7 @@ function List(array : array = []) {
         }
     }
 
-    this.removeLast = function(value) {
+    this.removeLast = locked function(value) {
         require "arrays"
         for (let i = arrays.length(this.array) - 1; i >= 0; i--) {
             if (this.array[i] == value) {
@@ -56,14 +56,14 @@ function List(array : array = []) {
         }
     }
 
-    this.removeAll = function(value) {
+    this.removeAll = locked function(value) {
         require "arrays"
         for (let i = 0; i < arrays.length(this.array); i++)
             if (this.array[i] == value)
                 this.removeAt(i)
     }
 
-    this.removeAt = function(index : number) {
+    this.removeAt = locked function(index : number) {
         require "arrays"
         if (index < 0 || index >= arrays.length(this.array))
             return null
@@ -73,7 +73,7 @@ function List(array : array = []) {
         this.array = arrays.resize(this.array, arrays.length(this.array) - 1)
     }
 
-    this.insert = function(index : number, value) {
+    this.insert = locked function(index : number, value) {
         require "arrays"
         if (index < 0 || index >= arrays.length(this.array))
             return null
@@ -84,7 +84,7 @@ function List(array : array = []) {
         this.array[index] = value
     }
 
-    this.firstIndexOf = function(value) {
+    this.firstIndexOf = locked function(value) {
         require "arrays"
         for (let i = 0; i < arrays.length(this.array); i++)
             if (this.array[i] == value)
@@ -92,7 +92,7 @@ function List(array : array = []) {
         return -1
     }
 
-    this.lastIndexOf = function(value) {
+    this.lastIndexOf = locked function(value) {
         require "arrays"
         for (let i = arrays.length(this.array) - 1; i >= 0; i--)
             if (this.array[i] == value)
@@ -100,21 +100,12 @@ function List(array : array = []) {
         return -1
     }
 
-    this.first = function() {
-        return (this.size() >= 1 ? this.get(0) : null)
-    }
+    this.first = locked function() -> (this.size() >= 1 ? this.get(0) : null)
 
-    this.firstOrDefault = function(default) {
-        return (this.size() >= 1 ? this.get(0) : default)
-    }
+    this.firstOrDefault = locked function(default) -> (this.size() >= 1 ? this.get(0) : default)
 
-}
-
-function of(params items) {
-    return new List(items)
 }
 
 exports {
-    List: ::List,
-    of:   ::of
+    List: ::List
 }

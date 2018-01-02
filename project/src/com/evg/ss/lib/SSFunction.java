@@ -21,6 +21,7 @@ public final class SSFunction implements ConstructorFunction {
     private final Statement body;
     private String name = null;
     private MapValue callContext;
+    private boolean isLocked = false;
 
     public SSFunction(MapValue callContext, String name, ArgumentExpression[] args, Statement body) {
         this(callContext, args, body);
@@ -81,32 +82,33 @@ public final class SSFunction implements ConstructorFunction {
         final List<Value> argList = processArguments(args);
         CallStack.enter(name == null ? "$lambda" : name, this);
         SS.Scopes.up();
-        for (int i = 0; i < argList.size(); i++)
-            SS.Variables.put(this.args.get(i).getName(), argList.get(i), false);
         SS.CallContext.up(callContext);
-        try {
-            body.execute();
-        } catch (SSReturnException e) {
-            SS.CallContext.down();
-            SS.Scopes.down();
-            return e.getValue();
-        }
+        final Value result;
+        if (isLocked) {
+            final SS.Scopes scopes = SS.Scopes.get();
+            SS.Scopes.reset();
+            result = execute(argList);
+            SS.Scopes.set(scopes);
+        } else result = execute(argList);
+        execute(argList);
         SS.CallContext.down();
         SS.Scopes.down();
         CallStack.exit();
+        return result;
+    }
+
+    private Value execute(List<Value> args) {
+        for (int i = 0; i < args.size(); i++)
+            SS.Variables.put(this.args.get(i).getName(), args.get(i), false);
+        try {
+            body.execute();
+        } catch (SSReturnException e) {
+            return e.getValue();
+        }
         return new NullValue();
     }
 
     private List<Value> processArguments(Value[] args) {
-        /*
-            function f(k, params x) -> x[k] //:2
-            f(1, 2, 3, 4, 5) //:5
-            /**
-                f(1, [2, 3, 4, 5]) -> (1, [2, 3, 4, 5])
-                f(1, 2, 3, 4, 5) -> (1, [2, 3, 4, 5])
-                f(1) -> (1, [])
-            **
-         */
         final List<Value> argList = new ArrayList<>();
         for (int i = 0; i < args.length; i++) {
             if (this.args.get(i).isVariadic() && args[i].getType() != Type.Array) {
@@ -141,6 +143,14 @@ public final class SSFunction implements ConstructorFunction {
 
     private String getLambdaName() {
         return String.format("$lambda:%d", hashCode());
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
     }
 
     @Override

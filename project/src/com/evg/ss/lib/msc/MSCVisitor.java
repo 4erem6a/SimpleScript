@@ -17,7 +17,7 @@ public class MSCVisitor implements ResultVisitor<String> {
             final StringBuilder argBuilder = new StringBuilder();
             argBuilder.append(arg.getName());
             if (arg.getRequiredType() != null)
-                argBuilder.append(String.format(":%s", arg.getRequiredType().accept(this)));
+                argBuilder.append(String.format(":%s", arg.getRequiredType().getTypename()));
             if (arg.getDefaultValue() != null)
                 argBuilder.append(String.format("=%s", arg.getDefaultValue().accept(this)));
             builder.append(argBuilder.append(',').toString());
@@ -34,7 +34,10 @@ public class MSCVisitor implements ResultVisitor<String> {
 
     @Override
     public String visit(AnonymousFunctionExpression target) {
-        return String.format("function(%s)%s", processArgDefinition(target.getArgs()), target.getBody().accept(this));
+        return String.format("%sfunction(%s)%s",
+                (target.isLocked() ? "locked " : ""),
+                processArgDefinition(target.getArgs()),
+                target.getBody().accept(this));
     }
 
     @Override
@@ -65,7 +68,7 @@ public class MSCVisitor implements ResultVisitor<String> {
         final StringBuilder builder = new StringBuilder();
         for (Statement statement : target.getStatements())
             builder.append(statement.accept(this)).append(";");
-        return String.format("block{%s}", builder.toString());
+        return String.format("%sblock{%s}", (target.isLocked() ? "locked " : ""), builder.toString());
     }
 
     @Override
@@ -75,7 +78,7 @@ public class MSCVisitor implements ResultVisitor<String> {
 
     @Override
     public String visit(ConstTypeExpression target) {
-        return target.getType().name().toLowerCase();
+        return target.getTypename();
     }
 
     @Override
@@ -127,7 +130,8 @@ public class MSCVisitor implements ResultVisitor<String> {
 
     @Override
     public String visit(FunctionDefinitionStatement target) {
-        return String.format("function %s(%s)%s",
+        return String.format("%sfunction %s(%s)%s",
+                (target.isLocked() ? "locked " : ""),
                 target.getName(),
                 processArgDefinition(target.getArgs()),
                 target.getBody().accept(this));
@@ -181,12 +185,12 @@ public class MSCVisitor implements ResultVisitor<String> {
     @Override
     public String visit(RequireExpression target) {
         final RequireExpression.RequireMode mode = target.getMode();
-        final StringBuilder builder = new StringBuilder("require ");
+        final StringBuilder builder = new StringBuilder("require");
         switch (mode) {
             case LOCAL:
-                builder.append("local");
+                builder.append(" local");
             case EXTERNAL:
-                builder.append("external");
+                builder.append(" external");
         }
         builder.append(String.format("(\"%s\")", target.getModuleName()));
         if (target.getVariableName() != null)

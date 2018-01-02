@@ -22,7 +22,7 @@ public class NullValue implements Value {
 
     @Override
     public String asString() {
-        return "";
+        return "null";
     }
 
     @Override

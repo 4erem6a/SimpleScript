@@ -11,6 +11,7 @@ public final class AnonymousFunctionExpression implements Expression {
 
     private ArgumentExpression[] args;
     private Statement body;
+    private boolean locked = false;
 
     public AnonymousFunctionExpression(ArgumentExpression[] args, Statement body) {
         this.args = args;
@@ -19,15 +20,25 @@ public final class AnonymousFunctionExpression implements Expression {
 
     @Override
     public Value eval() {
-        return new FunctionValue(new SSFunction(SS.CallContext.get(), args, body));
+        final SSFunction function = new SSFunction(SS.CallContext.get(), args, body);
+        function.setLocked(true);
+        return new FunctionValue(function);
     }
 
     public Statement getBody() {
         return body;
     }
 
+    public void setBody(Statement body) {
+        this.body = body;
+    }
+
     public ArgumentExpression[] getArgs() {
         return args;
+    }
+
+    public void setArgs(ArgumentExpression[] args) {
+        this.args = args;
     }
 
     @Override
@@ -38,5 +49,13 @@ public final class AnonymousFunctionExpression implements Expression {
     @Override
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }

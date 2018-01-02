@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.MapMatcher;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.*;
@@ -56,6 +57,8 @@ public final class BinaryExpression implements Expression {
                 return new BoolValue(leftValue.compareTo(rightValue) == 0);
             case NotEquals:
                 return new BoolValue(leftValue.compareTo(rightValue) != 0);
+            case Is:
+                return is(leftValue, rightValue);
             default:
                 return new NullValue();
         }
@@ -208,6 +211,19 @@ public final class BinaryExpression implements Expression {
         else return new NullValue();
     }
 
+    private Value is(Value left, Value right) {
+        if (right instanceof TypeValue)
+            return getBinaryComparison(Value.of(left.getType()), Value.of(((TypeValue) right).getValue()));
+        else if (left instanceof MapValue && right instanceof MapValue)
+            return Value.of(new MapMatcher((MapValue) left).match((MapValue) right));
+        else return getBinaryComparison(left, right);
+    }
+
+    private Value getBinaryComparison(Value left, Value right) {
+        return new BinaryExpression(BinaryOperations.Equals, new ValueExpression(left),
+                new ValueExpression(right)).eval();
+    }
+
     @Override
     public String toString() {
         return String.format("[%s %s %s]", left, operation.key, right);
@@ -254,7 +270,9 @@ public final class BinaryExpression implements Expression {
         GreaterThenOrEquals(">="),
         LessThenOrEquals("<="),
         Equals("=="),
-        NotEquals("!=");
+        NotEquals("!="),
+
+        Is(" is ");
         private String key;
 
         BinaryOperations(String operationKey) {

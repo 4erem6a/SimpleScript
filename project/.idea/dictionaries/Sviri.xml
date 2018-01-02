@@ -5,6 +5,8 @@
       <w>linter</w>
       <w>linters</w>
       <w>nameof</w>
+      <w>sblock</w>
+      <w>sfunction</w>
       <w>unlinkable</w>
     </words>
   </dictionary>

@@ -7,6 +7,7 @@ import com.evg.ss.lib.Variable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public final class VariableMap implements ScopedMap<String, Variable> {
 
@@ -48,5 +49,10 @@ public final class VariableMap implements ScopedMap<String, Variable> {
 
     public VariableMap getParent() {
         return parent;
+    }
+
+    @Override
+    public Set<Map.Entry<String, Variable>> entrySet() {
+        return map.entrySet();
     }
 }

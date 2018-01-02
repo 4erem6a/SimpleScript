@@ -22,8 +22,9 @@
 * Type conversion \(module/build-in\)
 * Field import
 * JavaScript-like constructors \(this/new\)
+* Pattern matching \(Maps\)
   ## Roadmap:
-* Pattern matching
+* --- optimization ---
 
   # Modules:
 
@@ -37,7 +38,9 @@
 * Interpreter\(`"interpreter"`\)
 * Environment\(`"environment"`\)
 * Math\(`"math"`\)
-  ## Roadmap:
+ 
+ ## Roadmap:
+ 
 * Types\(`"types"`\)
 
 ### See language manual at [gitBook](https://www.gitbook.com/book/4erem6a/simplescript-manual).

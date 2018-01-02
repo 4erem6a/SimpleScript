@@ -6,6 +6,7 @@ import com.evg.ss.lib.Function;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public final class FunctionMap implements ScopedMap<String, Function> {
 
@@ -44,5 +45,10 @@ public final class FunctionMap implements ScopedMap<String, Function> {
 
     public FunctionMap getParent() {
         return parent;
+    }
+
+    @Override
+    public Set<Map.Entry<String, Function>> entrySet() {
+        return map.entrySet();
     }
 }

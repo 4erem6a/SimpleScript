@@ -11,6 +11,7 @@ public final class FunctionDefinitionStatement implements Statement {
     private String name;
     private Statement body;
     private ArgumentExpression[] args;
+    private boolean locked = false;
 
     public FunctionDefinitionStatement(String name, ArgumentExpression[] args, Statement body) {
         this.name = name;
@@ -22,12 +23,22 @@ public final class FunctionDefinitionStatement implements Statement {
         return args;
     }
 
+    public void setArgs(ArgumentExpression[] args) {
+        this.args = args;
+    }
+
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Function getFunction() {
-        return new SSFunction(null, name, args, body);
+        final SSFunction function = new SSFunction(null, name, args, body);
+        function.setLocked(locked);
+        return function;
     }
 
     @Override
@@ -47,5 +58,17 @@ public final class FunctionDefinitionStatement implements Statement {
 
     public Statement getBody() {
         return body;
+    }
+
+    public void setBody(Statement body) {
+        this.body = body;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }
