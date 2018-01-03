@@ -119,4 +119,11 @@ public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
         return getType().ordinal() | toArray().hashCode();
     }
 
+    @Override
+    public Value clone() {
+        final MapValue result = new MapValue();
+        result.map = this.getMap();
+        return result;
+    }
+
 }

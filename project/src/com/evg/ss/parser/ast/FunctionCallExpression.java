@@ -42,8 +42,8 @@ public final class FunctionCallExpression implements Expression {
         final Function function = ((FunctionValue) functionValue).getValue();
         if (isNew)
             return function instanceof ConstructorFunction
-                    ? ((ConstructorFunction) function).executeAsNew(args)
-                    : new MapValue();
+                ? ((ConstructorFunction) function).executeAsNew(args)
+                : new MapValue();
         return function.execute(args);
     }
 

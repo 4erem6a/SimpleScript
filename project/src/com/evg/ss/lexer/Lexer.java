@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class Lexer extends AbstractLexer {
     //Operator characters:
-    private static final String OPERATOR_CHARS = "(){}[]/*%-+=&|^~!?<>|:.,;";
+    private static final String OPERATOR_CHARS = "@(){}[]/*%-+=&|^~!?<>|:.,;";
     private static final String QUOTES = "'\"`";
     private static final Map<String, TokenType> OPERATOR_TOKEN_MAP = new HashMap<>();
     private static final Map<String, TokenType> KEYWORD_MAP = new HashMap<>();
@@ -39,6 +39,7 @@ public final class Lexer extends AbstractLexer {
         OPERATOR_TOKEN_MAP.put("?", TokenType.Qm);
         OPERATOR_TOKEN_MAP.put("<", TokenType.Al);
         OPERATOR_TOKEN_MAP.put(">", TokenType.Ar);
+        OPERATOR_TOKEN_MAP.put("@", TokenType.At);
         OPERATOR_TOKEN_MAP.put("||", TokenType.VbVb);
         OPERATOR_TOKEN_MAP.put("&&", TokenType.AmAm);
         OPERATOR_TOKEN_MAP.put("<=", TokenType.AlEq);
@@ -52,6 +53,7 @@ public final class Lexer extends AbstractLexer {
         OPERATOR_TOKEN_MAP.put(">>", TokenType.ArAr);
         OPERATOR_TOKEN_MAP.put("<<", TokenType.AlAl);
         OPERATOR_TOKEN_MAP.put(">>>", TokenType.ArArAr);
+        OPERATOR_TOKEN_MAP.put("=?", TokenType.EqQm);
         OPERATOR_TOKEN_MAP.put(":", TokenType.Cl);
         OPERATOR_TOKEN_MAP.put(".", TokenType.Dt);
         OPERATOR_TOKEN_MAP.put(",", TokenType.Cm);
@@ -118,7 +120,7 @@ public final class Lexer extends AbstractLexer {
                 tokenizeNumber();
             else if (Character.isLetter(current) || current == '$' || current == '_')
                 tokenizeWord();
-            else if (QUOTES.indexOf(current) != -1 || current == '@')
+            else if (QUOTES.indexOf(current) != -1 || (current == '@' && QUOTES.indexOf(peek(1)) != -1))
                 tokenizeString();
             else if (OPERATOR_CHARS.contains(current.toString()))
                 tokenizeOperator();

@@ -115,4 +115,9 @@ public class ArrayValue implements Value, Iterable<Value> {
     public Spliterator<Value> spliterator() {
         return Arrays.stream(value).spliterator();
     }
+
+    @Override
+    public Value clone() {
+        return Value.of(value);
+    }
 }

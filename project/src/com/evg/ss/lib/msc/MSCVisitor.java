@@ -199,6 +199,11 @@ public class MSCVisitor implements ResultVisitor<String> {
     }
 
     @Override
+    public String visit(ValueCloneExpression valueCloneExpression) {
+        return String.format("@%s", valueCloneExpression.getExpression().accept(this));
+    }
+
+    @Override
     public String visit(ReturnStatement target) {
         return String.format("return %s", target.getExpression().accept(this));
     }

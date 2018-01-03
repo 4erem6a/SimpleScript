@@ -9,15 +9,27 @@ import com.evg.ss.values.Value;
 
 public final class utils extends SSModule {
 
-    private static Value ssHashCode(Value... args) {
+    @Override
+    public MapValue require() {
+        final SSMapBuilder builder = SSMapBuilder.create();
+        builder.setMethod("hashCode", utils::hashCode);
+        builder.setMethod("clone", utils::clone);
+        builder.setMethod("compare", utils::compare);
+        return builder.build();
+    }
+
+    private static Value compare(Value... args) {
+        Arguments.checkArgcOrDie(args, 2);
+        return Value.of(args[0].compareTo(args[1]));
+    }
+
+    private static Value hashCode(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
         return new NumberValue(args[0].hashCode());
     }
 
-    @Override
-    public MapValue require() {
-        final SSMapBuilder builder = SSMapBuilder.create();
-        builder.setMethod("hashCode", utils::ssHashCode);
-        return builder.build();
+    private static Value clone(Value... args) {
+        Arguments.checkArgcOrDie(args, 1);
+        return args[0].clone();
     }
 }

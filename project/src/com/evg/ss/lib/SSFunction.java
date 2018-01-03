@@ -90,7 +90,6 @@ public final class SSFunction implements ConstructorFunction {
             result = execute(argList);
             SS.Scopes.set(scopes);
         } else result = execute(argList);
-        execute(argList);
         SS.CallContext.down();
         SS.Scopes.down();
         CallStack.exit();

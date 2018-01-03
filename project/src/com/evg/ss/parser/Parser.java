@@ -270,7 +270,7 @@ public final class Parser extends AbstractParser {
             return new LetStatement(name, value, false);
         } else {
             consume(TokenType.Eq);
-            value = value();
+            value = expression();
             return new LetStatement(name, value, true);
         }
     }
@@ -410,12 +410,15 @@ public final class Parser extends AbstractParser {
                 continue;
             }
             if (match(TokenType.Is)) {
-                result = new BinaryExpression(BinaryOperations.Is, result, expression());
+                result = new BinaryExpression(BinaryOperations.Is, result, addictive());
                 continue;
             }
             if (match(TokenType.As)) {
-                result = new AsExpression(result, typename());
+                result = new AsExpression(result, addictive());
                 continue;
+            }
+            if (match(TokenType.EqQm)) {
+                result = new BinaryExpression(BinaryOperations.Compare, result, addictive());
             }
             break;
         }
@@ -470,6 +473,12 @@ public final class Parser extends AbstractParser {
         }
         if (match(TokenType.MnMn)) {
             return new UnaryExpression(UnaryOperations.PrefixDecrement, allocation());
+        }
+        if (match(TokenType.Ex)) {
+            return new UnaryExpression(UnaryOperations.LogicalNot, allocation());
+        }
+        if (match(TokenType.Tl)) {
+            return new UnaryExpression(UnaryOperations.BitwiseNot, allocation());
         }
         return allocation();
     }
@@ -558,6 +567,8 @@ public final class Parser extends AbstractParser {
             return new FunctionReferenceExpression(consume(TokenType.Word).getValue());
         } else if (match(TokenType.Word)) {
             return new VariableExpression(current.getValue());
+        } else if (match(TokenType.At)) {
+            return new ValueCloneExpression(expression());
         } else if (match(TokenType.Lp)) {
             Expression result = expression();
             match(TokenType.Rp);

@@ -82,4 +82,6 @@ public interface Visitor {
     void visit(NewExpression newExpression);
 
     void visit(RequireExpression requireExpression);
+
+    void visit(ValueCloneExpression valueCloneExpression);
 }

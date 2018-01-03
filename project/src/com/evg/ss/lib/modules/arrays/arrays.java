@@ -2,6 +2,7 @@ package com.evg.ss.lib.modules.arrays;
 
 import com.evg.ss.exceptions.execution.InvalidValueException;
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
+import com.evg.ss.lib.Function;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSArrayBuilder;
@@ -9,6 +10,7 @@ import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public final class arrays extends SSModule {
 
@@ -18,8 +20,26 @@ public final class arrays extends SSModule {
         builder.setMethod("length", this::length);
         builder.setMethod("resize", this::resize);
         builder.setMethod("create", this::create);
+        builder.setMethod("sortBy", this::sortBy);
+        builder.setMethod("sort", this::sort);
         builder.setMethod("copy", this::copy);
         return builder.build();
+    }
+
+    private Value sort(Value... args) {
+        Arguments.checkArgTypesOrDie(args, Type.Array, Type.Function);
+        final Value[] array = ((ArrayValue) args[0]).getValue().clone();
+        final Function function = ((FunctionValue) args[1]).getValue();
+        Arrays.sort(array, (a, b) -> function.execute(a, b).asNumber().intValue());
+        return Value.of(array);
+    }
+
+    private Value sortBy(Value... args) {
+        Arguments.checkArgTypesOrDie(args, Type.Array, Type.Function);
+        final Value[] array = ((ArrayValue) args[0]).getValue().clone();
+        final Function function = ((FunctionValue) args[1]).getValue();
+        Arrays.sort(array, Comparator.comparing(function::execute));
+        return Value.of(array);
     }
 
     private Value create(Value... values) {

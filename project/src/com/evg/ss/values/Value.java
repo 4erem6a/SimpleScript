@@ -41,4 +41,6 @@ public interface Value extends Comparable<Value> {
 
     Type getType();
 
+    Value clone();
+
 }

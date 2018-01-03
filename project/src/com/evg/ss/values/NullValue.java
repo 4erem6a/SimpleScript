@@ -49,4 +49,9 @@ public class NullValue implements Value {
     public int hashCode() {
         return getType().ordinal();
     }
+
+    @Override
+    public Value clone() {
+        return new NullValue();
+    }
 }

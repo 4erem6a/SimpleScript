@@ -1,5 +1,5 @@
 //SimpleScript'StandardLibrary: lists
-//Version: 1.4
+//Version: 1.5
 /*Dependencies:
  *  arrays
  */
@@ -98,6 +98,14 @@ locked function List(array...) {
             if (this.array[i] == value)
                 return i
         return -1
+    }
+
+    this.sortBy = locked function(callback : function) {
+        this.array = require("arrays").sortBy(this.array, callback)
+    }
+
+    this.sort = locked function(callback : function) {
+        this.array = require("arrays").sort(this.array, callback)
     }
 
     this.first = locked function() -> (this.size() >= 1 ? this.get(0) : null)

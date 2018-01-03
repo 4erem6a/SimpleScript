@@ -32,6 +32,10 @@ public final class Desktop {
         EXECUTION_FLAGS_MAP.put("-d", SSExecutionFlags.DEBUG);
     }
 
+    private static boolean hasFlag(String flag) {
+        return EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get(flag));
+    }
+
     public static void main(String[] args) throws IOException {
         if (args.length < 2)
             exitWithMessage("Error: invalid argument count.");
@@ -76,7 +80,7 @@ public final class Desktop {
             log("Generating tokens ... ");
             final SimpleScript script = SimpleScript.fromFile(programPath);
             log("Complete\n");
-            parse(script);
+            execute(script);
         } catch (Exception e) {
             except(e);
         }
@@ -87,7 +91,6 @@ public final class Desktop {
         if (!script.isCompilable())
             except(script.tryCompile());
         log("Complete\n");
-        lint(script);
     }
 
     private static void lint(SimpleScript script) {
@@ -98,15 +101,18 @@ public final class Desktop {
             exitWithMessage("Lint error: \n\t%s", e.getMessage());
         }
         log("Complete\n");
-        execute(script);
     }
 
     public static void execute(SimpleScript script) {
-        if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-t")))
+        if (hasFlag("-t"))
             getTokens(script);
-        if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-p")))
+        if (hasFlag("-p") || hasFlag("-e")) {
+            lint(script);
+            parse(script);
+        }
+        if (hasFlag("-p"))
             getProgram(script);
-        if (EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get("-e")))
+        if (hasFlag("-e"))
             run(script);
     }
 

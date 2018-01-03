@@ -50,4 +50,9 @@ public class NumberValue implements Value {
     public int hashCode() {
         return getType().ordinal() | asNumber().intValue();
     }
+
+    @Override
+    public Value clone() {
+        return Value.of(value);
+    }
 }

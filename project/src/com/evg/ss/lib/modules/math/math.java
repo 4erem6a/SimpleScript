@@ -46,7 +46,7 @@ public final class math extends SSModule {
         math.setMethod("toDegrees", args -> Value.of(Math.toDegrees(args[0].asNumber())));
         math.setMethod("toRadians", args -> Value.of(Math.toRadians(args[0].asNumber())));
         math.setMethod("ulp", args -> Value.of(Math.ulp(args[0].asNumber())));
-        math.setField("Pi", Value.of(Math.PI));
+        math.setField("PI", Value.of(Math.PI));
         math.setField("E", Value.of(Math.E));
         return math.build();
     }

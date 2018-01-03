@@ -1,5 +1,5 @@
 //SimpleScript'StandardLibrary: sequences
-//Version: 1.4
+//Version: 1.5
 /*Dependencies:
  *  lists
  */
@@ -12,32 +12,31 @@ locked function Sequence(base = null) {
     this.toList = locked function() -> this.list
     this.toArray = locked function() -> this.list.array
 
-    this.copy = locked function() -> new require("sequences").Sequence(this)
+    this.head = locked function() -> this.list.first()
+    this.tail = locked function() {
+        let tail = this.skip(1)
+        return (tail == null ? new require("lists").List() : tail)
+    }
+    this.headTail = locked function(callback : function) -> callback(this.head(), this.tail())
 
     this.skip = locked function(count : number) {
         if (count < 0 || count >= this.list.size())
             return null
-        let result = this.copy()
-        for (let i = 0; i < count; i++)
-            result.list.removeAt(i)
-        return result
+        require "lists"
+        let result = new lists.List()
+        for (let i = count; i < this.list.size(); i++)
+            result.add(this.list.get(i))
+        return result.sequence()
     }
 
     this.limit = locked function(count : number) {
         if (count <= 0 || count > this.list.size())
             return null
-        let result = this.copy()
-        if (count < result.list.size())
-            for (let i = result.list.size() - 1; i >= count; i--)
-                result.list.removeAt(i)
-        return result
-    }
-
-    this.headTail = locked function(callback : function) {
         require "lists"
-        let head = this.list.first()
-        let tail = (this.list.size() > 1 ? this.skip(1).toList() : new lists.List())
-        return callback(head, tail)
+        let result = new lists.List()
+        for (let i = 0; i < count; i++)
+            result.add(this.list.get(i))
+        return result.sequence()
     }
 
     this.map = locked function(callback : function) {
@@ -57,7 +56,7 @@ locked function Sequence(base = null) {
     }
 
     this.peek = locked function(callback : function) {
-        let result = this.copy()
+        let result = @this
         foreach (let item in result.toArray())
             callback(item)
         return require("sequences").fromList(result)
@@ -75,6 +74,38 @@ locked function Sequence(base = null) {
             if (callback(item))
                 result.add(item)
         return require("sequences").fromList(result)
+    }
+
+    this.orderBy = locked function(callback : function) {
+        let result = this.list
+        result.sortBy(callback)
+        return result.sequence()
+    }
+
+    this.sort = locked function(callback : function) {
+        let result = this.list
+        result.sort(callback)
+        return result.sequence()
+    }
+
+    this.dropWhile = locked function(callback : function) {
+        let list = this.list
+        let index = 0
+        while (callback(list.get(index))) {
+            list.removeAt(index)
+            index++
+        }
+        return list.sequence()
+    }
+
+    this.takeWhile = locked function(callback : function) {
+        let list = new require("lists").List()
+        let index = 0
+        while (callback(this.list.get(index))) {
+            list.add(this.list.get(index))
+            index++
+        }
+        return list.sequence()
     }
 
     this.reduce = locked function(callback : function) {
@@ -113,7 +144,7 @@ locked function Sequence(base = null) {
             for (let j = 0; j < this.count(); j++)
                 if (this.list.get(i) == this.list.get(j) && i != j)
                     this.list.removeAt(j)
-        return this.copy()
+        return @this
     }
 
     this.sum = locked function() {

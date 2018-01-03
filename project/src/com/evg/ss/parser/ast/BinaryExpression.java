@@ -57,6 +57,8 @@ public final class BinaryExpression implements Expression {
                 return new BoolValue(leftValue.compareTo(rightValue) == 0);
             case NotEquals:
                 return new BoolValue(leftValue.compareTo(rightValue) != 0);
+            case Compare:
+                return Value.of(leftValue.compareTo(rightValue));
             case Is:
                 return is(leftValue, rightValue);
             default:
@@ -271,6 +273,7 @@ public final class BinaryExpression implements Expression {
         LessThenOrEquals("<="),
         Equals("=="),
         NotEquals("!="),
+        Compare("=?"),
 
         Is(" is ");
         private String key;

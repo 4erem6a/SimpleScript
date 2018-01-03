@@ -50,4 +50,9 @@ public class BoolValue implements Value {
     public int hashCode() {
         return getType().ordinal() | Boolean.valueOf(value).hashCode();
     }
+
+    @Override
+    public Value clone() {
+        return Value.of(value);
+    }
 }

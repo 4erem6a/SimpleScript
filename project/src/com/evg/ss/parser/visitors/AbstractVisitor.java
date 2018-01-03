@@ -217,4 +217,9 @@ public abstract class AbstractVisitor implements Visitor {
     @Override
     public void visit(RequireExpression target) {
     }
+
+    @Override
+    public void visit(ValueCloneExpression valueCloneExpression) {
+        valueCloneExpression.getExpression().accept(this);
+    }
 }

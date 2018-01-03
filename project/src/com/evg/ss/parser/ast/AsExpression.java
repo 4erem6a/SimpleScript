@@ -3,6 +3,7 @@ package com.evg.ss.parser.ast;
 import com.evg.ss.lib.Converter;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
+import com.evg.ss.values.Type;
 import com.evg.ss.values.TypeValue;
 import com.evg.ss.values.Value;
 
@@ -18,8 +19,12 @@ public final class AsExpression implements Expression {
     @Override
     public Value eval() {
         final Value target = this.target.eval();
-        final TypeValue type = (TypeValue) this.type.eval();
-        return new Converter(target.getType(), type.getValue()).convert(target);
+        final Type type;
+        final Value value = this.type.eval();
+        if (value instanceof TypeValue)
+            type = ((TypeValue) value).getValue();
+        else type = value.getType();
+        return new Converter(target.getType(), type).convert(target);
     }
 
     public Expression getTarget() {

@@ -81,4 +81,6 @@ public interface ResultVisitor<TResult> {
     TResult visit(NewExpression newExpression);
 
     TResult visit(RequireExpression requireExpression);
+
+    TResult visit(ValueCloneExpression valueCloneExpression);
 }

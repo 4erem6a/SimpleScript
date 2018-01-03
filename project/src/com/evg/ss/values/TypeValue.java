@@ -53,4 +53,9 @@ public class TypeValue implements Value {
     public int hashCode() {
         return getType().ordinal() | value.hashCode();
     }
+
+    @Override
+    public Value clone() {
+        return Value.of(value);
+    }
 }
