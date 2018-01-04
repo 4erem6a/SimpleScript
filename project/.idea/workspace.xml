@@ -20,21 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="program.ss" pinned="false" current-in-tab="false">
+      <file leaf-file-name="program.ss" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/program.ss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleScript.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="32" column="55" lean-forward="false" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
+            <state relative-caret-position="120">
+              <caret line="5" column="16" lean-forward="true" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -53,7 +43,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Unit</find>
       <find>type()</find>
       <find>number</find>
       <find>isLa</find>
@@ -63,8 +52,6 @@
       <find>array</find>
       <find>argument</find>
       <find>BlockStatement</find>
-      <find>lockedStatement</find>
-      <find>lockedExpression</find>
       <find>require</find>
       <find>f</find>
       <find>function</find>
@@ -83,6 +70,9 @@
       <find>comparison</find>
       <find>UnexpectedTokenException</find>
       <find>Ex</find>
+      <find>lockedStatement()</find>
+      <find>lockedExpression</find>
+      <find>lockedStatement</find>
     </findStrings>
     <replaceStrings>
       <replace>of</replace>
@@ -96,30 +86,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/lists/lists.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/sequences/sequences.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/execution/InvalidValueException.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/arrays/array.ss" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/arrays/arrays.ss" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/BlockStatement.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/containers/ScopedMap.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/containers/VariableMap.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/containers/FunctionMap.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/SS.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/interpreter/interpreter.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/MapMatcher.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/parser/UnexpectedTokenException.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/lexer/InvalidTokenDefinitionException.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/IsExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ConstTypeExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/FunctionDefinitionStatement.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/AnonymousFunctionExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ThisExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/Type.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/MapValue.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/visitors/Visitor.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/visitors/ResultVisitor.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/visitors/AbstractVisitor.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/ArrayValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/NullValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/FunctionValue.java" />
@@ -129,22 +103,38 @@
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/TypeValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/StringValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ValueCloneExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/msc/MSCVisitor.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/SSFunction.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/FunctionCallExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/functions/functions.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/arrays/arrays.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/utils/utils.java" />
-        <option value="$PROJECT_DIR$/src/desktop/Desktop.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lexer/TokenType.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lexer/Lexer.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/BinaryExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/AsExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/Parser.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/math/math.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/sequences/sequences.ss" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/lists/lists.ss" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/functions/functions.ss" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lexer/TokenType.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lexer/Lexer.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/inner/SSThrowedException.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/inner/SSThrownException.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/SSThrownException.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/SS.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/SSFunction.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/Lockable.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/AnonymousFunctionExpression.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/BlockStatement.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/FunctionDefinitionStatement.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ThrowStatement.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/parser/InvalidLockException.java" />
+        <option value="$PROJECT_DIR$/src/desktop/Desktop.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/visitors/Visitor.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/visitors/ResultVisitor.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/Parser.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/msc/MSCVisitor.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/visitors/AbstractVisitor.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/errors/errors.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/errors/errors.ss" />
         <option value="$PROJECT_DIR$/src/program.ss" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java" />
       </list>
@@ -196,6 +186,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -228,10 +221,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -240,7 +230,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/com" />
-    <property name="SearchEverywhereHistoryKey" value="FunctionCall&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.FunctionCallExpression&#10;This&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ThisExpression.java&#10;SSF&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/lib/SSFunction.java&#10;BlockS&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.BlockStatement&#10;BinaryEx&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BinaryExpression.java&#10;settings&#9;ACTION&#9;ShowSettings&#10;tip&#9;ACTION&#9;ShowTips&#10;decrease&#9;ACTION&#9;EditorDecreaseFontSize&#10;font&#9;ACTION&#9;EditorDecreaseFontSize&#10;completion&#9;ACTION&#9;CodeCompletionGroup&#10;blacklist&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;black list&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;format&#9;ACTION&#9;ReformatCode" />
+    <property name="SearchEverywhereHistoryKey" value="TryCa&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java&#10;Try&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java&#10;Block&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;SSF&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/lib/SSFunction.java&#10;FunctionCall&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.FunctionCallExpression&#10;This&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ThisExpression.java&#10;BlockS&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.BlockStatement&#10;BinaryEx&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BinaryExpression.java&#10;settings&#9;ACTION&#9;ShowSettings&#10;tip&#9;ACTION&#9;ShowTips&#10;decrease&#9;ACTION&#9;EditorDecreaseFontSize&#10;font&#9;ACTION&#9;EditorDecreaseFontSize&#10;completion&#9;ACTION&#9;CodeCompletionGroup&#10;blacklist&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;black list&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;format&#9;ACTION&#9;ReformatCode" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last.edited.regexp" value="{2 + 2}" />
     <property name="Downloaded.Files.Path.Enabled" value="false" />
@@ -249,9 +239,11 @@
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="TEXT&#10;YouTrack" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Sviri\IdeaProjects\SimpleScript\ExternalLibraries" />
-      <recent name="C:\Users\Sviri\IdeaProjects\SimpleScript\src" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.evg.ss.exceptions.parser" />
+      <recent name="com.evg.ss.exceptions.execution" />
+      <recent name="com.evg.ss.parser.ast" />
+      <recent name="com.evg.ss.exceptions" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Sviri\IdeaProjects\SimpleScript\src\com\evg\ss\ast" />
@@ -267,10 +259,9 @@
       <recent name="com.evg.ss.exceptions.inner" />
       <recent name="com.evg.ss.lib.modules.maps" />
     </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.evg.ss.exceptions.execution" />
-      <recent name="com.evg.ss.parser.ast" />
-      <recent name="com.evg.ss.exceptions" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Sviri\IdeaProjects\SimpleScript\ExternalLibraries" />
+      <recent name="C:\Users\Sviri\IdeaProjects\SimpleScript\src" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -496,189 +487,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/exceptions/parser/UnknownOperatorException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="5" column="19" lean-forward="false" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/exceptions/lexer/UnknownCharacterException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="7" column="19" lean-forward="false" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/exceptions/lexer/InvalidTokenDefinitionException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="10" column="41" lean-forward="false" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/IsExpression.java" />
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/ArgumentExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="33" column="23" lean-forward="false" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
-          <folding>
-            <element signature="e#1014#1015#0" expanded="false" />
-            <element signature="e#1049#1050#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/ConstTypeExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-696">
-          <caret line="8" column="19" lean-forward="false" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
-          <folding>
-            <element signature="e#1247#1248#0" expanded="false" />
-            <element signature="e#1278#1279#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/TypeExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="6" column="26" lean-forward="true" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/AnonymousFunctionExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="24" column="43" lean-forward="true" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="43" />
-          <folding>
-            <element signature="e#818#819#0" expanded="false" />
-            <element signature="e#845#846#0" expanded="false" />
-            <element signature="e#965#966#0" expanded="false" />
-            <element signature="e#992#993#0" expanded="false" />
-            <element signature="e#1046#1047#0" expanded="false" />
-            <element signature="e#1078#1079#0" expanded="false" />
-            <element signature="e#888#889#0" expanded="false" />
-            <element signature="e#920#921#0" expanded="false" />
-            <element signature="e#1404#1405#0" expanded="false" />
-            <element signature="e#1440#1441#0" expanded="false" />
-            <element signature="e#1330#1331#0" expanded="false" />
-            <element signature="e#1359#1360#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/FunctionDefinitionStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="33" column="5" lean-forward="true" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#641#642#0" expanded="false" />
-            <element signature="e#668#669#0" expanded="false" />
-            <element signature="e#785#786#0" expanded="false" />
-            <element signature="e#812#813#0" expanded="false" />
-            <element signature="e#1107#1108#0" expanded="false" />
-            <element signature="e#1160#1161#0" expanded="false" />
-            <element signature="e#1217#1218#0" expanded="false" />
-            <element signature="e#1252#1253#0" expanded="false" />
-            <element signature="e#1413#1414#0" expanded="false" />
-            <element signature="e#1440#1441#0" expanded="false" />
-            <element signature="e#852#853#0" expanded="false" />
-            <element signature="e#884#885#0" expanded="false" />
-            <element signature="e#1483#1484#0" expanded="false" />
-            <element signature="e#1515#1516#0" expanded="false" />
-            <element signature="e#722#723#0" expanded="false" />
-            <element signature="e#754#755#0" expanded="false" />
-            <element signature="e#1548#1549#0" expanded="false" />
-            <element signature="e#1577#1578#0" expanded="false" />
-            <element signature="e#1622#1623#0" expanded="false" />
-            <element signature="e#1658#1659#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/SS.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="196" column="27" lean-forward="false" selection-start-line="196" selection-start-column="27" selection-end-line="196" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#670#671#0" expanded="false" />
-            <element signature="e#745#746#0" expanded="false" />
-            <element signature="e#782#783#0" expanded="false" />
-            <element signature="e#838#839#0" expanded="false" />
-            <element signature="e#878#879#0" expanded="false" />
-            <element signature="e#957#958#0" expanded="false" />
-            <element signature="e#1009#1010#0" expanded="false" />
-            <element signature="e#1068#1069#0" expanded="false" />
-            <element signature="e#1760#1761#0" expanded="false" />
-            <element signature="e#1835#1836#0" expanded="false" />
-            <element signature="e#2029#2030#0" expanded="false" />
-            <element signature="e#2069#2070#0" expanded="false" />
-            <element signature="e#2114#2115#0" expanded="false" />
-            <element signature="e#2154#2155#0" expanded="false" />
-            <element signature="e#3421#3422#0" expanded="false" />
-            <element signature="e#3455#3456#0" expanded="false" />
-            <element signature="e#3506#3507#0" expanded="false" />
-            <element signature="e#3549#3550#0" expanded="false" />
-            <element signature="e#3967#3968#0" expanded="false" />
-            <element signature="e#4027#4028#0" expanded="false" />
-            <element signature="e#5031#5032#0" expanded="false" />
-            <element signature="e#5065#5066#0" expanded="false" />
-            <element signature="e#5116#5117#0" expanded="false" />
-            <element signature="e#5159#5160#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/BlockStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="23" column="5" lean-forward="true" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-          <folding>
-            <element signature="e#404#405#0" expanded="false" />
-            <element signature="e#448#449#0" expanded="false" />
-            <element signature="e#538#539#0" expanded="false" />
-            <element signature="e#579#580#0" expanded="false" />
-            <element signature="e#1282#1283#0" expanded="false" />
-            <element signature="e#1317#1318#0" expanded="false" />
-            <element signature="e#1363#1364#0" expanded="false" />
-            <element signature="e#1396#1397#0" expanded="false" />
-            <element signature="e#1481#1482#0" expanded="false" />
-            <element signature="e#1523#1524#0" expanded="false" />
-            <element signature="e#1630#1631#0" expanded="false" />
-            <element signature="e#1666#1667#0" expanded="false" />
-            <element signature="e#1556#1557#0" expanded="false" />
-            <element signature="e#1585#1586#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/ThisExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="30" column="47" lean-forward="true" selection-start-line="30" selection-start-column="47" selection-end-line="30" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_131/src.zip!/java/lang/Cloneable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="49" column="31" lean-forward="false" selection-start-line="49" selection-start-column="31" selection-end-line="49" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/Type.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="19" column="5" lean-forward="true" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_131/src.zip!/java/lang/Object.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1019">
@@ -699,33 +507,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="28" column="19" lean-forward="false" selection-start-line="28" selection-start-column="19" selection-end-line="28" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/visitors/Visitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="514">
-          <caret line="85" column="8" lean-forward="false" selection-start-line="85" selection-start-column="8" selection-end-line="85" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/visitors/AbstractVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="224" column="1" lean-forward="true" selection-start-line="224" selection-start-column="1" selection-end-line="224" selection-end-column="1" />
-          <folding>
-            <element signature="e#5279#5280#0" expanded="false" />
-            <element signature="e#5344#5345#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/visitors/ResultVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="85" column="1" lean-forward="true" selection-start-line="85" selection-start-column="1" selection-end-line="85" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -855,26 +636,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/msc/MSCVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="202" column="72" lean-forward="false" selection-start-line="202" selection-start-column="72" selection-end-line="202" selection-end-column="72" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/modules/interpreter/interpreter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="29" column="51" lean-forward="false" selection-start-line="29" selection-start-column="51" selection-end-line="29" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/SSFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="91" column="41" lean-forward="false" selection-start-line="91" selection-start-column="41" selection-end-line="91" selection-end-column="41" />
           <folding />
         </state>
       </provider>
@@ -884,16 +649,16 @@
         <state relative-caret-position="155">
           <caret line="28" column="34" lean-forward="false" selection-start-line="28" selection-start-column="34" selection-end-line="28" selection-end-column="34" />
           <folding>
-            <element signature="e#1955#1956#0" expanded="false" />
-            <element signature="e#2040#2041#0" expanded="false" />
-            <element signature="e#2097#2098#0" expanded="false" />
-            <element signature="e#2132#2133#0" expanded="false" />
-            <element signature="e#2217#2218#0" expanded="false" />
-            <element signature="e#2259#2260#0" expanded="false" />
-            <element signature="e#2298#2299#0" expanded="false" />
-            <element signature="e#2329#2330#0" expanded="false" />
-            <element signature="e#2366#2367#0" expanded="false" />
-            <element signature="e#2393#2394#0" expanded="false" />
+            <element signature="e#1963#1964#0" expanded="false" />
+            <element signature="e#2048#2049#0" expanded="false" />
+            <element signature="e#2105#2106#0" expanded="false" />
+            <element signature="e#2140#2141#0" expanded="false" />
+            <element signature="e#2225#2226#0" expanded="false" />
+            <element signature="e#2267#2268#0" expanded="false" />
+            <element signature="e#2306#2307#0" expanded="false" />
+            <element signature="e#2337#2338#0" expanded="false" />
+            <element signature="e#2374#2375#0" expanded="false" />
+            <element signature="e#2401#2402#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -910,28 +675,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
           <caret line="16" column="51" lean-forward="false" selection-start-line="16" selection-start-column="51" selection-end-line="16" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/desktop/Desktop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="165" column="1" lean-forward="true" selection-start-line="165" selection-start-column="1" selection-end-line="165" selection-end-column="1" />
-          <folding>
-            <element signature="e#1212#1213#0" expanded="true" />
-            <element signature="e#1290#1291#0" expanded="true" />
-            <element signature="e#4251#4252#0" expanded="true" />
-            <element signature="e#4293#4294#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lexer/Lexer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="55" column="34" lean-forward="false" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -940,8 +683,8 @@
         <state relative-caret-position="199">
           <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
           <folding>
-            <element signature="e#174#175#0" expanded="true" />
-            <element signature="e#219#220#0" expanded="true" />
+            <element signature="e#174#175#0" expanded="false" />
+            <element signature="e#219#220#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -958,30 +701,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="25" column="36" lean-forward="false" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/modules/functions/functions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lexer/TokenType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="30" column="27" lean-forward="true" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/Parser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="481" column="9" lean-forward="false" selection-start-line="481" selection-start-column="9" selection-end-line="481" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -1010,18 +729,268 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/modules/functions/functions.ss">
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lexer/TokenType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="19" column="48" lean-forward="false" selection-start-line="19" selection-start-column="48" selection-end-line="19" selection-end-column="48" />
+        <state relative-caret-position="432">
+          <caret line="93" column="35" lean-forward="false" selection-start-line="93" selection-start-column="35" selection-end-line="93" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/program.ss">
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lexer/Lexer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state relative-caret-position="263">
+          <caret line="101" column="48" lean-forward="false" selection-start-line="101" selection-start-column="48" selection-end-line="101" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/exceptions/SSThrownException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="13" column="21" lean-forward="false" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
+          <folding>
+            <element signature="e#199#200#0" expanded="true" />
+            <element signature="e#233#234#0" expanded="true" />
+            <element signature="e#264#265#0" expanded="true" />
+            <element signature="e#292#293#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/SS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="83" column="0" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+          <folding>
+            <element signature="e#2174#2175#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/SSFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="89" column="37" lean-forward="false" selection-start-line="89" selection-start-column="37" selection-end-line="89" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/AnonymousFunctionExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1080">
+          <caret line="64" column="23" lean-forward="false" selection-start-line="64" selection-start-column="23" selection-end-line="64" selection-end-column="23" />
+          <folding>
+            <element signature="e#1490#1491#0" expanded="true" />
+            <element signature="e#1519#1520#0" expanded="true" />
+            <element signature="e#1561#1562#0" expanded="false" />
+            <element signature="e#1591#1592#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/BlockStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1416">
+          <caret line="76" column="23" lean-forward="false" selection-start-line="76" selection-start-column="23" selection-end-line="76" selection-end-column="23" />
+          <folding>
+            <element signature="e#548#549#0" expanded="true" />
+            <element signature="e#589#590#0" expanded="true" />
+            <element signature="e#1689#1690#0" expanded="true" />
+            <element signature="e#1718#1719#0" expanded="true" />
+            <element signature="e#1760#1761#0" expanded="true" />
+            <element signature="e#1790#1791#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/FunctionDefinitionStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="83" column="1" lean-forward="true" selection-start-line="83" selection-start-column="1" selection-end-line="83" selection-end-column="1" />
+          <folding>
+            <element signature="e#1708#1709#0" expanded="true" />
+            <element signature="e#1737#1738#0" expanded="true" />
+            <element signature="e#1779#1780#0" expanded="true" />
+            <element signature="e#1809#1810#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/exceptions/parser/SSParserException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="7" column="22" lean-forward="false" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/Lockable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/exceptions/parser/InvalidLockException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="15" column="43" lean-forward="false" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#573#574#0" expanded="true" />
+            <element signature="e#626#627#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/exceptions/inner/SSInnerException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="13" column="1" lean-forward="true" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/ThrowStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#322#323#0" expanded="true" />
+            <element signature="e#366#367#0" expanded="true" />
+            <element signature="e#471#472#0" expanded="true" />
+            <element signature="e#512#513#0" expanded="true" />
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#602#603#0" expanded="true" />
+            <element signature="e#637#638#0" expanded="true" />
+            <element signature="e#722#723#0" expanded="true" />
+            <element signature="e#764#765#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/desktop/Desktop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="123" column="82" lean-forward="true" selection-start-line="123" selection-start-column="82" selection-end-line="123" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/visitors/Visitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="89" column="8" lean-forward="false" selection-start-line="89" selection-start-column="8" selection-end-line="89" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/visitors/ResultVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="88" column="11" lean-forward="false" selection-start-line="88" selection-start-column="11" selection-end-line="88" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/msc/MSCVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="327" column="58" lean-forward="true" selection-start-line="327" selection-start-column="58" selection-end-line="327" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/visitors/RequirementDoesNotExistsValidator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="12" column="62" lean-forward="true" selection-start-line="12" selection-start-column="62" selection-end-line="12" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/visitors/AbstractVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="383">
+          <caret line="234" column="45" lean-forward="false" selection-start-line="234" selection-start-column="45" selection-end-line="234" selection-end-column="45" />
+          <folding>
+            <element signature="e#5414#5415#0" expanded="true" />
+            <element signature="e#5473#5474#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/Parser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="123" column="69" lean-forward="false" selection-start-line="123" selection-start-column="69" selection-end-line="123" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="39" column="47" lean-forward="true" selection-start-line="39" selection-start-column="47" selection-end-line="39" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#819#820#0" expanded="true" />
+            <element signature="e#854#855#0" expanded="true" />
+            <element signature="e#1382#1383#0" expanded="true" />
+            <element signature="e#1409#1410#0" expanded="true" />
+            <element signature="e#1448#1449#0" expanded="true" />
+            <element signature="e#1478#1479#0" expanded="true" />
+            <element signature="e#1515#1516#0" expanded="true" />
+            <element signature="e#1546#1547#0" expanded="true" />
+            <element signature="e#1603#1604#0" expanded="true" />
+            <element signature="e#1638#1639#0" expanded="true" />
+            <element signature="e#1723#1724#0" expanded="true" />
+            <element signature="e#1765#1766#0" expanded="true" />
+            <element signature="e#2152#2153#0" expanded="true" />
+            <element signature="e#2250#2251#0" expanded="true" />
+            <element signature="e#2288#2289#0" expanded="true" />
+            <element signature="e#2326#2327#0" expanded="true" />
+            <element signature="e#2370#2371#0" expanded="true" />
+            <element signature="e#2410#2411#0" expanded="true" />
+            <element signature="e#2448#2449#0" expanded="true" />
+            <element signature="e#2483#2484#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/modules/functions/functions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="7" column="47" lean-forward="true" selection-start-line="7" selection-start-column="47" selection-end-line="15" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/modules/errors/errors.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="9" column="55" lean-forward="true" selection-start-line="9" selection-start-column="55" selection-end-line="9" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/modules/functions/functions.ss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="4" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/modules/errors/errors.ss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="14" column="18" lean-forward="false" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
           <folding />
         </state>
       </provider>
@@ -1029,7 +998,18 @@
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
-          <caret line="32" column="55" lean-forward="false" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
+          <caret line="33" column="55" lean-forward="false" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
+          <folding>
+            <element signature="e#3819#3820#0" expanded="true" />
+            <element signature="e#3848#3849#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/program.ss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="5" column="16" lean-forward="true" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
           <folding />
         </state>
       </provider>

@@ -84,4 +84,8 @@ public interface Visitor {
     void visit(RequireExpression requireExpression);
 
     void visit(ValueCloneExpression valueCloneExpression);
+
+    void visit(ThrowStatement throwStatement);
+
+    void visit(TryCatchFinallyStatement tryCatchFinallyStatement);
 }

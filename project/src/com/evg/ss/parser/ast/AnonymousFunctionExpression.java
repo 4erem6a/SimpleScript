@@ -7,7 +7,7 @@ import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.FunctionValue;
 import com.evg.ss.values.Value;
 
-public final class AnonymousFunctionExpression implements Expression {
+public final class AnonymousFunctionExpression implements Expression, Lockable {
 
     private ArgumentExpression[] args;
     private Statement body;
@@ -57,5 +57,15 @@ public final class AnonymousFunctionExpression implements Expression {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    @Override
+    public void lock() {
+        locked = true;
+    }
+
+    @Override
+    public void unlock() {
+        locked = false;
     }
 }

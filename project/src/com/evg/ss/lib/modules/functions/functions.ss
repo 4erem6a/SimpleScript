@@ -18,6 +18,6 @@ exports {
     NUMERIC_NEGATION: locked function(x) -> -x,
 
     COMPARISON: locked function(a, b) -> a =? b,
-    NEG_COMPARISON: locked function(a, b) -> -a =? b
+    NEG_COMPARISON: locked function(a, b) -> -(a =? b)
 
 }

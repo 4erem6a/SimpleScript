@@ -318,4 +318,25 @@ public class MSCVisitor implements ResultVisitor<String> {
     public String visit(RequireStatement target) {
         return target.getExpression().accept(this);
     }
+
+    @Override
+    public String visit(ThrowStatement throwStatement) {
+        return String.format("throw %s", throwStatement.getExpression().accept(this));
+    }
+
+    @Override
+    public String visit(TryCatchFinallyStatement target) {
+        return String.format("try %s %s finally %s",
+                target.getTry().accept(this),
+                target.getCatches().stream().map(this::processCatch).reduce(String::concat),
+                target.getFinally().accept(this));
+    }
+
+    private String processCatch(TryCatchFinallyStatement.Catch _catch) {
+        return String.format("catch(%s)%s%s",
+                _catch.getArgName(),
+                _catch.getCondition() == null ? "" : String.format("if(%s) ",
+                        _catch.getCondition().accept(this)),
+                _catch.getBody().accept(this));
+    }
 }

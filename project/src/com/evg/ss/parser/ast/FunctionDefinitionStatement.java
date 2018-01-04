@@ -6,7 +6,7 @@ import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
-public final class FunctionDefinitionStatement implements Statement {
+public final class FunctionDefinitionStatement implements Statement, Lockable {
 
     private String name;
     private Statement body;
@@ -70,5 +70,15 @@ public final class FunctionDefinitionStatement implements Statement {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    @Override
+    public void lock() {
+        locked = true;
+    }
+
+    @Override
+    public void unlock() {
+        locked = false;
     }
 }

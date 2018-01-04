@@ -7,7 +7,7 @@ import com.evg.ss.parser.visitors.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class BlockStatement implements Statement {
+public final class BlockStatement implements Statement, Lockable {
 
     private List<Statement> statements = new ArrayList<>();
     private boolean locked;
@@ -26,10 +26,9 @@ public final class BlockStatement implements Statement {
     @Override
     public void execute() {
         if (locked) {
-            SS.Scopes scopes = SS.Scopes.get();
-            SS.Scopes.reset();
+            SS.Scopes scopes = SS.Scopes.lock();
             statements.forEach(Statement::execute);
-            SS.Scopes.set(scopes);
+            SS.Scopes.unlock(scopes);
         } else {
             SS.Scopes.up();
             statements.forEach(Statement::execute);
@@ -66,5 +65,15 @@ public final class BlockStatement implements Statement {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    @Override
+    public void lock() {
+        locked = true;
+    }
+
+    @Override
+    public void unlock() {
+        locked = false;
     }
 }

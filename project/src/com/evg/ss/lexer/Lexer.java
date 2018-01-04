@@ -96,6 +96,10 @@ public final class Lexer extends AbstractLexer {
         KEYWORD_MAP.put("new", TokenType.New);
         KEYWORD_MAP.put("this", TokenType.This);
         KEYWORD_MAP.put("locked", TokenType.Locked);
+        KEYWORD_MAP.put("try", TokenType.Try);
+        KEYWORD_MAP.put("catch", TokenType.Catch);
+        KEYWORD_MAP.put("finally", TokenType.Finally);
+        KEYWORD_MAP.put("throw", TokenType.Throw);
     }
 
     public Lexer(String source) {

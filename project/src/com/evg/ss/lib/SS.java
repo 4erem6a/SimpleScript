@@ -73,6 +73,16 @@ public final class SS {
             Variables.set(scopes.variables);
         }
 
+        public static Scopes lock() {
+            final Scopes scopes = get();
+            reset();
+            return scopes;
+        }
+
+        public static void unlock(Scopes scopes) {
+            set(scopes);
+        }
+
         public FunctionMap getFunctions() {
             return functions;
         }

@@ -1,6 +1,7 @@
 package com.evg.ss;
 
 import com.evg.ss.exceptions.SSException;
+import com.evg.ss.exceptions.SSThrownException;
 import com.evg.ss.exceptions.execution.SSExecutionException;
 import com.evg.ss.exceptions.inner.SSExportsException;
 import com.evg.ss.exceptions.lexer.SSLexerException;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 8, 1, 0);
+    public static Version VERSION = new Version(1, 8, 2, 0);
     private List<Token> tokens;
 
     private SimpleScript(List<Token> tokens) {
@@ -91,6 +92,8 @@ public final class SimpleScript {
     public boolean isCompilable() {
         try {
             new Parser(tokens).parse();
+        } catch (SSThrownException e) {
+            return true;
         } catch (SSException e) {
             return false;
         }

@@ -88,6 +88,10 @@ public enum TokenType {
     New("new"),             //new
     This("this"),           //this
     Locked("locked"),       //locked
+    Try("try"),             //try
+    Catch("catch"),         //catch
+    Finally("finally"),     //finally
+    Throw("throw"),         //throw
 
     //Utility:
     EOF("end");

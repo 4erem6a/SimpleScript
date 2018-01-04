@@ -2,6 +2,7 @@ package desktop;
 
 import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
+import com.evg.ss.exceptions.SSThrownException;
 import com.evg.ss.exceptions.execution.SSExecutionException;
 import com.evg.ss.lib.CallStack;
 import com.evg.ss.lib.msc.MSCVisitor;
@@ -117,7 +118,11 @@ public final class Desktop {
     }
 
     private static void run(SimpleScript script) {
-        script.compile().execute();
+        try {
+            script.compile().execute();
+        } catch (SSThrownException e) {
+            exitWithMessage("Uncaught thrown value: %s", e.getValue().asString());
+        }
     }
 
     private static void getTokens(SimpleScript script) {

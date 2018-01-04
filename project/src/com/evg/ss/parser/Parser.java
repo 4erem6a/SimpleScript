@@ -2,6 +2,7 @@ package com.evg.ss.parser;
 
 import com.evg.ss.exceptions.SSException;
 import com.evg.ss.exceptions.execution.InvalidInterpolationException;
+import com.evg.ss.exceptions.parser.InvalidLockException;
 import com.evg.ss.exceptions.parser.ParserException;
 import com.evg.ss.exceptions.parser.SSParserException;
 import com.evg.ss.exceptions.parser.UnexpectedTokenException;
@@ -90,6 +91,10 @@ public final class Parser extends AbstractParser {
             return new ExpressionStatement(expression());
         } else if (match(TokenType.Import)) {
             return new ImportStatement(expression());
+        } else if (match(TokenType.Throw)) {
+            return new ThrowStatement(expression());
+        } else if (match(TokenType.Try)) {
+            return _try();
         } else if (match(TokenType.Locked)) {
             return lockedStatement();
         } else {
@@ -97,16 +102,37 @@ public final class Parser extends AbstractParser {
         }
     }
 
+    private Statement _try() {
+        final Statement _try = statementOrBlock();
+        final List<TryCatchFinallyStatement.Catch> catches = new ArrayList<>();
+        while (match(TokenType.Catch)) {
+            consume(TokenType.Lp);
+            final String argName = consume(TokenType.Word).getValue();
+            consume(TokenType.Rp);
+            final Expression condition;
+            if (match(TokenType.If)) {
+                match(TokenType.Lp);
+                condition = expression();
+                match(TokenType.Rp);
+            } else condition = null;
+            catches.add(new TryCatchFinallyStatement.Catch(argName, condition, statementOrBlock()));
+        }
+        final Statement _finally;
+        if (match(TokenType.Finally))
+            _finally = statementOrBlock();
+        else _finally = null;
+        return new TryCatchFinallyStatement(_try, catches, _finally);
+    }
+
     private Statement lockedStatement() {
-        if (match(TokenType.Block)) {
-            BlockStatement block = ((BlockStatement) block());
-            block.setLocked(true);
-            return block;
-        } else if (match(TokenType.Function)) {
-            FunctionDefinitionStatement function = (FunctionDefinitionStatement) functionDefinition();
-            function.setLocked(true);
-            return function;
-        } else throw new UnexpectedTokenException(get(0));
+        final Statement statement = statement();
+        if (statement instanceof Lockable) {
+            final Lockable lockable = ((Lockable) statement);
+            if (lockable.isLocked())
+                throw new InvalidLockException();
+            lockable.lock();
+        } else throw new InvalidLockException(statement);
+        return statement;
     }
 
     private Statement switchCase() {
@@ -605,11 +631,14 @@ public final class Parser extends AbstractParser {
     }
 
     private Expression lockedExpression() {
-        if (match(TokenType.Function)) {
-            AnonymousFunctionExpression function = (AnonymousFunctionExpression) anonymousFunction();
-            function.setLocked(true);
-            return function;
-        } else throw new UnexpectedTokenException(get(0));
+        final Expression expression = expression();
+        if (expression instanceof Lockable) {
+            final Lockable lockable = ((Lockable) expression);
+            if (lockable.isLocked())
+                throw new InvalidLockException();
+            lockable.lock();
+        } else throw new InvalidLockException(expression);
+        return expression;
     }
 
     private Expression nameof() {

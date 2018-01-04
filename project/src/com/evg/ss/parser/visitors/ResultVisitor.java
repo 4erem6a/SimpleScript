@@ -83,4 +83,8 @@ public interface ResultVisitor<TResult> {
     TResult visit(RequireExpression requireExpression);
 
     TResult visit(ValueCloneExpression valueCloneExpression);
+
+    TResult visit(ThrowStatement throwStatement);
+
+    TResult visit(TryCatchFinallyStatement tryCatchFinallyStatement);
 }

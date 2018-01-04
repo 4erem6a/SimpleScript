@@ -222,4 +222,21 @@ public abstract class AbstractVisitor implements Visitor {
     public void visit(ValueCloneExpression valueCloneExpression) {
         valueCloneExpression.getExpression().accept(this);
     }
+
+    @Override
+    public void visit(ThrowStatement throwStatement) {
+        throwStatement.getExpression().accept(this);
+    }
+
+    @Override
+    public void visit(TryCatchFinallyStatement tryCatchFinallyStatement) {
+        tryCatchFinallyStatement.getTry().accept(this);
+        tryCatchFinallyStatement.getCatches().forEach(_catch -> {
+            if (_catch.getCondition() != null)
+                _catch.getCondition().accept(this);
+            _catch.getBody().accept(this);
+        });
+        if (tryCatchFinallyStatement.getFinally() != null)
+            tryCatchFinallyStatement.getFinally().accept(this);
+    }
 }
