@@ -53,4 +53,9 @@ public final class WhileStatement implements Statement {
     public Expression getCondition() {
         return condition;
     }
+
+    @Override
+    public int hashCode() {
+        return body.hashCode() ^ condition.hashCode() ^ (46 * 31);
+    }
 }

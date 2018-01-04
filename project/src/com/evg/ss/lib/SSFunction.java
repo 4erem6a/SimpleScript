@@ -153,7 +153,9 @@ public final class SSFunction implements ConstructorFunction {
 
     @Override
     public int hashCode() {
-        return Type.Function.ordinal() | args.size() | (args.size() > 0 ? args.stream().mapToInt(Argument::hashCode).reduce((a, b) -> a | b).getAsInt() : 0);
+        return args.hashCode()
+                ^ body.hashCode()
+                ^ Boolean.hashCode(isLocked);
     }
 
     @Override

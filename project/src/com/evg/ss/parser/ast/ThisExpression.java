@@ -41,4 +41,9 @@ public final class ThisExpression implements Expression, Accessible {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return (36 * 10 * 31);
+    }
 }

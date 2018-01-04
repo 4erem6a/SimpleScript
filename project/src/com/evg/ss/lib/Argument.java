@@ -43,6 +43,9 @@ public final class Argument {
 
     @Override
     public int hashCode() {
-        return name.hashCode() & (hasType() ? type.hashCode() : 1);
+        return name.hashCode()
+                ^ (type == null ? 1 : type.hashCode())
+                ^ (value == null ? 1 : value.hashCode())
+                ^ Boolean.hashCode(isVariadic);
     }
 }

@@ -35,4 +35,9 @@ public final class ExportsStatement implements Statement {
     public Expression getExpression() {
         return expression;
     }
+
+    @Override
+    public int hashCode() {
+        return expression.hashCode() ^ (12 * 34 * 31);
+    }
 }

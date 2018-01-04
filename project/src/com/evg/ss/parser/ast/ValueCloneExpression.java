@@ -30,4 +30,9 @@ public final class ValueCloneExpression implements Expression {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return expression.hashCode() ^ (43 * 3 * 31);
+    }
 }

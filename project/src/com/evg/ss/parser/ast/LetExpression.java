@@ -46,4 +46,9 @@ public final class LetExpression implements Expression {
     public Expression getValue() {
         return value;
     }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() ^ value.hashCode() ^ (23 * 23 * 31);
+    }
 }

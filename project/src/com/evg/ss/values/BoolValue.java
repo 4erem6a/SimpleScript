@@ -48,7 +48,7 @@ public class BoolValue implements Value {
 
     @Override
     public int hashCode() {
-        return getType().ordinal() | Boolean.valueOf(value).hashCode();
+        return Boolean.hashCode(value) ^ Type.Boolean.hashCode();
     }
 
     @Override

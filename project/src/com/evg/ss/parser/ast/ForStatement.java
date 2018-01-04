@@ -73,4 +73,12 @@ public final class ForStatement implements Statement {
     public Expression getCondition() {
         return condition;
     }
+
+    @Override
+    public int hashCode() {
+        return (initialization == null ? 1 : initialization.hashCode())
+                ^ (condition == null ? 1 : condition.hashCode())
+                ^ (iteration == null ? 1 : iteration.hashCode())
+                ^ (16 * 30 * 31);
+    }
 }

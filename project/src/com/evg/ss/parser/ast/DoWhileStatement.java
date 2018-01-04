@@ -53,4 +53,9 @@ public final class DoWhileStatement implements Statement {
     public Expression getCondition() {
         return condition;
     }
+
+    @Override
+    public int hashCode() {
+        return body.hashCode() ^ condition.hashCode() ^ (11 * 35 * 31);
+    }
 }

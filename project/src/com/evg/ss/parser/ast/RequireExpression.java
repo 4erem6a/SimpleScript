@@ -62,6 +62,14 @@ public final class RequireExpression implements Expression {
         return visitor.visit(this);
     }
 
+    @Override
+    public int hashCode() {
+        return moduleName.hashCode()
+                ^ (variableName == null ? 1 : variableName.hashCode())
+                ^ mode.hashCode()
+                ^ (30 * 16 * 31);
+    }
+
     public enum RequireMode {
         MODULE,
         LOCAL,

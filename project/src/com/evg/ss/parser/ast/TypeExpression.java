@@ -30,4 +30,9 @@ public final class TypeExpression implements Expression {
     public ConstTypeExpression getType() {
         return type;
     }
+
+    @Override
+    public int hashCode() {
+        return type.hashCode() ^ (39 * 7 * 31);
+    }
 }

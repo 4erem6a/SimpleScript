@@ -1,20 +1,19 @@
 package com.evg.ss.values;
 
+import com.evg.ss.exceptions.execution.FieldNotFoundException;
+import com.evg.ss.exceptions.execution.IndexOutOfBoundsException;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class ArrayValue implements Value, Iterable<Value> {
+public class ArrayValue implements Value, Container, Iterable<Value> {
 
     private Value[] value;
 
     public ArrayValue(Value... values) {
         this.value = values;
-    }
-
-    public ArrayValue(int size) {
-        this.value = new Value[size];
     }
 
     public Value[] getValue() {
@@ -29,14 +28,6 @@ public class ArrayValue implements Value, Iterable<Value> {
 
     public int length() {
         return value.length;
-    }
-
-    public Value get(int index) {
-        return this.value[index];
-    }
-
-    public void set(int index, Value value) {
-        this.value[index] = value;
     }
 
     @Override
@@ -78,10 +69,8 @@ public class ArrayValue implements Value, Iterable<Value> {
     }
 
     private int compareArrays(Value[] a1, Value[] a2) {
-        if (a1.length > a2.length)
+        if (a1.length != a2.length)
             return a1.length - a2.length;
-        if (a2.length > a1.length)
-            return a2.length - a1.length;
         int result = 0;
         for (int i = 0; i < a1.length; i++)
             result += a1[i].compareTo(a2[i]);
@@ -95,10 +84,7 @@ public class ArrayValue implements Value, Iterable<Value> {
 
     @Override
     public int hashCode() {
-        int hash = getType().ordinal();
-        for (Value value : value)
-            hash |= value.hashCode();
-        return hash;
+        return Arrays.hashCode(value) ^ Type.Array.hashCode();
     }
 
     @Override
@@ -119,5 +105,33 @@ public class ArrayValue implements Value, Iterable<Value> {
     @Override
     public Value clone() {
         return Value.of(value);
+    }
+
+    @Override
+    public Value get(Value key) {
+        if (key instanceof NumberValue) {
+            final int index = key.asNumber().intValue();
+            if (index < 0 || index >= value.length)
+                throw new IndexOutOfBoundsException(index);
+            return value[index];
+        } else if (key instanceof StringValue) {
+            ///Properties:
+            switch (key.asString()) {
+                case "length":
+                    return Value.of(value.length);
+            }
+        }
+        throw new FieldNotFoundException(key);
+    }
+
+    @Override
+    public void set(Value key, Value value) {
+        if (key instanceof NumberValue) {
+            final int index = key.asNumber().intValue();
+            if (index < 0 || index >= this.value.length)
+                throw new IndexOutOfBoundsException(index);
+            this.value[index] = value;
+        }
+        throw new FieldNotFoundException(key);
     }
 }

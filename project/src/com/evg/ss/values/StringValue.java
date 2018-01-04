@@ -73,7 +73,7 @@ public class StringValue implements Value {
 
     @Override
     public int compareTo(Value o) {
-        return value.compareTo(o.asString());
+        return (o.getType() == Type.Null ? -1 : value.compareTo(o.asString()));
     }
 
     @Override
@@ -88,7 +88,7 @@ public class StringValue implements Value {
 
     @Override
     public int hashCode() {
-        return getType().ordinal() | value.hashCode();
+        return value.hashCode() ^ Type.String.hashCode();
     }
 
     @Override

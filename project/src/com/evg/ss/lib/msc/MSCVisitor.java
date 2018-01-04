@@ -288,13 +288,6 @@ public class MSCVisitor implements ResultVisitor<String> {
     }
 
     @Override
-    public String visit(AsExpression asExpression) {
-        return String.format("(%s as %s)",
-                asExpression.getTarget().accept(this),
-                asExpression.getType().accept(this));
-    }
-
-    @Override
     public String visit(TypeExpression typeExpression) {
         return String.format("type(%s)", typeExpression.getType().accept(this));
     }

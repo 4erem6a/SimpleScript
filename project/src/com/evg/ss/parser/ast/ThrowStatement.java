@@ -30,4 +30,9 @@ public final class ThrowStatement implements Statement {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return expression.hashCode() ^ (37 * 9 * 31);
+    }
 }

@@ -30,4 +30,9 @@ public final class TypeofExpression implements Expression {
     public Expression getExpression() {
         return expression;
     }
+
+    @Override
+    public int hashCode() {
+        return expression.hashCode() ^ (40 * 6 * 31);
+    }
 }

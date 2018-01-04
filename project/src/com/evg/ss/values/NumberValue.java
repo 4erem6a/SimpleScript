@@ -38,7 +38,7 @@ public class NumberValue implements Value {
 
     @Override
     public int compareTo(Value o) {
-        return o.getType() == Type.Null ? -1 : Double.compare(value, o.asNumber());
+        return (o.getType() == Type.Null ? -1 : Double.compare(value, o.asNumber()));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class NumberValue implements Value {
 
     @Override
     public int hashCode() {
-        return getType().ordinal() | asNumber().intValue();
+        return Double.hashCode(value) ^ Type.Number.hashCode();
     }
 
     @Override

@@ -47,4 +47,12 @@ public final class IfStatement implements Statement {
     public Statement getElseStatement() {
         return elseStatement;
     }
+
+    @Override
+    public int hashCode() {
+        return condition.hashCode()
+                ^ ifStatement.hashCode()
+                ^ (elseStatement == null ? 1 : elseStatement.hashCode())
+                ^ (20 * 26 * 31);
+    }
 }

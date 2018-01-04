@@ -54,4 +54,9 @@ public final class LetStatement implements Statement {
     public Expression getValue() {
         return value;
     }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() ^ value.hashCode() ^ Boolean.hashCode(isConst) ^ (24 * 22 * 31);
+    }
 }

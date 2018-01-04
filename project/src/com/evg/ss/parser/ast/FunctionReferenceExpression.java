@@ -35,4 +35,9 @@ public final class FunctionReferenceExpression implements Expression {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() ^ (19 * 27 * 31);
+    }
 }

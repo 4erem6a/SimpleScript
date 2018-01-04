@@ -7,6 +7,8 @@ import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.FunctionValue;
 import com.evg.ss.values.Value;
 
+import java.util.Arrays;
+
 public final class AnonymousFunctionExpression implements Expression, Lockable {
 
     private ArgumentExpression[] args;
@@ -67,5 +69,10 @@ public final class AnonymousFunctionExpression implements Expression, Lockable {
     @Override
     public void unlock() {
         locked = false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(args) ^ body.hashCode() ^ Boolean.hashCode(locked) ^ (45 * 31);
     }
 }

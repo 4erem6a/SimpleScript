@@ -29,4 +29,9 @@ public final class ExpressionStatement implements Statement {
     public Expression getExpression() {
         return expression;
     }
+
+    @Override
+    public int hashCode() {
+        return expression.hashCode() ^ (14 * 32 * 31);
+    }
 }

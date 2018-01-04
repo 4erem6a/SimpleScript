@@ -37,4 +37,9 @@ public final class ArrayExpression implements Expression {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(expressions) ^ (3 * 43 * 31);
+    }
 }

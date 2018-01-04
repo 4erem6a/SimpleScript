@@ -39,4 +39,9 @@ public final class ImportStatement implements Statement {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return path.hashCode() ^ (21 * 25 * 31);
+    }
 }

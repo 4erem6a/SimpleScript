@@ -41,4 +41,9 @@ public final class RequireStatement implements Statement {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return require.hashCode() ^ (31 * 15 * 31);
+    }
 }

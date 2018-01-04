@@ -34,7 +34,7 @@ public final class MapExpression implements Expression {
         } else map = new MapValue();
         SS.CallContext.up(map);
         for (Map.Entry<Expression, Expression> entry : this.map.entrySet()) {
-            map.put(entry.getKey().eval(), entry.getValue().eval());
+            map.set(entry.getKey().eval(), entry.getValue().eval());
         }
         SS.CallContext.down();
         return map;
@@ -52,5 +52,12 @@ public final class MapExpression implements Expression {
 
     public Map<Expression, Expression> getMap() {
         return map;
+    }
+
+    @Override
+    public int hashCode() {
+        return map.hashCode()
+                ^ (base == null ? 1 : base.hashCode())
+                ^ (26 * 20 * 31);
     }
 }

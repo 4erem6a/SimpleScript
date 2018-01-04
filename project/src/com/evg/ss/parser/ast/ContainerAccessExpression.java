@@ -1,12 +1,9 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.execution.FieldNotFoundException;
-import com.evg.ss.exceptions.execution.IndexOutOfBoundsException;
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
-import com.evg.ss.values.ArrayValue;
-import com.evg.ss.values.MapValue;
+import com.evg.ss.values.Container;
 import com.evg.ss.values.Value;
 
 public final class ContainerAccessExpression implements Expression, Accessible {
@@ -22,25 +19,9 @@ public final class ContainerAccessExpression implements Expression, Accessible {
     @Override
     public Value eval() {
         final Value target = this.target.eval();
-        final Value key = this.key.eval();
-        if (target instanceof ArrayValue)
-            return accessArray((ArrayValue) target, key);
-        if (target instanceof MapValue)
-            return accessMap((MapValue) target, key);
+        if (target instanceof Container)
+            return ((Container) target).get(key.eval());
         throw new InvalidValueTypeException(target.getType());
-    }
-
-    private Value accessArray(ArrayValue target, Value key) {
-        final int index = key.asNumber().intValue();
-        if (index < 0 || index >= target.length())
-            throw new IndexOutOfBoundsException(index);
-        return target.get(index);
-    }
-
-    private Value accessMap(MapValue target, Value key) {
-        if (!target.containsKey(key))
-            throw new FieldNotFoundException(key);
-        return target.get(key);
     }
 
     @Override
@@ -51,25 +32,9 @@ public final class ContainerAccessExpression implements Expression, Accessible {
     @Override
     public Value set(Value value) {
         final Value target = this.target.eval();
-        final Value key = this.key.eval();
-        if (target instanceof ArrayValue)
-            return setArray((ArrayValue) target, key, value);
-        if (target instanceof MapValue)
-            return setMap((MapValue) target, key, value);
+        if (target instanceof Container)
+            ((Container) target).set(key.eval(), value);
         throw new InvalidValueTypeException(target.getType());
-    }
-
-    private Value setArray(ArrayValue target, Value key, Value value) {
-        final int index = key.asNumber().intValue();
-        if (index < 0 || index >= target.length())
-            throw new IndexOutOfBoundsException(index);
-        target.set(index, value);
-        return target.get(index);
-    }
-
-    private Value setMap(MapValue target, Value key, Value value) {
-        target.put(key, value);
-        return target.get(key);
     }
 
     @Override
@@ -93,5 +58,10 @@ public final class ContainerAccessExpression implements Expression, Accessible {
     @Override
     public String toString() {
         return String.format("%s[%s]", target, key);
+    }
+
+    @Override
+    public int hashCode() {
+        return target.hashCode() ^ key.hashCode() ^ (9 * 37 * 31);
     }
 }

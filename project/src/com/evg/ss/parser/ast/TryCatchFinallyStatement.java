@@ -69,6 +69,14 @@ public final class TryCatchFinallyStatement implements Statement {
         return visitor.visit(this);
     }
 
+    @Override
+    public int hashCode() {
+        return _try.hashCode()
+                ^ catches.hashCode()
+                ^ (_finally == null ? 1 : _finally.hashCode())
+                ^ (38 * 8 * 31);
+    }
+
     public static class Catch {
         private final String argName;
         private final Expression condition;
@@ -94,6 +102,13 @@ public final class TryCatchFinallyStatement implements Statement {
 
         public Statement getBody() {
             return body;
+        }
+
+        @Override
+        public int hashCode() {
+            return argName.hashCode()
+                    ^ (condition == null ? 1 : condition.hashCode())
+                    ^ body.hashCode();
         }
     }
 }

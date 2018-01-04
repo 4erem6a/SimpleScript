@@ -34,4 +34,9 @@ public class NameofExpression implements Expression {
     public String getName() {
         return name;
     }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() ^ (27 * 19 * 31);
+    }
 }

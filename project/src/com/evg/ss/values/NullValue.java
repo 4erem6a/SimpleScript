@@ -37,7 +37,7 @@ public class NullValue implements Value {
 
     @Override
     public int compareTo(Value o) {
-        return 0;
+        return (o.getType() == Type.Null ? 0 : -1);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class NullValue implements Value {
 
     @Override
     public int hashCode() {
-        return getType().ordinal();
+        return Type.Null.hashCode();
     }
 
     @Override

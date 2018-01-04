@@ -24,4 +24,9 @@ public final class BreakStatement implements Statement {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return (7 * 39 * 31);
+    }
 }

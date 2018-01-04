@@ -34,4 +34,13 @@ public final class ArgumentExpression {
     public ConstTypeExpression getRequiredType() {
         return requiredType;
     }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode()
+                ^ (defaultValue == null ? 1 : defaultValue.hashCode())
+                ^ (requiredType == null ? 1 : requiredType.hashCode())
+                ^ Boolean.hashCode(isVariadic)
+                ^ (2 * 44 * 31);
+    }
 }

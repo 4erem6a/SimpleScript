@@ -24,4 +24,9 @@ public final class ContinueStatement implements Statement {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return (10 * 36 * 31);
+    }
 }

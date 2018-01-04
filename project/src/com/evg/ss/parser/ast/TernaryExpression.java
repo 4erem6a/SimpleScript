@@ -46,4 +46,9 @@ public final class TernaryExpression implements Expression {
     public Expression getOnFalse() {
         return onFalse;
     }
+
+    @Override
+    public int hashCode() {
+        return condition.hashCode() ^ onTrue.hashCode() ^ onFalse.hashCode() ^ (35 * 11 * 31);
+    }
 }

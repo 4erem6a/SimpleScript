@@ -63,4 +63,9 @@ public final class ConstTypeExpression implements Expression {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return type.hashCode() ^ typename.hashCode() ^ (8 * 38 * 31);
+    }
 }

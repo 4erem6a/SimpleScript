@@ -77,4 +77,9 @@ public final class ForEachStatement implements Statement {
     public Statement getBody() {
         return body;
     }
+
+    @Override
+    public int hashCode() {
+        return iteratorDefinition.hashCode() ^ target.hashCode() ^ body.hashCode() ^ (15 * 31 * 31);
+    }
 }

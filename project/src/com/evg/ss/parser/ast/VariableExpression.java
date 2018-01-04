@@ -60,4 +60,9 @@ public final class VariableExpression implements Expression, Accessible {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() ^ (45 * 31);
+    }
 }

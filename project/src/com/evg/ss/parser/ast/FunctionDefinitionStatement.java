@@ -6,6 +6,8 @@ import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
+import java.util.Arrays;
+
 public final class FunctionDefinitionStatement implements Statement, Lockable {
 
     private String name;
@@ -80,5 +82,14 @@ public final class FunctionDefinitionStatement implements Statement, Lockable {
     @Override
     public void unlock() {
         locked = false;
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode()
+                ^ body.hashCode()
+                ^ Arrays.hashCode(args)
+                ^ Boolean.hashCode(locked)
+                ^ (18 * 28 * 31);
     }
 }

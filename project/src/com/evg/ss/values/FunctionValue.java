@@ -41,7 +41,7 @@ public class FunctionValue implements Value {
 
     @Override
     public int compareTo(Value o) {
-        return o.hashCode() - hashCode();
+        return (o.getType() == Type.Function ? hashCode() - o.hashCode() : -1);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class FunctionValue implements Value {
 
     @Override
     public int hashCode() {
-        return getType().ordinal() | value.hashCode();
+        return value.hashCode() ^ Type.Function.hashCode();
     }
 
     @Override

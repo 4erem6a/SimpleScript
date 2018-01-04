@@ -96,6 +96,11 @@ public final class UnaryExpression implements Expression {
         return expression;
     }
 
+    @Override
+    public int hashCode() {
+        return expression.hashCode() ^ operator.hashCode() ^ (41 * 5 * 31);
+    }
+
     public enum UnaryOperations {
         UnaryPlus("+"),
         UnaryMinus("-"),

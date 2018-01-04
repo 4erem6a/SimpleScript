@@ -36,4 +36,9 @@ public final class InterpolatedStringExpression extends ValueExpression {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return string.hashCode() ^ (22 * 24 * 31);
+    }
 }

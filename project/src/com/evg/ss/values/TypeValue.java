@@ -51,7 +51,7 @@ public class TypeValue implements Value {
 
     @Override
     public int hashCode() {
-        return getType().ordinal() | value.hashCode();
+        return value.hashCode() ^ Type.Type.hashCode();
     }
 
     @Override

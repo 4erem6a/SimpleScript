@@ -53,6 +53,11 @@ public class SwitchStatement implements Statement {
         return cases;
     }
 
+    @Override
+    public int hashCode() {
+        return value.hashCode() ^ cases.hashCode() ^ (34 * 12 * 31);
+    }
+
     public static final class Case {
         private Expression value;
         private Statement body;
@@ -68,6 +73,11 @@ public class SwitchStatement implements Statement {
 
         public Statement getBody() {
             return body;
+        }
+
+        @Override
+        public int hashCode() {
+            return value.hashCode() ^ body.hashCode();
         }
     }
 }

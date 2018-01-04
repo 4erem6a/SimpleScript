@@ -33,4 +33,9 @@ public final class NewExpression implements Expression {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return functionCall.hashCode() ^ (28 * 18 * 31);
+    }
 }

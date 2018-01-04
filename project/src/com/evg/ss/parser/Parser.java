@@ -440,11 +440,12 @@ public final class Parser extends AbstractParser {
                 continue;
             }
             if (match(TokenType.As)) {
-                result = new AsExpression(result, addictive());
+                result = new BinaryExpression(BinaryOperations.As, result, addictive());
                 continue;
             }
             if (match(TokenType.EqQm)) {
                 result = new BinaryExpression(BinaryOperations.Compare, result, addictive());
+                continue;
             }
             break;
         }

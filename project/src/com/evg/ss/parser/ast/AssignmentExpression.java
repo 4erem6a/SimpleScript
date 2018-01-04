@@ -48,4 +48,9 @@ public final class AssignmentExpression implements Expression, Accessible {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return target.hashCode() ^ value.hashCode() ^ (4 * 42 * 31);
+    }
 }

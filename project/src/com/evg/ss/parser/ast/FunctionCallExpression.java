@@ -74,4 +74,12 @@ public final class FunctionCallExpression implements Expression {
     public Expression[] getArgs() {
         return args;
     }
+
+    @Override
+    public int hashCode() {
+        return function.hashCode()
+                ^ Arrays.hashCode(args)
+                ^ Boolean.hashCode(isNew)
+                ^ (17 * 29 * 31);
+    }
 }

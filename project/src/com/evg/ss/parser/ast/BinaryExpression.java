@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.Converter;
 import com.evg.ss.lib.MapMatcher;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
@@ -38,7 +39,7 @@ public final class BinaryExpression implements Expression {
             case BitwiseOr:
                 return new NumberValue(leftValue.asNumber().intValue() | rightValue.asNumber().intValue());
             case BitwiseAnd:
-                return new NumberValue(leftValue.asNumber().intValue() & rightValue.asNumber().intValue());
+                return new NumberValue(leftValue.asNumber().intValue() ^ rightValue.asNumber().intValue());
             case BitwiseXor:
                 return new NumberValue(leftValue.asNumber().intValue() ^ rightValue.asNumber().intValue());
             case LogicalOr:
@@ -61,6 +62,8 @@ public final class BinaryExpression implements Expression {
                 return Value.of(leftValue.compareTo(rightValue));
             case Is:
                 return is(leftValue, rightValue);
+            case As:
+                return as(leftValue, rightValue);
             default:
                 return new NullValue();
         }
@@ -226,6 +229,14 @@ public final class BinaryExpression implements Expression {
                 new ValueExpression(right)).eval();
     }
 
+    private Value as(Value left, Value right) {
+        final Type targetType;
+        if (right instanceof TypeValue)
+            targetType = ((TypeValue) right).getValue();
+        else targetType = right.getType();
+        return new Converter(left.getType(), targetType).convert(left);
+    }
+
     @Override
     public String toString() {
         return String.format("[%s %s %s]", left, operation.key, right);
@@ -253,6 +264,11 @@ public final class BinaryExpression implements Expression {
         return visitor.visit(this);
     }
 
+    @Override
+    public int hashCode() {
+        return left.hashCode() ^ right.hashCode() ^ operation.hashCode() ^ (5 * 41 * 31);
+    }
+
     public enum BinaryOperations {
         Addition("+"),
         Subtraction("-"),
@@ -275,7 +291,8 @@ public final class BinaryExpression implements Expression {
         NotEquals("!="),
         Compare("=?"),
 
-        Is(" is ");
+        Is(" is "),
+        As(" as ");
         private String key;
 
         BinaryOperations(String operationKey) {

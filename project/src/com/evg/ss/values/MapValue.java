@@ -1,5 +1,6 @@
 package com.evg.ss.values;
 
+import com.evg.ss.exceptions.execution.FieldNotFoundException;
 import com.evg.ss.util.builders.SSArrayBuilder;
 
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
+public class MapValue implements Value, Container, Iterable<Map.Entry<Value, Value>> {
 
     private Map<Value, Value> map = new HashMap<>();
 
@@ -23,12 +24,14 @@ public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
         return map.containsKey(key);
     }
 
-    public void put(Value key, Value value) {
+    public void set(Value key, Value value) {
         map.put(key, value);
     }
 
     public Value get(Value key) {
-        return map.get(key);
+        if (map.containsKey(key))
+            return map.get(key);
+        throw new FieldNotFoundException(key);
     }
 
     public Map<Value, Value> getMap() {
@@ -103,9 +106,9 @@ public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
     @Override
     public int compareTo(Value o) {
         if (o instanceof MapValue)
-            return ((MapValue) o).toArray().compareTo(toArray());
+            return toArray().compareTo(((MapValue) o).toArray());
         if (o instanceof ArrayValue)
-            return o.compareTo(toArray());
+            return toArray().compareTo(o);
         return -1;
     }
 
@@ -116,7 +119,7 @@ public class MapValue implements Value, Iterable<Map.Entry<Value, Value>> {
 
     @Override
     public int hashCode() {
-        return getType().ordinal() | toArray().hashCode();
+        return map.hashCode() ^ Type.Map.hashCode();
     }
 
     @Override

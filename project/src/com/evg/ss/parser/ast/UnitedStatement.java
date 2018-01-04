@@ -41,4 +41,9 @@ public final class UnitedStatement implements Statement {
     public List<Statement> getStatements() {
         return statements;
     }
+
+    @Override
+    public int hashCode() {
+        return statements.hashCode() ^ (42 * 4 * 31);
+    }
 }

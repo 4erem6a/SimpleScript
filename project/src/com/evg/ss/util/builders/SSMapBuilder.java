@@ -27,22 +27,22 @@ public final class SSMapBuilder {
     }
 
     public SSMapBuilder setField(Value key, Value value) {
-        map.put(key, value);
+        map.set(key, value);
         return this;
     }
 
     public SSMapBuilder setMethod(Value key, Function function) {
-        map.put(key, new FunctionValue(function));
+        map.set(key, new FunctionValue(function));
         return this;
     }
 
     public SSMapBuilder setField(String key, Value value) {
-        map.put(new StringValue(key), value);
+        map.set(new StringValue(key), value);
         return this;
     }
 
     public SSMapBuilder setMethod(String key, Function function) {
-        map.put(new StringValue(key), new FunctionValue(function));
+        map.set(new StringValue(key), new FunctionValue(function));
         return this;
     }
 

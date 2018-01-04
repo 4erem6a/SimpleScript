@@ -54,4 +54,9 @@ public class ValueExpression implements Expression {
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode() ^ (44 * 2 * 31);
+    }
 }

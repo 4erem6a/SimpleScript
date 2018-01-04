@@ -76,4 +76,9 @@ public final class BlockStatement implements Statement, Lockable {
     public void unlock() {
         locked = false;
     }
+
+    @Override
+    public int hashCode() {
+        return statements.hashCode() ^ (6 * 40 * 31);
+    }
 }
