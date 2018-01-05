@@ -1,5 +1,6 @@
 package desktop;
 
+import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
 import com.evg.ss.exceptions.execution.SSExecutionException;
 import com.evg.ss.exceptions.lexer.SSLexerException;
@@ -105,8 +106,16 @@ public final class Desktop {
             except(script.tryCompile());
         final SimpleScript.CompiledScript compiledScript = script.compile();
         log("Complete.\n");
+        log("Setting environment variables ... ");
+        if (hasFlag("-f")) {
+            final Path path = Paths.get(getFlag("-f").getSingleArg());
+            Environment.setEnvVariable(Environment.EXECUTABLE_PATH, Value.of(path.toAbsolutePath().toString()));
+            Environment.setEnvVariable(Environment.EXECUTABLE_DIR, Value.of(path.getParent().toAbsolutePath().toString()));
+        }
+        Environment.setEnvVariable(Environment.CURRENT_LANG_VERSION, Value.of(SimpleScript.VERSION.toString()));
+        log("Complete.\n");
         if (hasFlag("-lt")) {
-            log("Running lint ...");
+            log("Running lint ... ");
             try {
                 new Linter(compiledScript).lint();
             } catch (LintException e) {

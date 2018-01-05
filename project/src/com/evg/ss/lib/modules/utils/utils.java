@@ -34,8 +34,12 @@ public final class utils extends SSModule {
         int from = Math.round(args.length == 1 ? 0 : args[0].asNumber().intValue());
         int to = Math.round(args[args.length == 1 ? 0 : 1].asNumber().intValue());
         final SSArrayBuilder result = SSArrayBuilder.create();
-        for (int i = (from < to ? from : to); i < (from < to ? to : from); i += (from < to ? 1 : -1))
-            result.setElement(Value.of(i));
+        if (from < to)
+            for (int i = from; i < to; i++)
+                result.setElement(Value.of(i));
+        if (to < from)
+            for (int i = from; i > to; i--)
+                result.setElement(Value.of(i));
         return result.build();
     }
 

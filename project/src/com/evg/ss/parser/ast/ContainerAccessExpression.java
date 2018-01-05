@@ -34,7 +34,8 @@ public final class ContainerAccessExpression implements Expression, Accessible {
         final Value target = this.target.eval();
         if (target instanceof Container)
             ((Container) target).set(key.eval(), value);
-        throw new InvalidValueTypeException(target.getType());
+        else throw new InvalidValueTypeException(target.getType());
+        return eval();
     }
 
     @Override
