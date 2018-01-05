@@ -2,6 +2,7 @@ package desktop;
 
 import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
+import com.evg.ss.exceptions.SSThrownException;
 import com.evg.ss.exceptions.execution.SSExecutionException;
 import com.evg.ss.exceptions.lexer.SSLexerException;
 import com.evg.ss.lib.CallStack;
@@ -132,10 +133,22 @@ public final class Desktop {
             System.out.printf("PROGRAM:\n%sEND.\n",
                     new MSCGenerator(compiledScript.getProgram()).generate());
         if (hasFlag("-e")) {
-            if (MODE == SSExecutionModes.FILE)
-                compiledScript.execute();
-            if (MODE == SSExecutionModes.EXPRESSION)
-                System.out.println("> " + script.express().eval().asString());
+            if (MODE == SSExecutionModes.FILE) {
+                try {
+                    compiledScript.execute();
+                } catch (SSThrownException e) {
+                    exitWithMessage("Uncaught thrown value: %s", e.getValue());
+                } catch (Exception e) {
+                    except(e);
+                }
+            }
+            if (MODE == SSExecutionModes.EXPRESSION) {
+                try {
+                    System.out.println("> " + script.express().eval().asString());
+                } catch (Exception e) {
+                    except(e);
+                }
+            }
             if (MODE == SSExecutionModes.MAIN) {
                 final Statement program = compiledScript.getProgram();
                 program.accept(new FunctionAdder());
@@ -149,6 +162,8 @@ public final class Desktop {
                                         .toArray(Value[]::new));
                 try {
                     SS.Functions.get("main").execute(programArgs);
+                } catch (SSThrownException e) {
+                    exitWithMessage("Uncaught thrown value: %s", e.getValue());
                 } catch (Exception e) {
                     except(e);
                 }
