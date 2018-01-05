@@ -1,10 +1,11 @@
-//SimpleScript v1.8.3:
-require "io"
-require "utils"
+//SimpleScript v1.8.4:
 
-let $ = utils.hashCode
 
-function a(x...) -> 10
-function b(x) -> 10
+function main(args) {
 
-io.println($(::a) == $(::b))
+    require "io"
+
+    foreach (let arg in args)
+        io.println(arg, ':', typeof(arg))
+
+}

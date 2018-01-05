@@ -1,140 +1,150 @@
 package desktop;
 
-import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
-import com.evg.ss.exceptions.SSThrownException;
 import com.evg.ss.exceptions.execution.SSExecutionException;
+import com.evg.ss.exceptions.lexer.SSLexerException;
 import com.evg.ss.lib.CallStack;
-import com.evg.ss.lib.msc.MSCVisitor;
+import com.evg.ss.lib.SS;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.linter.LintException;
+import com.evg.ss.linter.Linter;
+import com.evg.ss.parser.ast.Statement;
+import com.evg.ss.parser.visitors.FunctionAdder;
 import com.evg.ss.values.Value;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public final class Desktop {
 
-    private static final Map<String, SSExecutionFlags> EXECUTION_FLAGS_MAP = new HashMap<>();
-    private static List<Value> PROGRAM_ARGS = new ArrayList<>();
-    private static List<String> ARGS;
-    private static boolean LOG, DEBUG;
+    private static List<ExecutionFlag> EXECUTION_FLAGS = new ArrayList<>();
+    private static boolean LOG = false, DEBUG = false;
+    private static SSExecutionModes MODE = SSExecutionModes.FILE;
     private static Path PROGRAM_PATH;
-    private static List<SSExecutionFlags> EXECUTION_FLAGS;
 
-    static {
-        EXECUTION_FLAGS_MAP.put("-t", SSExecutionFlags.GET_TOKENS);
-        EXECUTION_FLAGS_MAP.put("-p", SSExecutionFlags.GET_PROGRAM);
-        EXECUTION_FLAGS_MAP.put("-e", SSExecutionFlags.EXECUTE);
-        EXECUTION_FLAGS_MAP.put("-l", SSExecutionFlags.LOG);
-        EXECUTION_FLAGS_MAP.put("-d", SSExecutionFlags.DEBUG);
+    private static boolean hasFlag(String name) {
+        return EXECUTION_FLAGS.stream().anyMatch(flag -> flag.getType().getName().equals(name));
     }
 
-    private static boolean hasFlag(String flag) {
-        return EXECUTION_FLAGS.contains(EXECUTION_FLAGS_MAP.get(flag));
+    private static ExecutionFlag getFlag(String name) {
+        if (hasFlag(name))
+            return EXECUTION_FLAGS.stream().filter(flag -> flag.getType().getName().equals(name)).findFirst().get();
+        else return null;
     }
+
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 2)
-            exitWithMessage("Error: invalid argument count.");
-        ARGS = Arrays.asList(args);
-        validate();
-        process();
-    }
-
-    private static void validate() {
-        final Path path = Paths.get(ARGS.get(0));
-        if (!Files.exists(path))
-            exitWithMessage("Error: file does not exists.");
-        if (!path.toAbsolutePath().toString().endsWith(".ss"))
-            exitWithMessage("Error: SimpleScript source file must have '.ss' extension.");
-        final List<SSExecutionFlags> flags = new ArrayList<>();
-        final List<String> tail = ARGS.stream().skip(1).collect(Collectors.toList());
-        for (String arg : tail) {
-            if (!EXECUTION_FLAGS_MAP.containsKey(arg)) {
-                PROGRAM_ARGS.add(Value.of(arg));
-                continue;
+        for (int i = 0; i < args.length; i++) {
+            final SSExecutionFlags flagType = SSExecutionFlags.getFlag(args[i]);
+            if (flagType == null)
+                exitWithMessage("Invalid execution flag: '%s'.", args[i]);
+            final ExecutionFlag flag = new ExecutionFlag(flagType);
+            if (flag.getType().getArgc() != 0) {
+                if (flag.getType().getArgc() == -1)
+                    while (i + 1 < args.length || (i + 1 < args.length && SSExecutionFlags.getFlag(args[i + 1]) != null))
+                        flag.addArg(args[++i]);
+                else for (int j = 0; j < flag.getType().getArgc(); j++, ++i) {
+                    if (i + 1 == args.length)
+                        exitWithMessage("Missing arguments: %d.", flag.getType().getArgc() - j + 1);
+                    flag.addArg(args[i + 1]);
+                }
             }
-            if (flags.contains(EXECUTION_FLAGS_MAP.get(arg)))
-                exitWithMessage("Error: duplicate execution flags.");
-            flags.add(EXECUTION_FLAGS_MAP.get(arg));
+            if (hasFlag(flag.getType().getName()))
+                exitWithMessage("Duplicate execution flags: '%s'.", flag.getType().getName());
+            EXECUTION_FLAGS.add(flag);
         }
-        LOG = flags.contains(SSExecutionFlags.LOG);
-        DEBUG = flags.contains(SSExecutionFlags.DEBUG);
-        PROGRAM_PATH = path;
-        EXECUTION_FLAGS = flags;
-    }
-
-    private static void process() {
-        final Path programPath = PROGRAM_PATH;
-        final Path programDir = PROGRAM_PATH.getParent();
-        log("Setting environment variables ...");
-        Environment.putEnvVariable(Environment.EXECUTABLE_PATH, Value.of(programPath.toString()), true);
-        Environment.putEnvVariable(Environment.EXECUTABLE_DIR, Value.of(programDir.toString()), true);
-        Environment.putEnvVariable(Environment.PROGRAM_ARGS, Value.of(PROGRAM_ARGS.toArray(new Value[0])), true);
-        log("Complete\n");
-
+        LOG = hasFlag("-l");
+        DEBUG = hasFlag("-d");
+        if (!hasFlag("-f") && !hasFlag("-s"))
+            exitWithMessage("Missing source ('-f'/'-s').");
+        if (hasFlag("-f") && hasFlag("-s"))
+            exitWithMessage("Duplicate source flags ('-f'/'-s').");
+        final String source;
+        if (hasFlag("-f")) {
+            final Path path = Paths.get(getFlag("-f").getSingleArg()).toAbsolutePath();
+            if (!Files.exists(path))
+                exitWithMessage("File does not exists.");
+            final String charset;
+            if (hasFlag("-c"))
+                charset = getFlag("-c").getSingleArg();
+            else charset = "UTF-8";
+            if (!Charset.isSupported(charset))
+                exitWithMessage("Charset not supported.");
+            source = new String(Files.readAllBytes(path), charset);
+        } else source = getFlag("-s").getSingleArg();
+        if (hasFlag("-m")) {
+            final String arg = getFlag("-m").getSingleArg();
+            if (arg.toLowerCase().equals("main"))
+                MODE = SSExecutionModes.MAIN;
+            else if (arg.toLowerCase().equals("file"))
+                MODE = SSExecutionModes.FILE;
+            else if (arg.toLowerCase().equals("expression"))
+                MODE = SSExecutionModes.EXPRESSION;
+            else exitWithMessage("Invalid execution mode.");
+        }
+        log("Generating tokens ... ");
+        final SimpleScript script;
         try {
-            log("Generating tokens ... ");
-            final SimpleScript script = SimpleScript.fromFile(programPath);
-            log("Complete\n");
-            execute(script);
-        } catch (Exception e) {
+            script = SimpleScript.fromSource(source);
+        } catch (SSLexerException e) {
             except(e);
+            return;
         }
-    }
-
-    private static void parse(SimpleScript script) {
-        log("Parsing source code ... ");
-        if (!script.isCompilable())
+        log("Complete.\n");
+        log("Parsing tokens ... ");
+        if (MODE == SSExecutionModes.EXPRESSION) {
+            if (!script.isExpressible())
+                except(script.tryExpress());
+        } else if (!script.isCompilable())
             except(script.tryCompile());
-        log("Complete\n");
-    }
-
-    private static void lint(SimpleScript script) {
-        log("Running lint ... ");
-        try {
-            script.compile().lint();
-        } catch (LintException e) {
-            exitWithMessage("Lint error: \n\t%s", e.getMessage());
+        final SimpleScript.CompiledScript compiledScript = script.compile();
+        log("Complete.\n");
+        if (hasFlag("-lt")) {
+            log("Running lint ...");
+            try {
+                new Linter(compiledScript).lint();
+            } catch (LintException e) {
+                except(e);
+                return;
+            }
+            log(" Complete.\n");
         }
-        log("Complete\n");
-    }
-
-    public static void execute(SimpleScript script) {
         if (hasFlag("-t"))
-            getTokens(script);
-        if (hasFlag("-p") || hasFlag("-e")) {
-            lint(script);
-            parse(script);
-        }
+            System.out.printf("TOKENS:\n%sEND.\n", script.getTokens().stream()
+                    .map(token -> '\t' + token.toString() + '\n')
+                    .reduce(String::concat).get());
         if (hasFlag("-p"))
-            getProgram(script);
-        if (hasFlag("-e"))
-            run(script);
-    }
-
-    private static void run(SimpleScript script) {
-        try {
-            script.compile().execute();
-        } catch (SSThrownException e) {
-            exitWithMessage("Uncaught thrown value: %s", e.getValue().asString());
+            System.out.printf("PROGRAM:\n%sEND.\n",
+                    new MSCGenerator(compiledScript.getProgram()).generate());
+        if (hasFlag("-e")) {
+            if (MODE == SSExecutionModes.FILE)
+                compiledScript.execute();
+            if (MODE == SSExecutionModes.EXPRESSION)
+                System.out.println("> " + script.express().eval().asString());
+            if (MODE == SSExecutionModes.MAIN) {
+                final Statement program = compiledScript.getProgram();
+                program.accept(new FunctionAdder());
+                if (!SS.Functions.exists("main"))
+                    exitWithMessage("Missing function 'main'.");
+                final Value programArgs =
+                        Value.of(
+                                (hasFlag("-a") ? getFlag("-a").getArgs() : new ArrayList<String>())
+                                        .stream()
+                                        .map(Value::of)
+                                        .toArray(Value[]::new));
+                try {
+                    SS.Functions.get("main").execute(programArgs);
+                } catch (Exception e) {
+                    except(e);
+                }
+            }
         }
-    }
-
-    private static void getTokens(SimpleScript script) {
-        System.out.println("TOKENS: ");
-        script.getTokens().forEach(token -> System.out.printf("\t%s\n", token));
-        System.out.println("END.");
-    }
-
-    private static void getProgram(SimpleScript script) {
-        System.out.println("PROGRAM: ");
-        System.out.printf("\t%s\n", script.compile().getProgram().accept(new MSCVisitor()));
-        System.out.println("END.");
     }
 
     private static void log(String message, Object... format) {
@@ -143,29 +153,21 @@ public final class Desktop {
     }
 
     private static void except(Exception e) {
-        final Optional<String> stackTrace = CallStack.getCalls().stream().map(call -> call.toString() + "\n").reduce(String::concat);
+        final Optional<String> stackTrace = CallStack.getCalls().stream()
+                .map(call -> call.toString() + "\n")
+                .reduce(String::concat);
         if (DEBUG)
             e.printStackTrace();
         if (e instanceof SSExecutionException)
-            exitWithMessage("Error: \n\t%s\n\t%s\nStackTrace: \n%s",
+            exitWithMessage("\nError: \n\t%s\n\t%s\nStackTrace: \n%s",
                     e.getClass().getSimpleName(),
                     e.getMessage(),
                     stackTrace.orElse("--- no calls ---"));
-        else exitWithMessage("Error: \n\t%s\n\t%s\n", e.getClass().getSimpleName(), e.getMessage());
+        else exitWithMessage("\nError: \n\t%s\n\t%s\n", e.getClass().getSimpleName(), e.getMessage());
     }
 
     private static void exitWithMessage(String message, Object... format) {
         System.err.println(String.format(message, format));
         System.exit(0);
-
     }
-
-    public enum SSExecutionFlags {
-        GET_TOKENS,
-        GET_PROGRAM,
-        EXECUTE,
-        LOG,
-        DEBUG
-    }
-
 }

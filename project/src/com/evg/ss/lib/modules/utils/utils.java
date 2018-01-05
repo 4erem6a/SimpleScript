@@ -2,9 +2,11 @@ package com.evg.ss.lib.modules.utils;
 
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
+import com.evg.ss.util.builders.SSArrayBuilder;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.MapValue;
 import com.evg.ss.values.NumberValue;
+import com.evg.ss.values.Type;
 import com.evg.ss.values.Value;
 
 public final class utils extends SSModule {
@@ -24,12 +26,26 @@ public final class utils extends SSModule {
         return args[0].clone();
     }
 
+    private static Value range(Value... args) {
+        Arguments.checkArgcOrDie(args, 1, 2);
+        if (args.length == 1)
+            Arguments.checkArgTypesOrDie(args, Type.Number);
+        else Arguments.checkArgTypesOrDie(args, Type.Number, Type.Number);
+        int from = Math.round(args.length == 1 ? 0 : args[0].asNumber().intValue());
+        int to = Math.round(args[args.length == 1 ? 0 : 1].asNumber().intValue());
+        final SSArrayBuilder result = SSArrayBuilder.create();
+        for (int i = (from < to ? from : to); i < (from < to ? to : from); i += (from < to ? 1 : -1))
+            result.setElement(Value.of(i));
+        return result.build();
+    }
+
     @Override
     public MapValue require() {
         final SSMapBuilder builder = SSMapBuilder.create();
         builder.setMethod("hashCode", utils::hashCode);
         builder.setMethod("clone", utils::clone);
         builder.setMethod("compare", utils::compare);
+        builder.setMethod("range", utils::range);
         return builder.build();
     }
 }
