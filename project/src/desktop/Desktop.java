@@ -109,11 +109,11 @@ public final class Desktop {
         log("Complete.\n");
         log("Setting environment variables ... ");
         if (hasFlag("-f")) {
-            final Path path = Paths.get(getFlag("-f").getSingleArg());
-            Environment.setEnvVariable(Environment.EXECUTABLE_PATH, Value.of(path.toAbsolutePath().toString()));
-            Environment.setEnvVariable(Environment.EXECUTABLE_DIR, Value.of(path.getParent().toAbsolutePath().toString()));
+            final Path path = Paths.get(getFlag("-f").getSingleArg()).toAbsolutePath();
+            Environment.putEnvVariable(Environment.EXECUTABLE_PATH, Value.of(path.toString()), true);
+            Environment.putEnvVariable(Environment.EXECUTABLE_DIR, Value.of(path.getParent().toString()), true);
         }
-        Environment.setEnvVariable(Environment.CURRENT_LANG_VERSION, Value.of(SimpleScript.VERSION.toString()));
+        Environment.putEnvVariable(Environment.CURRENT_LANG_VERSION, Value.of(SimpleScript.VERSION.toString()), true);
         log("Complete.\n");
         if (hasFlag("-lt")) {
             log("Running lint ... ");
@@ -137,7 +137,7 @@ public final class Desktop {
                 try {
                     compiledScript.execute();
                 } catch (SSThrownException e) {
-                    exitWithMessage("Uncaught thrown value: %s", e.getValue());
+                    exitWithMessage("Uncaught thrown value: %s", e.getValue().asString());
                 } catch (Exception e) {
                     except(e);
                 }
@@ -163,7 +163,7 @@ public final class Desktop {
                 try {
                     SS.Functions.get("main").execute(programArgs);
                 } catch (SSThrownException e) {
-                    exitWithMessage("Uncaught thrown value: %s", e.getValue());
+                    exitWithMessage("Uncaught thrown value: %s", e.getValue().asString());
                 } catch (Exception e) {
                     except(e);
                 }

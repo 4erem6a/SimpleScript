@@ -23,7 +23,7 @@ public class NumberValue implements Value {
 
     @Override
     public String asString() {
-        return String.format("%f", value);
+        return Double.toString(value);
     }
 
     @Override

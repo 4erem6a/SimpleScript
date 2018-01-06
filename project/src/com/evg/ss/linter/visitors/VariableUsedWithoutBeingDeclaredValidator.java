@@ -168,6 +168,24 @@ public final class VariableUsedWithoutBeingDeclaredValidator extends AbstractVis
             throw new SSLintException("SSLintException: Variable %s used without being declared.", target.getName());
     }
 
+    @Override
+    public void visit(TryCatchFinallyStatement target) {
+        if (target.getTry() != null)
+            target.getTry().accept(this);
+        for (TryCatchFinallyStatement.Catch _catch : target.getCatches()) {
+            up();
+            variables.put(_catch.getArgName(), DUMMY_VARIABLE);
+            if (_catch.getCondition() != null)
+                _catch.getCondition().accept(this);
+            up();
+            _catch.getBody().accept(this);
+            down();
+            down();
+        }
+        if (target.getFinally() != null)
+            target.getFinally().accept(this);
+    }
+
     private class LintFunctionAdder extends AbstractVisitor {
         @Override
         public void visit(FunctionDefinitionStatement target) {

@@ -3,7 +3,7 @@
 SimpleScript is a scripting programming language created as hobby project.
 ## Installation:
 1. Install Java 8+.
-2. Download latest version: [1.8.4.3](https://github.com/4erem6a/SimpleScript/releases/tag/1.8.4.3)
+2. Download latest version: [1.8.4.4](https://github.com/4erem6a/SimpleScript/releases/tag/1.8.4.4)
 3. Extract SimpleScript.jar
 ## Usage:
 You can run SS code from command line.
@@ -17,6 +17,7 @@ Use `java -jar %SimpleScript.jar path%` command with following flags:
         file (Default)  Executes source from first line
         main            Executes `main(args)` function
         expression      Executes source as an expression and prints result
+    -c <charset>    Specifies source charset (UTF-8 by default)
     -l              Enables log
     -d              Debug mode
     -li             Enables linter (Static code analyzer)

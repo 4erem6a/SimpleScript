@@ -32,22 +32,29 @@
       <file leaf-file-name="program.ss" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/program.ss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+            <state relative-caret-position="96">
+              <caret line="4" column="1" lean-forward="true" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="VariableUsedWithoutBeingDeclaredValidator.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/visitors/VariableUsedWithoutBeingDeclaredValidator.java">
+      <file leaf-file-name="SimpleScript.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-              <folding>
-                <element signature="e#5906#5907#0" expanded="true" />
-                <element signature="e#5977#5978#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="144">
+              <caret line="33" column="58" lean-forward="false" selection-start-line="33" selection-start-column="58" selection-end-line="33" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Utils.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/evg/ss/util/Utils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="25" column="59" lean-forward="false" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="59" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -114,10 +121,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ThisExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ThrowStatement.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/TypeExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/TypeofExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/UnaryExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/UnitedStatement.java" />
@@ -130,7 +133,6 @@
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/StringValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/Container.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/ArrayValue.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/values/NumberValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ValueExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ReturnStatement.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/AnonymousFunctionExpression.java" />
@@ -147,7 +149,6 @@
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ContainerAccessExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/lists/lists.ss" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/utils/utils.java" />
-        <option value="$PROJECT_DIR$/src/desktop/Desktop.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/SS.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/visitors/AbstractVisitor.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ForStatement.java" />
@@ -158,13 +159,19 @@
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/MapValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/SSFunction.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/BlockStatement.java" />
-        <option value="$PROJECT_DIR$/src/program.ss" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/linter/LintException.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/linter/SSLintException.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/SSLintException.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/linter/visitors/VariableUsedWithoutBeingDeclaredValidator.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/linter/Linter.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/values/NumberValue.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/linter/visitors/VariableUsedWithoutBeingDeclaredValidator.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/linter/visitors/InvalidExternalDependencyValidator.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/util/Utils.java" />
+        <option value="$PROJECT_DIR$/src/desktop/Desktop.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/linter/visitors/InvalidRequirementValidator.java" />
+        <option value="$PROJECT_DIR$/src/module.ss" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java" />
+        <option value="$PROJECT_DIR$/src/program.ss" />
       </list>
     </option>
   </component>
@@ -218,8 +225,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -243,13 +249,6 @@
               <item name="SimpleScript" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ss" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SimpleScript" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SimpleScript" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ss" type="462c0819:PsiDirectoryNode" />
               <item name="linter" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -259,13 +258,6 @@
               <item name="ss" type="462c0819:PsiDirectoryNode" />
               <item name="linter" type="462c0819:PsiDirectoryNode" />
               <item name="visitors" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SimpleScript" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SimpleScript" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ss" type="462c0819:PsiDirectoryNode" />
-              <item name="values" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SimpleScript" type="b2602c69:ProjectViewProjectNode" />
@@ -282,7 +274,8 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -291,7 +284,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/com/evg/ss/parser/ast" />
-    <property name="SearchEverywhereHistoryKey" value="куздф&#9;ACTION&#9;ReplaceInPath&#10;replace&#9;ACTION&#9;ReplaceInPath&#10;BLock&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;SSF&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/lib/SSFunction.java&#10;Foreac&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.ForEachStatement&#10;ForS&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.ForStatement&#10;BlockS&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;Calculate &#9;ACTION&#9;Metrics.ProjectMetricsAction&#10;returnS&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ReturnStatement.java&#10;ValueEx&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ValueExpression.java&#10;TryCa&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java&#10;Try&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java&#10;Block&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;FunctionCall&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.FunctionCallExpression&#10;This&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ThisExpression.java&#10;BinaryEx&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BinaryExpression.java&#10;settings&#9;ACTION&#9;ShowSettings&#10;tip&#9;ACTION&#9;ShowTips&#10;decrease&#9;ACTION&#9;EditorDecreaseFontSize&#10;font&#9;ACTION&#9;EditorDecreaseFontSize&#10;completion&#9;ACTION&#9;CodeCompletionGroup&#10;blacklist&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;black list&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;format&#9;ACTION&#9;ReformatCode" />
+    <property name="SearchEverywhereHistoryKey" value="metrics&#9;ACTION&#9;Metrics.ProjectMetricsAction&#10;куздф&#9;ACTION&#9;ReplaceInPath&#10;replace&#9;ACTION&#9;ReplaceInPath&#10;BLock&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;SSF&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/lib/SSFunction.java&#10;Foreac&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.ForEachStatement&#10;ForS&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.ForStatement&#10;BlockS&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;Calculate &#9;ACTION&#9;Metrics.ProjectMetricsAction&#10;returnS&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ReturnStatement.java&#10;ValueEx&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ValueExpression.java&#10;TryCa&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java&#10;Try&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java&#10;Block&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;FunctionCall&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.FunctionCallExpression&#10;This&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ThisExpression.java&#10;BinaryEx&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BinaryExpression.java&#10;settings&#9;ACTION&#9;ShowSettings&#10;tip&#9;ACTION&#9;ShowTips&#10;decrease&#9;ACTION&#9;EditorDecreaseFontSize&#10;font&#9;ACTION&#9;EditorDecreaseFontSize&#10;completion&#9;ACTION&#9;CodeCompletionGroup&#10;blacklist&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;black list&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;format&#9;ACTION&#9;ReformatCode" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last.edited.regexp" value="return Double.hashCode(10) &amp; 20;" />
     <property name="Downloaded.Files.Path.Enabled" value="false" />
@@ -512,7 +505,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -528,6 +520,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18697916" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -539,7 +532,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
     </layout>
@@ -557,48 +549,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/BoolValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="41" column="5" lean-forward="true" selection-start-line="41" selection-start-column="5" selection-end-line="41" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/FunctionValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="43" column="79" lean-forward="false" selection-start-line="43" selection-start-column="79" selection-end-line="43" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/NullValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="39" column="51" lean-forward="false" selection-start-line="39" selection-start-column="51" selection-end-line="39" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/StringValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="75" column="78" lean-forward="false" selection-start-line="75" selection-start-column="78" selection-end-line="75" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/Type.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="20" column="1" lean-forward="true" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/TypeValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="57" column="19" lean-forward="true" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/Container.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -669,13 +619,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/NumberValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="631">
-          <caret line="50" column="39" lean-forward="false" selection-start-line="50" selection-start-column="39" selection-end-line="50" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/Argument.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="703">
@@ -712,13 +655,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
           <caret line="200" column="24" lean-forward="false" selection-start-line="200" selection-start-column="24" selection-end-line="200" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_131/src.zip!/java/nio/file/Files.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="2381" column="26" lean-forward="false" selection-start-line="2381" selection-start-column="26" selection-end-line="2381" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -776,19 +712,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
           <caret line="7" column="4" lean-forward="false" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/Value.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding>
-            <element signature="e#219#220#0" expanded="false" />
-            <element signature="e#337#338#0" expanded="false" />
-            <element signature="e#382#383#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -808,24 +731,6 @@
         <state relative-caret-position="415">
           <caret line="40" column="37" lean-forward="false" selection-start-line="40" selection-start-column="37" selection-end-line="40" selection-end-column="37" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/visitors/RequirementDoesNotExistsValidator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="12" column="19" lean-forward="false" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/desktop/Desktop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4200">
-          <caret line="196" column="1" lean-forward="false" selection-start-line="196" selection-start-column="1" selection-end-line="196" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -947,14 +852,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/Linker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="27" column="30" lean-forward="false" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/SSFunction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -979,16 +876,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="33" column="57" lean-forward="false" selection-start-line="33" selection-start-column="57" selection-end-line="33" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/Linter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -997,21 +884,137 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/Value.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="648">
+          <caret line="37" column="11" lean-forward="false" selection-start-line="37" selection-start-column="11" selection-end-line="37" selection-end-column="11" />
+          <folding>
+            <element signature="e#174#175#0" expanded="true" />
+            <element signature="e#219#220#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/RequireStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="7" column="19" lean-forward="false" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/visitors/InvalidImportExpressionValidator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/visitors/InvalidExternalDependencyValidator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="9" column="16" lean-forward="false" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/visitors/VariableUsedWithoutBeingDeclaredValidator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        <state relative-caret-position="582">
+          <caret line="181" column="19" lean-forward="false" selection-start-line="181" selection-start-column="19" selection-end-line="181" selection-end-column="19" />
           <folding>
-            <element signature="e#5906#5907#0" expanded="true" />
-            <element signature="e#5977#5978#0" expanded="true" />
+            <element signature="e#6518#6519#0" expanded="true" />
+            <element signature="e#6589#6590#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/Linker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/Environment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="17" column="26" lean-forward="false" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/desktop/Desktop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="113" column="38" lean-forward="true" selection-start-line="113" selection-start-column="38" selection-end-line="113" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_131/src.zip!/java/nio/file/Files.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+          <folding>
+            <element signature="e#2631#2632#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/NumberValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="25" column="38" lean-forward="false" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+          <folding>
+            <element signature="e#398#399#0" expanded="true" />
+            <element signature="e#443#444#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/visitors/InvalidRequirementValidator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="28" column="19" lean-forward="true" selection-start-line="28" selection-start-column="19" selection-end-line="28" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2869#2870#0" expanded="false" />
+            <element signature="e#2907#2908#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/module.ss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="33" column="58" lean-forward="false" selection-start-line="33" selection-start-column="58" selection-end-line="33" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/util/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="25" column="59" lean-forward="false" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="59" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/program.ss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        <state relative-caret-position="96">
+          <caret line="4" column="1" lean-forward="true" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
           <folding />
         </state>
       </provider>
