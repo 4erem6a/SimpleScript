@@ -1,6 +1,6 @@
 package com.evg.ss.parser.visitors;
 
-import com.evg.ss.linter.LintException;
+import com.evg.ss.exceptions.SSLintException;
 import com.evg.ss.parser.ast.*;
 
 public interface Visitor {
@@ -65,7 +65,7 @@ public interface Visitor {
 
     void visit(ValueExpression target);
 
-    void visit(VariableExpression target) throws LintException;
+    void visit(VariableExpression target) throws SSLintException;
 
     void visit(WhileStatement target);
 

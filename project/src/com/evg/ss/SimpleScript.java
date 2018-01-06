@@ -1,6 +1,7 @@
 package com.evg.ss;
 
 import com.evg.ss.exceptions.SSException;
+import com.evg.ss.exceptions.SSLintException;
 import com.evg.ss.exceptions.SSThrownException;
 import com.evg.ss.exceptions.execution.SSExecutionException;
 import com.evg.ss.exceptions.inner.SSExportsException;
@@ -10,7 +11,6 @@ import com.evg.ss.lexer.Lexer;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.msc.MSCGenerator;
-import com.evg.ss.linter.LintException;
 import com.evg.ss.linter.Linter;
 import com.evg.ss.parser.Parser;
 import com.evg.ss.parser.ast.Expression;
@@ -31,7 +31,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 8, 4, 2);
+    public static Version VERSION = new Version(1, 8, 4, 3);
     private List<Token> tokens;
 
     private SimpleScript(List<Token> tokens) {
@@ -165,7 +165,7 @@ public final class SimpleScript {
             program.execute();
         }
 
-        public void lint() throws LintException {
+        public void lint() throws SSLintException {
             new Linter(this).lint();
         }
 

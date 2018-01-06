@@ -29,34 +29,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="program.ss" pinned="false" current-in-tab="false">
+      <file leaf-file-name="program.ss" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/program.ss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="2" column="4" lean-forward="false" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
+            <state relative-caret-position="240">
+              <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Desktop.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/desktop/Desktop.java">
+      <file leaf-file-name="VariableUsedWithoutBeingDeclaredValidator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/visitors/VariableUsedWithoutBeingDeclaredValidator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1088">
-              <caret line="196" column="1" lean-forward="true" selection-start-line="196" selection-start-column="1" selection-end-line="196" selection-end-column="1" />
+            <state relative-caret-position="72">
+              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#5906#5907#0" expanded="true" />
+                <element signature="e#5977#5978#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleScript.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="19" lean-forward="true" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -75,7 +66,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>isLa</find>
       <find>argument()</find>
       <find>value()</find>
       <find>\barray\b</find>
@@ -105,10 +95,12 @@
       <find>lockedStatement</find>
       <find>&amp;</find>
       <find>contains(Object o)</find>
+      <find>LintException</find>
     </findStrings>
     <replaceStrings>
       <replace>of</replace>
       <replace>^</replace>
+      <replace>SSLintException</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\Users\Sviri\IdeaProjects\SimpleScript\src\com\evg\ss\parser\ast</dir>
@@ -122,17 +114,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ImportStatement.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/InterpolatedStringExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/LetExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/LetStatement.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/MapExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/NameofExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/NewExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/RequireExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/RequireStatement.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/SwitchStatement.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/TernaryExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ThisExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ThrowStatement.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java" />
@@ -142,7 +123,6 @@
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/UnitedStatement.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ValueCloneExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/VariableExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/WhileStatement.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/BoolValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/TypeValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/FunctionValue.java" />
@@ -150,17 +130,14 @@
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/StringValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/Container.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/ArrayValue.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/values/MapValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/values/NumberValue.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ValueExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/SSFunction.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ReturnStatement.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/AnonymousFunctionExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ArgumentExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ArrayExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/AssignmentExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/BinaryExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/BlockStatement.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ConstTypeExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/Argument.java" />
         <option value="$PROJECT_DIR$/src/desktop/DesktopExecutionFlags.java" />
@@ -170,9 +147,24 @@
         <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ContainerAccessExpression.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/lists/lists.ss" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/utils/utils.java" />
-        <option value="$PROJECT_DIR$/src/program.ss" />
         <option value="$PROJECT_DIR$/src/desktop/Desktop.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/SS.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/visitors/AbstractVisitor.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ForStatement.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/ForEachStatement.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/DoWhileStatement.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/WhileStatement.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/modules/interpreter/interpreter.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/values/MapValue.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/lib/SSFunction.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/parser/ast/BlockStatement.java" />
+        <option value="$PROJECT_DIR$/src/program.ss" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/linter/LintException.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/linter/SSLintException.java" />
         <option value="$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/exceptions/SSLintException.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/linter/visitors/VariableUsedWithoutBeingDeclaredValidator.java" />
+        <option value="$PROJECT_DIR$/src/com/evg/ss/linter/Linter.java" />
       </list>
     </option>
   </component>
@@ -181,8 +173,8 @@
     <scope name="Project" pattern="src:*..*" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-268" />
-    <option name="y" value="58" />
+    <option name="x" value="501" />
+    <option name="y" value="57" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -227,8 +219,7 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -259,17 +250,22 @@
               <item name="SimpleScript" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ss" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="modules" type="462c0819:PsiDirectoryNode" />
+              <item name="linter" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SimpleScript" type="b2602c69:ProjectViewProjectNode" />
               <item name="SimpleScript" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ss" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="modules" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="linter" type="462c0819:PsiDirectoryNode" />
+              <item name="visitors" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SimpleScript" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SimpleScript" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ss" type="462c0819:PsiDirectoryNode" />
+              <item name="values" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SimpleScript" type="b2602c69:ProjectViewProjectNode" />
@@ -285,7 +281,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -294,7 +291,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/com/evg/ss/parser/ast" />
-    <property name="SearchEverywhereHistoryKey" value="Calculate &#9;ACTION&#9;Metrics.ProjectMetricsAction&#10;replace&#9;ACTION&#9;ReplaceInPath&#10;returnS&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ReturnStatement.java&#10;ValueEx&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ValueExpression.java&#10;TryCa&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java&#10;Try&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java&#10;Block&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;SSF&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/lib/SSFunction.java&#10;FunctionCall&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.FunctionCallExpression&#10;This&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ThisExpression.java&#10;BlockS&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.BlockStatement&#10;BinaryEx&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BinaryExpression.java&#10;settings&#9;ACTION&#9;ShowSettings&#10;tip&#9;ACTION&#9;ShowTips&#10;decrease&#9;ACTION&#9;EditorDecreaseFontSize&#10;font&#9;ACTION&#9;EditorDecreaseFontSize&#10;completion&#9;ACTION&#9;CodeCompletionGroup&#10;blacklist&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;black list&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;format&#9;ACTION&#9;ReformatCode" />
+    <property name="SearchEverywhereHistoryKey" value="куздф&#9;ACTION&#9;ReplaceInPath&#10;replace&#9;ACTION&#9;ReplaceInPath&#10;BLock&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;SSF&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/lib/SSFunction.java&#10;Foreac&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.ForEachStatement&#10;ForS&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.ForStatement&#10;BlockS&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;Calculate &#9;ACTION&#9;Metrics.ProjectMetricsAction&#10;returnS&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ReturnStatement.java&#10;ValueEx&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ValueExpression.java&#10;TryCa&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java&#10;Try&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java&#10;Block&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BlockStatement.java&#10;FunctionCall&#9;PSI&#9;JAVA://com.evg.ss.parser.ast.FunctionCallExpression&#10;This&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/ThisExpression.java&#10;BinaryEx&#9;FILE&#9;file://C:/Users/Sviri/IdeaProjects/SimpleScript/src/com/evg/ss/parser/ast/BinaryExpression.java&#10;settings&#9;ACTION&#9;ShowSettings&#10;tip&#9;ACTION&#9;ShowTips&#10;decrease&#9;ACTION&#9;EditorDecreaseFontSize&#10;font&#9;ACTION&#9;EditorDecreaseFontSize&#10;completion&#9;ACTION&#9;CodeCompletionGroup&#10;blacklist&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;black list&#9;ACTION&#9;ShowSettingsWithAddedPattern&#10;format&#9;ACTION&#9;ReformatCode" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last.edited.regexp" value="return Double.hashCode(10) &amp; 20;" />
     <property name="Downloaded.Files.Path.Enabled" value="false" />
@@ -531,18 +528,18 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18697916" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33828208" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25556734" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
     </layout>
@@ -560,76 +557,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/TernaryExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
-          <caret line="51" column="87" lean-forward="false" selection-start-line="51" selection-start-column="87" selection-end-line="51" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/ThisExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="679">
-          <caret line="46" column="29" lean-forward="false" selection-start-line="46" selection-start-column="15" selection-end-line="46" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/ThrowStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="35" column="46" lean-forward="false" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/TryCatchFinallyStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="102" column="38" lean-forward="false" selection-start-line="102" selection-start-column="38" selection-end-line="102" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/TypeExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="35" column="33" lean-forward="true" selection-start-line="35" selection-start-column="33" selection-end-line="35" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/TypeofExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="35" column="52" lean-forward="true" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/UnaryExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
-          <caret line="120" column="61" lean-forward="true" selection-start-line="120" selection-start-column="61" selection-end-line="120" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/UnitedStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="768">
-          <caret line="46" column="52" lean-forward="false" selection-start-line="46" selection-start-column="39" selection-end-line="46" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/VariableExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="703">
-          <caret line="65" column="33" lean-forward="true" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/WhileStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
-          <caret line="58" column="59" lean-forward="false" selection-start-line="58" selection-start-column="59" selection-end-line="58" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/BoolValue.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="431">
@@ -679,13 +606,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/MapValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1336">
-          <caret line="33" column="44" lean-forward="false" selection-start-line="33" selection-start-column="44" selection-end-line="33" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/ReturnStatement.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="407">
@@ -718,13 +638,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
           <caret line="268" column="30" lean-forward="false" selection-start-line="268" selection-start-column="30" selection-end-line="268" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/BlockStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="81" column="36" lean-forward="false" selection-start-line="81" selection-start-column="36" selection-end-line="81" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -770,24 +683,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/SSFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="19" column="24" lean-forward="true" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/msc/MSCVisitor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-6168">
           <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/ArrayValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-624">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -912,22 +811,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/Linker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="12" column="19" lean-forward="false" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/program.ss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="2" column="4" lean-forward="false" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/visitors/RequirementDoesNotExistsValidator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="96">
@@ -936,31 +819,199 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/Linter.java">
+    <entry file="file://$PROJECT_DIR$/src/desktop/Desktop.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="13" column="26" lean-forward="false" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+        <state relative-caret-position="4200">
+          <caret line="196" column="1" lean-forward="false" selection-start-line="196" selection-start-column="1" selection-end-line="196" selection-end-column="1" />
           <folding>
-            <element signature="e#757#758#0" expanded="false" />
-            <element signature="e#793#794#0" expanded="false" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/desktop/Desktop.java">
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/SS.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1088">
-          <caret line="196" column="1" lean-forward="true" selection-start-line="196" selection-start-column="1" selection-end-line="196" selection-end-column="1" />
+        <state relative-caret-position="456">
+          <caret line="88" column="25" lean-forward="false" selection-start-line="88" selection-start-column="25" selection-end-line="88" selection-end-column="25" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#2457#2458#0" expanded="false" />
+            <element signature="e#2492#2493#0" expanded="false" />
+            <element signature="e#2537#2538#0" expanded="false" />
+            <element signature="e#2577#2578#0" expanded="false" />
+            <element signature="e#2622#2623#0" expanded="false" />
+            <element signature="e#2662#2663#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/visitors/AbstractVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="487">
+          <caret line="85" column="38" lean-forward="true" selection-start-line="85" selection-start-column="38" selection-end-line="85" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/ForStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="46" column="5" lean-forward="true" selection-start-line="46" selection-start-column="5" selection-end-line="46" selection-end-column="5" />
+          <folding>
+            <element signature="e#1769#1770#0" expanded="false" />
+            <element signature="e#1804#1805#0" expanded="false" />
+            <element signature="e#1889#1890#0" expanded="false" />
+            <element signature="e#1931#1932#0" expanded="false" />
+            <element signature="e#1975#1976#0" expanded="false" />
+            <element signature="e#2012#2013#0" expanded="false" />
+            <element signature="e#2051#2052#0" expanded="false" />
+            <element signature="e#2083#2084#0" expanded="false" />
+            <element signature="e#2117#2118#0" expanded="false" />
+            <element signature="e#2144#2145#0" expanded="false" />
+            <element signature="e#2184#2185#0" expanded="false" />
+            <element signature="e#2216#2217#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/ForEachStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="52" column="29" lean-forward="false" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
+          <folding>
+            <element signature="e#1968#1969#0" expanded="false" />
+            <element signature="e#2062#2063#0" expanded="false" />
+            <element signature="e#2119#2120#0" expanded="false" />
+            <element signature="e#2154#2155#0" expanded="false" />
+            <element signature="e#2239#2240#0" expanded="false" />
+            <element signature="e#2281#2282#0" expanded="false" />
+            <element signature="e#2329#2330#0" expanded="false" />
+            <element signature="e#2370#2371#0" expanded="false" />
+            <element signature="e#2407#2408#0" expanded="false" />
+            <element signature="e#2436#2437#0" expanded="false" />
+            <element signature="e#2470#2471#0" expanded="false" />
+            <element signature="e#2497#2498#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/DoWhileStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/WhileStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="407">
+          <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/modules/interpreter/interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="30" column="59" lean-forward="false" selection-start-line="30" selection-start-column="59" selection-end-line="30" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/ArrayValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="68" column="5" lean-forward="true" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/values/MapValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="98" column="81" lean-forward="false" selection-start-line="98" selection-start-column="81" selection-end-line="98" selection-end-column="81" />
+          <folding>
+            <element signature="e#2008#2009#0" expanded="true" />
+            <element signature="e#2054#2055#0" expanded="true" />
+            <element signature="e#2133#2134#0" expanded="true" />
+            <element signature="e#2184#2185#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/visitors/FunctionAdder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="11" column="1" lean-forward="true" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/Linker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="452">
+          <caret line="27" column="30" lean-forward="false" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/lib/SSFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="106" column="13" lean-forward="false" selection-start-line="106" selection-start-column="13" selection-end-line="106" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/parser/ast/BlockStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="28" column="41" lean-forward="false" selection-start-line="28" selection-start-column="41" selection-end-line="28" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/exceptions/SSLintException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="2" column="19" lean-forward="false" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/evg/ss/SimpleScript.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="19" lean-forward="true" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+        <state relative-caret-position="288">
+          <caret line="33" column="57" lean-forward="false" selection-start-line="33" selection-start-column="57" selection-end-line="33" selection-end-column="57" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/Linter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="13" column="31" lean-forward="false" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/evg/ss/linter/visitors/VariableUsedWithoutBeingDeclaredValidator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <element signature="e#5906#5907#0" expanded="true" />
+            <element signature="e#5977#5978#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/program.ss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
           <folding />
         </state>
       </provider>

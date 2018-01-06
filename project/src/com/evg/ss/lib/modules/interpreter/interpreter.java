@@ -28,6 +28,7 @@ public class interpreter extends SSModule {
         scopes.setMethod("up", this::scopesUp);
         scopes.setMethod("down", this::scopesDown);
         scopes.setMethod("getCurrent", this::scopesGet);
+        scopes.setMethod("getLevel", this::scopesGetLevel);
         interpreter.setField("scopes", scopes.build());
         interpreter.setField("callContext", callContext.build());
         interpreter.setField("version", Value.of(SimpleScript.VERSION.toString()));
@@ -40,6 +41,11 @@ public class interpreter extends SSModule {
         interpreter.setMethod("getFunction", this::getFunction);
         interpreter.setMethod("requireStackTrace", this::requireStackTrace);
         return interpreter.build();
+    }
+
+    private Value scopesGetLevel(Value... values) {
+        Arguments.checkArgcOrDie(values, 0);
+        return Value.of(SS.Scopes.getCurrentLevel());
     }
 
     private Value scopesGet(Value... values) {

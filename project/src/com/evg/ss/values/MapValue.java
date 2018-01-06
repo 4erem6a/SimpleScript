@@ -90,7 +90,13 @@ public class MapValue implements Value, Container, Iterable<Map.Entry<Value, Val
 
     @Override
     public String asString() {
-        return toArray().asString();
+        final StringBuilder builder = new StringBuilder("{");
+        for (Map.Entry<Value, Value> entry : this)
+            builder.append(entry.getKey().asString())
+                    .append(":")
+                    .append(entry.getValue().asString())
+                    .append(",");
+        return builder.deleteCharAt(builder.length() - 1).append("}").toString();
     }
 
     @Override

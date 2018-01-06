@@ -24,23 +24,26 @@ public final class ForStatement implements Statement {
         SS.Scopes.up();
         if (initialization != null)
             initialization.execute();
-        while (condition != null ? condition.eval().asBoolean() : true) {
-            try {
-                body.execute();
-            } catch (SSInnerException e) {
-                if (e instanceof SSBreakException)
-                    break;
-                if (e instanceof SSContinueException) {
-                    if (iteration != null)
-                        iteration.execute();
-                    continue;
+        try {
+            while (condition != null ? condition.eval().asBoolean() : true) {
+                try {
+                    body.execute();
+                } catch (SSInnerException e) {
+                    if (e instanceof SSBreakException)
+                        break;
+                    if (e instanceof SSContinueException) {
+                        if (iteration != null)
+                            iteration.execute();
+                        continue;
+                    }
+                    throw e;
                 }
-                throw e;
+                if (iteration != null)
+                    iteration.execute();
             }
-            if (iteration != null)
-                iteration.execute();
+        } finally {
+            SS.Scopes.down();
         }
-        SS.Scopes.down();
     }
 
     @Override

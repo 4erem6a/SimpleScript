@@ -35,20 +35,23 @@ public final class ForEachStatement implements Statement {
         else if (value instanceof ArrayValue)
             array = (ArrayValue) value;
         else throw new InvalidValueTypeException(value.getType());
-        for (Value iteration : array.getValue()) {
-            try {
-                SS.Variables.set(name, iteration);
-                body.execute();
-            } catch (SSInnerException e) {
-                if (e instanceof SSBreakException)
-                    break;
-                if (e instanceof SSContinueException) {
-                    continue;
+        try {
+            for (Value iteration : array.getValue()) {
+                try {
+                    SS.Variables.set(name, iteration);
+                    body.execute();
+                } catch (SSInnerException e) {
+                    if (e instanceof SSBreakException)
+                        break;
+                    if (e instanceof SSContinueException) {
+                        continue;
+                    }
+                    throw e;
                 }
-                throw e;
             }
+        } finally {
+            SS.Scopes.down();
         }
-        SS.Scopes.down();
     }
 
     @Override

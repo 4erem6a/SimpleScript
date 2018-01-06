@@ -79,6 +79,16 @@ public final class SS {
             return scopes;
         }
 
+        public static int getCurrentLevel() {
+            int level = 0;
+            VariableMap temp = Variables.top;
+            while (temp.getParent() != null) {
+                temp = temp.getParent();
+                level++;
+            }
+            return level;
+        }
+
         public static void unlock(Scopes scopes) {
             set(scopes);
         }

@@ -1,6 +1,7 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.lib.SS;
+import com.evg.ss.parser.visitors.FunctionAdder;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -25,14 +26,21 @@ public final class BlockStatement implements Statement, Lockable {
 
     @Override
     public void execute() {
+        this.accept(new FunctionAdder());
         if (locked) {
             SS.Scopes scopes = SS.Scopes.lock();
-            statements.forEach(Statement::execute);
-            SS.Scopes.unlock(scopes);
+            try {
+                statements.forEach(Statement::execute);
+            } finally {
+                SS.Scopes.unlock(scopes);
+            }
         } else {
             SS.Scopes.up();
-            statements.forEach(Statement::execute);
-            SS.Scopes.down();
+            try {
+                statements.forEach(Statement::execute);
+            } finally {
+                SS.Scopes.down();
+            }
         }
     }
 

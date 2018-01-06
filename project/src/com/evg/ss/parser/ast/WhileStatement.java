@@ -2,7 +2,6 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.inner.SSBreakException;
 import com.evg.ss.exceptions.inner.SSContinueException;
-import com.evg.ss.exceptions.inner.SSInnerException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -21,12 +20,9 @@ public final class WhileStatement implements Statement {
         while (condition.eval().asBoolean()) {
             try {
                 body.execute();
-            } catch (SSInnerException e) {
-                if (e instanceof SSBreakException)
-                    break;
-                if (e instanceof SSContinueException)
-                    continue;
-                throw e;
+            } catch (SSBreakException e) {
+                break;
+            } catch (SSContinueException ignored) {
             }
         }
     }

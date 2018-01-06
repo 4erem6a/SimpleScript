@@ -2,13 +2,13 @@ package desktop;
 
 import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
+import com.evg.ss.exceptions.SSLintException;
 import com.evg.ss.exceptions.SSThrownException;
 import com.evg.ss.exceptions.execution.SSExecutionException;
 import com.evg.ss.exceptions.lexer.SSLexerException;
 import com.evg.ss.lib.CallStack;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.msc.MSCGenerator;
-import com.evg.ss.linter.LintException;
 import com.evg.ss.linter.Linter;
 import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.parser.visitors.FunctionAdder;
@@ -119,7 +119,7 @@ public final class Desktop {
             log("Running lint ... ");
             try {
                 new Linter(compiledScript).lint();
-            } catch (LintException e) {
+            } catch (SSLintException e) {
                 except(e);
                 return;
             }

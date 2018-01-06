@@ -84,14 +84,20 @@ public final class SSFunction implements ConstructorFunction {
         SS.Scopes.up();
         SS.CallContext.up(callContext);
         final Value result;
-        if (isLocked) {
-            final SS.Scopes scopes = SS.Scopes.lock();
-            result = execute(argList);
-            SS.Scopes.unlock(scopes);
-        } else result = execute(argList);
-        SS.CallContext.down();
-        SS.Scopes.down();
-        CallStack.exit();
+        try {
+            if (isLocked) {
+                final SS.Scopes scopes = SS.Scopes.lock();
+                try {
+                    result = execute(argList);
+                } finally {
+                    SS.Scopes.unlock(scopes);
+                }
+            } else result = execute(argList);
+        } finally {
+            SS.CallContext.down();
+            SS.Scopes.down();
+            CallStack.exit();
+        }
         return result;
     }
 

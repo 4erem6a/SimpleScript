@@ -1,10 +1,11 @@
 package com.evg.ss.linter.visitors;
 
+import com.evg.ss.exceptions.SSLintException;
 import com.evg.ss.lib.Function;
+import com.evg.ss.lib.SS;
 import com.evg.ss.lib.Variable;
 import com.evg.ss.lib.containers.FunctionMap;
 import com.evg.ss.lib.containers.VariableMap;
-import com.evg.ss.linter.LintException;
 import com.evg.ss.parser.ast.*;
 import com.evg.ss.parser.visitors.AbstractVisitor;
 
@@ -12,8 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Deprecated
-//Fixme 21.12.2017:
 public final class VariableUsedWithoutBeingDeclaredValidator extends AbstractVisitor {
 
     private static final Variable DUMMY_VARIABLE = new Variable(null, false);
@@ -32,6 +31,22 @@ public final class VariableUsedWithoutBeingDeclaredValidator extends AbstractVis
         functions = functions.getParent();
     }
 
+    private void reset() {
+        variables = new VariableMap(null);
+        functions = new FunctionMap(null);
+    }
+
+    private SS.Scopes lock() {
+        SS.Scopes result = new SS.Scopes(functions, variables);
+        reset();
+        return result;
+    }
+
+    private void unlock(SS.Scopes scopes) {
+        functions = scopes.getFunctions();
+        variables = scopes.getVariables();
+    }
+
     @Override
     public void visit(LetStatement target) {
         super.visit(target);
@@ -46,9 +61,16 @@ public final class VariableUsedWithoutBeingDeclaredValidator extends AbstractVis
 
     @Override
     public void visit(BlockStatement target) {
-        up();
-        super.visit(target);
-        down();
+        target.accept(new LintFunctionAdder());
+        if (target.isLocked()) {
+            final SS.Scopes scopes = lock();
+            super.visit(target);
+            unlock(scopes);
+        } else {
+            up();
+            super.visit(target);
+            down();
+        }
     }
 
     @Override
@@ -76,23 +98,42 @@ public final class VariableUsedWithoutBeingDeclaredValidator extends AbstractVis
 
     @Override
     public void visit(FunctionDefinitionStatement target) {
-        functions.put(target.getName(), DUMMY_FUNCTION);
-        up();
-        final List<String> args = Arrays.stream(target.getArgs()).map(ArgumentExpression::getName).collect(Collectors.toList());
-        for (String arg : args)
-            variables.put(arg, DUMMY_VARIABLE);
-        super.visit(target);
-        down();
+        if (target.isLocked()) {
+            final SS.Scopes scopes = lock();
+            functions.put(target.getName(), DUMMY_FUNCTION);
+            final List<String> args = Arrays.stream(target.getArgs()).map(ArgumentExpression::getName).collect(Collectors.toList());
+            for (String arg : args)
+                variables.put(arg, DUMMY_VARIABLE);
+            super.visit(target);
+            unlock(scopes);
+        } else {
+            functions.put(target.getName(), DUMMY_FUNCTION);
+            up();
+            final List<String> args = Arrays.stream(target.getArgs()).map(ArgumentExpression::getName).collect(Collectors.toList());
+            for (String arg : args)
+                variables.put(arg, DUMMY_VARIABLE);
+            super.visit(target);
+            down();
+        }
     }
 
     @Override
     public void visit(AnonymousFunctionExpression target) {
-        up();
-        final List<String> args = Arrays.stream(target.getArgs()).map(ArgumentExpression::getName).collect(Collectors.toList());
-        for (String arg : args)
-            variables.put(arg, DUMMY_VARIABLE);
-        super.visit(target);
-        down();
+        if (target.isLocked()) {
+            final SS.Scopes scopes = lock();
+            final List<String> args = Arrays.stream(target.getArgs()).map(ArgumentExpression::getName).collect(Collectors.toList());
+            for (String arg : args)
+                variables.put(arg, DUMMY_VARIABLE);
+            super.visit(target);
+            unlock(scopes);
+        } else {
+            up();
+            final List<String> args = Arrays.stream(target.getArgs()).map(ArgumentExpression::getName).collect(Collectors.toList());
+            for (String arg : args)
+                variables.put(arg, DUMMY_VARIABLE);
+            super.visit(target);
+            down();
+        }
     }
 
     @Override
@@ -121,9 +162,16 @@ public final class VariableUsedWithoutBeingDeclaredValidator extends AbstractVis
     }
 
     @Override
-    public void visit(VariableExpression target) throws LintException {
+    public void visit(VariableExpression target) throws SSLintException {
         super.visit(target);
         if (variables.get(target.getName()) == null)
-            throw new LintException("LintException: Variable %s used without being declared.", target.getName());
+            throw new SSLintException("SSLintException: Variable %s used without being declared.", target.getName());
+    }
+
+    private class LintFunctionAdder extends AbstractVisitor {
+        @Override
+        public void visit(FunctionDefinitionStatement target) {
+            functions.put(target.getName(), DUMMY_FUNCTION);
+        }
     }
 }

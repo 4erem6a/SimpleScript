@@ -1,6 +1,6 @@
 package com.evg.ss.parser.visitors;
 
-import com.evg.ss.linter.LintException;
+import com.evg.ss.exceptions.SSLintException;
 import com.evg.ss.parser.ast.*;
 
 import java.util.Arrays;
@@ -77,9 +77,12 @@ public abstract class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(ForStatement target) {
-        target.getInitialization().accept(this);
-        target.getCondition().accept(this);
-        target.getIteration().accept(this);
+        if (target.getInitialization() != null)
+            target.getInitialization().accept(this);
+        if (target.getCondition() != null)
+            target.getCondition().accept(this);
+        if (target.getIteration() != null)
+            target.getIteration().accept(this);
         target.getBody().accept(this);
     }
 
@@ -174,7 +177,7 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(VariableExpression target) throws LintException {
+    public void visit(VariableExpression target) throws SSLintException {
     }
 
     @Override

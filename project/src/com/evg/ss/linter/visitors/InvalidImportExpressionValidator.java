@@ -1,6 +1,6 @@
 package com.evg.ss.linter.visitors;
 
-import com.evg.ss.linter.LintException;
+import com.evg.ss.exceptions.SSLintException;
 import com.evg.ss.parser.ast.ContainerAccessExpression;
 import com.evg.ss.parser.ast.Expression;
 import com.evg.ss.parser.ast.ImportStatement;
@@ -40,6 +40,6 @@ public final class InvalidImportExpressionValidator extends AbstractVisitor {
     }
 
     private void except() {
-        throw new LintException("LintException: Invalid import expression.");
+        throw new SSLintException("SSLintException: Invalid import expression.");
     }
 }

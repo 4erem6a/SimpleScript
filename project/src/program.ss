@@ -1,4 +1,11 @@
-//SimpleScript v1.8.4:
-locked function main(args) {
-    >require'io'.println('Hello, world!')
+//SimpleScript v1.8.4.3:
+locked function getError() throw new require("errors").Error("Sample error")
+
+function main(args) {
+    require "io"
+    import io.println
+
+        $(io)
+
+        locked function $(x) > require("io").println(x)
 }
