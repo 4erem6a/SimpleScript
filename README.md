@@ -1,10 +1,10 @@
 # SimpleScript
-## Desjription:
+## Desсription:
 SimpleScript is a scripting programming language created as hobby project.
 ## Installation:
-1. Install Java 8+
-2. Download this repisitory
-3. Extract `SimpleScript\compiled\SimpleScript.jar`
+1. Install Java 8+.
+2. Go to `SimpleScript\compiled\SimpleScript.jar`.
+3. Download it.
 ## Usage:
 You can run SS code from command line.
 Use `java -jar %SimpleScript.jar path%` command with following flags:
