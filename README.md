@@ -1,46 +1,48 @@
 # SimpleScript
-
-## Scripting programming language created as hobby project for educational purposes.
-
-# Language features:
-
-## Current:
-
-* Comments
-* Variables
-* Constants
-* Functions
-* Scopes \(Variables/Functions\)
-* Modules \(build-in\)
-* Anonymous functions
-* Lambda-expressions
-* Type checking
-* Maps
-* Map inheritance
-* Require/Exports statements
-* Modules \(user-defined\)
-* Type conversion \(module/build-in\)
-* Field import
-* JavaScript-like constructors \(this/new\)
-* Pattern matching \(Maps\)
-  ## Roadmap:
-* --- optimization ---
-
-  # Modules:
-
-  ## Current:
-
-* IO\(`"io"`\)
-* Arrays\(`"arrays"`\)
-* Maps\(`"maps"`\)
-* Utilities\(`"utils"`\)
-* Lists\(`"lists"`\)
-* Interpreter\(`"interpreter"`\)
-* Environment\(`"environment"`\)
-* Math\(`"math"`\)
- 
- ## Roadmap:
- 
-* Types\(`"types"`\)
-
-### See language manual at [gitBook](https://www.gitbook.com/book/4erem6a/simplescript-manual).
+## Desjription:
+SimpleScript is a scripting programming language created as hobby project.
+## Installation:
+1. Install Java 8+
+2. Download this repisitory
+3. Extract `SimpleScript\compiled\SimpleScript.jar`
+## Usage:
+You can run SS code from command line.
+Use `java -jar %SimpleScript.jar path%` command with following flags:
+```
+    -f <file>       Specifies source file
+    -s <source>     Specifies source
+    -r              Compiles program to SimpleScript
+    -e              Executes program
+    -m <mode>       Specifies execution mode:
+        file (Default)  Executes source from first line
+        main            Executes `main(args)` function
+        expression      Executes source as an expression and prints result
+    -l              Enables log
+    -d              Debug mode
+    -li             Enables linter (Static code analyzer)
+    -a <args...>    Specifies program args
+```
+## Hello, world!
+Code:
+```
+require "io"                //Require "io" module from standard library.
+io.println("Hello, world!") //Print line "Hello, world" to command line.
+```
+For example, `SimpleScript.jar` and `program.ss` are located in `C:\SS`
+Command: `java -jar C:\SS\SimpleScript.jar -f C:\SS\program.ss -e -li`
+Result:
+```
+CommandLine> java -jar C:\SS\SimpleScript.jar -f C:\SS\program.ss -e -li
+Hello, world!
+```
+## Expression mode:
+With `-m expression` flag, you can evaluate your code as an expresson.
+Example:
+```
+CommandLine> java -jar C:\SS\SimpleScript.jar -s "(2 + 2) * 2" -e -m expression -li
+>8.00000
+```
+## Syntax highlighting:
+[VS Code highlighting plugin](https://marketplace.visualstudio.com/items?itemName=4erem6a.ss)
+## Documentation:
+[Coming Soon]()
