@@ -13,6 +13,7 @@ import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.linter.Linter;
 import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.parser.visitors.FunctionAdder;
+import com.evg.ss.values.FunctionValue;
 import com.evg.ss.values.Value;
 
 import java.io.IOException;
@@ -29,7 +30,6 @@ public final class Desktop {
     private static List<ExecutionFlag> EXECUTION_FLAGS = new ArrayList<>();
     private static boolean LOG = false, DEBUG = false;
     private static SSExecutionModes MODE = SSExecutionModes.FILE;
-    private static Path PROGRAM_PATH;
 
     private static boolean hasFlag(String name) {
         return EXECUTION_FLAGS.stream().anyMatch(flag -> flag.getType().getName().equals(name));
@@ -126,6 +126,8 @@ public final class Desktop {
             }
             log(" Complete.\n");
         }
+        if (hasFlag("-r"))
+            System.out.printf("PROGRAM:\n%s\nEND.\n", new MSCGenerator(compiledScript).generate());
         if (hasFlag("-t"))
             System.out.printf("TOKENS:\n%sEND.\n", script.getTokens().stream()
                     .map(token -> '\t' + token.toString() + '\n')
@@ -153,7 +155,7 @@ public final class Desktop {
             if (MODE == SSExecutionModes.MAIN) {
                 final Statement program = compiledScript.getProgram();
                 program.accept(new FunctionAdder());
-                if (!SS.Functions.exists("main"))
+                if (!SS.Identifiers.exists("main") || !(SS.Identifiers.get("main").getValue() instanceof FunctionValue))
                     exitWithMessage("Missing function 'main'.");
                 final Value programArgs =
                         Value.of(
@@ -162,7 +164,7 @@ public final class Desktop {
                                         .map(Value::of)
                                         .toArray(Value[]::new));
                 try {
-                    SS.Functions.get("main").execute(programArgs);
+                    ((FunctionValue) SS.Identifiers.get("main").getValue()).getValue().execute(programArgs);
                 } catch (SSThrownException e) {
                     exitWithMessage("Uncaught thrown value: %s", e.getValue().asString());
                 } catch (Exception e) {

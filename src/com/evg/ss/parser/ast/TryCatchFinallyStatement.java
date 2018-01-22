@@ -35,7 +35,7 @@ public final class TryCatchFinallyStatement implements Statement {
             _try.execute();
         } catch (SSThrownException e) {
             for (Catch _catch : catches) {
-                SS.Variables.put(_catch.argName, e.getValue(), true);
+                SS.Identifiers.put(_catch.argName, e.getValue(), true);
                 if (_catch.isAvailable()) {
                     _catch.getBody().execute();
                     break;

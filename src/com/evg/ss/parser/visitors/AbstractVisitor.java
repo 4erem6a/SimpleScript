@@ -94,11 +94,7 @@ public abstract class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(FunctionDefinitionStatement target) {
-        target.getBody().accept(this);
-    }
-
-    @Override
-    public void visit(FunctionReferenceExpression target) {
+        target.getFunction().getBody().accept(this);
     }
 
     @Override
@@ -235,5 +231,10 @@ public abstract class AbstractVisitor implements Visitor {
         });
         if (tryCatchFinallyStatement.getFinally() != null)
             tryCatchFinallyStatement.getFinally().accept(this);
+    }
+
+    @Override
+    public void visit(InstantFunctionExpression target) {
+        target.getBody().accept(this);
     }
 }

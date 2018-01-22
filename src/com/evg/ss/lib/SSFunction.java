@@ -23,13 +23,12 @@ public final class SSFunction implements ConstructorFunction {
     private MapValue callContext;
     private boolean isLocked = false;
 
-    public SSFunction(MapValue callContext, String name, ArgumentExpression[] args, Statement body) {
-        this(callContext, args, body);
-        this.name = name;
+    public SSFunction(MapValue callContext, ArgumentExpression[] args, Statement body) {
+        this(callContext, Arrays.stream(args).map(ArgumentExpression::getArgument).toArray(Argument[]::new), body);
     }
 
-    public SSFunction(MapValue callContext, ArgumentExpression[] args, Statement body) {
-        this.args = Arrays.stream(args).map(ArgumentExpression::getArgument).collect(Collectors.toList());
+    public SSFunction(MapValue callContext, Argument[] args, Statement body) {
+        this.args = Arrays.stream(args).collect(Collectors.toList());
         this.body = body;
         for (int i = 0; i < this.args.size() - 2; i++)
             if (this.args.get(i).hasValue() && !this.args.get(i + 1).hasValue())
@@ -103,7 +102,7 @@ public final class SSFunction implements ConstructorFunction {
 
     private Value execute(List<Value> args) {
         for (int i = 0; i < args.size(); i++)
-            SS.Variables.put(this.args.get(i).getName(), args.get(i), false);
+            SS.Identifiers.put(this.args.get(i).getName(), args.get(i), false);
         try {
             body.execute();
         } catch (SSReturnException e) {
@@ -145,10 +144,6 @@ public final class SSFunction implements ConstructorFunction {
         return result;
     }
 
-    private String getLambdaName() {
-        return String.format("$lambda:%d", hashCode());
-    }
-
     public void setCallContext(MapValue callContext) {
         this.callContext = callContext;
     }
@@ -175,5 +170,17 @@ public final class SSFunction implements ConstructorFunction {
 
     public Statement getBody() {
         return body;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Argument> getArgs() {
+        return args;
     }
 }

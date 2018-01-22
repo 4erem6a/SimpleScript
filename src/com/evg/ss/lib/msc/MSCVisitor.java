@@ -133,13 +133,8 @@ public class MSCVisitor implements ResultVisitor<String> {
         return String.format("%sfunction %s(%s)%s",
                 (target.isLocked() ? "locked " : ""),
                 target.getName(),
-                processArgDefinition(target.getArgs()),
-                target.getBody().accept(this));
-    }
-
-    @Override
-    public String visit(FunctionReferenceExpression target) {
-        return String.format("::%s", target.getName());
+                processArgDefinition(target.getFunction().getArgs()),
+                target.getFunction().getBody().accept(this));
     }
 
     @Override
@@ -331,5 +326,14 @@ public class MSCVisitor implements ResultVisitor<String> {
                 _catch.getCondition() == null ? "" : String.format("if(%s) ",
                         _catch.getCondition().accept(this)),
                 _catch.getBody().accept(this));
+    }
+
+    @Override
+    public String visit(InstantFunctionExpression target) {
+        return String.format("function %s", cutBlock(target.getBody().accept(this)));
+    }
+
+    private static String cutBlock(String block) {
+        return block.substring(5);
     }
 }

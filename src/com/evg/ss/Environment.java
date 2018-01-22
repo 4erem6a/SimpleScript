@@ -1,6 +1,6 @@
 package com.evg.ss;
 
-import com.evg.ss.lib.Variable;
+import com.evg.ss.lib.Identifier;
 import com.evg.ss.values.Value;
 
 import java.util.HashMap;
@@ -13,14 +13,14 @@ public final class Environment {
     public static final String CURRENT_LANG_VERSION = "CURRENT_LANG_VERSION";
     public static final String PROGRAM_ARGS = "PROGRAM_ARGS";
 
-    private static final Map<String, Variable> VARIABLES = new HashMap<>();
+    private static final Map<String, Identifier> VARIABLES = new HashMap<>();
 
     public static boolean setEnvVariable(String name, Value value) {
         if (VARIABLES.containsKey(name)) {
-            final Variable variable = VARIABLES.get(name);
-            if (variable.isConst())
+            final Identifier identifier = VARIABLES.get(name);
+            if (identifier.isConst())
                 return false;
-            VARIABLES.put(name, new Variable(value, false));
+            VARIABLES.put(name, new Identifier(value, false));
             return true;
         }
         return false;
@@ -33,7 +33,7 @@ public final class Environment {
     }
 
     public static void putEnvVariable(String name, Value value, boolean isConst) {
-        VARIABLES.put(name, new Variable(value, isConst));
+        VARIABLES.put(name, new Identifier(value, isConst));
     }
 
     public static boolean envVariableExists(String name) {

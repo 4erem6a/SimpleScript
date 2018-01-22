@@ -24,8 +24,6 @@ public enum SSExecutionFlags {
         switch (strFlag) {
             case "-t":
                 return TOKENIZE;
-            case "-p":
-                return RECOMPILE;
             case "-e":
                 return EXECUTE;
             case "-f":
@@ -42,6 +40,8 @@ public enum SSExecutionFlags {
                 return DEBUG;
             case "-s":
                 return SOURCE;
+            case "-r":
+                return RECOMPILE;
             default:
                 return null;
         }

@@ -3,7 +3,6 @@ package com.evg.ss.parser.ast;
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.lib.ConstructorFunction;
 import com.evg.ss.lib.Function;
-import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.FunctionValue;
@@ -26,17 +25,7 @@ public final class FunctionCallExpression implements Expression {
     @Override
     public Value eval() {
         final Value[] args = Arrays.stream(this.args).map(Expression::eval).toArray(Value[]::new);
-        final Value functionValue;
-        if (function instanceof VariableExpression) {
-            final String name = ((VariableExpression) function).getName();
-            if (SS.Functions.exists(name))
-                functionValue = new FunctionValue(SS.Functions.get(name));
-            else functionValue = function.eval();
-        } else {
-            functionValue = function.eval();
-            if (function.eval() == null)
-                System.out.println(function.getClass());
-        }
+        final Value functionValue = function.eval();
         if (!(functionValue instanceof FunctionValue))
             throw new InvalidValueTypeException(functionValue.getType());
         final Function function = ((FunctionValue) functionValue).getValue();

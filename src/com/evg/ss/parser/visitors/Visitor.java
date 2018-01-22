@@ -37,8 +37,6 @@ public interface Visitor {
 
     void visit(FunctionDefinitionStatement target);
 
-    void visit(FunctionReferenceExpression target);
-
     void visit(IfStatement target);
 
     void visit(InterpolatedStringExpression target);
@@ -86,4 +84,6 @@ public interface Visitor {
     void visit(ThrowStatement throwStatement);
 
     void visit(TryCatchFinallyStatement tryCatchFinallyStatement);
+
+    void visit(InstantFunctionExpression instantFunctionExpression);
 }

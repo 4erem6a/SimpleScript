@@ -4,14 +4,14 @@ import com.evg.ss.SimpleScript;
 import com.evg.ss.exceptions.SSLintException;
 import com.evg.ss.linter.visitors.InvalidImportExpressionValidator;
 import com.evg.ss.linter.visitors.InvalidRequirementValidator;
-import com.evg.ss.linter.visitors.VariableUsedWithoutBeingDeclaredValidator;
+import com.evg.ss.linter.visitors.IdentifierDeclarationValidator;
 import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.parser.visitors.Visitor;
 
 public final class Linter {
 
     private static final Visitor[] LINTERS = new Visitor[]{
-            new VariableUsedWithoutBeingDeclaredValidator(),
+            new IdentifierDeclarationValidator(),
             new InvalidImportExpressionValidator(),
             new InvalidRequirementValidator()
     };

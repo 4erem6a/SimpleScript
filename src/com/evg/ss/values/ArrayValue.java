@@ -63,7 +63,7 @@ public class ArrayValue implements Value, Container, Iterable<Value> {
 
     @Override
     public int compareTo(Value o) {
-        if (!(o instanceof ArrayValue))
+        if (o.getType() != Type.Array)
             return -1;
         else return compareArrays(value, ((ArrayValue) o).value);
     }

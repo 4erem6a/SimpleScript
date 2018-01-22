@@ -31,6 +31,8 @@ public final class Converter {
     }
 
     public Value convert(Value target) {
+        if (to == Type.Null)
+            return new NullValue();
         switch (from) {
             case Number:
                 switch (to) {
@@ -45,7 +47,7 @@ public final class Converter {
                     case Type:
                         return Value.of(target.getType());
                     default:
-                        return new NullValue();
+                        return new UndefinedValue();
                 }
             case String:
                 switch (to) {
@@ -60,7 +62,7 @@ public final class Converter {
                     case Type:
                         return Value.of(target.getType());
                     default:
-                        return new NullValue();
+                        return new UndefinedValue();
                 }
             case Boolean:
                 switch (to) {
@@ -75,7 +77,7 @@ public final class Converter {
                     case Type:
                         return Value.of(target.getType());
                     default:
-                        return new NullValue();
+                        return new UndefinedValue();
                 }
             case Array:
                 switch (to) {
@@ -90,7 +92,7 @@ public final class Converter {
                     case Map:
                         return array2map(target);
                     default:
-                        return new NullValue();
+                        return new UndefinedValue();
                 }
             case Function:
                 switch (to) {
@@ -106,10 +108,8 @@ public final class Converter {
                     case Type:
                         return Value.of(target.getType());
                     default:
-                        return new NullValue();
+                        return new UndefinedValue();
                 }
-            case Null:
-                return new NullValue();
             case Map:
                 switch (to) {
                     case String:
@@ -121,9 +121,11 @@ public final class Converter {
                     case Map:
                         return target;
                     default:
-                        return new NullValue();
+                        return new UndefinedValue();
                 }
+            case Null:
+                return new NullValue();
         }
-        return new NullValue();
+        return new UndefinedValue();
     }
 }
