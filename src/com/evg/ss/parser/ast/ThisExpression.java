@@ -21,7 +21,7 @@ public final class ThisExpression implements Expression, Accessible {
 
     @Override
     public Value get() {
-        return eval();
+        return eval().clone();
     }
 
     @Override

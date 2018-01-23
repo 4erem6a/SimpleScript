@@ -115,5 +115,5 @@ locked function List(array...) {
 }
 
 exports {
-    List: ::List
+    List: List
 }

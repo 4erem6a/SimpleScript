@@ -12,6 +12,10 @@ public class InvalidLockException extends SSParserException {
         super(String.format("Failed to lock not lockable expression: %s.", expression.getClass().getSimpleName()));
     }
 
+    public InvalidLockException(String string) {
+        super(string);
+    }
+
     public InvalidLockException() {
         super("Multiple lock not supported.");
     }

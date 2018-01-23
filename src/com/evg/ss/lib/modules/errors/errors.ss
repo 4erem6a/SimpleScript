@@ -12,5 +12,5 @@ locked function Error(message : string, args...) {
 }
 
 exports {
-    Error: ::Error
+    Error: Error
 }

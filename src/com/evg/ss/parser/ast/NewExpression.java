@@ -3,7 +3,11 @@ package com.evg.ss.parser.ast;
 import com.evg.ss.exceptions.execution.InvalidExpressionException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
+import com.evg.ss.values.ClassValue;
+import com.evg.ss.values.Type;
 import com.evg.ss.values.Value;
+
+import java.util.Arrays;
 
 public final class NewExpression implements Expression {
 
@@ -17,6 +21,16 @@ public final class NewExpression implements Expression {
     public Value eval() {
         if (!(functionCall instanceof FunctionCallExpression))
             throw new InvalidExpressionException();
+        final Expression expression = ((FunctionCallExpression) functionCall).getFunction();
+        if (expression instanceof VariableExpression || expression instanceof ContainerAccessExpression) {
+            final Value value = expression.eval();
+            if (value.getType() == Type.Class) {
+                final Value[] args = Arrays
+                        .stream(((FunctionCallExpression) functionCall).getArgs())
+                        .map(Expression::eval).toArray(Value[]::new);
+                return ((ClassValue) value).construct(args);
+            }
+        }
         return ((FunctionCallExpression) functionCall).setNew().eval();
     }
 

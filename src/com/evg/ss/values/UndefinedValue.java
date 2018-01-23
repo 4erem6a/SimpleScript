@@ -1,44 +1,43 @@
 package com.evg.ss.values;
 
+import com.evg.ss.parser.ast.Expression;
+import com.evg.ss.parser.ast.ValueExpression;
+
 /**
  * @author 4erem6a
  */
-public class BoolValue implements Value {
+public class UndefinedValue implements Value {
 
-    private boolean value;
-
-    public BoolValue(boolean value) {
-        this.value = value;
-    }
+    public static final Expression UndefinedExpression = new ValueExpression(ValueExpression.ConstValues.Undefined);
 
     @Override
     public Double asNumber() {
-        return (double) (value ? 1 : 0);
+        return null;
     }
 
     @Override
     public Boolean asBoolean() {
-        return value;
+        return null;
     }
 
     @Override
     public String asString() {
-        return String.format("%s", value);
+        return "undefined";
     }
 
     @Override
     public Object asObject() {
-        return value;
+        return null;
     }
 
     @Override
     public Type getType() {
-        return Type.Boolean;
+        return Type.Undefined;
     }
 
     @Override
     public int compareTo(Value o) {
-        return o.getType() == Type.Null || o.getType() == Type.Undefined ? -1 : Boolean.compare(value, o.asBoolean());
+        return (o.getType() == Type.Undefined ? 0 : -1);
     }
 
     @Override
@@ -48,11 +47,11 @@ public class BoolValue implements Value {
 
     @Override
     public int hashCode() {
-        return Boolean.hashCode(value) ^ Type.Boolean.hashCode();
+        return Type.Undefined.hashCode();
     }
 
     @Override
     public Value clone() {
-        return Value.of(value);
+        return new UndefinedValue();
     }
 }

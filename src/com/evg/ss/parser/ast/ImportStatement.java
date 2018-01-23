@@ -23,7 +23,7 @@ public final class ImportStatement implements Statement {
         final Value key = path.getKey().eval();
         if (!(key instanceof StringValue))
             throw new InvalidExpressionException();
-        SS.Variables.put(key.asString(), path.eval(), true);
+        SS.Identifiers.put(key.asString(), path.eval(), true);
     }
 
     public Expression getPath() {

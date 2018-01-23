@@ -27,8 +27,14 @@ public class ValueExpression implements Expression {
         this.value = value;
     }
 
+    public ValueExpression(ConstValues value) {
+        if (value == ConstValues.Null)
+            this.value = new NullValue();
+        else this.value = new UndefinedValue();
+    }
+
     public ValueExpression() {
-        this.value = new NullValue();
+        this.value = new UndefinedValue();
     }
 
     @Override
@@ -58,5 +64,10 @@ public class ValueExpression implements Expression {
     @Override
     public int hashCode() {
         return value.hashCode() ^ (44 * 2 * 31);
+    }
+
+    public enum ConstValues {
+        Null,
+        Undefined
     }
 }

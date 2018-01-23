@@ -36,8 +36,6 @@ public interface ResultVisitor<TResult> {
 
     TResult visit(FunctionDefinitionStatement target);
 
-    TResult visit(FunctionReferenceExpression target);
-
     TResult visit(IfStatement target);
 
     TResult visit(InterpolatedStringExpression target);
@@ -85,4 +83,10 @@ public interface ResultVisitor<TResult> {
     TResult visit(ThrowStatement throwStatement);
 
     TResult visit(TryCatchFinallyStatement tryCatchFinallyStatement);
+
+    TResult visit(InstantFunctionExpression instantFunctionExpression);
+
+    TResult visit(ClassDefinitionStatement classDefinitionStatement);
+
+    TResult visit(AnonymousClassExpression anonymousClassExpression);
 }

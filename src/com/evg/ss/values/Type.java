@@ -5,6 +5,7 @@ package com.evg.ss.values;
  */
 public enum Type {
 
+    Class,
     Object,
     Number,
     String,
@@ -12,8 +13,9 @@ public enum Type {
     Array,
     Function,
     Type,
+    Map,
     Null,
-    Map;
+    Undefined;
 
     public TypeValue getTypeValue() {
         return new TypeValue(this);

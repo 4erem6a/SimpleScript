@@ -63,7 +63,7 @@ public class ArrayValue implements Value, Container, Iterable<Value> {
 
     @Override
     public int compareTo(Value o) {
-        if (!(o instanceof ArrayValue))
+        if (o.getType() != Type.Array)
             return -1;
         else return compareArrays(value, ((ArrayValue) o).value);
     }
@@ -126,12 +126,11 @@ public class ArrayValue implements Value, Container, Iterable<Value> {
 
     @Override
     public void set(Value key, Value value) {
-        if (key instanceof NumberValue) {
+        if (key.getType() == Type.Number) {
             final int index = key.asNumber().intValue();
             if (index < 0 || index >= this.value.length)
                 throw new IndexOutOfBoundsException(index);
             this.value[index] = value;
-        }
-        throw new FieldNotFoundException(key);
+        } else throw new FieldNotFoundException(key);
     }
 }

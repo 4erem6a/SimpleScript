@@ -100,6 +100,9 @@ public final class Lexer extends AbstractLexer {
         KEYWORD_MAP.put("catch", TokenType.Catch);
         KEYWORD_MAP.put("finally", TokenType.Finally);
         KEYWORD_MAP.put("throw", TokenType.Throw);
+        KEYWORD_MAP.put("class", TokenType.Class);
+        KEYWORD_MAP.put("static", TokenType.Static);
+        KEYWORD_MAP.put("undefined", TokenType.Undefined);
     }
 
     public Lexer(String source) {

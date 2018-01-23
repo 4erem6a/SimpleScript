@@ -1,7 +1,6 @@
 package com.evg.ss.lib;
 
-import com.evg.ss.lib.containers.FunctionMap;
-import com.evg.ss.lib.containers.VariableMap;
+import com.evg.ss.lib.containers.IdentifierMap;
 import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 
@@ -41,36 +40,30 @@ public final class SS {
 
     public static final class Scopes {
 
-        private final FunctionMap functions;
-        private final VariableMap variables;
+        private final IdentifierMap identifiers;
 
-        public Scopes(FunctionMap functions, VariableMap variables) {
-            this.functions = functions;
-            this.variables = variables;
+        public Scopes(IdentifierMap identifiers) {
+            this.identifiers = identifiers;
         }
 
         public static void up() {
-            Variables.up();
-            Functions.up();
+            Identifiers.up();
         }
 
         public static void down() {
-            Functions.down();
-            Variables.down();
+            Identifiers.down();
         }
 
         public static void reset() {
-            Functions.set(new FunctionMap(null));
-            Variables.set(new VariableMap(null));
+            Identifiers.set(new IdentifierMap(null));
         }
 
         public static Scopes get() {
-            return new Scopes(Functions.get(), Variables.get());
+            return new Scopes(Identifiers.get());
         }
 
         public static void set(Scopes scopes) {
-            Functions.set(scopes.functions);
-            Variables.set(scopes.variables);
+            Identifiers.set(scopes.identifiers);
         }
 
         public static Scopes lock() {
@@ -81,7 +74,7 @@ public final class SS {
 
         public static int getCurrentLevel() {
             int level = 0;
-            VariableMap temp = Variables.top;
+            IdentifierMap temp = Identifiers.top;
             while (temp.getParent() != null) {
                 temp = temp.getParent();
                 level++;
@@ -93,76 +86,16 @@ public final class SS {
             set(scopes);
         }
 
-        public FunctionMap getFunctions() {
-            return functions;
-        }
-
-        public VariableMap getVariables() {
-            return variables;
+        public IdentifierMap getIdentifiers() {
+            return identifiers;
         }
     }
 
-    public static final class Functions {
+    public static final class Identifiers {
 
-        private static FunctionMap top = new FunctionMap(null);
+        private static IdentifierMap top = new IdentifierMap(null);
 
-        private Functions() {
-        }
-
-        public static boolean exists(String name) {
-            return get(name) != null;
-        }
-
-        public static boolean existsTop(String name) {
-            return top.contains(name);
-        }
-
-        public static boolean existsMain(String name) {
-            return getMainScope().contains(name);
-        }
-
-        public static Function get(String name) {
-            return top.get(name);
-        }
-
-        public static void set(String name, Function value) {
-            top.set(name, value);
-        }
-
-        public static void put(String name, Function value) {
-            top.put(name, value);
-        }
-
-        private static FunctionMap getMainScope() {
-            FunctionMap current = top;
-            while (current.getParent() != null)
-                current = current.getParent();
-            return current;
-        }
-
-        public static void up() {
-            top = new FunctionMap(top);
-        }
-
-        public static void down() {
-            if (top.getParent() != null)
-                top = top.getParent();
-        }
-
-        public static FunctionMap get() {
-            return top;
-        }
-
-        public static void set(FunctionMap top) {
-            Functions.top = top;
-        }
-    }
-
-    public static final class Variables {
-
-        private static VariableMap top = new VariableMap(null);
-
-        private Variables() {
+        private Identifiers() {
         }
 
         public static boolean exists(String name) {
@@ -178,31 +111,31 @@ public final class SS {
         }
 
         public static Value getValue(String name) {
-            final Variable var = top.get(name);
+            final Identifier var = top.get(name);
             return var != null ? var.getValue() : null;
         }
 
-        public static Variable get(String name) {
+        public static Identifier get(String name) {
             return top.get(name);
         }
 
         public static void set(String name, Value value) {
-            top.set(name, new Variable(value));
+            top.set(name, new Identifier(value));
         }
 
         public static void put(String name, Value value, boolean isConst) {
-            top.put(name, new Variable(value, isConst));
+            top.put(name, new Identifier(value, isConst));
         }
 
-        private static VariableMap getMainScope() {
-            VariableMap current = top;
+        private static IdentifierMap getMainScope() {
+            IdentifierMap current = top;
             while (current.getParent() != null)
                 current = current.getParent();
             return current;
         }
 
         public static void up() {
-            top = new VariableMap(top);
+            top = new IdentifierMap(top);
         }
 
         public static void down() {
@@ -210,12 +143,12 @@ public final class SS {
                 top = top.getParent();
         }
 
-        public static VariableMap get() {
+        public static IdentifierMap get() {
             return top;
         }
 
-        public static void set(VariableMap top) {
-            Variables.top = top;
+        public static void set(IdentifierMap top) {
+            Identifiers.top = top;
         }
     }
 }

@@ -20,7 +20,7 @@ public final class RequireStatement implements Statement {
     @Override
     public void execute() {
         final Value module = require.eval();
-        SS.Variables.put(require.getVariableName() == null ? require.getModuleName() : require.getVariableName(), module, true);
+        SS.Identifiers.put(require.getVariableName() == null ? require.getModuleName() : require.getVariableName(), module, true);
     }
 
     public RequireExpression getExpression() {

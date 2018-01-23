@@ -1,6 +1,6 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.execution.VariableNotFoundException;
+import com.evg.ss.exceptions.execution.IdentifierNotFoundException;
 import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
@@ -16,9 +16,9 @@ public class NameofExpression implements Expression {
 
     @Override
     public Value eval() {
-        if (SS.Variables.exists(name))
+        if (SS.Identifiers.exists(name))
             return Value.of(name);
-        throw new VariableNotFoundException(name);
+        throw new IdentifierNotFoundException(name);
     }
 
     @Override

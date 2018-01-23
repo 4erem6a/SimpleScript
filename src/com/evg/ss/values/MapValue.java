@@ -42,6 +42,10 @@ public class MapValue implements Value, Container, Iterable<Map.Entry<Value, Val
         this.map = map.map;
     }
 
+    public Map<Value, Value> getMapReference() {
+        return map;
+    }
+
     public ArrayValue toArray() {
         final SSArrayBuilder builder = SSArrayBuilder.create();
         for (Map.Entry<Value, Value> entry : this) {
@@ -96,7 +100,9 @@ public class MapValue implements Value, Container, Iterable<Map.Entry<Value, Val
                     .append(":")
                     .append(entry.getValue().asString())
                     .append(",");
-        return builder.deleteCharAt(builder.length() - 1).append("}").toString();
+        if (builder.charAt(builder.length() - 1) == ',')
+            return builder.deleteCharAt(builder.length() - 1).append("}").toString();
+        return builder.append("}").toString();
     }
 
     @Override
@@ -113,8 +119,6 @@ public class MapValue implements Value, Container, Iterable<Map.Entry<Value, Val
     public int compareTo(Value o) {
         if (o instanceof MapValue)
             return toArray().compareTo(((MapValue) o).toArray());
-        if (o instanceof ArrayValue)
-            return toArray().compareTo(o);
         return -1;
     }
 

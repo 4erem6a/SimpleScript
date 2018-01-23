@@ -1,7 +1,7 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.ConstantAccessException;
-import com.evg.ss.exceptions.execution.VariableNotFoundException;
+import com.evg.ss.exceptions.execution.IdentifierNotFoundException;
 import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
@@ -24,25 +24,25 @@ public final class VariableExpression implements Expression, Accessible {
 
     @Override
     public Value eval() {
-        if (SS.Variables.getValue(name) != null)
-            return SS.Variables.getValue(name);
-        else throw new VariableNotFoundException(name);
+        if (SS.Identifiers.getValue(name) != null)
+            return SS.Identifiers.getValue(name);
+        else throw new IdentifierNotFoundException(name);
     }
 
     @Override
     public Value get() {
-        if (!SS.Variables.exists(name))
-            throw new VariableNotFoundException(name);
-        return SS.Variables.getValue(name);
+        if (!SS.Identifiers.exists(name))
+            throw new IdentifierNotFoundException(name);
+        return SS.Identifiers.getValue(name);
     }
 
     @Override
     public Value set(Value value) {
-        if (!SS.Variables.exists(name))
-            throw new VariableNotFoundException(name);
-        if (SS.Variables.get(name).isConst())
+        if (!SS.Identifiers.exists(name))
+            throw new IdentifierNotFoundException(name);
+        if (SS.Identifiers.get(name).isConst())
             throw new ConstantAccessException(name);
-        SS.Variables.set(name, value);
+        SS.Identifiers.set(name, value);
         return value;
     }
 

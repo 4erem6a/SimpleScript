@@ -92,6 +92,9 @@ public enum TokenType {
     Catch("catch"),         //catch
     Finally("finally"),     //finally
     Throw("throw"),         //throw
+    Class("class"),         //class
+    Static("static"),       //static
+    Undefined("undefined"), //undefined
 
     //Utility:
     EOF("end");

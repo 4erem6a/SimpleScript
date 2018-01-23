@@ -94,11 +94,7 @@ public abstract class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(FunctionDefinitionStatement target) {
-        target.getBody().accept(this);
-    }
-
-    @Override
-    public void visit(FunctionReferenceExpression target) {
+        target.getFunction().getBody().accept(this);
     }
 
     @Override
@@ -235,5 +231,30 @@ public abstract class AbstractVisitor implements Visitor {
         });
         if (tryCatchFinallyStatement.getFinally() != null)
             tryCatchFinallyStatement.getFinally().accept(this);
+    }
+
+    @Override
+    public void visit(InstantFunctionExpression target) {
+        target.getBody().accept(this);
+    }
+
+    @Override
+    public void visit(AnonymousClassExpression target) {
+        if (target.getConstructor() != null)
+            target.getConstructor().accept(this);
+        if (target.getBase() != null)
+            target.getBase().accept(this);
+        target.getMembers().forEach(member -> {
+            if (member instanceof AnonymousClassExpression.ASTClassField)
+                if (((AnonymousClassExpression.ASTClassField) member).getValue() != null)
+                    ((AnonymousClassExpression.ASTClassField) member).getValue().accept(this);
+            if (member instanceof AnonymousClassExpression.ASTClassMethod)
+                ((AnonymousClassExpression.ASTClassMethod) member).getFunction().accept(this);
+        });
+    }
+
+    @Override
+    public void visit(ClassDefinitionStatement target) {
+        target.getClassExpression().accept(this);
     }
 }

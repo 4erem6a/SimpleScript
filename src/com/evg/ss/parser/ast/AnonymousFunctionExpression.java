@@ -20,10 +20,14 @@ public final class AnonymousFunctionExpression implements Expression, Lockable {
         this.body = body;
     }
 
+    public SSFunction toSSFunction() {
+        return new SSFunction(SS.CallContext.get(), args, body);
+    }
+
     @Override
     public Value eval() {
-        final SSFunction function = new SSFunction(SS.CallContext.get(), args, body);
-        function.setLocked(true);
+        final SSFunction function = toSSFunction();
+        function.setLocked(locked);
         return new FunctionValue(function);
     }
 
@@ -53,10 +57,12 @@ public final class AnonymousFunctionExpression implements Expression, Lockable {
         return visitor.visit(this);
     }
 
+    @Override
     public boolean isLocked() {
         return locked;
     }
 
+    @Override
     public void setLocked(boolean locked) {
         this.locked = locked;
     }

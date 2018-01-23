@@ -11,6 +11,7 @@ import com.evg.ss.lexer.TokenType;
 import com.evg.ss.parser.ast.*;
 import com.evg.ss.parser.ast.BinaryExpression.BinaryOperations;
 import com.evg.ss.values.NullValue;
+import com.evg.ss.values.UndefinedValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,11 +96,19 @@ public final class Parser extends AbstractParser {
             return new ThrowStatement(expression());
         } else if (match(TokenType.Try)) {
             return _try();
+        } else if (match(TokenType.Class)) {
+            return _class();
         } else if (match(TokenType.Locked)) {
             return lockedStatement();
         } else {
             return new ExpressionStatement(expression());
         }
+    }
+
+    private Statement _class() {
+        final String name = consume(TokenType.Word).getValue();
+        final AnonymousClassExpression _class = ((AnonymousClassExpression) anonymousClass());
+        return new ClassDefinitionStatement(name, _class);
     }
 
     private Statement _try() {
@@ -185,18 +194,8 @@ public final class Parser extends AbstractParser {
 
     private Statement functionDefinition() {
         final String name = consume(TokenType.Word).getValue();
-        final List<ArgumentExpression> args = new ArrayList<>();
-        consume(TokenType.Lp);
-        if (!match(TokenType.Rp))
-            do
-                args.add(argument());
-            while (match(TokenType.Cm));
-        match(TokenType.Rp);
-        final Statement body;
-        if (match(TokenType.MnAr)) {
-            body = new ReturnStatement(expression());
-        } else body = statementOrBlock();
-        return new FunctionDefinitionStatement(name, args.toArray(new ArgumentExpression[0]), body);
+        final AnonymousFunctionExpression function = ((AnonymousFunctionExpression) anonymousFunction());
+        return new FunctionDefinitionStatement(name, function);
     }
 
     private Statement requireStatement() {
@@ -590,8 +589,6 @@ public final class Parser extends AbstractParser {
             return new ThisExpression();
         } else if (isLambdaDefinition()) {
             return lambda();
-        } else if (match(TokenType.ClCl)) {
-            return new FunctionReferenceExpression(consume(TokenType.Word).getValue());
         } else if (match(TokenType.Word)) {
             return new VariableExpression(current.getValue());
         } else if (match(TokenType.At)) {
@@ -617,7 +614,9 @@ public final class Parser extends AbstractParser {
         } else if (match(TokenType.False)) {
             return new ValueExpression(false);
         } else if (match(TokenType.Null)) {
-            return new ValueExpression();
+            return NullValue.NullExpression;
+        } else if (match(TokenType.Undefined)) {
+            return UndefinedValue.UndefinedExpression;
         } else if (match(TokenType.Type)) {
             return type();
         } else if (match(TokenType.Lc)) {
@@ -625,10 +624,53 @@ public final class Parser extends AbstractParser {
         } else if (match(TokenType.Lb)) {
             return map();
         } else if (match(TokenType.Function)) {
+            if (lookMatch(0, TokenType.Lb))
+                return new InstantFunctionExpression(block());
             return anonymousFunction();
+        } else if (match(TokenType.Class)) {
+            return anonymousClass();
         } else if (match(TokenType.Locked)) {
             return lockedExpression();
         } else throw new UnexpectedTokenException(current);
+    }
+
+    private Expression anonymousClass() {
+        AnonymousFunctionExpression constructor = null;
+        final List<AnonymousClassExpression.ASTClassMember> members = new ArrayList<>();
+        final Expression base;
+        if (match(TokenType.Extends))
+            base = expression();
+        else base = null;
+        consume(TokenType.Lb);
+        while (!match(TokenType.Rb)) {
+            if (match(TokenType.New)) {
+                if (constructor != null)
+                    throw new ParserException("Class can have only 1 constructor.");
+                else constructor = ((AnonymousFunctionExpression) anonymousFunction());
+            } else members.add(classMember());
+        }
+        return new AnonymousClassExpression(constructor, members, base);
+    }
+
+    private AnonymousClassExpression.ASTClassMember classMember() {
+        final boolean isStatic = match(TokenType.Static);
+        final boolean isLocked = match(TokenType.Locked);
+        final String name = consume(TokenType.Word).getValue();
+        if (lookMatch(0, TokenType.Lp)) {
+            final AnonymousFunctionExpression function = ((AnonymousFunctionExpression) anonymousFunction());
+            if (isLocked)
+                function.lock();
+            match(TokenType.Sc);
+            return new AnonymousClassExpression.ASTClassMethod(isStatic, name, function);
+        }
+        if (isLocked)
+            throw new InvalidLockException("Unable to lock class field.");
+        final Expression value;
+        if (match(TokenType.Eq))
+            value = expression();
+        else value = NullValue.NullExpression;
+        match(TokenType.Sc);
+        return new AnonymousClassExpression.ASTClassField(isStatic, name, value);
     }
 
     private Expression lockedExpression() {

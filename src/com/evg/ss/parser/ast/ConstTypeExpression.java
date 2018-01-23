@@ -20,7 +20,6 @@ public final class ConstTypeExpression implements Expression {
         switch (type.toLowerCase()) {
             case "function":
                 return Type.Function;
-            case "object":
             case "map":
                 return Type.Map;
             case "number":
@@ -36,6 +35,10 @@ public final class ConstTypeExpression implements Expression {
             case "boolean":
             case "bool":
                 return Type.Boolean;
+            case "class":
+                return Type.Class;
+            case "object":
+                return Type.Object;
             default:
                 throw new InvalidTypeNameException(type);
         }

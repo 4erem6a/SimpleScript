@@ -1,5 +1,6 @@
 package com.evg.ss.lib.modules.maps;
 
+import com.evg.ss.lib.MapMatcher;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
@@ -22,12 +23,18 @@ public final class maps extends SSModule {
         return new NumberValue(((MapValue) args[0]).size());
     }
 
+    private static Value match(Value... args) {
+        Arguments.checkArgTypesOrDie(args, Type.Map, Type.Map);
+        return Value.of(new MapMatcher(((MapValue) args[0])).match(((MapValue) args[1])));
+    }
+
     @Override
     public MapValue require() {
         final SSMapBuilder builder = SSMapBuilder.create();
         builder.setField("MAP_EMPTY", MAP_EMPTY);
         builder.setMethod("toArray", maps::ssToArray);
         builder.setMethod("size", maps::ssSize);
+        builder.setMethod("match", maps::match);
         return builder.build();
     }
 }

@@ -1,32 +1,19 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
-
-import java.util.Arrays;
+import com.evg.ss.values.Value;
 
 public final class FunctionDefinitionStatement implements Statement, Lockable {
 
     private String name;
-    private Statement body;
-    private ArgumentExpression[] args;
-    private boolean locked = false;
+    private AnonymousFunctionExpression function;
 
-    public FunctionDefinitionStatement(String name, ArgumentExpression[] args, Statement body) {
+    public FunctionDefinitionStatement(String name, AnonymousFunctionExpression function) {
         this.name = name;
-        this.body = body;
-        this.args = args;
-    }
-
-    public ArgumentExpression[] getArgs() {
-        return args;
-    }
-
-    public void setArgs(ArgumentExpression[] args) {
-        this.args = args;
+        this.function = function;
     }
 
     public String getName() {
@@ -37,15 +24,15 @@ public final class FunctionDefinitionStatement implements Statement, Lockable {
         this.name = name;
     }
 
-    public Function getFunction() {
-        final SSFunction function = new SSFunction(null, name, args, body);
-        function.setLocked(locked);
+    public AnonymousFunctionExpression getFunction() {
         return function;
     }
 
     @Override
     public void execute() {
-        SS.Functions.put(name, getFunction());
+        final SSFunction function = this.function.toSSFunction();
+        function.setName(name);
+        SS.Identifiers.put(name, Value.of(function), false);
     }
 
     @Override
@@ -58,38 +45,28 @@ public final class FunctionDefinitionStatement implements Statement, Lockable {
         return visitor.visit(this);
     }
 
-    public Statement getBody() {
-        return body;
-    }
-
-    public void setBody(Statement body) {
-        this.body = body;
-    }
-
+    @Override
     public boolean isLocked() {
-        return locked;
+        return function.isLocked();
     }
 
+    @Override
     public void setLocked(boolean locked) {
-        this.locked = locked;
+        function.setLocked(locked);
     }
 
     @Override
     public void lock() {
-        locked = true;
+        function.lock();
     }
 
     @Override
     public void unlock() {
-        locked = false;
+        function.unlock();
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode()
-                ^ body.hashCode()
-                ^ Arrays.hashCode(args)
-                ^ Boolean.hashCode(locked)
-                ^ (18 * 28 * 31);
+        return function.hashCode();
     }
 }

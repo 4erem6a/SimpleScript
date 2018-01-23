@@ -5,6 +5,7 @@ import com.evg.ss.lib.MapMatcher;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.*;
+import com.evg.ss.values.ClassValue;
 import javafx.util.Pair;
 
 /**
@@ -221,6 +222,12 @@ public final class BinaryExpression implements Expression {
             return getBinaryComparison(Value.of(left.getType()), Value.of(((TypeValue) right).getValue()));
         else if (left instanceof MapValue && right instanceof MapValue)
             return Value.of(new MapMatcher((MapValue) left).match((MapValue) right));
+        else if (left instanceof MapValue && right instanceof ArrayValue)
+            return getBinaryComparison(((MapValue) left).toArray(), right);
+        else if (left instanceof ArrayValue && right instanceof MapValue)
+            return getBinaryComparison(left, ((MapValue) right).toArray());
+        else if (left instanceof ObjectValue && right instanceof ClassValue)
+            return Value.of(((ObjectValue) left).isInstanceOfClass(((ClassValue) right)));
         else return getBinaryComparison(left, right);
     }
 

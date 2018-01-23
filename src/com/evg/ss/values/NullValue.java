@@ -8,7 +8,7 @@ import com.evg.ss.parser.ast.ValueExpression;
  */
 public class NullValue implements Value {
 
-    public static final Expression NullExpression = new ValueExpression();
+    public static final Expression NullExpression = new ValueExpression(ValueExpression.ConstValues.Null);
 
     @Override
     public Double asNumber() {

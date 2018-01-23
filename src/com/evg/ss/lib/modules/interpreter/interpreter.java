@@ -3,7 +3,6 @@ package com.evg.ss.lib.modules.interpreter;
 import com.evg.ss.SimpleScript;
 import com.evg.ss.exceptions.execution.FunctionExecutionException;
 import com.evg.ss.lib.CallStack;
-import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
@@ -36,9 +35,6 @@ public class interpreter extends SSModule {
         interpreter.setMethod("getVariable", this::getVariable);
         interpreter.setMethod("setVariable", this::setVariable);
         interpreter.setMethod("variableExists", this::variableExists);
-        interpreter.setMethod("functionExists", this::functionExists);
-        interpreter.setMethod("setFunction", this::setFunction);
-        interpreter.setMethod("getFunction", this::getFunction);
         interpreter.setMethod("requireStackTrace", this::requireStackTrace);
         return interpreter.build();
     }
@@ -50,14 +46,9 @@ public class interpreter extends SSModule {
 
     private Value scopesGet(Value... values) {
         Arguments.checkArgcOrDie(values, 0);
-        final SSMapBuilder scopes = SSMapBuilder.create();
         final SSMapBuilder variables = SSMapBuilder.create();
-        final SSMapBuilder functions = SSMapBuilder.create();
-        SS.Scopes.get().getVariables().entrySet().forEach(entry -> variables.setField(entry.getKey(), entry.getValue().getValue()));
-        SS.Scopes.get().getFunctions().entrySet().forEach(entry -> functions.setField(entry.getKey(), Value.of(entry.getValue())));
-        scopes.setField("variables", variables.build());
-        scopes.setField("functions", functions.build());
-        return scopes.build();
+        SS.Scopes.get().getIdentifiers().entrySet().forEach(entry -> variables.setField(entry.getKey(), entry.getValue().getValue()));
+        return variables.build();
     }
 
     private Value callContextUp(Value... values) {
@@ -84,31 +75,17 @@ public class interpreter extends SSModule {
         return Value.of(stackTrace.stream().map(CallStack.CallInfo::toString).map(Value::of).toArray(Value[]::new));
     }
 
-    private Value getFunction(Value... values) {
-        Arguments.checkArgTypesOrDie(values, StringValue.class);
-        final String name = values[0].asString();
-        return Value.of(SS.Functions.get(name));
-    }
-
-    private Value setFunction(Value... values) {
-        Arguments.checkArgTypesOrDie(values, StringValue.class, FunctionValue.class);
-        final String name = values[0].asString();
-        final Function function = ((FunctionValue) values[1]).getValue();
-        SS.Functions.put(name, function);
-        return new NullValue();
-    }
-
     private Value getVariable(Value... values) {
         Arguments.checkArgTypesOrDie(values, StringValue.class);
         final String name = values[0].asString();
-        return SS.Variables.getValue(name);
+        return SS.Identifiers.getValue(name);
     }
 
     private Value setVariable(Value... values) {
         Arguments.checkArgTypesOrDie(values, StringValue.class, null);
         final String name = values[0].asString();
         final Value value = values[1];
-        SS.Variables.set(name, value);
+        SS.Identifiers.set(name, value);
         return new NullValue();
     }
 
@@ -121,30 +98,11 @@ public class interpreter extends SSModule {
         final Scopes scope = Scopes.values()[scopeNumber];
         switch (scope) {
             case CURRENT:
-                return Value.of(SS.Variables.existsTop(name));
+                return Value.of(SS.Identifiers.existsTop(name));
             case GLOBAL:
-                return Value.of(SS.Variables.exists(name));
+                return Value.of(SS.Identifiers.exists(name));
             case MAIN:
-                return Value.of(SS.Variables.existsMain(name));
-            default:
-                return Value.of(false);
-        }
-    }
-
-    private Value functionExists(Value... values) {
-        Arguments.checkArgTypesOrDie(values, StringValue.class, NumberValue.class);
-        final String name = values[0].asString();
-        final int scopeNumber = values[1].asNumber().intValue();
-        if (scopeNumber < 0 || scopeNumber >= Scopes.values().length)
-            throw new FunctionExecutionException("Invalid scope.");
-        final Scopes scope = Scopes.values()[scopeNumber];
-        switch (scope) {
-            case CURRENT:
-                return Value.of(SS.Functions.existsTop(name));
-            case GLOBAL:
-                return Value.of(SS.Functions.exists(name));
-            case MAIN:
-                return Value.of(SS.Functions.existsMain(name));
+                return Value.of(SS.Identifiers.existsMain(name));
             default:
                 return Value.of(false);
         }

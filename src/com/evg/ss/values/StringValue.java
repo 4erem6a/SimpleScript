@@ -73,7 +73,7 @@ public class StringValue implements Value {
 
     @Override
     public int compareTo(Value o) {
-        return (o.getType() == Type.Null ? -1 : value.compareTo(o.asString()));
+        return (o.getType() == Type.Null || o.getType() == Type.Undefined ? -1 : value.compareTo(o.asString()));
     }
 
     @Override

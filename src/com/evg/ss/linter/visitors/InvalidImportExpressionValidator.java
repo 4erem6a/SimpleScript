@@ -40,6 +40,6 @@ public final class InvalidImportExpressionValidator extends AbstractVisitor {
     }
 
     private void except() {
-        throw new SSLintException("SSLintException: Invalid import expression.");
+        throw new SSLintException("Invalid import expression.");
     }
 }

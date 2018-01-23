@@ -38,7 +38,7 @@ public final class ForEachStatement implements Statement {
         try {
             for (Value iteration : array.getValue()) {
                 try {
-                    SS.Variables.set(name, iteration);
+                    SS.Identifiers.set(name, iteration);
                     body.execute();
                 } catch (SSInnerException e) {
                     if (e instanceof SSBreakException)

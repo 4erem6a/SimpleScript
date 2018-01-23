@@ -1,6 +1,14 @@
 # SimpleScript
 ## Desсription:
 SimpleScript is a scripting programming language created as hobby project.
+## Latest changelog: (1.9.0.0)
+* Added ES6-like anonymous & named classes.
+* Added `undefined` value type.
+* Functions (& classes) are now stored as variables.
+* Fixed & Improved `IdentifierDeclaration` lint validator.
+* Added `instanceof` functionality to `is` operator.
+* `as` operator now returns `undefined` due to invalid conversion.
+* Added `maps.match` method. (Same as `<map> is <map>`)
 ## Installation:
 1. Install Java 8+.
 2. Download latest version: [releases](https://github.com/4erem6a/SimpleScript/releases)

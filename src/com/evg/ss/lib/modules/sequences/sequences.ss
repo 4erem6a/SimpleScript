@@ -215,7 +215,7 @@ locked function of(items...) {
 locked function fromList(list) -> require("sequences").of(list.toArray())
 
 exports {
-    Sequence:   ::Sequence,
-    of:         ::of,
-    fromList:   ::fromList
+    Sequence:   Sequence,
+    of:         of,
+    fromList:   fromList
 }

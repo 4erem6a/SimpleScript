@@ -16,7 +16,7 @@ public final class AssignmentExpression implements Expression, Accessible {
 
     @Override
     public Value eval() {
-        return set(value.eval());
+        return set(value instanceof Accessible ? ((Accessible) value).get() : value.eval());
     }
 
     @Override

@@ -25,29 +25,29 @@ public final class InvalidRequirementValidator extends AbstractVisitor {
         final Path path;
         if (mode == RequireMode.MODULE) {
             if (!SSModule.isModuleExists(module))
-                throw new SSLintException("SSLintException: Required module '%s' does not exists.", module);
+                throw new SSLintException("Required module '%s' does not exists.", module);
             return;
         } else if (mode == RequireMode.LOCAL) {
             path = Linker.getLink(module);
             if (path == null)
-                throw new SSLintException("SSLintException: Required local file '%s.ss' does not exists.", module);
+                throw new SSLintException("Required local file '%s.ss' does not exists.", module);
         } else if (mode == RequireMode.EXTERNAL) {
             if (!new File(module).exists())
-                throw new SSLintException("SSLintException: Required file '%s' does not exists.", module);
+                throw new SSLintException("Required file '%s' does not exists.", module);
             path = Paths.get(module);
             if (path == null)
-                throw new SSLintException("SSLintException: Required local file '%s.ss' does not exists.", module);
+                throw new SSLintException("Required local file '%s.ss' does not exists.", module);
         } else path = null;
         final String source = Utils.loadSource(path);
         if (source == null)
-            throw new SSLintException("SSLintException: Unable to read required local file '%s.ss'.", module);
+            throw new SSLintException("Unable to read required local file '%s.ss'.", module);
         try {
             SimpleScript.fromSource(source).compile();
         } catch (Exception e) {
-            throw new SSLintException("SSLintException: Required local file '%s.ss' is invalid.", module);
+            throw new SSLintException("Required local file '%s.ss' is invalid.", module);
         }
         if (!ContainsExportsVisitor.containsExports(SimpleScript.fromSource(source).compile().getProgram()))
-            throw new SSLintException("SSLintException: Required local file '%s.ss' is missing exports statement.", module);
+            throw new SSLintException("Required local file '%s.ss' is missing exports statement.", module);
     }
 
     private static class ContainsExportsVisitor extends AbstractVisitor {

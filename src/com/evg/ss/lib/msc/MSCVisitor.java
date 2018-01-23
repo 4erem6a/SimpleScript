@@ -11,6 +11,10 @@ import java.util.Map;
 
 public class MSCVisitor implements ResultVisitor<String> {
 
+    private static String cutKeyword(String keyword, String block) {
+        return block.substring(keyword.length());
+    }
+
     private String processArgDefinition(ArgumentExpression... args) {
         final StringBuilder builder = new StringBuilder();
         for (ArgumentExpression arg : args) {
@@ -133,13 +137,8 @@ public class MSCVisitor implements ResultVisitor<String> {
         return String.format("%sfunction %s(%s)%s",
                 (target.isLocked() ? "locked " : ""),
                 target.getName(),
-                processArgDefinition(target.getArgs()),
-                target.getBody().accept(this));
-    }
-
-    @Override
-    public String visit(FunctionReferenceExpression target) {
-        return String.format("::%s", target.getName());
+                processArgDefinition(target.getFunction().getArgs()),
+                target.getFunction().getBody().accept(this));
     }
 
     @Override
@@ -331,5 +330,20 @@ public class MSCVisitor implements ResultVisitor<String> {
                 _catch.getCondition() == null ? "" : String.format("if(%s) ",
                         _catch.getCondition().accept(this)),
                 _catch.getBody().accept(this));
+    }
+
+    @Override
+    public String visit(InstantFunctionExpression target) {
+        return String.format("function %s", cutKeyword("block", target.getBody().accept(this)));
+    }
+
+    @Override
+    public String visit(AnonymousClassExpression anonymousClassExpression) {
+        return "<Classes aren't supported yet>";
+    }
+
+    @Override
+    public String visit(ClassDefinitionStatement classDefinitionStatement) {
+        return String.format("class %s", cutKeyword("class", classDefinitionStatement.accept(this)));
     }
 }
