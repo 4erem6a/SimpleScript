@@ -35,7 +35,7 @@ Use `java -jar %SimpleScript.jar path%` command with following flags:
 Code:
 ```
 require "io"                //Require "io" module from standard library.
-io.println("Hello, world!") //Print line "Hello, world" to command line.
+io.println("Hello, world!") //Print line "Hello, world" to STDOUT.
 ```
 For example, `SimpleScript.jar` and `program.ss` are located in `C:\SS`
 Command: `java -jar C:\SS\SimpleScript.jar -f C:\SS\program.ss -e -li`
@@ -52,6 +52,6 @@ CommandLine> java -jar C:\SS\SimpleScript.jar -s "(2 + 2) * 2" -e -m expression 
 >8.00000
 ```
 ## Syntax highlighting:
-[VS Code highlighting plugin](https://marketplace.visualstudio.com/items?itemName=4erem6a.ss)
+[VS Code highlighting plugin](https://marketplace.visualstudio.com/items?itemName=4erem6a.ss)(Updated to 1.1 for SS v1.9.*)
 ## Documentation:
 [Coming Soon]()
