@@ -60,6 +60,7 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
     @Override
     public void visit(BlockStatement target) {
         target.accept(new LintFunctionAdder());
+        target.accept(new LintClassAdder());
         if (target.isLocked()) {
             final SS.Scopes scopes = lock();
             super.visit(target);
@@ -175,6 +176,13 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
     private class LintFunctionAdder extends AbstractVisitor {
         @Override
         public void visit(FunctionDefinitionStatement target) {
+            registerIdentifier(target.getName(), DUMMY_IDENTIFIER);
+        }
+    }
+
+    private class LintClassAdder extends AbstractVisitor {
+        @Override
+        public void visit(ClassDefinitionStatement target) {
             registerIdentifier(target.getName(), DUMMY_IDENTIFIER);
         }
     }

@@ -40,6 +40,8 @@ public final class SS {
 
     public static final class Scopes {
 
+        private static final Object object = new Object();
+
         private final IdentifierMap identifiers;
 
         public Scopes(IdentifierMap identifiers) {
@@ -47,108 +49,151 @@ public final class SS {
         }
 
         public static void up() {
-            Identifiers.up();
+            synchronized (object) {
+                Identifiers.up();
+            }
         }
 
         public static void down() {
-            Identifiers.down();
+            synchronized (object) {
+                Identifiers.down();
+            }
         }
 
         public static void reset() {
-            Identifiers.set(new IdentifierMap(null));
+            synchronized (object) {
+                Identifiers.set(new IdentifierMap(null));
+            }
         }
 
         public static Scopes get() {
-            return new Scopes(Identifiers.get());
+            synchronized (object) {
+                return new Scopes(Identifiers.get());
+            }
         }
 
         public static void set(Scopes scopes) {
-            Identifiers.set(scopes.identifiers);
+            synchronized (object) {
+                Identifiers.set(scopes.identifiers);
+            }
         }
 
         public static Scopes lock() {
-            final Scopes scopes = get();
-            reset();
-            return scopes;
+            synchronized (object) {
+                final Scopes scopes = get();
+                reset();
+                return scopes;
+            }
         }
 
         public static int getCurrentLevel() {
-            int level = 0;
-            IdentifierMap temp = Identifiers.top;
-            while (temp.getParent() != null) {
-                temp = temp.getParent();
-                level++;
+            synchronized (object) {
+                int level = 0;
+                IdentifierMap temp = Identifiers.top;
+                while (temp.getParent() != null) {
+                    temp = temp.getParent();
+                    level++;
+                }
+                return level;
             }
-            return level;
         }
 
         public static void unlock(Scopes scopes) {
-            set(scopes);
+            synchronized (object) {
+                set(scopes);
+            }
         }
 
         public IdentifierMap getIdentifiers() {
-            return identifiers;
+            synchronized (object) {
+                return identifiers;
+            }
         }
     }
 
     public static final class Identifiers {
 
-        private static IdentifierMap top = new IdentifierMap(null);
+        private static final Object object = new Object();
 
-        private Identifiers() {
-        }
+        private static volatile IdentifierMap top = new IdentifierMap(null);
+
+        private Identifiers() {}
 
         public static boolean exists(String name) {
-            return get(name) != null;
+            synchronized (object) {
+                return get(name) != null;
+            }
         }
 
         public static boolean existsTop(String name) {
-            return top.contains(name);
+            synchronized (object) {
+                return top.contains(name);
+            }
         }
 
         public static boolean existsMain(String name) {
-            return getMainScope().contains(name);
+            synchronized (object) {
+                return getMainScope().contains(name);
+            }
         }
 
         public static Value getValue(String name) {
-            final Identifier var = top.get(name);
-            return var != null ? var.getValue() : null;
+            synchronized (object) {
+                final Identifier var = top.get(name);
+                return var != null ? var.getValue() : null;
+            }
         }
 
         public static Identifier get(String name) {
-            return top.get(name);
+            synchronized (object) {
+                return top.get(name);
+            }
         }
 
         public static void set(String name, Value value) {
-            top.set(name, new Identifier(value));
+            synchronized (object) {
+                top.set(name, new Identifier(value));
+            }
         }
 
         public static void put(String name, Value value, boolean isConst) {
-            top.put(name, new Identifier(value, isConst));
+            synchronized (object) {
+                top.put(name, new Identifier(value, isConst));
+            }
         }
 
         private static IdentifierMap getMainScope() {
-            IdentifierMap current = top;
-            while (current.getParent() != null)
-                current = current.getParent();
-            return current;
+            synchronized (object) {
+                IdentifierMap current = top;
+                while (current.getParent() != null)
+                    current = current.getParent();
+                return current;
+            }
         }
 
         public static void up() {
-            top = new IdentifierMap(top);
+            synchronized (object) {
+                top = new IdentifierMap(top);
+            }
         }
 
         public static void down() {
-            if (top.getParent() != null)
-                top = top.getParent();
+            synchronized (object) {
+                if (top.getParent() != null)
+                    top = top.getParent();
+            }
         }
 
         public static IdentifierMap get() {
-            return top;
+            synchronized (object) {
+                return top;
+            }
         }
 
         public static void set(IdentifierMap top) {
-            Identifiers.top = top;
+            synchronized (object) {
+                Identifiers.top = top;
+            }
         }
     }
 }

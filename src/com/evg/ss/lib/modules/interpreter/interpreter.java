@@ -15,9 +15,9 @@ public class interpreter extends SSModule {
 
     @Override
     public MapValue require() {
-        final SSMapBuilder scopes = SSMapBuilder.create();
-        final SSMapBuilder interpreter = SSMapBuilder.create();
         final SSMapBuilder callContext = SSMapBuilder.create();
+        final SSMapBuilder scopes = SSMapBuilder.create();
+        final SSMapBuilder builder = SSMapBuilder.create();
         callContext.setMethod("up", this::callContextUp);
         callContext.setMethod("down", this::callContextDown);
         callContext.setMethod("get", this::getCallContext);
@@ -28,71 +28,75 @@ public class interpreter extends SSModule {
         scopes.setMethod("down", this::scopesDown);
         scopes.setMethod("getCurrent", this::scopesGet);
         scopes.setMethod("getLevel", this::scopesGetLevel);
-        interpreter.setField("scopes", scopes.build());
-        interpreter.setField("callContext", callContext.build());
-        interpreter.setField("version", Value.of(SimpleScript.VERSION.toString()));
-        interpreter.setMethod("eval", this::eval);
-        interpreter.setMethod("getVariable", this::getVariable);
-        interpreter.setMethod("setVariable", this::setVariable);
-        interpreter.setMethod("variableExists", this::variableExists);
-        interpreter.setMethod("requireStackTrace", this::requireStackTrace);
-        return interpreter.build();
+        builder.setField("scopes", scopes.build());
+        builder.setField("callContext", callContext.build());
+        builder.setField("version", Value.of(SimpleScript.VERSION.toString()));
+        builder.setMethod("eval", this::eval);
+        builder.setMethod("getVariable", this::getVariable);
+        builder.setMethod("setVariable", this::setVariable);
+        builder.setMethod("variableExists", this::variableExists);
+        builder.setMethod("requireStackTrace", this::requireStackTrace);
+        return builder.build();
     }
 
-    private Value scopesGetLevel(Value... values) {
-        Arguments.checkArgcOrDie(values, 0);
+    private Value scopesGetLevel(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
         return Value.of(SS.Scopes.getCurrentLevel());
     }
 
-    private Value scopesGet(Value... values) {
-        Arguments.checkArgcOrDie(values, 0);
+    private Value scopesGet(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
         final SSMapBuilder variables = SSMapBuilder.create();
         SS.Scopes.get().getIdentifiers().entrySet().forEach(entry -> variables.setField(entry.getKey(), entry.getValue().getValue()));
         return variables.build();
     }
 
-    private Value callContextUp(Value... values) {
-        Arguments.checkArgTypesOrDie(values, MapValue.class);
-        SS.CallContext.up(((MapValue) values[0]));
+    private Value callContextUp(Value... args) {
+        if (!Arguments.checkArgTypes(args, Type.Map))
+            return new UndefinedValue();
+        SS.CallContext.up(((MapValue) args[0]));
         return new NullValue();
     }
 
-    private Value callContextDown(Value... values) {
-        Arguments.checkArgcOrDie(values, 0);
+    private Value callContextDown(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
         SS.CallContext.down();
         return new NullValue();
     }
 
-    private Value getCallContext(Value... values) {
-        Arguments.checkArgcOrDie(values, 0);
+    private Value getCallContext(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
         final MapValue context = SS.CallContext.get();
         return (context == null ? new NullValue() : context);
     }
 
-    private Value requireStackTrace(Value... values) {
-        Arguments.checkArgcOrDie(values, 0);
+    private Value requireStackTrace(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
         final Deque<CallStack.CallInfo> stackTrace = CallStack.getCalls();
         return Value.of(stackTrace.stream().map(CallStack.CallInfo::toString).map(Value::of).toArray(Value[]::new));
     }
 
-    private Value getVariable(Value... values) {
-        Arguments.checkArgTypesOrDie(values, StringValue.class);
-        final String name = values[0].asString();
+    private Value getVariable(Value... args) {
+        if (!Arguments.checkArgTypes(args, Type.String))
+            return new UndefinedValue();
+        final String name = args[0].asString();
         return SS.Identifiers.getValue(name);
     }
 
-    private Value setVariable(Value... values) {
-        Arguments.checkArgTypesOrDie(values, StringValue.class, null);
-        final String name = values[0].asString();
-        final Value value = values[1];
+    private Value setVariable(Value... args) {
+        if (!Arguments.checkArgTypes(args, Type.String, null))
+            return new UndefinedValue();
+        final String name = args[0].asString();
+        final Value value = args[1];
         SS.Identifiers.set(name, value);
         return new NullValue();
     }
 
-    private Value variableExists(Value... values) {
-        Arguments.checkArgTypesOrDie(values, StringValue.class, NumberValue.class);
-        final String name = values[0].asString();
-        final int scopeNumber = values[1].asNumber().intValue();
+    private Value variableExists(Value... args) {
+        if (!Arguments.checkArgTypes(args, Type.String, Type.Number))
+            return new UndefinedValue();
+        final String name = args[0].asString();
+        final int scopeNumber = args[1].asNumber().intValue();
         if (scopeNumber < 0 || scopeNumber >= Scopes.values().length)
             throw new FunctionExecutionException("Invalid scope.");
         final Scopes scope = Scopes.values()[scopeNumber];
@@ -108,20 +112,21 @@ public class interpreter extends SSModule {
         }
     }
 
-    private Value scopesUp(Value... values) {
-        Arguments.checkArgcOrDie(values, 0);
+    private Value scopesUp(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
         SS.Scopes.up();
         return new NullValue();
     }
 
-    private Value scopesDown(Value... values) {
-        Arguments.checkArgcOrDie(values, 0);
+    private Value scopesDown(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
         SS.Scopes.down();
         return new NullValue();
     }
 
     private Value eval(Value... args) {
-        Arguments.checkArgTypesOrDie(args, StringValue.class);
+        if (!Arguments.checkArgTypes(args, Type.String))
+            return new UndefinedValue();
         final String source = args[0].asString();
         final SimpleScript ss = SimpleScript.fromSource(source);
         return ss.express().eval();
@@ -132,5 +137,4 @@ public class interpreter extends SSModule {
         GLOBAL,
         MAIN
     }
-
 }

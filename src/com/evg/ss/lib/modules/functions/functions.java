@@ -24,9 +24,9 @@ public final class functions extends SSModule {
     }
 
     private Value execute(Value... args) {
-        if (!Arguments.checkArgTypes(args, Type.Function, Type.Map, Type.Array)) {
-            Arguments.checkArgTypesOrDie(args, Type.Function, Type.Array);
-        }
+        if (!Arguments.checkArgTypes(args, Type.Function, Type.Map, Type.Array)
+                && !Arguments.checkArgTypes(args, Type.Function, Type.Array))
+            return new UndefinedValue();
         final Function function = ((FunctionValue) args[0]).getValue();
         final MapValue callContext = (args[1].getType() == Type.Map ? ((MapValue) args[1]) : null);
         final Value[] _args = ((ArrayValue) args[args[1].getType() == Type.Map ? 2 : 1]).getValue();

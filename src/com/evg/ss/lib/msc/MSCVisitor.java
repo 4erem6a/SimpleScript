@@ -20,8 +20,6 @@ public class MSCVisitor implements ResultVisitor<String> {
         for (ArgumentExpression arg : args) {
             final StringBuilder argBuilder = new StringBuilder();
             argBuilder.append(arg.getName());
-            if (arg.getRequiredType() != null)
-                argBuilder.append(String.format(":%s", arg.getRequiredType().getTypename()));
             if (arg.getDefaultValue() != null)
                 argBuilder.append(String.format("=%s", arg.getDefaultValue().accept(this)));
             builder.append(argBuilder.append(',').toString());

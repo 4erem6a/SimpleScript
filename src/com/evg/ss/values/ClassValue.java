@@ -1,7 +1,6 @@
 package com.evg.ss.values;
 
 import com.evg.ss.exceptions.execution.ClassMethodAccessException;
-import com.evg.ss.exceptions.execution.FieldNotFoundException;
 import com.evg.ss.exceptions.execution.IdentifierAlreadyExistsException;
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.lib.Argument;
@@ -66,7 +65,7 @@ public class ClassValue implements Value, Container {
         final ClassMember member = getMemberByName(getStaticMembers(), key.asString());
         if (member != null)
             return staticContext.get(key);
-        throw new FieldNotFoundException(key);
+        return new UndefinedValue();
     }
 
     @Override
@@ -75,9 +74,10 @@ public class ClassValue implements Value, Container {
             throw new InvalidValueTypeException(key.getType());
         final ClassMember member = getMemberByName(getStaticMembers(), key.asString());
         if (member == null)
-            throw new FieldNotFoundException(key);
-        if (member instanceof ClassMethod)
+            return;
+        if (member instanceof ClassMethod) {
             throw new ClassMethodAccessException();
+        }
         ((ClassField) member).setValue(value);
     }
 

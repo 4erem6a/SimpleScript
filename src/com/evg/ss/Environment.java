@@ -5,6 +5,7 @@ import com.evg.ss.values.Value;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public final class Environment {
 
@@ -38,6 +39,10 @@ public final class Environment {
 
     public static boolean envVariableExists(String name) {
         return VARIABLES.containsKey(name);
+    }
+
+    public static Set<Map.Entry<String, Identifier>> getVariables() {
+        return VARIABLES.entrySet();
     }
 
 }

@@ -1,6 +1,5 @@
 package com.evg.ss.values;
 
-import com.evg.ss.exceptions.execution.FieldNotFoundException;
 import com.evg.ss.exceptions.execution.IndexOutOfBoundsException;
 
 import java.util.Arrays;
@@ -121,7 +120,7 @@ public class ArrayValue implements Value, Container, Iterable<Value> {
                     return Value.of(value.length);
             }
         }
-        throw new FieldNotFoundException(key);
+        return new UndefinedValue();
     }
 
     @Override
@@ -131,6 +130,6 @@ public class ArrayValue implements Value, Container, Iterable<Value> {
             if (index < 0 || index >= this.value.length)
                 throw new IndexOutOfBoundsException(index);
             this.value[index] = value;
-        } else throw new FieldNotFoundException(key);
+        }
     }
 }

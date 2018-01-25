@@ -1,7 +1,6 @@
 package com.evg.ss.lib;
 
 import com.evg.ss.exceptions.execution.ArgumentCountMismatchException;
-import com.evg.ss.exceptions.execution.ArgumentTypeMismatchException;
 import com.evg.ss.exceptions.execution.UnexpectedDefaultArgumentException;
 import com.evg.ss.exceptions.execution.UnexpectedVariadicArgumentException;
 import com.evg.ss.exceptions.inner.SSReturnException;
@@ -45,25 +44,6 @@ public final class SSFunction implements ConstructorFunction {
         final int maxArgc = (isVariadic ? args.length : this.args.size());
         if (args.length < minArgc || args.length > maxArgc)
             throw new ArgumentCountMismatchException(args.length, args.length < minArgc ? minArgc : maxArgc);
-        if (!isVariadic) {
-            for (int i = 0; i < args.length; i++) {
-                if (args[i].getType() != this.args.get(i).getType() && this.args.get(i).getType() != null)
-                    throw new ArgumentTypeMismatchException(this.args.get(i).getType(), args[i].getType());
-            }
-        } else {
-            for (int i = 0; i < args.length; i++) {
-                final Argument arg;
-                if (i == this.args.size() - 1 && args[i].getType() == Type.Array)
-                    if (this.args.get(i).hasType())
-                        throw new ArgumentTypeMismatchException(this.args.get(i).getType(), Type.Array);
-                    else break;
-                if (i >= this.args.size())
-                    arg = this.args.get(this.args.size() - 1);
-                else arg = this.args.get(i);
-                if (args[i].getType() != arg.getType() && arg.getType() != null)
-                    throw new ArgumentTypeMismatchException(arg.getType(), args[i].getType());
-            }
-        }
     }
 
     public boolean validateArgs(Value... args) {

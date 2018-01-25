@@ -174,22 +174,18 @@ public final class Parser extends AbstractParser {
     private ArgumentExpression argument() {
         final boolean variadic;
         final String name = consume(TokenType.Word).getValue();
-        final ConstTypeExpression type;
         final Expression value;
         if (match(TokenType.Dt)) {
             consume(TokenType.Dt);
             consume(TokenType.Dt);
             variadic = true;
         } else variadic = false;
-        if (match(TokenType.Cl))
-            type = (ConstTypeExpression) typename();
-        else type = null;
         if (match(TokenType.Eq)) {
             if (variadic)
                 throw new ParserException("Variadic arguments can't have any default value.");
             value = value();
         } else value = null;
-        return new ArgumentExpression(name, variadic, type, value);
+        return new ArgumentExpression(name, variadic, value);
     }
 
     private Statement functionDefinition() {
@@ -567,9 +563,10 @@ public final class Parser extends AbstractParser {
 
     private Expression mapDefinitionKey() {
         final Expression field;
-        if (lookMatch(0, TokenType.Word) && lookMatch(1, TokenType.Cl))
-            field = new ValueExpression(consume(TokenType.Word).getValue());
-        else field = expression();
+        if (match(TokenType.Lc)) {
+            field = expression();
+            consume(TokenType.Rc);
+        } else field = new ValueExpression(consume(TokenType.Word).getValue());
         return field;
     }
 
@@ -756,14 +753,9 @@ public final class Parser extends AbstractParser {
 
     private Expression type() {
         consume(TokenType.Lp);
-        final ConstTypeExpression type = (ConstTypeExpression) typename();
+        final ConstTypeExpression type = new ConstTypeExpression(consume(TokenType.String).getValue());
         consume(TokenType.Rp);
         return new TypeExpression(type);
-    }
-
-    private Expression typename() {
-        final String type = consume().getValue();
-        return new ConstTypeExpression(type);
     }
 
     private Expression typeof() {
@@ -815,5 +807,4 @@ public final class Parser extends AbstractParser {
         } else value = NullValue.NullExpression;
         return new LetExpression(name, value);
     }
-
 }

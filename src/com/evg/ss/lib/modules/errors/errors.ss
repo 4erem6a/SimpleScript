@@ -1,14 +1,14 @@
 //SimpleScript'StandardLibrary: errors
-//Version: 1.0
+//Version: 1.1
 /*Dependencies:
  *  --- none ---
  */
-locked function Error(message : string, args...) {
-
-    this.message = message
-    this.args = args
-    this.stackTrace = require("interpreter").requireStackTrace()
-
+class Error {
+    new(message, args...) {
+        this.message = message as type("string")
+        this.args = args
+        this.stackTrace = require("interpreter").requireStackTrace()
+    }
 }
 
 exports {

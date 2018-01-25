@@ -4,27 +4,27 @@ import com.evg.ss.lib.MapMatcher;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
-import com.evg.ss.values.MapValue;
-import com.evg.ss.values.NumberValue;
-import com.evg.ss.values.Type;
-import com.evg.ss.values.Value;
+import com.evg.ss.values.*;
 
 public final class maps extends SSModule {
 
     private final static MapValue MAP_EMPTY = new MapValue();
 
     private static Value ssToArray(Value... args) {
-        Arguments.checkArgTypesOrDie(args, Type.Map);
+        if (!Arguments.checkArgTypes(args, Type.Map))
+            return new UndefinedValue();
         return ((MapValue) args[0]).toArray();
     }
 
     private static Value ssSize(Value... args) {
-        Arguments.checkArgTypesOrDie(args, Type.Map);
+        if (!Arguments.checkArgTypes(args, Type.Map))
+            return new UndefinedValue();
         return new NumberValue(((MapValue) args[0]).size());
     }
 
     private static Value match(Value... args) {
-        Arguments.checkArgTypesOrDie(args, Type.Map, Type.Map);
+        if (!Arguments.checkArgTypes(args, Type.Map, Type.Map))
+            return new UndefinedValue();
         return Value.of(new MapMatcher(((MapValue) args[0])).match(((MapValue) args[1])));
     }
 

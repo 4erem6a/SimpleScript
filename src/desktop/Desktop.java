@@ -41,7 +41,6 @@ public final class Desktop {
         else return null;
     }
 
-
     public static void main(String[] args) throws IOException {
         for (int i = 0; i < args.length; i++) {
             final SSExecutionFlags flagType = SSExecutionFlags.getFlag(args[i]);
@@ -108,6 +107,12 @@ public final class Desktop {
             except(script.tryCompile());
         final SimpleScript.CompiledScript compiledScript = script.compile();
         log("Complete.\n");
+        log("Reading arguments ... ");
+        final Value programArgs = Value.of((hasFlag("-a") ? getFlag("-a").getArgs() : new ArrayList<String>())
+                .stream()
+                .map(Value::of)
+                .toArray(Value[]::new));
+        log("Complete.\n");
         log("Setting environment variables ... ");
         if (hasFlag("-f")) {
             final Path path = Paths.get(getFlag("-f").getSingleArg()).toAbsolutePath();
@@ -115,6 +120,7 @@ public final class Desktop {
             Environment.putEnvVariable(Environment.EXECUTABLE_DIR, Value.of(path.getParent().toString()), true);
         }
         Environment.putEnvVariable(Environment.CURRENT_LANG_VERSION, Value.of(SimpleScript.VERSION.toString()), true);
+        Environment.putEnvVariable(Environment.PROGRAM_ARGS, programArgs, true);
         log("Complete.\n");
         if (hasFlag("-lt")) {
             log("Running lint ... ");
@@ -157,12 +163,6 @@ public final class Desktop {
                 program.accept(new FunctionAdder());
                 if (!SS.Identifiers.exists("main") || !(SS.Identifiers.get("main").getValue() instanceof FunctionValue))
                     exitWithMessage("Missing function 'main'.");
-                final Value programArgs =
-                        Value.of(
-                                (hasFlag("-a") ? getFlag("-a").getArgs() : new ArrayList<String>())
-                                        .stream()
-                                        .map(Value::of)
-                                        .toArray(Value[]::new));
                 try {
                     ((FunctionValue) SS.Identifiers.get("main").getValue()).getValue().execute(programArgs);
                 } catch (SSThrownException e) {

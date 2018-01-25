@@ -27,7 +27,8 @@ public final class arrays extends SSModule {
     }
 
     private Value sort(Value... args) {
-        Arguments.checkArgTypesOrDie(args, Type.Array, Type.Function);
+        if (!Arguments.checkArgTypes(args, Type.Array, Type.Function))
+            return new UndefinedValue();
         final Value[] array = ((ArrayValue) args[0]).getValue().clone();
         final Function function = ((FunctionValue) args[1]).getValue();
         Arrays.sort(array, (a, b) -> function.execute(a, b).asNumber().intValue());
@@ -35,21 +36,23 @@ public final class arrays extends SSModule {
     }
 
     private Value sortBy(Value... args) {
-        Arguments.checkArgTypesOrDie(args, Type.Array, Type.Function);
+        if (!Arguments.checkArgTypes(args, Type.Array, Type.Function))
+            return new UndefinedValue();
         final Value[] array = ((ArrayValue) args[0]).getValue().clone();
         final Function function = ((FunctionValue) args[1]).getValue();
         Arrays.sort(array, Comparator.comparing(function::execute));
         return Value.of(array);
     }
 
-    private Value create(Value... values) {
-        for (Value value : values)
-            Arguments.checkArgTypesOrDie(new Value[]{value}, Type.Number);
-        final int[] sizeArr = Arrays.stream(values).mapToInt(v -> v.asNumber().intValue()).toArray();
+    private Value create(Value... args) {
+        for (Value value : args)
+            if (!Arguments.checkArgTypes(new Value[] {value}, Type.Number))
+                return new UndefinedValue();
+        final int[] sizeArr = Arrays.stream(args).mapToInt(v -> v.asNumber().intValue()).toArray();
         for (int size : sizeArr)
             if (size < 1)
                 throw new InvalidValueException(Value.of(size));
-        return createArray(values, 0);
+        return createArray(args, 0);
     }
 
     private ArrayValue createArray(Value[] args, int index) {

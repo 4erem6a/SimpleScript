@@ -1,42 +1,47 @@
 //SimpleScript'StandardLibrary: lists
-//Version: 1.5
+//Version: 1.6
 /*Dependencies:
  *  arrays
  */
-locked function List(array...) {
+class List {
+    new(array...) {
+        this.array = array
+    }
 
-    this.array = array
+    locked size() -> require("arrays").length(this.array)
+    locked toArray() -> this.array
+    locked sequence() -> require("sequences").Sequence.fromList(this)
 
-    this.size = locked function() -> require("arrays").length(this.array)
-    this.toArray = locked function() -> this.array
-    this.sequence = locked function() -> require("sequences").fromList(this)
-
-    this.get = locked function(index : number) {
+    locked get(index) {
+        if (!(index is type("number")))
+            return undefined
         require "arrays"
         if (index < 0 || index >= arrays.length(this.array))
             return null
         return this.array[index]
     }
 
-    this.set = locked function(index : number, value) {
+    locked set(index, value) {
+        if (!(index is type("number")))
+            return undefined
         require "arrays"
         if (index >= 0 && index < arrays.length(this.array))
             this.array[index] = value
     }
 
-    this.add = locked function(value) {
+    locked add(value) {
         require "arrays"
         let oldLength = arrays.length(this.array)
         this.array = arrays.resize(this.array, oldLength + 1)
         this.array[oldLength] = value
     }
 
-    this.addAll = locked function(values : array) {
+    locked addAll(values...) {
         foreach (let item in values)
             this.add(item)
     }
 
-    this.removeFirst = locked function(value) {
+    locked removeFirst(value) {
         require "arrays"
         for (let i = 0; i < arrays.length(this.array); i++) {
             if (this.array[i] == value) {
@@ -46,7 +51,7 @@ locked function List(array...) {
         }
     }
 
-    this.removeLast = locked function(value) {
+    locked removeLast(value) {
         require "arrays"
         for (let i = arrays.length(this.array) - 1; i >= 0; i--) {
             if (this.array[i] == value) {
@@ -56,14 +61,16 @@ locked function List(array...) {
         }
     }
 
-    this.removeAll = locked function(value) {
+    locked removeAll(value) {
         require "arrays"
         for (let i = 0; i < arrays.length(this.array); i++)
             if (this.array[i] == value)
                 this.removeAt(i)
     }
 
-    this.removeAt = locked function(index : number) {
+    locked removeAt(index) {
+        if (!(index is type("number")))
+            return undefined
         require "arrays"
         if (index < 0 || index >= arrays.length(this.array))
             return null
@@ -73,7 +80,9 @@ locked function List(array...) {
         this.array = arrays.resize(this.array, arrays.length(this.array) - 1)
     }
 
-    this.insert = locked function(index : number, value) {
+    locked insert(index, value) {
+        if (!(index is type("number")))
+            return undefined
         require "arrays"
         if (index < 0 || index >= arrays.length(this.array))
             return null
@@ -84,7 +93,7 @@ locked function List(array...) {
         this.array[index] = value
     }
 
-    this.firstIndexOf = locked function(value) {
+    locked firstIndexOf(value) {
         require "arrays"
         for (let i = 0; i < arrays.length(this.array); i++)
             if (this.array[i] == value)
@@ -92,7 +101,7 @@ locked function List(array...) {
         return -1
     }
 
-    this.lastIndexOf = locked function(value) {
+    locked lastIndexOf(value) {
         require "arrays"
         for (let i = arrays.length(this.array) - 1; i >= 0; i--)
             if (this.array[i] == value)
@@ -100,17 +109,21 @@ locked function List(array...) {
         return -1
     }
 
-    this.sortBy = locked function(callback : function) {
+    locked sortBy(callback) {
+        if (!(callback is type("function")))
+            return undefined
         this.array = require("arrays").sortBy(this.array, callback)
     }
 
-    this.sort = locked function(callback : function) {
+    locked sort(callback) {
+        if (!(callback is type("function")))
+            return undefined
         this.array = require("arrays").sort(this.array, callback)
     }
 
-    this.first = locked function() -> (this.size() >= 1 ? this.get(0) : null)
+    locked first() -> (this.size() >= 1 ? this.get(0) : null)
 
-    this.firstOrDefault = locked function(default) -> (this.size() >= 1 ? this.get(0) : default)
+    locked firstOrDefault(default) -> (this.size() >= 1 ? this.get(0) : default)
 
 }
 

@@ -23,25 +23,38 @@ public enum SSExecutionFlags {
     public static SSExecutionFlags getFlag(String strFlag) {
         switch (strFlag) {
             case "-t":
+            case "--tokenize":
                 return TOKENIZE;
             case "-e":
+            case "--execute":
                 return EXECUTE;
             case "-f":
+            case "--file":
                 return FILE;
             case "-m":
+            case "--mode":
                 return MODE;
             case "-l":
+            case "--log":
                 return LOG;
             case "-li":
+            case "--lint":
                 return LINT;
             case "-a":
+            case "--args":
                 return ARGS;
             case "-d":
+            case "--debug":
                 return DEBUG;
             case "-s":
+            case "--source":
                 return SOURCE;
             case "-r":
+            case "--recompile":
                 return RECOMPILE;
+            case "-c":
+            case "--charset":
+                return CHARSET;
             default:
                 return null;
         }

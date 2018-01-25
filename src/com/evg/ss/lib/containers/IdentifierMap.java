@@ -5,24 +5,24 @@ import com.evg.ss.exceptions.execution.IdentifierAlreadyExistsException;
 import com.evg.ss.exceptions.execution.IdentifierNotFoundException;
 import com.evg.ss.lib.Identifier;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class IdentifierMap implements ScopedMap<String, Identifier> {
 
-    private Map<String, Identifier> map = new HashMap<>();
-    private IdentifierMap parent = null;
+    private volatile Map<String, Identifier> map = new ConcurrentHashMap<>();
+    private volatile IdentifierMap parent = null;
 
     public IdentifierMap(IdentifierMap parent) {
         this.parent = parent;
     }
 
-    public boolean contains(String name) {
+    public synchronized boolean contains(String name) {
         return map.containsKey(name);
     }
 
-    public Identifier get(String key) {
+    public synchronized Identifier get(String key) {
         if (map.containsKey(key))
             return map.get(key);
         else if (parent != null)
@@ -30,7 +30,7 @@ public final class IdentifierMap implements ScopedMap<String, Identifier> {
         else return null;
     }
 
-    public void set(String key, Identifier value) {
+    public synchronized void set(String key, Identifier value) {
         if (map.containsKey(key)) {
             final Identifier id = map.get(key);
             if (id.isConst())
@@ -41,7 +41,7 @@ public final class IdentifierMap implements ScopedMap<String, Identifier> {
         else throw new IdentifierNotFoundException(key);
     }
 
-    public void put(String key, Identifier value) {
+    public synchronized void put(String key, Identifier value) {
         if (map.containsKey(key))
             throw new IdentifierAlreadyExistsException(key);
         map.put(key, value);

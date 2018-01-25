@@ -4,10 +4,7 @@ import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSArrayBuilder;
 import com.evg.ss.util.builders.SSMapBuilder;
-import com.evg.ss.values.MapValue;
-import com.evg.ss.values.NumberValue;
-import com.evg.ss.values.Type;
-import com.evg.ss.values.Value;
+import com.evg.ss.values.*;
 
 public final class utils extends SSModule {
 
@@ -29,8 +26,10 @@ public final class utils extends SSModule {
     private static Value range(Value... args) {
         Arguments.checkArgcOrDie(args, 1, 2);
         if (args.length == 1)
-            Arguments.checkArgTypesOrDie(args, Type.Number);
-        else Arguments.checkArgTypesOrDie(args, Type.Number, Type.Number);
+            if (!Arguments.checkArgTypes(args, Type.Number))
+                return new UndefinedValue();
+        else if (!Arguments.checkArgTypes(args, Type.Number, Type.Number))
+                return new UndefinedValue();
         int from = Math.round(args.length == 1 ? 0 : args[0].asNumber().intValue());
         int to = Math.round(args[args.length == 1 ? 0 : 1].asNumber().intValue());
         final SSArrayBuilder result = SSArrayBuilder.create();

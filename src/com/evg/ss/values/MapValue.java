@@ -1,6 +1,5 @@
 package com.evg.ss.values;
 
-import com.evg.ss.exceptions.execution.FieldNotFoundException;
 import com.evg.ss.util.builders.SSArrayBuilder;
 
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public class MapValue implements Value, Container, Iterable<Map.Entry<Value, Val
     public Value get(Value key) {
         if (map.containsKey(key))
             return map.get(key);
-        throw new FieldNotFoundException(key);
+        return new UndefinedValue();
     }
 
     public Map<Value, Value> getMap() {
