@@ -1,15 +1,26 @@
 # SimpleScript
 ## Desсription:
 SimpleScript is a scripting programming language created as hobby project.
-## Latest changelog: (1.9.0.0)
-* Added ES6-like anonymous & named classes.
-* Added instant functions.
-* Added `undefined` value type.
-* Functions (& classes) are now stored as variables.
-* Fixed & Improved `IdentifierDeclaration` lint validator.
-* Added `instanceof` functionality to `is` operator.
-* `as` operator now returns `undefined` due to invalid conversion.
-* Added `maps.match` method. (Same as `<map> is <map>`)
+## Latest changelog: (1.9.1.0)
+* Removed `required arg types` feature.
+* Added `async` module.
+* Added `types` module.
+* Added `environment.variables` method.
+* Added full execution flags support.
+* Added `-c/--charset` execution flag support.
+* Program args are now stored in `PROGRAM_ARGS` environment variable.
+* Added `ClassAdder` for named classes.
+### Rewritten using `SS v1.9` features:
+* `errors`
+* `lists`
+* `sequences`
+### Updated modules:
+* `math`
+* `arrays`
+* `functions`
+* `interpreter`
+* `maps`
+* `utils`
 ## Roadmap:
 * Binary shifts.
 * `async` module.
