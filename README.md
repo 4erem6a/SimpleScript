@@ -1,6 +1,7 @@
 # SimpleScript
-## Desсription:
+## Description:
 SimpleScript is a scripting programming language created as hobby project.
+SS suports impirative, functional & object-oriented programmig paradigms.
 ## Latest changelog: (1.9.1.0)
 * Removed `required arg types` feature.
 * Added `async` module.
