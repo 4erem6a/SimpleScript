@@ -6,6 +6,8 @@ import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.lib.Argument;
 import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SSFunction;
+import com.evg.ss.parser.ast.ReturnStatement;
+import com.evg.ss.parser.ast.ValueExpression;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +29,9 @@ public class ClassValue implements Value, Container {
 
     public ClassValue(ClassValue base, SSFunction constructor, List<ClassMember> members) {
         this.base = base;
-        this.constructor = constructor;
+        this.constructor = (constructor == null
+                ? new SSFunction(null, new Argument[0], new ReturnStatement(new ValueExpression()))
+                : constructor);
         this.members = new HashMap<>();
         for (ClassMember member : members) {
             if (this.members.containsKey(member.name))
@@ -119,10 +123,11 @@ public class ClassValue implements Value, Container {
             if (member instanceof ClassField && processStaticMember(member.isStatic(), isStatic)) {
                 object.getMapReference().put(Value.of(member.getName()), ((ClassField) member).getValue());
             } else if (member instanceof ClassMethod && processStaticMember(member.isStatic(), isStatic)) {
-                object.getMapReference().put(Value.of(member.getName()), Value.of(((ClassMethod) member).getFunction()));
-                ((SSFunction) ((ClassMethod) member).function).setName(getMethodName(name, member.getName()));
+                final Value method = Value.of(((ClassMethod) member).getFunction()).clone();
+                object.getMapReference().put(Value.of(member.getName()), method);
+                ((SSFunction) ((FunctionValue) method).getValue()).setName(getMethodName(name, member.getName()));
                 if (!member.isStatic())
-                    ((SSFunction) ((ClassMethod) member).function).setCallContext(object);
+                    ((SSFunction) ((FunctionValue) method).getValue()).setCallContext(object);
             }
         }
         return object;
@@ -139,10 +144,11 @@ public class ClassValue implements Value, Container {
             if (member instanceof ClassField && processStaticMember(member.isStatic(), isStatic)) {
                 object.getMapReference().put(Value.of(member.getName()), ((ClassField) member).getValue());
             } else if (member instanceof ClassMethod && processStaticMember(member.isStatic(), isStatic)) {
-                object.getMapReference().put(Value.of(member.getName()), Value.of(((ClassMethod) member).function));
-                ((SSFunction) ((ClassMethod) member).function).setName(getMethodName(name, member.getName()));
+                final Value method = Value.of(((ClassMethod) member).getFunction()).clone();
+                object.getMapReference().put(Value.of(member.getName()), method);
+                ((SSFunction) ((FunctionValue) method).getValue()).setName(getMethodName(name, member.getName()));
                 if (!member.isStatic())
-                    ((SSFunction) ((ClassMethod) member).function).setCallContext(object);
+                    ((SSFunction) ((FunctionValue) method).getValue()).setCallContext(object);
             }
         }
         return object;

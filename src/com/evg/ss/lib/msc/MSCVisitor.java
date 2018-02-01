@@ -299,6 +299,10 @@ public class MSCVisitor implements ResultVisitor<String> {
         return "this";
     }
 
+    public String visit(ThatExpression thisExpression) {
+        return "that";
+    }
+
     @Override
     public String visit(NewExpression newExpression) {
         return String.format("new %s", newExpression.getFunctionCall().accept(this));

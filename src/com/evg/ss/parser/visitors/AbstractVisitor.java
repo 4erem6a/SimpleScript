@@ -203,6 +203,11 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
+    public void visit(ThatExpression target) {
+
+    }
+
+    @Override
     public void visit(NewExpression target) {
         target.getFunctionCall().accept(this);
     }

@@ -103,6 +103,7 @@ public final class Lexer extends AbstractLexer {
         KEYWORD_MAP.put("class", TokenType.Class);
         KEYWORD_MAP.put("static", TokenType.Static);
         KEYWORD_MAP.put("undefined", TokenType.Undefined);
+        KEYWORD_MAP.put("that", TokenType.That);
     }
 
     public Lexer(String source) {

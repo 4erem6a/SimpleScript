@@ -10,20 +10,12 @@ public final class SSMapBuilder {
 
     private MapValue map;
 
-    private SSMapBuilder() {
+    public SSMapBuilder() {
         map = new MapValue();
     }
 
-    private SSMapBuilder(MapValue base) {
+    public SSMapBuilder(MapValue base) {
         map = new MapValue(base);
-    }
-
-    public static SSMapBuilder create() {
-        return new SSMapBuilder();
-    }
-
-    public static SSMapBuilder create(MapValue base) {
-        return new SSMapBuilder(base);
     }
 
     public SSMapBuilder setField(Value key, Value value) {

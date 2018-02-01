@@ -8,11 +8,11 @@ import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 
 
-public final class ThisExpression implements Expression {
+public final class ThatExpression implements Expression {
 
     @Override
     public Value eval() {
-        final MapValue context = SS.CallContext.get();
+        final MapValue context = SS.CallContext.getParent();
         if (context == null)
             throw new InvalidCallContextException();
         return context;

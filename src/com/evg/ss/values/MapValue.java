@@ -46,7 +46,7 @@ public class MapValue implements Value, Container, Iterable<Map.Entry<Value, Val
     }
 
     public ArrayValue toArray() {
-        final SSArrayBuilder builder = SSArrayBuilder.create();
+        final SSArrayBuilder builder = new SSArrayBuilder();
         for (Map.Entry<Value, Value> entry : this) {
             final Value key = entry.getKey() instanceof MapValue
                     ? ((MapValue) entry.getKey()).toArray()
@@ -54,7 +54,7 @@ public class MapValue implements Value, Container, Iterable<Map.Entry<Value, Val
             final Value value = entry.getValue() instanceof MapValue
                     ? ((MapValue) entry.getValue()).toArray()
                     : entry.getValue();
-            builder.setElement(SSArrayBuilder.create()
+            builder.setElement(new SSArrayBuilder()
                     .setElement(key)
                     .setElement(value)
                     .build());

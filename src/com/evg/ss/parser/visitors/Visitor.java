@@ -90,4 +90,6 @@ public interface Visitor {
     void visit(ClassDefinitionStatement classDefinitionStatement);
 
     void visit(AnonymousClassExpression anonymousClassExpression);
+
+    void visit(ThatExpression thatExpression);
 }

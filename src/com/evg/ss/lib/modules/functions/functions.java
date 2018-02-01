@@ -18,9 +18,17 @@ public final class functions extends SSModule {
     public MapValue require() {
         final String source = Utils.istream2string(getClass().getResourceAsStream(FILENAME));
         final MapValue constants = SimpleScript.fromSource(source).compile().require();
-        final SSMapBuilder builder = SSMapBuilder.create(constants);
+        final SSMapBuilder builder = new SSMapBuilder(constants);
         builder.setMethod("execute", this::execute);
+        builder.setMethod("getContext", this::getContext);
         return builder.build();
+    }
+
+    private Value getContext(Value... args) {
+        Arguments.checkArgcOrDie(args, 1);
+        if (args[0].getType() != Type.Function || !(((FunctionValue) args[0]).getValue() instanceof SSFunction))
+            return new UndefinedValue();
+        return ((SSFunction) ((FunctionValue) args[0]).getValue()).getCallContext();
     }
 
     private Value execute(Value... args) {
@@ -34,7 +42,7 @@ public final class functions extends SSModule {
             throw new FunctionExecutionException("Unable to call function: call context is not supported.");
         if (callContext != null)
             ((SSFunction) function).setCallContext(callContext);
-        return SSMapBuilder.create()
+        return new SSMapBuilder()
                 .setField("result", function.execute(_args))
                 .setField("callContext", callContext == null ? new NullValue() : callContext)
                 .build();

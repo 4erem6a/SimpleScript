@@ -95,6 +95,7 @@ public enum TokenType {
     Class("class"),         //class
     Static("static"),       //static
     Undefined("undefined"), //undefined
+    That("that"),           //that
 
     //Utility:
     EOF("end");

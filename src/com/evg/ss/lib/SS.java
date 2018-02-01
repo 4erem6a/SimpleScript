@@ -6,6 +6,14 @@ import com.evg.ss.values.Value;
 
 public final class SS {
 
+    public static void putId(String name, Value value, boolean _const) {
+        SS.Identifiers.put(name, value, _const);
+    }
+
+    public static void putFunc(String name, Function function) {
+        SS.Identifiers.put(name, Value.of(function), false);
+    }
+
     public static final class CallContext {
 
         private static CallContext callContext = null;
@@ -31,6 +39,21 @@ public final class SS {
 
         public static MapValue get() {
             return callContext == null ? null : callContext.context;
+        }
+
+        public static MapValue getParent() {
+            return (callContext == null ? null : callContext.parent == null
+                    ? null : callContext.parent.context);
+        }
+
+        public static MapValue getParent(int depth) {
+            CallContext result = callContext;
+            for (int i = 0; i < depth; i++) {
+                if (result.parent == null)
+                    return null;
+                result = result.parent;
+            }
+            return result.context;
         }
 
         public static void set(MapValue context) {
@@ -117,7 +140,8 @@ public final class SS {
 
         private static volatile IdentifierMap top = new IdentifierMap(null);
 
-        private Identifiers() {}
+        private Identifiers() {
+        }
 
         public static boolean exists(String name) {
             synchronized (object) {

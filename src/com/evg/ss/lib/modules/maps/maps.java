@@ -30,7 +30,7 @@ public final class maps extends SSModule {
 
     @Override
     public MapValue require() {
-        final SSMapBuilder builder = SSMapBuilder.create();
+        final SSMapBuilder builder = new SSMapBuilder();
         builder.setField("MAP_EMPTY", MAP_EMPTY);
         builder.setMethod("toArray", maps::ssToArray);
         builder.setMethod("size", maps::ssSize);

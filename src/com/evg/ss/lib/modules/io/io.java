@@ -13,7 +13,7 @@ public final class io extends SSModule {
 
     @Override
     public MapValue require() {
-        final SSMapBuilder builder = SSMapBuilder.create();
+        final SSMapBuilder builder = new SSMapBuilder();
         builder.setMethod("print", this::print);
         builder.setMethod("println", this::println);
         builder.setMethod("input", this::input);

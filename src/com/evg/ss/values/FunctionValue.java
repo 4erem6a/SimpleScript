@@ -1,6 +1,7 @@
 package com.evg.ss.values;
 
 import com.evg.ss.lib.Function;
+import com.evg.ss.lib.SSFunction;
 
 public class FunctionValue implements Value {
 
@@ -61,6 +62,8 @@ public class FunctionValue implements Value {
 
     @Override
     public Value clone() {
-        return Value.of(value);
+        if (value instanceof SSFunction)
+            return new FunctionValue(((SSFunction) value).clone());
+        return new FunctionValue(value);
     }
 }

@@ -183,7 +183,7 @@ public final class Parser extends AbstractParser {
         if (match(TokenType.Eq)) {
             if (variadic)
                 throw new ParserException("Variadic arguments can't have any default value.");
-            value = value();
+            value = expression();
         } else value = null;
         return new ArgumentExpression(name, variadic, value);
     }
@@ -584,6 +584,8 @@ public final class Parser extends AbstractParser {
             return requireExpression();
         } else if (match(TokenType.This)) {
             return new ThisExpression();
+        } else if (match(TokenType.That)) {
+            return new ThatExpression();
         } else if (isLambdaDefinition()) {
             return lambda();
         } else if (match(TokenType.Word)) {

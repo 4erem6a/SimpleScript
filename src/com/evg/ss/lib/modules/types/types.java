@@ -9,7 +9,7 @@ public final class types extends SSModule {
 
     @Override
     public MapValue require() {
-        final SSMapBuilder builder = SSMapBuilder.create();
+        final SSMapBuilder builder = new SSMapBuilder();
         builder.setField("NUMBER", Type.Number.getTypeValue());
         builder.setField("STRING", Type.String.getTypeValue());
         builder.setField("BOOLEAN", Type.Boolean.getTypeValue());

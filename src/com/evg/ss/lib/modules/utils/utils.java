@@ -28,11 +28,11 @@ public final class utils extends SSModule {
         if (args.length == 1)
             if (!Arguments.checkArgTypes(args, Type.Number))
                 return new UndefinedValue();
-        else if (!Arguments.checkArgTypes(args, Type.Number, Type.Number))
+            else if (!Arguments.checkArgTypes(args, Type.Number, Type.Number))
                 return new UndefinedValue();
         int from = Math.round(args.length == 1 ? 0 : args[0].asNumber().intValue());
         int to = Math.round(args[args.length == 1 ? 0 : 1].asNumber().intValue());
-        final SSArrayBuilder result = SSArrayBuilder.create();
+        final SSArrayBuilder result = new SSArrayBuilder();
         if (from < to)
             for (int i = from; i < to; i++)
                 result.setElement(Value.of(i));
@@ -42,12 +42,18 @@ public final class utils extends SSModule {
         return result.build();
     }
 
+    private static Value refcmp(Value... args) {
+        Arguments.checkArgcOrDie(args, 2);
+        return Value.of(args[0] == args[1]);
+    }
+
     @Override
     public MapValue require() {
-        final SSMapBuilder builder = SSMapBuilder.create();
+        final SSMapBuilder builder = new SSMapBuilder();
         builder.setMethod("hashCode", utils::hashCode);
         builder.setMethod("clone", utils::clone);
         builder.setMethod("compare", utils::compare);
+        builder.setMethod("refcmp", utils::refcmp);
         builder.setMethod("range", utils::range);
         return builder.build();
     }

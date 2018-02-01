@@ -24,7 +24,7 @@ public final class Converter {
         final List<Value> values = Arrays.stream(((ArrayValue) array).getValue()).collect(Collectors.toList());
         if (values.size() % 2 != 0)
             values.add(new NullValue());
-        final SSMapBuilder mapBuilder = SSMapBuilder.create();
+        final SSMapBuilder mapBuilder = new SSMapBuilder();
         for (int i = 0; i < values.size(); i += 2)
             mapBuilder.setField(values.get(i), values.get(i + 1));
         return mapBuilder.build();

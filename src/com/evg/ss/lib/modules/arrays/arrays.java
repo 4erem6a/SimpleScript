@@ -16,7 +16,7 @@ public final class arrays extends SSModule {
 
     @Override
     public MapValue require() {
-        final SSMapBuilder builder = SSMapBuilder.create();
+        final SSMapBuilder builder = new SSMapBuilder();
         builder.setMethod("length", this::length);
         builder.setMethod("resize", this::resize);
         builder.setMethod("create", this::create);
@@ -46,7 +46,7 @@ public final class arrays extends SSModule {
 
     private Value create(Value... args) {
         for (Value value : args)
-            if (!Arguments.checkArgTypes(new Value[] {value}, Type.Number))
+            if (!Arguments.checkArgTypes(new Value[]{value}, Type.Number))
                 return new UndefinedValue();
         final int[] sizeArr = Arrays.stream(args).mapToInt(v -> v.asNumber().intValue()).toArray();
         for (int size : sizeArr)
@@ -58,7 +58,7 @@ public final class arrays extends SSModule {
     private ArrayValue createArray(Value[] args, int index) {
         final int size = args[index].asNumber().intValue();
         final int last = args.length - 1;
-        final SSArrayBuilder builder = SSArrayBuilder.create();
+        final SSArrayBuilder builder = new SSArrayBuilder();
         if (index == last) {
             for (int i = 0; i < size; i++) {
                 builder.setElement(Value.of(0));

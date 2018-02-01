@@ -9,15 +9,6 @@ import com.evg.ss.values.*;
 import java.util.concurrent.FutureTask;
 
 public final class async extends SSModule {
-    @Override
-    public MapValue require() {
-        final SSMapBuilder builder = SSMapBuilder.create();
-        builder.setMethod("await", async::await);
-        builder.setMethod("sleep", async::sleep);
-        builder.setMethod("current", async::current);
-        return builder.build();
-    }
-
     private static Value current(Value... args) {
         Arguments.checkArgcOrDie(args, 0);
         return Value.of(Thread.currentThread().toString());
@@ -31,7 +22,8 @@ public final class async extends SSModule {
         else time = args[0].asNumber().intValue();
         try {
             Thread.sleep(time);
-        } catch (InterruptedException ignored) {}
+        } catch (InterruptedException ignored) {
+        }
         return new UndefinedValue();
     }
 
@@ -48,8 +40,8 @@ public final class async extends SSModule {
                 final Value[] _args;
                 if (args[1].getType() == Type.Array) {
                     _args = ((ArrayValue) args[1]).getValue();
-                } else _args = new Value[] { args[1] };
-                return  _await(function, _args);
+                } else _args = new Value[]{args[1]};
+                return _await(function, _args);
             }
         }
         return new UndefinedValue();
@@ -61,10 +53,21 @@ public final class async extends SSModule {
         thread.start();
         try {
             thread.join();
-        } catch (InterruptedException ignored) {}
+        } catch (InterruptedException ignored) {
+        }
         try {
             return task.get();
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return new UndefinedValue();
+    }
+
+    @Override
+    public MapValue require() {
+        final SSMapBuilder builder = new SSMapBuilder();
+        builder.setMethod("await", async::await);
+        builder.setMethod("sleep", async::sleep);
+        builder.setMethod("current", async::current);
+        return builder.build();
     }
 }

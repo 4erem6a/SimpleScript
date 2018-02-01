@@ -10,13 +10,6 @@ public final class SSArrayBuilder {
 
     private List<Value> values = new ArrayList<>();
 
-    private SSArrayBuilder() {
-    }
-
-    public static SSArrayBuilder create() {
-        return new SSArrayBuilder();
-    }
-
     public SSArrayBuilder setElement(Value value) {
         values.add(value);
         return this;

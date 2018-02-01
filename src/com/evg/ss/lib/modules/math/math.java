@@ -13,7 +13,7 @@ import com.evg.ss.values.Value;
 public final class math extends SSModule {
     @Override
     public MapValue require() {
-        final SSMapBuilder math = SSMapBuilder.create();
+        final SSMapBuilder math = new SSMapBuilder();
         math.setMethod("sin", new MathFunction(1, args -> Value.of(Math.sin(args[0].asNumber()))));
         math.setMethod("cos", new MathFunction(1, args -> Value.of(Math.cos(args[0].asNumber()))));
         math.setMethod("sinh", new MathFunction(1, args -> Value.of(Math.sinh(args[0].asNumber()))));

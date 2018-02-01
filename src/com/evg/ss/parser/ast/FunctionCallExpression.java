@@ -26,6 +26,14 @@ public final class FunctionCallExpression implements Expression {
     public Value eval() {
         final Value[] args = Arrays.stream(this.args).map(Expression::eval).toArray(Value[]::new);
         final Value functionValue = function.eval();
+//        CALL LOG:
+//        if (functionValue instanceof FunctionValue)
+//            if (((FunctionValue) functionValue).getValue() instanceof SSFunction)
+//        System.out.printf("CALL_LOG: \"%s\" [%d]\n", ((SSFunction) ((FunctionValue) functionValue).getValue()).getName(),
+//                args.length);
+//            else
+//                System.out.printf("CALL_LOG: \"%s\" [%d]\n", ((FunctionValue) functionValue).getValue().toString(),
+//                        args.length);
         if (!(functionValue instanceof FunctionValue))
             throw new InvalidValueTypeException(functionValue.getType());
         final Function function = ((FunctionValue) functionValue).getValue();

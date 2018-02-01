@@ -15,9 +15,9 @@ public class interpreter extends SSModule {
 
     @Override
     public MapValue require() {
-        final SSMapBuilder callContext = SSMapBuilder.create();
-        final SSMapBuilder scopes = SSMapBuilder.create();
-        final SSMapBuilder builder = SSMapBuilder.create();
+        final SSMapBuilder callContext = new SSMapBuilder();
+        final SSMapBuilder scopes = new SSMapBuilder();
+        final SSMapBuilder builder = new SSMapBuilder();
         callContext.setMethod("up", this::callContextUp);
         callContext.setMethod("down", this::callContextDown);
         callContext.setMethod("get", this::getCallContext);
@@ -46,7 +46,7 @@ public class interpreter extends SSModule {
 
     private Value scopesGet(Value... args) {
         Arguments.checkArgcOrDie(args, 0);
-        final SSMapBuilder variables = SSMapBuilder.create();
+        final SSMapBuilder variables = new SSMapBuilder();
         SS.Scopes.get().getIdentifiers().entrySet().forEach(entry -> variables.setField(entry.getKey(), entry.getValue().getValue()));
         return variables.build();
     }

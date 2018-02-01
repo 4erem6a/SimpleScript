@@ -89,4 +89,6 @@ public interface ResultVisitor<TResult> {
     TResult visit(ClassDefinitionStatement classDefinitionStatement);
 
     TResult visit(AnonymousClassExpression anonymousClassExpression);
+
+    TResult visit(ThatExpression thatExpression);
 }

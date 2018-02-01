@@ -22,6 +22,14 @@ public final class SSFunction implements ConstructorFunction {
     private MapValue callContext;
     private boolean isLocked = false;
 
+    public SSFunction(final SSFunction ssFunction) {
+        this.args = ssFunction.args;
+        this.body = ssFunction.body;
+        this.name = ssFunction.name;
+        this.callContext = ssFunction.callContext;
+        this.isLocked = ssFunction.isLocked;
+    }
+
     public SSFunction(MapValue callContext, ArgumentExpression[] args, Statement body) {
         this(callContext, Arrays.stream(args).map(ArgumentExpression::getArgument).toArray(Argument[]::new), body);
     }
@@ -88,7 +96,7 @@ public final class SSFunction implements ConstructorFunction {
         } catch (SSReturnException e) {
             return e.getValue();
         }
-        return new NullValue();
+        return new UndefinedValue();
     }
 
     private List<Value> processArguments(Value[] args) {
@@ -122,6 +130,10 @@ public final class SSFunction implements ConstructorFunction {
         final MapValue result = this.callContext;
         this.callContext = context;
         return result;
+    }
+
+    public MapValue getCallContext() {
+        return callContext;
     }
 
     public void setCallContext(MapValue callContext) {
@@ -162,5 +174,10 @@ public final class SSFunction implements ConstructorFunction {
 
     public List<Argument> getArgs() {
         return args;
+    }
+
+    @Override
+    public SSFunction clone() {
+        return new SSFunction(this);
     }
 }

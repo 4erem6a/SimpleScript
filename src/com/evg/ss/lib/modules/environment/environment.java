@@ -16,7 +16,7 @@ public final class environment extends SSModule {
 
     @Override
     public MapValue require() {
-        final SSMapBuilder environment = SSMapBuilder.create();
+        final SSMapBuilder environment = new SSMapBuilder();
         environment.setMethod("setVariable", this::setEnvVariable);
         environment.setMethod("getVariable", this::getEnvVariable);
         environment.setMethod("variables", this::variables);
@@ -26,7 +26,7 @@ public final class environment extends SSModule {
 
     private Value variables(Value... args) {
         Arguments.checkArgcOrDie(args, 0);
-        final SSMapBuilder builder = SSMapBuilder.create();
+        final SSMapBuilder builder = new SSMapBuilder();
         for (Map.Entry<String, Identifier> entry : Environment.getVariables())
             builder.setField(entry.getKey(), entry.getValue().getValue());
         return builder.build();

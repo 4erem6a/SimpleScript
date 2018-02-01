@@ -1,15 +1,20 @@
-//SimpleScript v1.9.1:
-require "async"
+//SimpleScript v1.9.2:
 require "io"
-require "errors"
-require "lists"
-require "sequences"
-require "environment" as "env"
+require "canvas"
+require "async"
 
-let list = new lists.List(1, 2, 3, 4)
+import canvas.Color
+import canvas.Paint
+import canvas.Window
 
-io.println(env.variables().CURRENT_LANG_VERSION)
+let red = new Paint(new Color(255, 0, 0))
+let green = new Paint(new Color(0, 255, 0))
 
-let obj = new Object()
+Window.open()
 
-class Object {}
+red.drawLine(0, 0, 200, 200)
+green.drawLine(0, 200, 200, 0)
+
+async.sleep(3000)
+
+Window.close()
