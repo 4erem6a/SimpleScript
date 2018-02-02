@@ -1,33 +1,21 @@
 # SimpleScript
 ## Description:
 SimpleScript is a scripting programming language created as hobby project.
-SS suports impirative, functional & object-oriented programmig paradigms.
-## Latest changelog: (1.9.1.0)
-* Removed `required arg types` feature.
-* Added `async` module.
-* Added `types` module.
-* Added `environment.variables` method.
-* Added full execution flags support.
-* Added `-c/--charset` execution flag support.
-* Program args are now stored in `PROGRAM_ARGS` environment variable.
-* Added `ClassAdder` for named classes.
-### Rewritten using `SS v1.9` features:
-* `errors`
-* `lists`
-* `sequences`
-### Updated modules:
-* `math`
-* `arrays`
-* `functions`
-* `interpreter`
-* `maps`
-* `utils`
+SS suports imperative, functional & object-oriented programmig paradigms.
+## Latest changelog: (1.9.2.0)
+Added default constructors.
+Fixed call context in class methods.
+Added `jcanvas` module.
+Added `canvas` module.
+Added `that` operator.
+`this` is no longer accessible.
+Added `utils.refcmp` method.
+Added `functions.getContext` method.
+Added `SSClassBuilder`.
 ## Roadmap:
-* Binary shifts.
-* `async` module.
-* External java modules.
+* Binary shift operators.
 * Array deconstruction.
-* `functions.getArgsInfo` method.
+* `functions.getArgs` method.
 ## Installation:
 1. Install Java 8+.
 2. Download latest version: [releases](https://github.com/4erem6a/SimpleScript/releases)
