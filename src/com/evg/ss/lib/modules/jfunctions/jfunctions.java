@@ -1,24 +1,18 @@
-package com.evg.ss.lib.modules.functions;
+package com.evg.ss.lib.modules.jfunctions;
 
-import com.evg.ss.SimpleScript;
 import com.evg.ss.exceptions.execution.FunctionExecutionException;
 import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SSFunction;
 import com.evg.ss.lib.modules.SSModule;
-import com.evg.ss.util.Utils;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
-public final class functions extends SSModule {
-
-    private static final String FILENAME = "functions.ss";
+public final class jfunctions extends SSModule {
 
     @Override
     public MapValue require() {
-        final String source = Utils.istream2string(getClass().getResourceAsStream(FILENAME));
-        final MapValue constants = SimpleScript.fromSource(source).compile().require();
-        final SSMapBuilder builder = new SSMapBuilder(constants);
+        final SSMapBuilder builder = new SSMapBuilder();
         builder.setMethod("execute", this::execute);
         builder.setMethod("getContext", this::getContext);
         return builder.build();

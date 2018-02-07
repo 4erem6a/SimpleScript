@@ -15,7 +15,7 @@ class List {
     locked get(index) {
         if (!(index is type("number")))
             return undefined
-        require "arrays"
+        let arrays = require("arrays")
         if (index < 0 || index >= arrays.length(this.array))
             return null
         return this.array[index]
@@ -24,13 +24,13 @@ class List {
     locked set(index, value) {
         if (!(index is type("number")))
             return undefined
-        require "arrays"
+        let arrays = require("arrays")
         if (index >= 0 && index < arrays.length(this.array))
             this.array[index] = value
     }
 
     locked add(value) {
-        require "arrays"
+        let arrays = require("arrays")
         let oldLength = arrays.length(this.array)
         this.array = arrays.resize(this.array, oldLength + 1)
         this.array[oldLength] = value
@@ -42,7 +42,7 @@ class List {
     }
 
     locked removeFirst(value) {
-        require "arrays"
+        let arrays = require("arrays")
         for (let i = 0; i < arrays.length(this.array); i++) {
             if (this.array[i] == value) {
                 this.removeAt(i)
@@ -52,7 +52,7 @@ class List {
     }
 
     locked removeLast(value) {
-        require "arrays"
+        let arrays = require("arrays")
         for (let i = arrays.length(this.array) - 1; i >= 0; i--) {
             if (this.array[i] == value) {
                 this.removeAt(i)
@@ -62,7 +62,7 @@ class List {
     }
 
     locked removeAll(value) {
-        require "arrays"
+        let arrays = require("arrays")
         for (let i = 0; i < arrays.length(this.array); i++)
             if (this.array[i] == value)
                 this.removeAt(i)
@@ -71,7 +71,7 @@ class List {
     locked removeAt(index) {
         if (!(index is type("number")))
             return undefined
-        require "arrays"
+        let arrays = require("arrays")
         if (index < 0 || index >= arrays.length(this.array))
             return null
         let tailLength = arrays.length(this.array) - (index + 1)
@@ -83,7 +83,7 @@ class List {
     locked insert(index, value) {
         if (!(index is type("number")))
             return undefined
-        require "arrays"
+        let arrays = require("arrays")
         if (index < 0 || index >= arrays.length(this.array))
             return null
         this.array = arrays.resize(this.array, arrays.length(this.array) + 1)
@@ -94,7 +94,7 @@ class List {
     }
 
     locked firstIndexOf(value) {
-        require "arrays"
+        let arrays = require("arrays")
         for (let i = 0; i < arrays.length(this.array); i++)
             if (this.array[i] == value)
                 return i
@@ -102,7 +102,7 @@ class List {
     }
 
     locked lastIndexOf(value) {
-        require "arrays"
+        let arrays = require("arrays")
         for (let i = arrays.length(this.array) - 1; i >= 0; i--)
             if (this.array[i] == value)
                 return i

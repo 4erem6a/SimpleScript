@@ -127,15 +127,6 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
     }
 
     @Override
-    public void visit(RequireStatement target) {
-        final String varName = target.getExpression().getVariableName() == null
-                ? target.getExpression().getModuleName()
-                : target.getExpression().getVariableName();
-        registerIdentifier(varName, DUMMY_IDENTIFIER);
-        super.visit(target);
-    }
-
-    @Override
     public void visit(ImportStatement target) {
         super.visit(target);
         final String name = ((ValueExpression) ((ContainerAccessExpression) target.getPath()).getKey()).getValue().asString();

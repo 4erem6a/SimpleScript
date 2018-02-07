@@ -11,7 +11,8 @@ public enum SSExecutionFlags {
     ARGS("-a", -1),
     LOG("-l", 0),
     LINT("-lt", 0),
-    DEBUG("-d", 0);
+    DEBUG("-d", 0),
+    MODULE_PATH("-mp", 1);
     private final String name;
     private final int argc;
 
@@ -55,6 +56,9 @@ public enum SSExecutionFlags {
             case "-c":
             case "--charset":
                 return CHARSET;
+            case "-mp":
+            case "--modulepath":
+                return MODULE_PATH;
             default:
                 return null;
         }

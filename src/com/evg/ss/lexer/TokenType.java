@@ -80,9 +80,7 @@ public enum TokenType {
     Is("is"),               //is
     Extends("extends"),     //extends
     Exports("exports"),     //exports
-    External("external"),   //external
     As("as"),               //as
-    Local("local"),         //local
     Nameof("nameof"),       //nameof
     Import("import"),       //import
     New("new"),             //new

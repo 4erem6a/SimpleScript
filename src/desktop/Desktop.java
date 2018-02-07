@@ -9,6 +9,7 @@ import com.evg.ss.exceptions.inner.SSInnerException;
 import com.evg.ss.exceptions.lexer.SSLexerException;
 import com.evg.ss.lib.CallStack;
 import com.evg.ss.lib.SS;
+import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.linter.Linter;
 import com.evg.ss.parser.ast.Statement;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +31,7 @@ public final class Desktop {
 
     private static List<ExecutionFlag> EXECUTION_FLAGS = new ArrayList<>();
     private static boolean LOG = false, DEBUG = false;
-    private static SSExecutionModes MODE = SSExecutionModes.FILE;
+    private static SSExecutionModes MODE = SSExecutionModes.PROGRAM;
 
     private static boolean hasFlag(String name) {
         return EXECUTION_FLAGS.stream().anyMatch(flag -> flag.getType().getName().equals(name));
@@ -63,6 +65,19 @@ public final class Desktop {
         }
         LOG = hasFlag("-l");
         DEBUG = hasFlag("-d");
+        log("Loading modules ... \n");
+        if (hasFlag("-mp")) {
+            final String mpValue = getFlag("-mp").getSingleArg();
+            final List<String> modulePaths = new ArrayList<>();
+            if (mpValue.contains(";"))
+                modulePaths.addAll(Arrays.asList(mpValue.split(";")));
+            else modulePaths.add(mpValue);
+            for (String path : modulePaths) {
+                log("\tLoading modules: %s\n", path);
+                SSModule.loadModulesByPath(path);
+            }
+        }
+        log("Complete\n");
         if (!hasFlag("-f") && !hasFlag("-s"))
             exitWithMessage("Missing source ('-f'/'-s').");
         if (hasFlag("-f") && hasFlag("-s"))
@@ -82,11 +97,11 @@ public final class Desktop {
         } else source = getFlag("-s").getSingleArg();
         if (hasFlag("-m")) {
             final String arg = getFlag("-m").getSingleArg();
-            if (arg.toLowerCase().equals("main"))
+            if (arg.toLowerCase().equals("main") || arg.toLowerCase().equals("m"))
                 MODE = SSExecutionModes.MAIN;
-            else if (arg.toLowerCase().equals("file"))
-                MODE = SSExecutionModes.FILE;
-            else if (arg.toLowerCase().equals("expression"))
+            else if (arg.toLowerCase().equals("program") || arg.toLowerCase().equals("p"))
+                MODE = SSExecutionModes.PROGRAM;
+            else if (arg.toLowerCase().equals("expression") || arg.toLowerCase().equals("e"))
                 MODE = SSExecutionModes.EXPRESSION;
             else exitWithMessage("Invalid execution mode.");
         }
@@ -116,8 +131,8 @@ public final class Desktop {
         log("Setting environment variables ... ");
         if (hasFlag("-f")) {
             final Path path = Paths.get(getFlag("-f").getSingleArg()).toAbsolutePath();
-            Environment.putEnvVariable(Environment.EXECUTABLE_PATH, Value.of(path.toString()), true);
-            Environment.putEnvVariable(Environment.EXECUTABLE_DIR, Value.of(path.getParent().toString()), true);
+            Environment.putEnvVariable(Environment.EXECUTABLE_FILE, Value.of(path.toString()), true);
+            Environment.putEnvVariable(Environment.EXECUTABLE_PATH, Value.of(path.getParent().toString()), true);
         }
         Environment.putEnvVariable(Environment.CURRENT_LANG_VERSION, Value.of(SimpleScript.VERSION.toString()), true);
         Environment.putEnvVariable(Environment.PROGRAM_ARGS, programArgs, true);
@@ -142,7 +157,7 @@ public final class Desktop {
             System.out.printf("PROGRAM:\n%sEND.\n",
                     new MSCGenerator(compiledScript.getProgram()).generate());
         if (hasFlag("-e")) {
-            if (MODE == SSExecutionModes.FILE) {
+            if (MODE == SSExecutionModes.PROGRAM) {
                 try {
                     compiledScript.execute();
                 } catch (SSThrownException e) {

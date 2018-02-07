@@ -19,7 +19,7 @@ class Paint {
         this.setColor(color)
     }
     locked setColor(color) {
-        require "canvas"
+        let canvas = require("canvas")
         if (color is canvas.Color)
             this.color = color
         else if (this.color == undefined)
@@ -28,43 +28,43 @@ class Paint {
     locked applyColor() > require("jcanvas").setColor(this.color.getCode())
     locked drawLine(x1, y1, x2, y2) {
         this.applyColor()
-        require "jcanvas"
+        let jcanvas = require("jcanvas")
         jcanvas.line(x1, y1, x2, y2)
         jcanvas.repaint()
     }
     locked drawOval(x, y, h, w) {
         this.applyColor()
-        require "jcanvas"
+        let jcanvas = require("jcanvas")
         jcanvas.oval(x, y, h, w)
         jcanvas.repaint()
     }
     locked fillOval(x, y, h, w) {
         this.applyColor()
-        require "jcanvas"
+        let jcanvas = require("jcanvas")
         jcanvas.foval(x, y, h, w)
         jcanvas.repaint()
     }
     locked drawRect(x, y, h, w) {
         this.applyColor()
-        require "jcanvas"
+        let jcanvas = require("jcanvas")
         jcanvas.rect(x, y, h, w)
         jcanvas.repaint()
     }
     locked fillRect(x, y, h, w) {
         this.applyColor()
-        require "jcanvas"
+        let jcanvas = require("jcanvas")
         jcanvas.frect(x, y, h, w)
         jcanvas.repaint()
     }
     locked drawClip(x, y, h, w) {
         this.applyColor()
-        require "jcanvas"
+        let jcanvas = require("jcanvas")
         jcanvas.clip(x, y, h, w)
         jcanvas.repaint()
     }
     locked drawText(x, y, text) {
         this.applyColor()
-        require "jcanvas"
+        let jcanvas = require("jcanvas")
         jcanvas.text(x, y, text)
         jcanvas.repaint()
     }
@@ -73,9 +73,9 @@ class Paint {
 class Window {
     new() {}
     static locked open(title = "", w = 640, h = 480)
-        > require("jcanvas").createWindow(title, w, h)
+        require("jcanvas").createWindow(title, w, h)
     static locked close()
-        > require("jcanvas").closeWindow()
+        require("jcanvas").closeWindow()
 }
 
 exports {

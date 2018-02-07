@@ -16,7 +16,6 @@ import com.evg.ss.values.UndefinedValue;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.evg.ss.parser.ast.RequireExpression.RequireMode;
 import static com.evg.ss.parser.ast.UnaryExpression.UnaryOperations;
 
 /**
@@ -76,8 +75,6 @@ public final class Parser extends AbstractParser {
             return new ContinueStatement();
         } else if (match(TokenType.Block)) {
             return block();
-        } else if (match(TokenType.Require)) {
-            return requireStatement();
         } else if (match(TokenType.Function)) {
             return functionDefinition();
         } else if (match(TokenType.Return)) {
@@ -194,32 +191,11 @@ public final class Parser extends AbstractParser {
         return new FunctionDefinitionStatement(name, function);
     }
 
-    private Statement requireStatement() {
-        final String variable;
-        final boolean external = match(TokenType.External);
-        final boolean local = !external && match(TokenType.Local);
-        final boolean isParenSurrounded = match(TokenType.Lp);
-        final String name = consume(TokenType.String).getValue();
-        if (isParenSurrounded) consume(TokenType.Rp);
-        if (external) {
-            consume(TokenType.As);
-            variable = consume(TokenType.String).getValue();
-            return new RequireStatement(name, variable, RequireMode.EXTERNAL);
-        } else if (match(TokenType.As))
-            variable = consume(TokenType.String).getValue();
-        else variable = null;
-        return new RequireStatement(name, variable, local ? RequireMode.LOCAL : RequireMode.MODULE);
-    }
-
     private Expression requireExpression() {
-        final boolean external = match(TokenType.External);
-        final boolean local = !external && match(TokenType.Local);
-        final boolean isParenSurrounded = match(TokenType.Lp);
+        consume(TokenType.Lp);
         final String name = consume(TokenType.String).getValue();
-        if (isParenSurrounded) consume(TokenType.Rp);
-        return new RequireExpression(name, external
-                ? RequireMode.EXTERNAL : local
-                ? RequireMode.LOCAL : RequireMode.MODULE);
+        consume(TokenType.Rp);
+        return new RequireExpression(name);
     }
 
     private Statement doWhileStatement() {

@@ -88,9 +88,7 @@ public final class Lexer extends AbstractLexer {
         KEYWORD_MAP.put("is", TokenType.Is);
         KEYWORD_MAP.put("extends", TokenType.Extends);
         KEYWORD_MAP.put("exports", TokenType.Exports);
-        KEYWORD_MAP.put("external", TokenType.External);
         KEYWORD_MAP.put("as", TokenType.As);
-        KEYWORD_MAP.put("local", TokenType.Local);
         KEYWORD_MAP.put("nameof", TokenType.Nameof);
         KEYWORD_MAP.put("import", TokenType.Import);
         KEYWORD_MAP.put("new", TokenType.New);

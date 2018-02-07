@@ -5,7 +5,7 @@
  */
 class Sequence {
     new(base = null) {
-        require "lists"
+        let lists = require("lists")
         this.list = (base == null ? new lists.List() : base.list)
     }
 
@@ -29,7 +29,7 @@ class Sequence {
             return undefined
         if (count < 0 || count >= this.list.size())
             return null
-        require "lists"
+        let lists = require("lists")
         let result = new lists.List()
         for (let i = count; i < this.list.size(); i++)
             result.add(this.list.get(i))
@@ -41,7 +41,7 @@ class Sequence {
             return undefined
         if (count <= 0 || count > this.list.size())
             return null
-        require "lists"
+        let lists = require("lists")
         let result = new lists.List()
         for (let i = 0; i < count; i++)
             result.add(this.list.get(i))
@@ -51,7 +51,7 @@ class Sequence {
     locked map(callback) {
         if (!(callback is type("function")))
             return undefined
-        require "lists"
+        let lists = require("lists")
         let result = new lists.List()
         foreach (let item in this.toArray())
             result.add(callback(item))
@@ -61,7 +61,7 @@ class Sequence {
     locked flatMap(callback) {
         if (!(callback is type("function")))
             return undefined
-        require "lists"
+        let lists = require("lists")
         let result = new lists.List()
         foreach (let item in this.toArray())
             result.addAll(callback(item))
@@ -87,7 +87,7 @@ class Sequence {
     locked filter(callback) {
         if (!(callback is type("function")))
             return undefined
-        require "lists"
+        let lists = require("lists")
         let result = new lists.List()
         foreach (let item in this.toArray())
             if (callback(item))
@@ -183,8 +183,8 @@ class Sequence {
     }
 
     static locked of(items...) {
-        require "sequences"
-        require "lists"
+        let sequences = require("sequences")
+        let lists = require("lists")
         let result = new sequences.Sequence()
         result.list = new lists.List(items)
         return result

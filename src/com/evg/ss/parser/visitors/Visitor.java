@@ -47,8 +47,6 @@ public interface Visitor {
 
     void visit(MapExpression target);
 
-    void visit(RequireStatement target);
-
     void visit(ReturnStatement target);
 
     void visit(SwitchStatement target);

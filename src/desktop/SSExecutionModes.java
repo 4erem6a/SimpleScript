@@ -1,7 +1,7 @@
 package desktop;
 
 public enum SSExecutionModes {
-    FILE,
+    PROGRAM,
     MAIN,
     EXPRESSION
 }

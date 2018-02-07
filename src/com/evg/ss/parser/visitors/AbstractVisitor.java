@@ -128,11 +128,6 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(RequireStatement target) {
-        target.getExpression().accept(this);
-    }
-
-    @Override
     public void visit(ReturnStatement target) {
         target.getExpression().accept(this);
     }

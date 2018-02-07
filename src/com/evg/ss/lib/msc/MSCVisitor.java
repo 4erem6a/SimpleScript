@@ -181,18 +181,7 @@ public class MSCVisitor implements ResultVisitor<String> {
 
     @Override
     public String visit(RequireExpression target) {
-        final RequireExpression.RequireMode mode = target.getMode();
-        final StringBuilder builder = new StringBuilder("require");
-        switch (mode) {
-            case LOCAL:
-                builder.append(" local");
-            case EXTERNAL:
-                builder.append(" external");
-        }
-        builder.append(String.format("(\"%s\")", target.getModuleName()));
-        if (target.getVariableName() != null)
-            builder.append(String.format("as\"%s\"", target.getVariableName()));
-        return builder.toString();
+        return String.format("require(\"%s\")", target.getPath());
     }
 
     @Override
@@ -306,11 +295,6 @@ public class MSCVisitor implements ResultVisitor<String> {
     @Override
     public String visit(NewExpression newExpression) {
         return String.format("new %s", newExpression.getFunctionCall().accept(this));
-    }
-
-    @Override
-    public String visit(RequireStatement target) {
-        return target.getExpression().accept(this);
     }
 
     @Override

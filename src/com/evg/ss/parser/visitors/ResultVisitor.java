@@ -46,8 +46,6 @@ public interface ResultVisitor<TResult> {
 
     TResult visit(MapExpression target);
 
-    TResult visit(RequireStatement target);
-
     TResult visit(ReturnStatement target);
 
     TResult visit(SwitchStatement target);
