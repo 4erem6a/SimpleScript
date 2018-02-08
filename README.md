@@ -2,16 +2,15 @@
 ## Description:
 SimpleScript is a scripting programming language created as hobby project.
 SS suports imperative, functional & object-oriented programmig paradigms.
-## Latest changelog: (1.9.2.0)
-Added default constructors.
-Fixed call context in class methods.
-Added `jcanvas` module.
-Added `canvas` module.
-Added `that` operator.
-`this` is no longer accessible.
-Added `utils.refcmp` method.
-Added `functions.getContext` method.
-Added `SSClassBuilder`.
+## Latest changelog: (1.9.3.0)
+* Changed module loading process.
+* Added `-mp`(`--modulepath`) execution flag.
+* Separated ss modules from native modules.
+* Removed linker.
+* Unreserved `local` & `external` keywords.
+* Removed `require` statement.
+* Simplified `require` expression syntax.
+* Parenthesis in `require` expression are necessary now.
 ## Roadmap:
 * Binary shift operators.
 * Array deconstruction.
