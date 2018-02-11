@@ -44,7 +44,7 @@ List of supported flags:
 ## Hello, world!
 Code:
 ```
-require "io"                //Require "io" module from standard library.
+let const io = require("io")//Require "io" module from standard library.
 io.println("Hello, world!") //Print line "Hello, world" to STDOUT.
 ```
 Command: `ss -f program.ss -e -li`
