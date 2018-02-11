@@ -23,7 +23,8 @@ SS suports imperative, functional & object-oriented programmig paradigms.
 3. Extract SimpleScript.jar manually or use an installer.
 ## Usage:
 You can run SS code from command line.
-Use `java -jar %SimpleScript.jar path%` command with following flags:
+Use `ss.cmd` script or run `SimpleScript.jar` manually.
+List of supported flags:
 ```
     -f <file>       Specifies source file
     -s <source>     Specifies source
@@ -46,15 +47,14 @@ Code:
 require "io"                //Require "io" module from standard library.
 io.println("Hello, world!") //Print line "Hello, world" to STDOUT.
 ```
-For example, `SimpleScript.jar` and `program.ss` are located in `C:\SS`
-Command: `ss -f C:\SS\program.ss -e -li`
+Command: `ss -f program.ss -e -li`
 Result:
 ```
 CommandLine> java -jar C:\SS\SimpleScript.jar -f C:\SS\program.ss -e -li
 Hello, world!
 ```
 ## Expression mode:
-With `-m expression | -m e` flag, you can evaluate your code as an expresson.
+With `-m expression` flag, you can evaluate your code as an expresson.
 Example:
 ```
 CommandLine> java -jar C:\SS\SimpleScript.jar -s "(2 + 2) * 2" -e -m expression -li
