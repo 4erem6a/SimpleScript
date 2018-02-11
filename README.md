@@ -57,7 +57,7 @@ Hello, world!
 With `-m expression` flag, you can evaluate your code as an expresson.
 Example:
 ```
-CommandLine> java -jar C:\SS\SimpleScript.jar -s "(2 + 2) * 2" -e -m expression -li
+CommandLine> ss -s "(2 + 2) * 2" -e -m expression -li
 >8.00000
 ```
 ## Syntax highlighting:
