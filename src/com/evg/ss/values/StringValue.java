@@ -1,9 +1,11 @@
 package com.evg.ss.values;
 
+import com.evg.ss.exceptions.execution.IndexOutOfBoundsException;
+
 /**
  * @author 4erem6a
  */
-public class StringValue implements Value {
+public class StringValue implements Value, Container {
 
     private String value;
 
@@ -94,5 +96,34 @@ public class StringValue implements Value {
     @Override
     public Value clone() {
         return Value.of(value);
+    }
+
+    @Override
+    public Value get(Value key) {
+        if (key instanceof NumberValue) {
+            final int index = key.asNumber().intValue();
+            if (index < 0 || index >= value.length())
+                throw new IndexOutOfBoundsException(index);
+            return Value.of(Character.toString(value.charAt(index)));
+        } else if (key instanceof StringValue) {
+            ///Properties:
+            switch (key.asString()) {
+                case "length":
+                    return Value.of(value.length());
+            }
+        }
+        return new UndefinedValue();
+    }
+
+    @Override
+    public void set(Value key, Value value) {
+        if (key.getType() == Type.Number) {
+            final int index = key.asNumber().intValue();
+            if (index < 0 || index >= this.value.length())
+                throw new IndexOutOfBoundsException(index);
+            this.value = this.value.substring(0, index) +
+                    value.asString() +
+                    (index == this.value.length() ? "" : this.value.substring(index + 1));
+        }
     }
 }

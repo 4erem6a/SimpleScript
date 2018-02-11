@@ -83,6 +83,7 @@ public class ClassValue implements Value, Container {
             throw new ClassMethodAccessException();
         }
         ((ClassField) member).setValue(value);
+        staticContext.set(key, value);
     }
 
     public ClassValue getBase() {

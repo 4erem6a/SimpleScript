@@ -1,5 +1,5 @@
-//SimpleScript v1.9.3:
-let io = require("io")
-let sample = require("sequences")
+//SimpleScript v1.9.4:
+let const io = require("io")
+let const ss = require("interpreter")
 
-io.println(sample)
+io.println(ss.version)

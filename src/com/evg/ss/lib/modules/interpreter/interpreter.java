@@ -36,7 +36,33 @@ public class interpreter extends SSModule {
         builder.setMethod("setVariable", this::setVariable);
         builder.setMethod("variableExists", this::variableExists);
         builder.setMethod("requireStackTrace", this::requireStackTrace);
+        builder.setMethod("loadModule", this::_loadModule);
+        builder.setMethod("loadModules", this::_loadModules);
+        builder.setMethod("isModuleLoaded", this::_isModuleLoaded);
         return builder.build();
+    }
+
+    private Value _isModuleLoaded(Value... args) {
+        Arguments.checkArgcOrDie(args, 1);
+        return Value.of(SSModule.isModuleExists(args[0].asString()));
+    }
+
+    private Value _loadModules(Value... args) {
+        Arguments.checkArgcOrDie(args, 1);
+        try {
+            SSModule.loadModulesByPath(args[0].asString());
+        } catch (Exception ignored) {
+        }
+        return new UndefinedValue();
+    }
+
+    private Value _loadModule(Value... args) {
+        Arguments.checkArgcOrDie(args, 1);
+        try {
+            SSModule.loadModuleByPath(args[0].asString());
+        } catch (Exception ignored) {
+        }
+        return new UndefinedValue();
     }
 
     private Value scopesGetLevel(Value... args) {

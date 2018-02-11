@@ -542,7 +542,13 @@ public final class Parser extends AbstractParser {
         if (match(TokenType.Lc)) {
             field = expression();
             consume(TokenType.Rc);
-        } else field = new ValueExpression(consume(TokenType.Word).getValue());
+        } else {
+            final String name;
+            if (lookMatch(0, TokenType.String))
+                name = consume(TokenType.String).getValue();
+            else name = consume(TokenType.Word).getValue();
+            field = new ValueExpression(name);
+        }
         return field;
     }
 
@@ -622,6 +628,7 @@ public final class Parser extends AbstractParser {
                 if (constructor != null)
                     throw new ParserException("Class can have only 1 constructor.");
                 else constructor = ((AnonymousFunctionExpression) anonymousFunction());
+                match(TokenType.Sc);
             } else members.add(classMember());
         }
         return new AnonymousClassExpression(constructor, members, base);

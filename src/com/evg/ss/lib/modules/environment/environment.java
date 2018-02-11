@@ -17,8 +17,8 @@ public final class environment extends SSModule {
     @Override
     public MapValue require() {
         final SSMapBuilder environment = new SSMapBuilder();
-        environment.setMethod("setVariable", this::setEnvVariable);
-        environment.setMethod("getVariable", this::getEnvVariable);
+        environment.setMethod("set", this::setEnvVariable);
+        environment.setMethod("get", this::getEnvVariable);
         environment.setMethod("variables", this::variables);
         environment.setMethod("exists", this::exists);
         return environment.build();

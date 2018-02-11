@@ -257,6 +257,10 @@ public final class Lexer extends AbstractLexer {
         final StringBuilder buffer = new StringBuilder();
         char current = next();
         while (true) {
+            if (current == '\0')
+                throw new InvalidTokenDefinitionException(
+                        quote == '`' ? TokenType.InterpolatedString : TokenType.String,
+                        calculatePosition());
             if (current == quote) break;
             buffer.append(current);
             current = next();

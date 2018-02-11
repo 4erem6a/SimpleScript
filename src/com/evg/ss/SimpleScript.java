@@ -9,6 +9,7 @@ import com.evg.ss.exceptions.lexer.SSLexerException;
 import com.evg.ss.exceptions.parser.SSParserException;
 import com.evg.ss.lexer.Lexer;
 import com.evg.ss.lexer.Token;
+import com.evg.ss.lib.Requirable;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.linter.Linter;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 9, 3, 0);
+    public static Version VERSION = new Version(1, 9, 4, 0);
     private List<Token> tokens;
 
     private SimpleScript(List<Token> tokens) {
@@ -144,7 +145,7 @@ public final class SimpleScript {
         }
     }
 
-    public static class CompiledScript {
+    public static class CompiledScript implements Requirable {
 
         private static final List<Visitor> DEFAULT_VISITORS = new ArrayList<>();
 

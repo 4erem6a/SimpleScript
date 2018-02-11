@@ -1,10 +1,12 @@
 package com.evg.ss.lib.modules.jfunctions;
 
 import com.evg.ss.exceptions.execution.FunctionExecutionException;
+import com.evg.ss.lib.Argument;
 import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SSFunction;
 import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
+import com.evg.ss.util.builders.SSArrayBuilder;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
@@ -15,6 +17,26 @@ public final class jfunctions extends SSModule {
         final SSMapBuilder builder = new SSMapBuilder();
         builder.setMethod("execute", this::execute);
         builder.setMethod("getContext", this::getContext);
+        builder.setMethod("info", this::info);
+        return builder.build();
+    }
+
+    private Value info(Value... args) {
+        Arguments.checkArgcOrDie(args, 1);
+        if (args[0].getType() != Type.Function || !(((FunctionValue) args[0]).getValue() instanceof SSFunction))
+            return new UndefinedValue();
+        final SSFunction function = ((SSFunction) ((FunctionValue) args[0]).getValue());
+        final SSMapBuilder builder = new SSMapBuilder();
+        builder.setField("name", Value.of(function.getName()));
+        final SSArrayBuilder array = new SSArrayBuilder();
+        for (Argument arg : function.getArgs())
+            array.setElement(new SSMapBuilder()
+                    .setField("name", Value.of(arg.getName()))
+                    .setField("isDefault", Value.of(arg.getValue() == null))
+                    .setField("isVariadic", Value.of(arg.isVariadic()))
+                    .setMethod("default", a -> (arg.getValue() == null ? new NullValue() : arg.getValue().eval()))
+                    .build());
+        builder.setField("args", array.build());
         return builder.build();
     }
 

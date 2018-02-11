@@ -324,12 +324,45 @@ public class MSCVisitor implements ResultVisitor<String> {
     }
 
     @Override
-    public String visit(AnonymousClassExpression anonymousClassExpression) {
-        return "<Classes aren't supported yet>";
+    public String visit(AnonymousClassExpression target) {
+        final StringBuilder builder = new StringBuilder("class");
+        if (target.getBase() != null)
+            builder.append(" extends ")
+                    .append(target.getBase().accept(this));
+        builder.append("{");
+        if (target.getConstructor() != null)
+            builder.append("new(")
+                    .append(processArgDefinition(target.getConstructor().getArgs()))
+                    .append(")")
+                    .append(target.getConstructor().getBody().accept(this))
+                    .append(";");
+        for (AnonymousClassExpression.ASTClassMember member : target.getMembers())
+            builder.append(processClassMember(member));
+        return builder.append("}").toString();
     }
 
     @Override
     public String visit(ClassDefinitionStatement classDefinitionStatement) {
-        return String.format("class %s", cutKeyword("class", classDefinitionStatement.accept(this)));
+        return String.format("class %s %s", classDefinitionStatement.getName(), cutKeyword("class", classDefinitionStatement.getClassExpression().accept(this)));
+    }
+
+    private String processClassMember(AnonymousClassExpression.ASTClassMember member) {
+        final StringBuilder builder = new StringBuilder();
+        if (member.isStatic())
+            builder.append("static ");
+        if (member instanceof AnonymousClassExpression.ASTClassMethod)
+            if (((AnonymousClassExpression.ASTClassMethod) member).getFunction().isLocked())
+                builder.append("locked ");
+        builder.append(member.getName());
+        if (member instanceof AnonymousClassExpression.ASTClassMethod)
+            builder.append("(")
+                    .append(processArgDefinition(((AnonymousClassExpression.ASTClassMethod) member).getFunction().getArgs()))
+                    .append(")")
+                    .append(((AnonymousClassExpression.ASTClassMethod) member).getFunction().getBody().accept(this));
+        if (member instanceof AnonymousClassExpression.ASTClassField)
+            if (((AnonymousClassExpression.ASTClassField) member).getValue() != null)
+                builder.append("=")
+                        .append(((AnonymousClassExpression.ASTClassField) member).getValue().accept(this));
+        return builder.append(";").toString();
     }
 }
