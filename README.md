@@ -2,17 +2,16 @@
 ## Description:
 SimpleScript is a general-purpose scripting programming language created as hobby project.
 SS suports imperative, functional & object-oriented programmig paradigms.
-## Latest changelog: (1.9.4.0)
-* MSCGenerator now supports classes.
-* Added `interpreter.loadModule` method.
-* Added `interpreter.loadModules` method.
-* Added `interpreter.isModuleLoaded` method.
-* Added `jfunctions.info` method.
-* Added `Requireble` interface.
-* Parser now supports `"quoted"` map key definitions.
-* Fixed infinit loop in `Lexer`.
-* `StringValue` is `Container` now.
-* Fixed static context access is `ClassValue`. 
+## Latest changelog: (1.10.0.0)
+* Added auto-classes.
+* Added constructor inheritance.
+* Added source modifiers.
+* Added `LinterIgnore` source modifier.
+* Added simpified map definition syntax.
+* Added ability to call map as function through `$call` method.
+* Added ability to access static class context through `"static"` key.
+* Added static module loading system.
+* Updated `ClassValue`.
 ## Roadmap:
 * Binary shift operators.
 * Array deconstruction.
