@@ -4,7 +4,7 @@ import com.evg.ss.exceptions.inner.SSContinueException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
-public final class ContinueStatement implements Statement {
+public final class ContinueStatement extends Statement {
     @Override
     public void execute() {
         throw new SSContinueException();

@@ -5,7 +5,7 @@ import com.evg.ss.exceptions.inner.SSContinueException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
-public final class WhileStatement implements Statement {
+public final class WhileStatement extends Statement {
 
     private Statement body;
     private Expression condition;

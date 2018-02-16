@@ -8,7 +8,7 @@ import com.evg.ss.values.Value;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwitchStatement implements Statement {
+public class SwitchStatement extends Statement {
 
     private Expression value;
     private List<Case> cases = new ArrayList<>();

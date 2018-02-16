@@ -4,7 +4,7 @@ import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Value;
 
-public final class ValueCloneExpression implements Expression {
+public final class ValueCloneExpression extends Expression {
 
     private final Expression expression;
 

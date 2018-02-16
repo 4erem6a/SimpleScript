@@ -6,7 +6,7 @@ import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Value;
 
-public class NameofExpression implements Expression {
+public class NameofExpression extends Expression {
 
     private String name;
 

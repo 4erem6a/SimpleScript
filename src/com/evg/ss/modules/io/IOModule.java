@@ -1,33 +1,25 @@
-package com.evg.ss.lib.modules.io;
+package com.evg.ss.modules.io;
 
-import com.evg.ss.lib.modules.SSModule;
-import com.evg.ss.util.builders.SSMapBuilder;
-import com.evg.ss.values.MapValue;
+import com.evg.ss.modules.SSExports;
 import com.evg.ss.values.NullValue;
 import com.evg.ss.values.StringValue;
 import com.evg.ss.values.Value;
 
 import java.util.Scanner;
 
-public final class io extends SSModule {
+@SSExports("io")
+public final class IOModule {
 
-    @Override
-    public MapValue require() {
-        final SSMapBuilder builder = new SSMapBuilder();
-        builder.setMethod("print", this::print);
-        builder.setMethod("println", this::println);
-        builder.setMethod("input", this::input);
-        return builder.build();
-    }
-
-    private Value print(Value... args) {
+    @SSExports("print")
+    public static Value print(Value... args) {
         if (args != null)
             for (Value arg : args)
                 System.out.print(StringValue.asStringValue(arg).asString() + " ");
         return new NullValue();
     }
 
-    private Value println(Value... args) {
+    @SSExports("println")
+    public static Value println(Value... args) {
         if (args != null)
             for (Value arg : args)
                 System.out.print(StringValue.asStringValue(arg).asString() + " ");
@@ -35,7 +27,8 @@ public final class io extends SSModule {
         return new NullValue();
     }
 
-    private Value input(Value... args) {
+    @SSExports("input")
+    public static Value input(Value... args) {
         print(args);
         return new StringValue(new Scanner(System.in).nextLine());
     }

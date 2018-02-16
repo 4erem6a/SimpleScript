@@ -9,7 +9,7 @@ import com.evg.ss.parser.visitors.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class BlockStatement implements Statement, Lockable {
+public final class BlockStatement extends Statement implements Lockable {
 
     private List<Statement> statements = new ArrayList<>();
     private boolean locked;

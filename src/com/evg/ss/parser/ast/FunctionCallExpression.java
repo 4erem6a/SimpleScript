@@ -1,47 +1,37 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
-import com.evg.ss.lib.ConstructorFunction;
-import com.evg.ss.lib.Function;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
-import com.evg.ss.values.FunctionValue;
-import com.evg.ss.values.MapValue;
+import com.evg.ss.values.Callable;
+import com.evg.ss.values.NewCallable;
 import com.evg.ss.values.Value;
 
 import java.util.Arrays;
 
-public final class FunctionCallExpression implements Expression {
+public final class FunctionCallExpression extends Expression {
 
-    private Expression function;
+    private Expression value;
     private Expression[] args;
     private boolean isNew = false;
 
-    public FunctionCallExpression(Expression function, Expression... args) {
-        this.function = function;
+    public FunctionCallExpression(Expression expression, Expression... args) {
+        this.value = expression;
         this.args = args;
     }
 
     @Override
     public Value eval() {
         final Value[] args = Arrays.stream(this.args).map(Expression::eval).toArray(Value[]::new);
-        final Value functionValue = function.eval();
-//        CALL LOG:
-//        if (functionValue instanceof FunctionValue)
-//            if (((FunctionValue) functionValue).getValue() instanceof SSFunction)
-//        System.out.printf("CALL_LOG: \"%s\" [%d]\n", ((SSFunction) ((FunctionValue) functionValue).getValue()).getName(),
-//                args.length);
-//            else
-//                System.out.printf("CALL_LOG: \"%s\" [%d]\n", ((FunctionValue) functionValue).getValue().toString(),
-//                        args.length);
-        if (!(functionValue instanceof FunctionValue))
-            throw new InvalidValueTypeException(functionValue.getType());
-        final Function function = ((FunctionValue) functionValue).getValue();
-        if (isNew)
-            return function instanceof ConstructorFunction
-                    ? ((ConstructorFunction) function).executeAsNew(args)
-                    : new MapValue();
-        return function.execute(args);
+        final Value value = this.value.eval();
+        if (isNew) {
+            if (value instanceof NewCallable)
+                return ((NewCallable) value)._new(args);
+        } else {
+            if (value instanceof Callable)
+                return ((Callable) value).call(args);
+        }
+        throw new InvalidValueTypeException(value.getType());
     }
 
     public FunctionCallExpression setNew() {
@@ -51,7 +41,7 @@ public final class FunctionCallExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("call %s [%s]", function, Arrays.toString(args));
+        return String.format("call %s [%s]", value, Arrays.toString(args));
     }
 
     @Override
@@ -64,8 +54,8 @@ public final class FunctionCallExpression implements Expression {
         return visitor.visit(this);
     }
 
-    public Expression getFunction() {
-        return function;
+    public Expression getValue() {
+        return value;
     }
 
     public Expression[] getArgs() {
@@ -74,7 +64,7 @@ public final class FunctionCallExpression implements Expression {
 
     @Override
     public int hashCode() {
-        return function.hashCode()
+        return value.hashCode()
                 ^ Arrays.hashCode(args)
                 ^ Boolean.hashCode(isNew)
                 ^ (17 * 29 * 31);

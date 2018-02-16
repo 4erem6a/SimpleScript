@@ -1,5 +1,5 @@
-//SimpleScript v1.9.4:
-let const io = require("io")
-let const ss = require("interpreter")
+//SimpleScript v1.10:
+require('io').println("Hello, world!")
 
-io.println(ss.version)
+##LinterIgnore
+x = 10

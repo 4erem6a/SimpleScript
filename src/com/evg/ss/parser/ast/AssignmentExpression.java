@@ -5,7 +5,7 @@ import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Value;
 
-public final class AssignmentExpression implements Expression, Accessible {
+public final class AssignmentExpression extends Expression implements Accessible {
 
     private Expression target, value;
 

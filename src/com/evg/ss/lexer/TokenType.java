@@ -34,6 +34,7 @@ public enum TokenType {
     Al(">"),            //<
     Ar("?"),            //>
     At("@"),            //@
+    Ns("#"),            //#
     VbVb("||"),         //||
     AmAm("&&"),         //&&
     AlEq("<="),         //<=
@@ -47,6 +48,7 @@ public enum TokenType {
     ArAr(">>"),         //>>
     AlAl("<<"),         //<<
     EqQm("=?"),         //=?
+    NsNs("##"),         //##
     ArArAr(">>>"),      //>>>
     Cl(":"),            //:
     Dt("."),            //.

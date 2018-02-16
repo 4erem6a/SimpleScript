@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class Lexer extends AbstractLexer {
     //Operator characters:
-    private static final String OPERATOR_CHARS = "@(){}[]/*%-+=&|^~!?<>|:.,;";
+    private static final String OPERATOR_CHARS = "@#(){}[]/*%-+=&|^~!?<>|:.,;";
     private static final String QUOTES = "'\"`";
     private static final Map<String, TokenType> OPERATOR_TOKEN_MAP = new HashMap<>();
     private static final Map<String, TokenType> KEYWORD_MAP = new HashMap<>();
@@ -40,6 +40,7 @@ public final class Lexer extends AbstractLexer {
         OPERATOR_TOKEN_MAP.put("<", TokenType.Al);
         OPERATOR_TOKEN_MAP.put(">", TokenType.Ar);
         OPERATOR_TOKEN_MAP.put("@", TokenType.At);
+        OPERATOR_TOKEN_MAP.put("#", TokenType.Ns);
         OPERATOR_TOKEN_MAP.put("||", TokenType.VbVb);
         OPERATOR_TOKEN_MAP.put("&&", TokenType.AmAm);
         OPERATOR_TOKEN_MAP.put("<=", TokenType.AlEq);
@@ -52,6 +53,7 @@ public final class Lexer extends AbstractLexer {
         OPERATOR_TOKEN_MAP.put("::", TokenType.ClCl);
         OPERATOR_TOKEN_MAP.put(">>", TokenType.ArAr);
         OPERATOR_TOKEN_MAP.put("<<", TokenType.AlAl);
+        OPERATOR_TOKEN_MAP.put("##", TokenType.NsNs);
         OPERATOR_TOKEN_MAP.put(">>>", TokenType.ArArAr);
         OPERATOR_TOKEN_MAP.put("=?", TokenType.EqQm);
         OPERATOR_TOKEN_MAP.put(":", TokenType.Cl);
@@ -116,9 +118,11 @@ public final class Lexer extends AbstractLexer {
     public List<Token> tokenize() {
         while (position < sourceLength) {
             final Character current = peek(0);
-            if (current == '#')
-                tokenizeHexNumber();
-            else if (current == '0') {
+            if (current == '#') {
+                if (Character.isDigit(peek(1)) || isHexNumber(peek(1)))
+                    tokenizeHexNumber();
+                else tokenizeOperator();
+            } else if (current == '0') {
                 if (peek(1) == 'x')
                     tokenizeBinaryNumber();
                 else tokenizeNumber();

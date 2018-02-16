@@ -8,7 +8,7 @@ import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 
 
-public final class ThatExpression implements Expression {
+public final class ThatExpression extends Expression {
 
     @Override
     public Value eval() {

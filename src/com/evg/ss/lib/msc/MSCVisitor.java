@@ -126,7 +126,7 @@ public class MSCVisitor implements ResultVisitor<String> {
     @Override
     public String visit(FunctionCallExpression target) {
         return String.format("%s(%s)",
-                target.getFunction().accept(this),
+                target.getValue().accept(this),
                 processArgs(target.getArgs()));
     }
 

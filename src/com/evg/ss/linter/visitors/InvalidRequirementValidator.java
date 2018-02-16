@@ -2,16 +2,18 @@ package com.evg.ss.linter.visitors;
 
 import com.evg.ss.SimpleScript;
 import com.evg.ss.exceptions.SSLintException;
-import com.evg.ss.lib.modules.SSModule;
+import com.evg.ss.modules.SSModule;
 import com.evg.ss.parser.ast.ExportsStatement;
 import com.evg.ss.parser.ast.RequireExpression;
 import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.parser.visitors.AbstractVisitor;
 
-public final class InvalidRequirementValidator extends AbstractVisitor {
+public final class InvalidRequirementValidator extends LintVisitor {
 
     @Override
     public void visit(RequireExpression target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         if (!SSModule.isModuleExists(target.getPath()))
             throw new SSLintException("Required module '%s' does not exists or contains errors.", target.getPath());
         final SimpleScript.CompiledScript module = SSModule.loadModule(target.getPath());

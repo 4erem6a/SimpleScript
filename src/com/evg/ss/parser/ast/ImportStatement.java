@@ -7,7 +7,7 @@ import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.StringValue;
 import com.evg.ss.values.Value;
 
-public final class ImportStatement implements Statement {
+public final class ImportStatement extends Statement {
 
     private Expression path;
 

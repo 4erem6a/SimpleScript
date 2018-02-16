@@ -1,11 +1,11 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.lib.modules.SSModule;
+import com.evg.ss.modules.SSModule;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Value;
 
-public final class RequireExpression implements Expression {
+public final class RequireExpression extends Expression {
 
     private String path;
 

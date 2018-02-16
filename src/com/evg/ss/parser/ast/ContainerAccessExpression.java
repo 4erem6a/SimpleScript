@@ -6,7 +6,7 @@ import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Container;
 import com.evg.ss.values.Value;
 
-public final class ContainerAccessExpression implements Expression, Accessible {
+public final class ContainerAccessExpression extends Expression implements Accessible {
 
     private Expression target;
     private Expression key;

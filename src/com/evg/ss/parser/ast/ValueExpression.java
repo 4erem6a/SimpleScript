@@ -7,7 +7,7 @@ import com.evg.ss.values.*;
 /**
  * @author 4erem6a
  */
-public class ValueExpression implements Expression {
+public class ValueExpression extends Expression {
 
     private Value value;
 

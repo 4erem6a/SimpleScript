@@ -8,7 +8,7 @@ import com.evg.ss.parser.visitors.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class TryCatchFinallyStatement implements Statement {
+public final class TryCatchFinallyStatement extends Statement {
 
     private final Statement _try, _finally;
     private final List<Catch> catches;

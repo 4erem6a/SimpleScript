@@ -1,32 +1,21 @@
-package com.evg.ss.lib.modules.arrays;
+package com.evg.ss.modules.arrays;
 
 import com.evg.ss.exceptions.execution.InvalidValueException;
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.lib.Function;
-import com.evg.ss.lib.modules.SSModule;
+import com.evg.ss.modules.SSExports;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSArrayBuilder;
-import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
-public final class arrays extends SSModule {
+@SSExports("arrays")
+public final class ArraysModule {
 
-    @Override
-    public MapValue require() {
-        final SSMapBuilder builder = new SSMapBuilder();
-        builder.setMethod("length", this::length);
-        builder.setMethod("resize", this::resize);
-        builder.setMethod("create", this::create);
-        builder.setMethod("sortBy", this::sortBy);
-        builder.setMethod("sort", this::sort);
-        builder.setMethod("copy", this::copy);
-        return builder.build();
-    }
-
-    private Value sort(Value... args) {
+    @SSExports("sort")
+    public static Value sort(Value... args) {
         if (!Arguments.checkArgTypes(args, Type.Array, Type.Function))
             return new UndefinedValue();
         final Value[] array = ((ArrayValue) args[0]).getValue().clone();
@@ -35,7 +24,8 @@ public final class arrays extends SSModule {
         return Value.of(array);
     }
 
-    private Value sortBy(Value... args) {
+    @SSExports("sortBy")
+    public static Value sortBy(Value... args) {
         if (!Arguments.checkArgTypes(args, Type.Array, Type.Function))
             return new UndefinedValue();
         final Value[] array = ((ArrayValue) args[0]).getValue().clone();
@@ -44,7 +34,8 @@ public final class arrays extends SSModule {
         return Value.of(array);
     }
 
-    private Value create(Value... args) {
+    @SSExports("create")
+    public static Value create(Value... args) {
         for (Value value : args)
             if (!Arguments.checkArgTypes(new Value[]{value}, Type.Number))
                 return new UndefinedValue();
@@ -55,7 +46,7 @@ public final class arrays extends SSModule {
         return createArray(args, 0);
     }
 
-    private ArrayValue createArray(Value[] args, int index) {
+    private static ArrayValue createArray(Value[] args, int index) {
         final int size = args[index].asNumber().intValue();
         final int last = args.length - 1;
         final SSArrayBuilder builder = new SSArrayBuilder();
@@ -71,7 +62,8 @@ public final class arrays extends SSModule {
         return builder.build();
     }
 
-    private Value length(Value... args) {
+    @SSExports("length")
+    public static Value length(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
         if (!Arguments.checkArgTypes(args, Type.Array) &&
                 !Arguments.checkArgTypes(args, Type.String))
@@ -82,7 +74,8 @@ public final class arrays extends SSModule {
         return new NumberValue(array.length());
     }
 
-    private Value resize(Value... args) {
+    @SSExports("resize")
+    public static Value resize(Value... args) {
         Arguments.checkArgcOrDie(args, 2);
         if (!Arguments.checkArgTypes(args, Type.Array, Type.Number) &&
                 !Arguments.checkArgTypes(args, Type.String, Type.Number))
@@ -94,7 +87,8 @@ public final class arrays extends SSModule {
         return array;
     }
 
-    private Value copy(Value... args) {
+    @SSExports("copy")
+    public static Value copy(Value... args) {
         Arguments.checkArgcOrDie(args, 5);
         if (!Arguments.checkArgTypes(args, Type.Array, Type.Number, Type.Array, Type.Number, Type.Number) &&
                 !Arguments.checkArgTypes(args, Type.String, Type.Number, Type.String, Type.Number, Type.Number))

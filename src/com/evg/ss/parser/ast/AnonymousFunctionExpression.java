@@ -9,7 +9,7 @@ import com.evg.ss.values.Value;
 
 import java.util.Arrays;
 
-public final class AnonymousFunctionExpression implements Expression, Lockable {
+public final class AnonymousFunctionExpression extends Expression implements Lockable {
 
     private ArgumentExpression[] args;
     private Statement body;

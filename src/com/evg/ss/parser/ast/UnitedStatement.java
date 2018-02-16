@@ -6,7 +6,7 @@ import com.evg.ss.parser.visitors.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class UnitedStatement implements Statement {
+public final class UnitedStatement extends Statement {
 
     private List<Statement> statements = new ArrayList<>();
 

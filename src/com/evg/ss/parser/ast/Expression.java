@@ -2,8 +2,8 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.values.Value;
 
-public interface Expression extends Node {
+public abstract class Expression extends Node {
 
-    Value eval();
+    public abstract Value eval();
 
 }

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class MapValue implements Value, Container, Iterable<Map.Entry<Value, Value>> {
+public class MapValue implements Value, Container, Callable, Iterable<Map.Entry<Value, Value>> {
 
     private Map<Value, Value> map = new HashMap<>();
 
@@ -138,4 +138,13 @@ public class MapValue implements Value, Container, Iterable<Map.Entry<Value, Val
         return result;
     }
 
+    @Override
+    public Value call(Value... args) {
+        if (!map.containsKey(Value.of("$call")))
+            return new UndefinedValue();
+        final Value call = map.get(Value.of("$call"));
+        if (call.getType() != Type.Function)
+            return new UndefinedValue();
+        return ((FunctionValue) call).call(args);
+    }
 }

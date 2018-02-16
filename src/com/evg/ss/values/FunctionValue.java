@@ -1,9 +1,10 @@
 package com.evg.ss.values;
 
+import com.evg.ss.lib.ConstructorFunction;
 import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SSFunction;
 
-public class FunctionValue implements Value {
+public class FunctionValue implements Value, Callable, NewCallable {
 
     private Function value;
 
@@ -65,5 +66,17 @@ public class FunctionValue implements Value {
         if (value instanceof SSFunction)
             return new FunctionValue(((SSFunction) value).clone());
         return new FunctionValue(value);
+    }
+
+    @Override
+    public Value call(Value... args) {
+        return value.execute(args);
+    }
+
+    @Override
+    public Value _new(Value... args) {
+        return value instanceof ConstructorFunction
+                ? ((ConstructorFunction) value).executeAsNew(args)
+                : new UndefinedValue();
     }
 }

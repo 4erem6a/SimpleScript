@@ -1,8 +1,8 @@
-package com.evg.ss.lib.modules.math;
+package com.evg.ss.modules.math;
 
 import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SimpleFunction;
-import com.evg.ss.lib.modules.SSModule;
+import com.evg.ss.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.MapValue;
@@ -59,7 +59,7 @@ public final class math extends SSModule {
 
     private static class MathFunction extends SimpleFunction {
 
-        public MathFunction(int argc, Function callback) {
+        MathFunction(int argc, Function callback) {
             super(argc, callback);
         }
 

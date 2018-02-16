@@ -6,7 +6,7 @@ import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Value;
 
-public final class InstantFunctionExpression implements Expression, Lockable {
+public final class InstantFunctionExpression extends Expression implements Lockable {
 
     private Statement body;
     private boolean locked = false;

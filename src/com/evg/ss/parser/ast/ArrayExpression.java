@@ -7,7 +7,7 @@ import com.evg.ss.values.Value;
 
 import java.util.Arrays;
 
-public final class ArrayExpression implements Expression {
+public final class ArrayExpression extends Expression {
 
     private Expression[] expressions;
 

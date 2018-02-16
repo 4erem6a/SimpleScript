@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ClassValue implements Value, Container {
+public class ClassValue implements Value, Container, NewCallable {
 
     private final ClassValue base;
     private final Map<String, ClassMember> members;
@@ -30,7 +30,9 @@ public class ClassValue implements Value, Container {
     public ClassValue(ClassValue base, SSFunction constructor, List<ClassMember> members) {
         this.base = base;
         this.constructor = (constructor == null
+                ? base == null
                 ? new SSFunction(null, new Argument[0], new ReturnStatement(new ValueExpression()))
+                : base.constructor
                 : constructor);
         this.members = new HashMap<>();
         for (ClassMember member : members) {
@@ -38,18 +40,11 @@ public class ClassValue implements Value, Container {
                 throw new IdentifierAlreadyExistsException(member.name);
             this.members.put(member.name, member);
         }
-        staticContext = createObject(true);
-        for (ClassMember member : getStaticMembers())
-            if (member instanceof ClassMethod)
-                ((SSFunction) ((ClassMethod) member).function).setCallContext(staticContext);
+        staticContext = createObject_v2(true);
     }
 
     private static String getMethodName(String className, String memberName) {
         return String.format("$%s.%s", className == null ? "" : className, memberName);
-    }
-
-    private static boolean processStaticMember(boolean isStatic, boolean flag) {
-        return (isStatic && flag) || (!isStatic && !flag);
     }
 
     private List<ClassMember> getStaticMembers() {
@@ -66,6 +61,8 @@ public class ClassValue implements Value, Container {
     public Value get(Value key) {
         if (key.getType() != Type.String)
             throw new InvalidValueTypeException(key.getType());
+        if (key.asString().equals("static"))
+            return staticContext;
         final ClassMember member = getMemberByName(getStaticMembers(), key.asString());
         if (member != null)
             return staticContext.get(key);
@@ -107,7 +104,7 @@ public class ClassValue implements Value, Container {
     }
 
     public ObjectValue construct(Value... args) {
-        final ObjectValue object = createObject(false);
+        final ObjectValue object = createObject_v2(false);
         if (constructor != null) {
             final SSFunction constructor = new SSFunction(object,
                     this.constructor.getArgs().toArray(new Argument[0]),
@@ -118,38 +115,21 @@ public class ClassValue implements Value, Container {
         return object;
     }
 
-    private ObjectValue createObject(boolean isStatic) {
-        final ObjectValue object = inherit(false);
-        for (ClassMember member : members.values()) {
-            if (member instanceof ClassField && processStaticMember(member.isStatic(), isStatic)) {
-                object.getMapReference().put(Value.of(member.getName()), ((ClassField) member).getValue());
-            } else if (member instanceof ClassMethod && processStaticMember(member.isStatic(), isStatic)) {
-                final Value method = Value.of(((ClassMethod) member).getFunction()).clone();
-                object.getMapReference().put(Value.of(member.getName()), method);
-                ((SSFunction) ((FunctionValue) method).getValue()).setName(getMethodName(name, member.getName()));
-                if (!member.isStatic())
-                    ((SSFunction) ((FunctionValue) method).getValue()).setCallContext(object);
-            }
-        }
-        return object;
-    }
-
-    private ObjectValue inherit(boolean isStatic) {
-        if (base == null)
-            return new ObjectValue(this);
+    private ObjectValue createObject_v2(boolean _static) {
         final ObjectValue object;
-        if (base.base == null)
+        if (base == null)
             object = new ObjectValue(this);
-        else object = base.inherit(isStatic);
-        for (ClassMember member : base.getMembers()) {
-            if (member instanceof ClassField && processStaticMember(member.isStatic(), isStatic)) {
+        else object = base.createObject_v2(_static);
+        for (ClassMember member : members.values()) {
+            if (member.isStatic && !_static || !member.isStatic && _static)
+                continue;
+            if (member instanceof ClassField)
                 object.getMapReference().put(Value.of(member.getName()), ((ClassField) member).getValue());
-            } else if (member instanceof ClassMethod && processStaticMember(member.isStatic(), isStatic)) {
+            if (member instanceof ClassMethod) {
                 final Value method = Value.of(((ClassMethod) member).getFunction()).clone();
-                object.getMapReference().put(Value.of(member.getName()), method);
                 ((SSFunction) ((FunctionValue) method).getValue()).setName(getMethodName(name, member.getName()));
-                if (!member.isStatic())
-                    ((SSFunction) ((FunctionValue) method).getValue()).setCallContext(object);
+                ((SSFunction) ((FunctionValue) method).getValue()).setCallContext(object);
+                object.getMapReference().put(Value.of(member.getName()), method);
             }
         }
         return object;
@@ -206,6 +186,11 @@ public class ClassValue implements Value, Container {
         return members.hashCode()
                 ^ (constructor == null ? 1 : constructor.hashCode())
                 ^ (base == null ? 1 : base.hashCode());
+    }
+
+    @Override
+    public Value _new(Value... args) {
+        return construct(args);
     }
 
     public static abstract class ClassMember {

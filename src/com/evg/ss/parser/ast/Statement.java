@@ -3,8 +3,8 @@ package com.evg.ss.parser.ast;
 /**
  * @author 4erem6a
  */
-public interface Statement extends Node {
+public abstract class Statement extends Node {
 
-    void execute();
+    public abstract void execute();
 
 }

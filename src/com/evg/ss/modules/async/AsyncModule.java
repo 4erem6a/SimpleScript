@@ -1,20 +1,23 @@
-package com.evg.ss.lib.modules.async;
+package com.evg.ss.modules.async;
 
 import com.evg.ss.lib.Function;
-import com.evg.ss.lib.modules.SSModule;
+import com.evg.ss.modules.SSExports;
 import com.evg.ss.util.args.Arguments;
-import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
 import java.util.concurrent.FutureTask;
 
-public final class async extends SSModule {
-    private static Value current(Value... args) {
+@SSExports("async")
+public final class AsyncModule {
+
+    @SSExports("current")
+    public static Value current(Value... args) {
         Arguments.checkArgcOrDie(args, 0);
         return Value.of(Thread.currentThread().toString());
     }
 
-    private static Value sleep(Value... args) {
+    @SSExports("sleep")
+    public static Value sleep(Value... args) {
         Arguments.checkArgcOrDie(args, 0, 1);
         final int time;
         if (args.length == 0)
@@ -27,7 +30,8 @@ public final class async extends SSModule {
         return new UndefinedValue();
     }
 
-    private static Value await(Value... args) {
+    @SSExports("await")
+    public static Value await(Value... args) {
         Arguments.checkArgcOrDie(args, 1, 2);
         if (args[0].getType() != Type.Function)
             return new UndefinedValue();
@@ -60,14 +64,5 @@ public final class async extends SSModule {
         } catch (Exception ignored) {
         }
         return new UndefinedValue();
-    }
-
-    @Override
-    public MapValue require() {
-        final SSMapBuilder builder = new SSMapBuilder();
-        builder.setMethod("await", async::await);
-        builder.setMethod("sleep", async::sleep);
-        builder.setMethod("current", async::current);
-        return builder.build();
     }
 }

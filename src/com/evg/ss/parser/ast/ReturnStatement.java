@@ -4,7 +4,7 @@ import com.evg.ss.exceptions.inner.SSReturnException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
-public final class ReturnStatement implements Statement {
+public final class ReturnStatement extends Statement {
 
     private Expression expression;
 

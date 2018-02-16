@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class AnonymousClassExpression implements Expression {
+public final class AnonymousClassExpression extends Expression {
 
     private AnonymousFunctionExpression constructor;
     private List<ASTClassMember> members = new ArrayList<>();
@@ -124,5 +124,4 @@ public final class AnonymousClassExpression implements Expression {
             return new ClassValue.ClassMethod(isStatic(), getName(), function.toSSFunction());
         }
     }
-
 }

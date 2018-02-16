@@ -10,7 +10,7 @@ import com.evg.ss.values.Value;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class MapExpression implements Expression {
+public final class MapExpression extends Expression {
 
     private Map<Expression, Expression> map = new HashMap<>();
     private Expression base = null;

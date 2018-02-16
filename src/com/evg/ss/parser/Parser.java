@@ -8,6 +8,7 @@ import com.evg.ss.exceptions.parser.SSParserException;
 import com.evg.ss.exceptions.parser.UnexpectedTokenException;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lexer.TokenType;
+import com.evg.ss.lib.AutoClassGenerator;
 import com.evg.ss.parser.ast.*;
 import com.evg.ss.parser.ast.BinaryExpression.BinaryOperations;
 import com.evg.ss.values.NullValue;
@@ -23,13 +24,15 @@ import static com.evg.ss.parser.ast.UnaryExpression.UnaryOperations;
  */
 public final class Parser extends AbstractParser {
 
+    private BlockStatement program = new BlockStatement();
+
     public Parser(List<Token> tokens) {
         super(tokens);
     }
 
     @Override
     public Statement parse() throws SSParserException {
-        final BlockStatement program = new BlockStatement();
+        program = new BlockStatement();
         while (!match(TokenType.EOF)) {
             program.addStatement(statement());
             match(TokenType.Sc);
@@ -97,14 +100,27 @@ public final class Parser extends AbstractParser {
             return _class();
         } else if (match(TokenType.Locked)) {
             return lockedStatement();
+        } else if (lookMatch(0, TokenType.Ex) && lookMatch(1, TokenType.NsNs)) {
+            consume(TokenType.Ex);
+            consume(TokenType.NsNs);
+            program.modify(consume(TokenType.Word).getValue());
+            return new ExpressionStatement(UndefinedValue.UndefinedExpression);
+        } else if (match(TokenType.NsNs)) {
+            final String mod = consume(TokenType.Word).getValue();
+            final Statement stmt = statement();
+            stmt.modify(mod);
+            return stmt;
         } else {
             return new ExpressionStatement(expression());
         }
     }
 
     private Statement _class() {
+        final AnonymousClassExpression _class;
         final String name = consume(TokenType.Word).getValue();
-        final AnonymousClassExpression _class = ((AnonymousClassExpression) anonymousClass());
+        if (lookMatch(0, TokenType.Lp))
+            _class = (AnonymousClassExpression) autoClass();
+        else _class = ((AnonymousClassExpression) anonymousClass());
         return new ClassDefinitionStatement(name, _class);
     }
 
@@ -609,10 +625,28 @@ public final class Parser extends AbstractParser {
                 return new InstantFunctionExpression(block());
             return anonymousFunction();
         } else if (match(TokenType.Class)) {
+            if (lookMatch(0, TokenType.Lp))
+                return autoClass();
             return anonymousClass();
         } else if (match(TokenType.Locked)) {
             return lockedExpression();
+        } else if (match(TokenType.NsNs)) {
+            final String mod = consume(TokenType.Word).getValue();
+            final Expression expr = expression();
+            expr.modify(mod);
+            return expr;
         } else throw new UnexpectedTokenException(current);
+    }
+
+    private Expression autoClass() {
+        match(TokenType.Lp);
+        List<ArgumentExpression> classArgs = new ArrayList<>();
+        if (!match(TokenType.Rp)) {
+            do classArgs.add(argument()); while (match(TokenType.Cm));
+            consume(TokenType.Rp);
+        }
+        final Expression base = (match(TokenType.Extends) ? expression() : null);
+        return new AutoClassGenerator(classArgs, base).generate();
     }
 
     private Expression anonymousClass() {
@@ -724,9 +758,14 @@ public final class Parser extends AbstractParser {
                 if (match(TokenType.Rb))
                     return map;
                 final Expression key = mapDefinitionKey();
-                final Expression value = match(TokenType.Cl) ? expression() : NullValue.NullExpression;
+                final Expression value;
+                if (match(TokenType.Cl) || match(TokenType.Eq))
+                    value = expression();
+                else if (lookMatch(0, TokenType.Lp))
+                    value = anonymousFunction();
+                else value = NullValue.NullExpression;
                 map.addField(key, value);
-            } while (match(TokenType.Cm));
+            } while (match(TokenType.Cm) || match(TokenType.Sc));
             consume(TokenType.Rb);
         }
         if (match(TokenType.Extends)) {

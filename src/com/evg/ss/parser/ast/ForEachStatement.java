@@ -7,11 +7,13 @@ import com.evg.ss.exceptions.inner.SSInnerException;
 import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
+import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.ArrayValue;
+import com.evg.ss.values.MapValue;
 import com.evg.ss.values.StringValue;
 import com.evg.ss.values.Value;
 
-public final class ForEachStatement implements Statement {
+public final class ForEachStatement extends Statement {
 
     private Statement iteratorDefinition;
     private Expression target;
@@ -34,11 +36,19 @@ public final class ForEachStatement implements Statement {
             array = ((StringValue) value).asCharArray();
         else if (value instanceof ArrayValue)
             array = (ArrayValue) value;
+        else if (value instanceof MapValue)
+            array = ((MapValue) value).toArray();
         else throw new InvalidValueTypeException(value.getType());
         try {
             for (Value iteration : array.getValue()) {
                 try {
-                    SS.Identifiers.set(name, iteration);
+                    if (value instanceof MapValue) {
+                        final MapValue keyValueMap = new SSMapBuilder()
+                                .setField("key", ((ArrayValue) iteration).get(Value.of(0)))
+                                .setField("value", ((ArrayValue) iteration).get(Value.of(1)))
+                                .build();
+                        SS.Identifiers.set(name, keyValueMap);
+                    } else SS.Identifiers.set(name, iteration);
                     body.execute();
                 } catch (SSInnerException e) {
                     if (e instanceof SSBreakException)

@@ -4,7 +4,7 @@ import com.evg.ss.exceptions.inner.SSBreakException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
-public final class BreakStatement implements Statement {
+public final class BreakStatement extends Statement {
     @Override
     public void execute() {
         throw new SSBreakException();

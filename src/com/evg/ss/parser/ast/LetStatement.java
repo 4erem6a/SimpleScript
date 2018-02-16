@@ -6,7 +6,7 @@ import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.NullValue;
 
-public final class LetStatement implements Statement {
+public final class LetStatement extends Statement {
     private final String name;
     private final Expression value;
     private final boolean isConst;

@@ -7,7 +7,7 @@ import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 
-public final class ExportsStatement implements Statement {
+public final class ExportsStatement extends Statement {
     private Expression expression;
 
     public ExportsStatement(Expression expression) {

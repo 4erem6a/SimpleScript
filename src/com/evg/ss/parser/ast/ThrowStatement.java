@@ -4,7 +4,7 @@ import com.evg.ss.exceptions.SSThrownException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
-public final class ThrowStatement implements Statement {
+public final class ThrowStatement extends Statement {
 
     private final Expression expression;
 

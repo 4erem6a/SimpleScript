@@ -1,5 +1,6 @@
 package com.evg.ss.exceptions.parser;
 
+import com.evg.ss.lexer.SourcePosition;
 import com.evg.ss.lexer.Token;
 import com.evg.ss.lexer.TokenType;
 
@@ -13,5 +14,9 @@ public final class UnexpectedTokenException extends SSParserException {
 
     public UnexpectedTokenException(Token got) {
         super(String.format("Unexpected token at %s: '%s'.", got.getPosition(), got.getType().getName()));
+    }
+
+    public UnexpectedTokenException(SourcePosition position, String word) {
+        super(String.format("Unexpected token at %s: '%s'.", position, word));
     }
 }

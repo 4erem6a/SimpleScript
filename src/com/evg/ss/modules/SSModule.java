@@ -1,28 +1,38 @@
-package com.evg.ss.lib.modules;
+package com.evg.ss.modules;
 
 import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
 import com.evg.ss.exceptions.SSException;
 import com.evg.ss.exceptions.execution.ModuleLoadingException;
 import com.evg.ss.exceptions.execution.ModuleNotFoundException;
+import com.evg.ss.lib.Function;
 import com.evg.ss.lib.Requirable;
+import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.MapValue;
+import com.evg.ss.values.UndefinedValue;
 import com.evg.ss.values.Value;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class SSModule implements Requirable {
 
-    private static final String MODULE_PACKAGE = "com.evg.ss.lib.modules.%s.%s";
-    private static final Map<String, SimpleScript.CompiledScript> LOADED_MODULES = new HashMap<>();
+    private static final String MODULES_PACKAGE = "com.evg.ss.modules.%s.%s";
+    private static final String MODULES_PATH = "src/com/evg/ss/modules";
+    private static final Map<String, Requirable> LOADED_MODULES = new HashMap<>();
 
     public static String getModuleClassName(String name) {
-        return String.format(MODULE_PACKAGE, name, name);
+        return String.format(MODULES_PACKAGE, name, name);
     }
 
-    public static Map<String, SimpleScript.CompiledScript> getLoadedModules() {
+    public static Map<String, Requirable> getLoadedModules() {
         return LOADED_MODULES;
     }
 
@@ -126,6 +136,63 @@ public abstract class SSModule implements Requirable {
 
     private static String getExtension(String filename) {
         return filename.substring(filename.lastIndexOf('.'));
+    }
+
+    public static void loadStaticModules() {
+        Arrays.stream(new File(MODULES_PATH).listFiles())
+                .filter(File::isDirectory)
+                .forEach(d -> Arrays.stream(d.listFiles())
+                        .filter(f -> !f.isDirectory())
+                        .forEach(f -> loadStatic(d.getName(),
+                                f.getName().substring(0, f.getName().lastIndexOf('.')))));
+    }
+
+    private static void loadStatic(String _package, String _class) {
+        final String moduleClassPath = String.format(MODULES_PACKAGE, _package, _class);
+        final Class<?> moduleClass;
+        try {
+            moduleClass = Class.forName(moduleClassPath);
+        } catch (ClassNotFoundException e) {
+            return;
+        }
+        if (!moduleClass.isAnnotationPresent(SSExports.class)) {
+            return;
+        }
+        final String exportName = moduleClass.getAnnotation(SSExports.class).value();
+        final List<Method> exportMethods = Arrays.stream(moduleClass.getMethods())
+                .filter(m -> m.getParameterCount() == 1)
+                .filter(m -> m.getReturnType().equals(Value.class))
+                .filter(m -> m.getParameterTypes()[0].equals(Value[].class))
+                .filter(Method::isVarArgs)
+                .filter(m -> m.isAnnotationPresent(SSExports.class))
+                .collect(Collectors.toList());
+        final List<Field> exportFields = Arrays.stream(moduleClass.getFields())
+                .filter(f -> f.getType().equals(Value.class))
+                .filter(f -> f.isAnnotationPresent(SSExports.class))
+                .filter(f -> Modifier.isStatic(f.getModifiers()))
+                .filter(f -> Modifier.isFinal(f.getModifiers()))
+                .collect(Collectors.toList());
+        final SSMapBuilder builder = new SSMapBuilder();
+        for (Method method : exportMethods) {
+            final String methodExportName = method.getAnnotation(SSExports.class).value();
+            final Function function = args -> {
+                try {
+                    return ((Value) method.invoke(null, (Object) args));
+                } catch (Exception ignored) {
+                    return new UndefinedValue();
+                }
+            };
+            builder.setMethod(methodExportName, function);
+        }
+        for (Field field : exportFields) {
+            try {
+                final String fieldExportName = field.getAnnotation(SSExports.class).value();
+                final Value value = ((Value) field.get(null));
+                builder.setField(fieldExportName, value);
+            } catch (IllegalAccessException ignored) {
+            }
+        }
+        LOADED_MODULES.put(exportName, builder::build);
     }
 
     public abstract MapValue require();

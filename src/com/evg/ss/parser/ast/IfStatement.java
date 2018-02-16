@@ -3,7 +3,7 @@ package com.evg.ss.parser.ast;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
-public final class IfStatement implements Statement {
+public final class IfStatement extends Statement {
     private Expression condition;
     private Statement ifStatement, elseStatement;
 

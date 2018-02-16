@@ -10,7 +10,7 @@ import com.evg.ss.values.Value;
 /**
  * @author 4erem6a
  */
-public final class VariableExpression implements Expression, Accessible {
+public final class VariableExpression extends Expression implements Accessible {
 
     private String name;
 

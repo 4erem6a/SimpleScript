@@ -27,7 +27,16 @@ public abstract class AbstractParser {
     public abstract Expression express();
 
     protected boolean match(TokenType type) {
-        if (!lookMatch(0, type)) return false;
+        if (!lookMatch(0, type))
+            return false;
+        pos++;
+        return true;
+    }
+
+    protected boolean match(String word) {
+        if (!lookMatch(0, TokenType.Word)
+                || !get(0).getValue().equals(word))
+            return false;
         pos++;
         return true;
     }
@@ -48,6 +57,13 @@ public abstract class AbstractParser {
             throw new UnexpectedTokenException(type, current);
         pos++;
         return current;
+    }
+
+    protected Token consume(String word) {
+        if (!lookMatch(0, TokenType.Word)
+                || !get(0).getValue().equals(word))
+            throw new UnexpectedTokenException(get(0).getPosition(), word);
+        return consume(TokenType.Word);
     }
 
     protected Token consume() {

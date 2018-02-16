@@ -9,9 +9,9 @@ import com.evg.ss.exceptions.inner.SSInnerException;
 import com.evg.ss.exceptions.lexer.SSLexerException;
 import com.evg.ss.lib.CallStack;
 import com.evg.ss.lib.SS;
-import com.evg.ss.lib.modules.SSModule;
 import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.linter.Linter;
+import com.evg.ss.modules.SSModule;
 import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.parser.visitors.FunctionAdder;
 import com.evg.ss.values.FunctionValue;
@@ -114,21 +114,24 @@ public final class Desktop {
             return;
         }
         log("Complete.\n");
-        log("Parsing tokens ... ");
-        if (MODE == SSExecutionModes.EXPRESSION) {
-            if (!script.isExpressible())
-                except(script.tryExpress());
-        } else if (!script.isCompilable())
-            except(script.tryCompile());
-        final SimpleScript.CompiledScript compiledScript = script.compile();
-        log("Complete.\n");
+        final SimpleScript.CompiledScript compiledScript;
+        if (hasFlag("-e") || hasFlag("-r")) {
+            log("Parsing tokens ... ");
+            if (MODE == SSExecutionModes.EXPRESSION) {
+                if (!script.isExpressible())
+                    except(script.tryExpress());
+            } else if (!script.isCompilable())
+                except(script.tryCompile());
+            compiledScript = script.compile();
+            log("Complete.\n");
+        } else compiledScript = null;
         log("Reading arguments ... ");
         final Value programArgs = Value.of((hasFlag("-a") ? getFlag("-a").getArgs() : new ArrayList<String>())
                 .stream()
                 .map(Value::of)
                 .toArray(Value[]::new));
         log("Complete.\n");
-        log("Setting environment variables ... ");
+        log("Setting EnvironmentModule variables ... ");
         if (hasFlag("-f")) {
             final Path path = Paths.get(getFlag("-f").getSingleArg()).toAbsolutePath();
             Environment.putEnvVariable(Environment.EXECUTABLE_FILE, Value.of(path.toString()), true);
@@ -137,7 +140,7 @@ public final class Desktop {
         Environment.putEnvVariable(Environment.CURRENT_LANG_VERSION, Value.of(SimpleScript.VERSION.toString()), true);
         Environment.putEnvVariable(Environment.PROGRAM_ARGS, programArgs, true);
         log("Complete.\n");
-        if (hasFlag("-lt")) {
+        if (hasFlag("-lt") && (hasFlag("-e") || hasFlag("-r"))) {
             log("Running lint ... ");
             try {
                 new Linter(compiledScript).lint();

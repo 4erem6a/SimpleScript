@@ -1,29 +1,36 @@
-package com.evg.ss.lib.modules.utils;
+package com.evg.ss.modules.utils;
 
-import com.evg.ss.lib.modules.SSModule;
+import com.evg.ss.modules.SSExports;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSArrayBuilder;
-import com.evg.ss.util.builders.SSMapBuilder;
-import com.evg.ss.values.*;
+import com.evg.ss.values.NumberValue;
+import com.evg.ss.values.Type;
+import com.evg.ss.values.UndefinedValue;
+import com.evg.ss.values.Value;
 
-public final class utils extends SSModule {
+@SSExports("utils")
+public final class UtilsModule {
 
-    private static Value compare(Value... args) {
+    @SSExports("compare")
+    public static Value compare(Value... args) {
         Arguments.checkArgcOrDie(args, 2);
         return Value.of(args[0].compareTo(args[1]));
     }
 
-    private static Value hashCode(Value... args) {
+    @SSExports("hashCode")
+    public static Value hashCode(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
         return new NumberValue(args[0].hashCode());
     }
 
-    private static Value clone(Value... args) {
+    @SSExports("clone")
+    public static Value clone(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
         return args[0].clone();
     }
 
-    private static Value range(Value... args) {
+    @SSExports("range")
+    public static Value range(Value... args) {
         Arguments.checkArgcOrDie(args, 1, 2);
         if (args.length == 1)
             if (!Arguments.checkArgTypes(args, Type.Number))
@@ -42,19 +49,9 @@ public final class utils extends SSModule {
         return result.build();
     }
 
-    private static Value refcmp(Value... args) {
+    @SSExports("refcmp")
+    public static Value refcmp(Value... args) {
         Arguments.checkArgcOrDie(args, 2);
         return Value.of(args[0] == args[1]);
-    }
-
-    @Override
-    public MapValue require() {
-        final SSMapBuilder builder = new SSMapBuilder();
-        builder.setMethod("hashCode", utils::hashCode);
-        builder.setMethod("clone", utils::clone);
-        builder.setMethod("compare", utils::compare);
-        builder.setMethod("refcmp", utils::refcmp);
-        builder.setMethod("range", utils::range);
-        return builder.build();
     }
 }

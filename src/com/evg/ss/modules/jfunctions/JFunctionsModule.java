@@ -1,27 +1,19 @@
-package com.evg.ss.lib.modules.jfunctions;
+package com.evg.ss.modules.jfunctions;
 
 import com.evg.ss.exceptions.execution.FunctionExecutionException;
 import com.evg.ss.lib.Argument;
 import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SSFunction;
-import com.evg.ss.lib.modules.SSModule;
+import com.evg.ss.modules.SSExports;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSArrayBuilder;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
-public final class jfunctions extends SSModule {
+public final class JFunctionsModule {
 
-    @Override
-    public MapValue require() {
-        final SSMapBuilder builder = new SSMapBuilder();
-        builder.setMethod("execute", this::execute);
-        builder.setMethod("getContext", this::getContext);
-        builder.setMethod("info", this::info);
-        return builder.build();
-    }
-
-    private Value info(Value... args) {
+    @SSExports("info")
+    public static Value info(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
         if (args[0].getType() != Type.Function || !(((FunctionValue) args[0]).getValue() instanceof SSFunction))
             return new UndefinedValue();
@@ -40,14 +32,16 @@ public final class jfunctions extends SSModule {
         return builder.build();
     }
 
-    private Value getContext(Value... args) {
+    @SSExports("getContext")
+    public static Value getContext(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
         if (args[0].getType() != Type.Function || !(((FunctionValue) args[0]).getValue() instanceof SSFunction))
             return new UndefinedValue();
         return ((SSFunction) ((FunctionValue) args[0]).getValue()).getCallContext();
     }
 
-    private Value execute(Value... args) {
+    @SSExports("execute")
+    public static Value execute(Value... args) {
         if (!Arguments.checkArgTypes(args, Type.Function, Type.Map, Type.Array)
                 && !Arguments.checkArgTypes(args, Type.Function, Type.Array))
             return new UndefinedValue();

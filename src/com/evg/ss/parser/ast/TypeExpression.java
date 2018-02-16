@@ -4,7 +4,7 @@ import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Value;
 
-public final class TypeExpression implements Expression {
+public final class TypeExpression extends Expression {
 
     private ConstTypeExpression type;
 

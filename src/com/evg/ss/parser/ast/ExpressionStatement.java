@@ -3,7 +3,7 @@ package com.evg.ss.parser.ast;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
-public final class ExpressionStatement implements Statement {
+public final class ExpressionStatement extends Statement {
 
     private Expression expression;
 

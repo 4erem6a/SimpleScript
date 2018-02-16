@@ -9,7 +9,7 @@ import com.evg.ss.values.Value;
 
 import java.util.Arrays;
 
-public final class NewExpression implements Expression {
+public final class NewExpression extends Expression {
 
     private Expression functionCall;
 
@@ -21,7 +21,7 @@ public final class NewExpression implements Expression {
     public Value eval() {
         if (!(functionCall instanceof FunctionCallExpression))
             throw new InvalidExpressionException();
-        final Expression expression = ((FunctionCallExpression) functionCall).getFunction();
+        final Expression expression = ((FunctionCallExpression) functionCall).getValue();
         if (expression instanceof VariableExpression || expression instanceof ContainerAccessExpression) {
             final Value value = expression.eval();
             if (value.getType() == Type.Class) {

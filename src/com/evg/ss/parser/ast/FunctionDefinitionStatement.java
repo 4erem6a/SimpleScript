@@ -6,7 +6,7 @@ import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Value;
 
-public final class FunctionDefinitionStatement implements Statement, Lockable {
+public final class FunctionDefinitionStatement extends Statement implements Lockable {
 
     private String name;
     private AnonymousFunctionExpression function;

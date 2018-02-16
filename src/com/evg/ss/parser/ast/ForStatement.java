@@ -7,7 +7,7 @@ import com.evg.ss.lib.SS;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
-public final class ForStatement implements Statement {
+public final class ForStatement extends Statement {
 
     private Statement initialization, iteration, body;
     private Expression condition;

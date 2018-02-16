@@ -11,7 +11,7 @@ import javafx.util.Pair;
 /**
  * @author 4erem6a
  */
-public final class BinaryExpression implements Expression {
+public final class BinaryExpression extends Expression {
 
     private final Expression left, right;
     private final BinaryOperations operation;

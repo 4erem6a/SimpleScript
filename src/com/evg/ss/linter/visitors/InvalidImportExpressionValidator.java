@@ -5,10 +5,9 @@ import com.evg.ss.parser.ast.ContainerAccessExpression;
 import com.evg.ss.parser.ast.Expression;
 import com.evg.ss.parser.ast.ImportStatement;
 import com.evg.ss.parser.ast.ValueExpression;
-import com.evg.ss.parser.visitors.AbstractVisitor;
 import com.evg.ss.values.StringValue;
 
-public final class InvalidImportExpressionValidator extends AbstractVisitor {
+public final class InvalidImportExpressionValidator extends LintVisitor {
 
     private final boolean inner;
 
@@ -22,6 +21,8 @@ public final class InvalidImportExpressionValidator extends AbstractVisitor {
 
     @Override
     public void visit(ImportStatement target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         if (!(target.getPath() instanceof ContainerAccessExpression))
             except();
         target.getPath().accept(new InvalidImportExpressionValidator(true));
@@ -29,6 +30,8 @@ public final class InvalidImportExpressionValidator extends AbstractVisitor {
 
     @Override
     public void visit(ContainerAccessExpression target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         if (inner) {
             final Expression key = target.getKey();
             if (!(key instanceof ValueExpression))

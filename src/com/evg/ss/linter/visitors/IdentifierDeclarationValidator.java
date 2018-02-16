@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class IdentifierDeclarationValidator extends AbstractVisitor {
+public final class IdentifierDeclarationValidator extends LintVisitor {
 
     private static final Identifier DUMMY_IDENTIFIER = new Identifier(null, false);
 
@@ -47,18 +47,24 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
 
     @Override
     public void visit(LetStatement target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         super.visit(target);
         registerIdentifier(target.getName(), DUMMY_IDENTIFIER);
     }
 
     @Override
     public void visit(LetExpression target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         super.visit(target);
         registerIdentifier(target.getName(), DUMMY_IDENTIFIER);
     }
 
     @Override
     public void visit(BlockStatement target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         target.accept(new LintFunctionAdder());
         target.accept(new LintClassAdder());
         if (target.isLocked()) {
@@ -74,6 +80,8 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
 
     @Override
     public void visit(ForStatement target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         up();
         super.visit(target);
         down();
@@ -81,6 +89,8 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
 
     @Override
     public void visit(ForEachStatement target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         up();
         super.visit(target);
         down();
@@ -88,6 +98,8 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
 
     @Override
     public void visit(FunctionDefinitionStatement target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         if (target.isLocked()) {
             final SS.Scopes scopes = lock();
             registerIdentifier(target.getName(), DUMMY_IDENTIFIER);
@@ -109,6 +121,8 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
 
     @Override
     public void visit(AnonymousFunctionExpression target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         if (target.isLocked()) {
             final SS.Scopes scopes = lock();
             final List<String> args = Arrays.stream(target.getArgs()).map(ArgumentExpression::getName).collect(Collectors.toList());
@@ -128,13 +142,17 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
 
     @Override
     public void visit(ImportStatement target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         super.visit(target);
         final String name = ((ValueExpression) ((ContainerAccessExpression) target.getPath()).getKey()).getValue().asString();
         registerIdentifier(name, DUMMY_IDENTIFIER);
     }
 
     @Override
-    public void visit(VariableExpression target) throws SSLintException {
+    public void visit(VariableExpression target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         super.visit(target);
         if (identifiers.get(target.getName()) == null)
             throw new SSLintException("Identifier '%s' used without being declared.", target.getName());
@@ -142,6 +160,8 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
 
     @Override
     public void visit(TryCatchFinallyStatement target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         if (target.getTry() != null)
             target.getTry().accept(this);
         for (TryCatchFinallyStatement.Catch _catch : target.getCatches()) {
@@ -160,6 +180,8 @@ public final class IdentifierDeclarationValidator extends AbstractVisitor {
 
     @Override
     public void visit(ClassDefinitionStatement target) {
+        if (target.isModifierPresent(LINTER_IGNORE))
+            return;
         registerIdentifier(target.getName(), DUMMY_IDENTIFIER);
         super.visit(target);
     }

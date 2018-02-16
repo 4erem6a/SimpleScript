@@ -11,7 +11,7 @@ import com.evg.ss.values.Value;
 /**
  * @author 4erem6a
  */
-public final class UnaryExpression implements Expression {
+public final class UnaryExpression extends Expression {
 
     private final UnaryOperations operator;
     private final Expression expression;

@@ -5,7 +5,7 @@ import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.ClassValue;
 
-public final class ClassDefinitionStatement implements Statement {
+public final class ClassDefinitionStatement extends Statement {
 
     private String name;
     private AnonymousClassExpression classExpression;

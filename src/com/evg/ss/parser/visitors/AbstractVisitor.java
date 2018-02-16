@@ -1,6 +1,5 @@
 package com.evg.ss.parser.visitors;
 
-import com.evg.ss.exceptions.SSLintException;
 import com.evg.ss.parser.ast.*;
 
 import java.util.Arrays;
@@ -88,7 +87,7 @@ public abstract class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(FunctionCallExpression target) {
-        target.getFunction().accept(this);
+        target.getValue().accept(this);
         Arrays.stream(target.getArgs()).forEach(a -> a.accept(this));
     }
 
@@ -168,7 +167,7 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(VariableExpression target) throws SSLintException {
+    public void visit(VariableExpression target) {
     }
 
     @Override
@@ -212,25 +211,25 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(ValueCloneExpression valueCloneExpression) {
-        valueCloneExpression.getExpression().accept(this);
+    public void visit(ValueCloneExpression target) {
+        target.getExpression().accept(this);
     }
 
     @Override
-    public void visit(ThrowStatement throwStatement) {
-        throwStatement.getExpression().accept(this);
+    public void visit(ThrowStatement target) {
+        target.getExpression().accept(this);
     }
 
     @Override
-    public void visit(TryCatchFinallyStatement tryCatchFinallyStatement) {
-        tryCatchFinallyStatement.getTry().accept(this);
-        tryCatchFinallyStatement.getCatches().forEach(_catch -> {
+    public void visit(TryCatchFinallyStatement target) {
+        target.getTry().accept(this);
+        target.getCatches().forEach(_catch -> {
             if (_catch.getCondition() != null)
                 _catch.getCondition().accept(this);
             _catch.getBody().accept(this);
         });
-        if (tryCatchFinallyStatement.getFinally() != null)
-            tryCatchFinallyStatement.getFinally().accept(this);
+        if (target.getFinally() != null)
+            target.getFinally().accept(this);
     }
 
     @Override
