@@ -13,7 +13,6 @@ import com.evg.ss.lib.Requirable;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.linter.Linter;
-import com.evg.ss.modules.SSModule;
 import com.evg.ss.parser.Parser;
 import com.evg.ss.parser.ast.Expression;
 import com.evg.ss.parser.ast.Statement;
@@ -32,11 +31,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 10, 0, 0);
-
-    static {
-        SSModule.loadStaticModules();
-    }
+    public static Version VERSION = new Version(1, 10, 1, 0);
 
     private List<Token> tokens;
 

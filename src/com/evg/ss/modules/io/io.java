@@ -7,8 +7,7 @@ import com.evg.ss.values.Value;
 
 import java.util.Scanner;
 
-@SSExports("io")
-public final class IOModule {
+public final class io {
 
     @SSExports("print")
     public static Value print(Value... args) {

@@ -50,9 +50,11 @@ public abstract class SSModule implements Requirable {
     }
 
     private static Requirable _require(String name) {
-        final String className = getModuleClassName(name);
         try {
-            return ((SSModule) Class.forName(className).getDeclaredConstructor().newInstance());
+            final Class<?> _class = Class.forName(getModuleClassName(name));
+            if (_class.getSuperclass().equals(SSModule.class))
+                return ((SSModule) _class.getDeclaredConstructor().newInstance());
+            else return loadStatic(_class);
         } catch (SSException e) {
             throw new ModuleLoadingException(name, e);
         } catch (Exception ignored) {
@@ -138,27 +140,7 @@ public abstract class SSModule implements Requirable {
         return filename.substring(filename.lastIndexOf('.'));
     }
 
-    public static void loadStaticModules() {
-        Arrays.stream(new File(MODULES_PATH).listFiles())
-                .filter(File::isDirectory)
-                .forEach(d -> Arrays.stream(d.listFiles())
-                        .filter(f -> !f.isDirectory())
-                        .forEach(f -> loadStatic(d.getName(),
-                                f.getName().substring(0, f.getName().lastIndexOf('.')))));
-    }
-
-    private static void loadStatic(String _package, String _class) {
-        final String moduleClassPath = String.format(MODULES_PACKAGE, _package, _class);
-        final Class<?> moduleClass;
-        try {
-            moduleClass = Class.forName(moduleClassPath);
-        } catch (ClassNotFoundException e) {
-            return;
-        }
-        if (!moduleClass.isAnnotationPresent(SSExports.class)) {
-            return;
-        }
-        final String exportName = moduleClass.getAnnotation(SSExports.class).value();
+    private static Requirable loadStatic(Class<?> moduleClass) {
         final List<Method> exportMethods = Arrays.stream(moduleClass.getMethods())
                 .filter(m -> m.getParameterCount() == 1)
                 .filter(m -> m.getReturnType().equals(Value.class))
@@ -192,7 +174,7 @@ public abstract class SSModule implements Requirable {
             } catch (IllegalAccessException ignored) {
             }
         }
-        LOADED_MODULES.put(exportName, builder::build);
+        return builder::build;
     }
 
     public abstract MapValue require();

@@ -8,8 +8,7 @@ import com.evg.ss.values.Type;
 import com.evg.ss.values.UndefinedValue;
 import com.evg.ss.values.Value;
 
-@SSExports("utils")
-public final class UtilsModule {
+public final class utils {
 
     @SSExports("compare")
     public static Value compare(Value... args) {

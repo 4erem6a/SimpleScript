@@ -5,8 +5,7 @@ import com.evg.ss.modules.SSExports;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.values.*;
 
-@SSExports("maps")
-public final class MapsModule {
+public final class maps {
 
     @SSExports("MAP_EMPTY")
     private final static Value MAP_EMPTY = new MapValue();

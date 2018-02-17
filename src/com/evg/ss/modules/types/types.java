@@ -4,8 +4,7 @@ import com.evg.ss.modules.SSExports;
 import com.evg.ss.values.Type;
 import com.evg.ss.values.Value;
 
-@SSExports("types")
-public final class TypesModule {
+public final class types {
 
     @SSExports("NUMBER")
     public static final Value TYPE_NUMBER = Type.Number.getTypeValue();

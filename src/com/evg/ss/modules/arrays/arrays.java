@@ -11,8 +11,7 @@ import com.evg.ss.values.*;
 import java.util.Arrays;
 import java.util.Comparator;
 
-@SSExports("arrays")
-public final class ArraysModule {
+public final class arrays {
 
     @SSExports("sort")
     public static Value sort(Value... args) {

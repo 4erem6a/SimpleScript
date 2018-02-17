@@ -17,8 +17,7 @@ import java.awt.image.BufferedImage;
  * {https://github.com/aNNiMON/Own-Programming-Language-Tutorial/blob/latest/src/main/java/com/annimon/ownlang/modules/canvas/canvas.java}
  */
 
-@SSExports("jcanvas")
-public final class JCanvasModule {
+public final class jcanvas {
 
     private static JFrame frame = null;
     private static CanvasPanel panel = null;

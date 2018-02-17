@@ -10,7 +10,7 @@ import com.evg.ss.util.builders.SSArrayBuilder;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
-public final class JFunctionsModule {
+public final class jfunctions {
 
     @SSExports("info")
     public static Value info(Value... args) {

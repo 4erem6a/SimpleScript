@@ -15,7 +15,7 @@ public final class InterpolatedStringExpression extends ValueExpression {
 
     @Override
     public Value eval() {
-        return new ValueExpression(new InterpolatedString(string).calculate()).eval();
+        return new ValueExpression(new InterpolatedString(string).eval()).eval();
     }
 
     @Override

@@ -6,30 +6,30 @@ import com.evg.ss.lib.SS;
 import com.evg.ss.modules.SSExports;
 import com.evg.ss.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
+import com.evg.ss.util.builders.SSArrayBuilder;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.*;
 
 import java.util.Deque;
 
-@SSExports("interpreter")
-public class InterpreterModule {
+public class interpreter {
 
     @SSExports("version")
     public static final Value _Version = Value.of(SimpleScript.VERSION.toString());
 
     @SSExports("Scopes")
     public static final Value _Scopes = new SSMapBuilder()
-            .setMethod("up", InterpreterModule::scopesUp)
-            .setMethod("down", InterpreterModule::scopesDown)
-            .setMethod("getLevel", InterpreterModule::scopesGetLevel)
-            .setMethod("getCurrent", InterpreterModule::scopesGet)
+            .setMethod("up", interpreter::scopesUp)
+            .setMethod("down", interpreter::scopesDown)
+            .setMethod("getLevel", interpreter::scopesGetLevel)
+            .setMethod("getCurrent", interpreter::scopesGet)
             .build();
 
     @SSExports("CallContext")
     public static final Value _CallContext = new SSMapBuilder()
-            .setMethod("up", InterpreterModule::callContextUp)
-            .setMethod("down", InterpreterModule::callContextDown)
-            .setMethod("get", InterpreterModule::getCallContext)
+            .setMethod("up", interpreter::callContextUp)
+            .setMethod("down", interpreter::callContextDown)
+            .setMethod("get", interpreter::getCallContext)
             .build();
 
     @SSExports("isModuleLoaded")
@@ -56,6 +56,15 @@ public class InterpreterModule {
         } catch (Exception ignored) {
         }
         return new UndefinedValue();
+    }
+
+    @SSExports("listModules")
+    public static Value listModules(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
+        final SSArrayBuilder builder = new SSArrayBuilder();
+        for (String name : SSModule.getLoadedModules().keySet())
+            builder.setElement(Value.of(name));
+        return builder.build();
     }
 
     private static Value scopesGetLevel(Value... args) {

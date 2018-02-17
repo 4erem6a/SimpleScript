@@ -11,8 +11,7 @@ import com.evg.ss.values.Value;
 
 import java.util.Map;
 
-@SSExports("environment")
-public final class EnvironmentModule {
+public final class environment {
 
     @SSExports("variables")
     private Value variables(Value... args) {

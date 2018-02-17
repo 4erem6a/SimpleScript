@@ -52,8 +52,12 @@ public final class Parser extends AbstractParser {
     }
 
     private Statement block() {
+        final List<String> mods = new ArrayList<>();
+        while (match(TokenType.NsNs))
+            mods.add(consume(TokenType.Word).getValue());
         consume(TokenType.Lb);
         final BlockStatement block = new BlockStatement();
+        mods.forEach(block::modify);
         while (!match(TokenType.Rb)) {
             block.addStatement(statement());
             match(TokenType.Sc);

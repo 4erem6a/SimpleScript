@@ -7,8 +7,7 @@ import com.evg.ss.values.*;
 
 import java.util.concurrent.FutureTask;
 
-@SSExports("async")
-public final class AsyncModule {
+public final class async {
 
     @SSExports("current")
     public static Value current(Value... args) {
