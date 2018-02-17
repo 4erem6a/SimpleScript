@@ -2,16 +2,10 @@
 ## Description:
 SimpleScript is a general-purpose scripting programming language created as hobby project.
 SS suports imperative, functional & object-oriented programmig paradigms.
-## Latest changelog: (1.10.0.0)
-* Added auto-classes.
-* Added constructor inheritance.
-* Added source modifiers.
-* Added `LinterIgnore` source modifier.
-* Added simpified map definition syntax.
-* Added ability to call map as function through `$call` method.
-* Added ability to access static class context through `"static"` key.
-* Added static module loading system.
-* Updated `ClassValue`.
+## Latest changelog: (1.10.1.0)
+* Added ability to modify block statements.
+* Fixed module loading.
+* Updated interpolated strings.
 ## Roadmap:
 * Binary shift operators.
 * Array deconstruction.
