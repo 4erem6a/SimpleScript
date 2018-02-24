@@ -12,12 +12,12 @@ public class NullValue implements Value {
 
     @Override
     public Double asNumber() {
-        return null;
+        return Double.NaN;
     }
 
     @Override
     public Boolean asBoolean() {
-        return null;
+        return false;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class NullValue implements Value {
 
     @Override
     public Object asObject() {
-        return null;
+        return this;
     }
 
     @Override

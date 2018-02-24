@@ -100,13 +100,29 @@ public final class Converter {
                         return target;
                     case Type:
                         return Value.of(target.getType());
+                    case Array:
+                        return Value.of(target);
+                    case String:
+                        return Value.of(target.asString());
+                    case Boolean:
+                        return Value.of(target.asBoolean());
+                    case Number:
+                        return Value.of(target.asNumber());
                     default:
-                        return new NullValue();
+                        return new UndefinedValue();
                 }
             case Type:
                 switch (to) {
                     case Type:
                         return Value.of(target.getType());
+                    case String:
+                        return Value.of(target.asString());
+                    case Boolean:
+                        return Value.of(target.asBoolean());
+                    case Number:
+                        return Value.of(target.asNumber());
+                    case Array:
+                        return Value.of(target);
                     default:
                         return new UndefinedValue();
                 }
@@ -120,11 +136,43 @@ public final class Converter {
                         return Value.of(target.getType());
                     case Map:
                         return target;
+                    case Boolean:
+                        return Value.of(target.asBoolean());
+                    case Number:
+                        return Value.of(target.asNumber());
                     default:
                         return new UndefinedValue();
                 }
             case Null:
-                return new NullValue();
+                switch (to) {
+                    case Boolean:
+                        return Value.of(target.asBoolean());
+                    case Number:
+                        return Value.of(target.asNumber());
+                    case Type:
+                        return Value.of(target.getType());
+                    case Array:
+                        return Value.of(target);
+                    case String:
+                        return Value.of(target.asString());
+                    default:
+                        return new NullValue();
+                }
+            case Class:
+                switch (to) {
+                    case Boolean:
+                        return Value.of(target.asBoolean());
+                    case Number:
+                        return Value.of(target.asNumber());
+                    case Type:
+                        return Value.of(target.getType());
+                    case Array:
+                        return Value.of(target);
+                    case String:
+                        return Value.of(target.asString());
+                    default:
+                        return new UndefinedValue();
+                }
         }
         return new UndefinedValue();
     }

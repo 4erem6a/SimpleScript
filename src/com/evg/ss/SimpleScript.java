@@ -30,7 +30,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 11, 0, 0);
+    public static Version VERSION = new Version(1, 11, 1, 0);
 
     private List<Token> tokens;
 

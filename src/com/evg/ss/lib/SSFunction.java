@@ -62,14 +62,16 @@ public final class SSFunction implements ConstructorFunction {
         } finally {
             SS.CallContext.down();
             SS.Scopes.down();
-            CallStack.exit();
         }
+        CallStack.exit();
         return result;
     }
 
     private Value execute(List<Value> args) {
-        for (int i = 0; i < args.size(); i++)
-            SS.Identifiers.put(this.args.get(i).getName(), args.get(i), false);
+        for (int i = 0; i < args.size(); i++) {
+            final Argument arg = this.args.get(i);
+            SS.Identifiers.put(arg.getName(), args.get(i), arg.isConst());
+        }
         try {
             body.execute();
         } catch (SSReturnException e) {

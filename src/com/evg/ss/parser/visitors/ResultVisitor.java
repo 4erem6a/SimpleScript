@@ -64,31 +64,31 @@ public interface ResultVisitor<TResult> {
 
     TResult visit(WhileStatement target);
 
-    TResult visit(NameofExpression nameofExpression);
+    TResult visit(NameofExpression target);
 
-    TResult visit(TypeExpression typeExpression);
+    TResult visit(TypeExpression target);
 
-    TResult visit(ImportStatement importStatement);
+    TResult visit(ImportStatement target);
 
-    TResult visit(ThisExpression thisExpression);
+    TResult visit(ThisExpression target);
 
-    TResult visit(NewExpression newExpression);
+    TResult visit(NewExpression target);
 
-    TResult visit(RequireExpression requireExpression);
+    TResult visit(RequireExpression target);
 
-    TResult visit(ValueCloneExpression valueCloneExpression);
+    TResult visit(ValueCloneExpression target);
 
-    TResult visit(ThrowStatement throwStatement);
+    TResult visit(ThrowStatement target);
 
-    TResult visit(TryCatchFinallyStatement tryCatchFinallyStatement);
+    TResult visit(TryCatchFinallyStatement target);
 
-    TResult visit(InstantFunctionExpression instantFunctionExpression);
+    TResult visit(InstantFunctionExpression target);
 
-    TResult visit(ClassDefinitionStatement classDefinitionStatement);
+    TResult visit(ClassDefinitionStatement target);
 
-    TResult visit(AnonymousClassExpression anonymousClassExpression);
+    TResult visit(AnonymousClassExpression target);
 
-    TResult visit(ThatExpression thatExpression);
+    TResult visit(ThatExpression target);
 
-    TResult visit(CatchExpression catchExpression);
+    TResult visit(CatchExpression target);
 }

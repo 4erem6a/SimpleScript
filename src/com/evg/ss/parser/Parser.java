@@ -193,6 +193,7 @@ public final class Parser extends AbstractParser {
     }
 
     private ArgumentExpression argument() {
+        final boolean isConst = match(TokenType.Const);
         final boolean variadic;
         final String name = consume(TokenType.Word).getValue();
         final Expression value;
@@ -200,7 +201,7 @@ public final class Parser extends AbstractParser {
         if (match(TokenType.Eq)) {
             value = expression();
         } else value = null;
-        return new ArgumentExpression(name, variadic, value);
+        return new ArgumentExpression(name, isConst, variadic, value);
     }
 
     private Statement functionDefinition() {
@@ -713,10 +714,13 @@ public final class Parser extends AbstractParser {
         else base = null;
         consume(TokenType.Lb);
         while (!match(TokenType.Rb)) {
-            if (match(TokenType.New)) {
+            if (match(TokenType.New) || lookMatch(0, TokenType.Locked) && lookMatch(1, TokenType.New)) {
+                final boolean locked = match(TokenType.Locked);
+                match(TokenType.New);
                 if (constructor != null)
                     throw new ParserException("Class can have only 1 constructor.");
                 else constructor = ((AnonymousFunctionExpression) anonymousFunction());
+                constructor.setLocked(locked);
                 match(TokenType.Sc);
             } else members.add(classMember());
         }

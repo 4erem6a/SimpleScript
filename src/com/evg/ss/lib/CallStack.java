@@ -31,6 +31,14 @@ public final class CallStack {
             this.function = function;
         }
 
+        public String getName() {
+            return name;
+        }
+
+        public Function getFunction() {
+            return function;
+        }
+
         @Override
         public String toString() {
             return String.format("%s: %s", name, function.toString().trim());

@@ -7,11 +7,17 @@ public final class Argument {
     private final String name;
     private final Expression value;
     private final boolean isVariadic;
+    private final boolean isConst;
 
-    public Argument(String name, boolean isVariadic, Expression value) {
+    public Argument(String name, boolean isConst, boolean isVariadic, Expression value) {
         this.name = name;
         this.isVariadic = isVariadic;
         this.value = value;
+        this.isConst = isConst;
+    }
+
+    public boolean isConst() {
+        return isConst;
     }
 
     public String getName() {
@@ -39,6 +45,6 @@ public final class Argument {
 
     @Override
     public String toString() {
-        return String.format("{name: %s, default: %b, variadic: %b}", name, value != null, isVariadic);
+        return String.format("{name: %s, default: %b, variadic: %b, const: %s}", name, value != null, isVariadic, isConst);
     }
 }

@@ -139,9 +139,9 @@ public final class UnaryExpression extends Expression {
         PrefixDecrement("--"),
         PostfixIncrement("++"),
         PostfixDecrement("--"),
-        StaticAccess(" static "),
-        ClassAccess(" class "),
-        ConstructorAccess(" new ");
+        StaticAccess(".static "),
+        ClassAccess(".class "),
+        ConstructorAccess(".new ");
         private String key;
 
         UnaryOperations(String operationKey) {

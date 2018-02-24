@@ -7,15 +7,17 @@ public final class ArgumentExpression {
     private final String name;
     private final Expression defaultValue;
     private final boolean isVariadic;
+    private final boolean isConst;
 
-    public ArgumentExpression(String name, boolean isVariadic, Expression defaultValue) {
+    public ArgumentExpression(String name, boolean isConst, boolean isVariadic, Expression defaultValue) {
         this.name = name;
         this.defaultValue = defaultValue;
         this.isVariadic = isVariadic;
+        this.isConst = isConst;
     }
 
     public Argument getArgument() {
-        return new Argument(name, isVariadic, defaultValue);
+        return new Argument(name, isConst, isVariadic, defaultValue);
     }
 
     public String getName() {

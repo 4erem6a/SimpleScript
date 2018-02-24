@@ -21,8 +21,8 @@ public class interpreter {
     public static final Value _Scopes = new SSMapBuilder()
             .setMethod("up", interpreter::scopesUp)
             .setMethod("down", interpreter::scopesDown)
-            .setMethod("getLevel", interpreter::scopesGetLevel)
-            .setMethod("getCurrent", interpreter::scopesGet)
+            .setMethod("level", interpreter::scopesGetLevel)
+            .setMethod("current", interpreter::scopesGet)
             .build();
 
     @SSExports("CallContext")
@@ -102,7 +102,11 @@ public class interpreter {
     public static Value requireStackTrace(Value... args) {
         Arguments.checkArgcOrDie(args, 0);
         final Deque<CallStack.CallInfo> stackTrace = CallStack.getCalls();
-        return Value.of(stackTrace.stream().map(CallStack.CallInfo::toString).map(Value::of).toArray(Value[]::new));
+        final SSArrayBuilder trace = new SSArrayBuilder();
+        for (CallStack.CallInfo info : stackTrace) {
+            trace.setElement(Value.of(info.getFunction()));
+        }
+        return trace.build();
     }
 
     @SSExports("variable")
@@ -146,5 +150,14 @@ public class interpreter {
         final String source = args[0].asString();
         final SimpleScript ss = SimpleScript.fromSource(source);
         return ss.express().eval();
+    }
+
+    @SSExports("deconst")
+    public static Value deconst(Value... args) {
+        Arguments.checkArgcOrDie(args, 1);
+        final String name = args[0].asString();
+        if (SS.Identifiers.exists(name))
+            SS.Identifiers.get(name).setConst(false);
+        return new UndefinedValue();
     }
 }

@@ -98,6 +98,7 @@ public enum TokenType {
     Static("static"),       //static
     Undefined("undefined"), //undefined
     That("that"),           //that
+    Super("super"),         //super
 
     //Utility:
     EOF("end");

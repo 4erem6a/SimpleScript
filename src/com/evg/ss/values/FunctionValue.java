@@ -1,14 +1,9 @@
 package com.evg.ss.values;
 
-import com.evg.ss.lib.ConstructorFunction;
-import com.evg.ss.lib.Function;
-import com.evg.ss.lib.SSFunction;
-import com.evg.ss.modules.jfunctions.jfunctions;
+import com.evg.ss.lib.*;
 import com.evg.ss.util.args.Arguments;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.evg.ss.util.builders.SSArrayBuilder;
+import com.evg.ss.util.builders.SSMapBuilder;
 
 public class FunctionValue implements Value, Callable, NewCallable, Container {
 
@@ -93,6 +88,14 @@ public class FunctionValue implements Value, Callable, NewCallable, Container {
                 return Value.of(this::apply);
             case "info":
                 return Value.of(this::info);
+            case "name":
+                return value instanceof SSFunction
+                        ? Value.of(((SSFunction) value).getName())
+                        : new UndefinedValue();
+            case "hashCode":
+                return Value.of(value.hashCode());
+            case "isUDF":
+                return Value.of(value instanceof SSFunction);
         }
         return new UndefinedValue();
     }
@@ -100,17 +103,45 @@ public class FunctionValue implements Value, Callable, NewCallable, Container {
     private Value apply(Value... args) {
         if (Arguments.checkArgc(args, 1) == -1)
             Arguments.checkArgcOrDie(args, 2);
-        final List<Value> _args = new ArrayList<>();
-        _args.add(this);
-        Collections.addAll(_args, args);
-        return jfunctions.execute(_args.toArray(new Value[0]));
+        if (args.length == 2 && args[0].getType() != Type.Map)
+            return new UndefinedValue();
+        final MapValue callContext = args.length == 2
+                ? ((MapValue) args[0]) : null;
+        final Value __args = new Converter(
+                args[args.length - 1].getType(),
+                Type.Array).convert(args[args.length - 1]);
+        if (__args.getType() == Type.Undefined)
+            return new UndefinedValue();
+        final Value[] _args = ((ArrayValue) __args).getValue();
+        if (!(value instanceof SSFunction) && callContext != null)
+            return new UndefinedValue();
+        if (callContext != null)
+            ((SSFunction) value).setCallContext(callContext);
+        return new SSMapBuilder()
+                .setField("result", value.execute(_args))
+                .setField("callContext", callContext == null ? new NullValue() : callContext)
+                .build();
     }
 
     private Value info(Value... args) {
         Arguments.checkArgcOrDie(args, 0);
-        return jfunctions.info(this);
+        if (!(value instanceof SSFunction))
+            return new UndefinedValue();
+        final SSMapBuilder builder = new SSMapBuilder();
+        builder.setField("name", Value.of(((SSFunction) value).getName()));
+        final SSArrayBuilder array = new SSArrayBuilder();
+        for (Argument arg : ((SSFunction) value).getArgs())
+            array.setElement(new SSMapBuilder()
+                    .setField("name", Value.of(arg.getName()))
+                    .setField("isDefault", Value.of(arg.getValue() != null))
+                    .setMethod("default", a -> (arg.getValue() == null ? new UndefinedValue() : arg.getValue().eval()))
+                    .build());
+        builder.setField("args", array.build());
+        builder.setField("isVariadic", Value.of(((SSFunction) value).getArgs().isVariadic()));
+        return builder.build();
     }
 
     @Override
-    public void set(Value key, Value value) { }
+    public void set(Value key, Value value) {
+    }
 }

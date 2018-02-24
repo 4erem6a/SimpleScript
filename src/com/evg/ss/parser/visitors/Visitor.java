@@ -1,6 +1,5 @@
 package com.evg.ss.parser.visitors;
 
-import com.evg.ss.exceptions.SSLintException;
 import com.evg.ss.parser.ast.*;
 
 public interface Visitor {
@@ -61,35 +60,35 @@ public interface Visitor {
 
     void visit(ValueExpression target);
 
-    void visit(VariableExpression target) throws SSLintException;
+    void visit(VariableExpression target);
 
     void visit(WhileStatement target);
 
-    void visit(NameofExpression nameofExpression);
+    void visit(NameofExpression target);
 
-    void visit(TypeExpression typeExpression);
+    void visit(TypeExpression target);
 
-    void visit(ImportStatement importStatement);
+    void visit(ImportStatement target);
 
-    void visit(ThisExpression thisExpression);
+    void visit(ThisExpression target);
 
-    void visit(NewExpression newExpression);
+    void visit(NewExpression target);
 
-    void visit(RequireExpression requireExpression);
+    void visit(RequireExpression target);
 
-    void visit(ValueCloneExpression valueCloneExpression);
+    void visit(ValueCloneExpression target);
 
-    void visit(ThrowStatement throwStatement);
+    void visit(ThrowStatement target);
 
-    void visit(TryCatchFinallyStatement tryCatchFinallyStatement);
+    void visit(TryCatchFinallyStatement target);
 
-    void visit(InstantFunctionExpression instantFunctionExpression);
+    void visit(InstantFunctionExpression target);
 
-    void visit(ClassDefinitionStatement classDefinitionStatement);
+    void visit(ClassDefinitionStatement target);
 
-    void visit(AnonymousClassExpression anonymousClassExpression);
+    void visit(AnonymousClassExpression target);
 
-    void visit(ThatExpression thatExpression);
+    void visit(ThatExpression target);
 
-    void visit(CatchExpression catchExpression);
+    void visit(CatchExpression target);
 }

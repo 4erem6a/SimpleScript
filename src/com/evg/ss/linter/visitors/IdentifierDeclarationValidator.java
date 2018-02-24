@@ -178,6 +178,12 @@ public final class IdentifierDeclarationValidator extends LintVisitor {
     }
 
     @Override
+    public void visit(NameofExpression target) {
+        if (identifiers.get(target.getName()) == null)
+            throw new SSLintException("Identifier '%s' used without being declared.", target.getName());
+    }
+
+    @Override
     public void visit(ClassDefinitionStatement target) {
         if (target.isModifierPresent(LINTER_IGNORE))
             return;

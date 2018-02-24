@@ -282,6 +282,27 @@ public class MSCVisitor implements ResultVisitor<String> {
 
     @Override
     public String visit(UnaryExpression target) {
+        switch (target.getOperator()) {
+            case UnaryPlus:
+            case UnaryMinus:
+            case BitwiseNot:
+            case LogicalNot:
+            case PrefixIncrement:
+            case PrefixDecrement:
+                return processModifiers(target) +
+                        String.format("%s%s",
+                                target.getOperator().getKey(),
+                                target.getExpression().accept(this));
+            case PostfixIncrement:
+            case PostfixDecrement:
+            case StaticAccess:
+            case ClassAccess:
+            case ConstructorAccess:
+                return processModifiers(target) +
+                        String.format("%s%s",
+                                target.getExpression().accept(this),
+                                target.getOperator().getKey());
+        }
         return processModifiers(target) +
                 String.format("%s%s",
                         target.getOperator().getKey(),
