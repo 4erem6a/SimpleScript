@@ -2,20 +2,17 @@
 ## Description:
 SimpleScript is a general-purpose scripting programming language created as hobby project.
 SS suports imperative, functional & object-oriented programmig paradigms.
-## Latest changelog: (1.11.0.0)
-* Added `..`(range) operator.
-* Added `...` operator.
-* Removed ClassAdder.
-* `exports` statement can export any value types.
-* Added `.class` operator.
-* Added `.static` operator.
-* Added `.new` operator.
-* Added `.type` operator.
-* Added catch expressions (`.catch`).
-* Assignment now has lower priority than ternary operator.
-* Added `<Function>.info` method.
-* Added `<Function>.apply` method.
-* Rewritten `SS` modules.
+## Latest changelog: (1.11.1.0)
+* Added constant function arguments.
+* Added `<FunctionValue>.name` property.
+* Added `<FunctionValue>.hashCode` property.
+* Added `<FunctionValue>.isUDF` property.
+* Added locked constructors.
+* Removed `jfunctions` module.
+* Removed `types` module.
+* Improved type convertion.
+* Improved `MSCGenerator`.
+* Reserved `super` keyword.
 ## Roadmap:
 * Binary shifts.
 * `http` module.
