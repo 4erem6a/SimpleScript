@@ -17,9 +17,8 @@ SS suports imperative, functional & object-oriented programmig paradigms.
 * Added `<Function>.apply` method.
 * Rewritten `SS` modules.
 ## Roadmap:
-* Binary shift operators.
-* Array deconstruction.
-* `functions.getArgs` method.
+* Binary shifts.
+* `http` module.
 ## Installation:
 1. Install Java 8+.
 2. Download latest version: [releases](https://github.com/4erem6a/SimpleScript/releases).
