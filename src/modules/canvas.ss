@@ -1,8 +1,3 @@
-//SimpleScript'StandardLibrary: canvas
-//Version: 1.1
-/*Dependencies:
- *  jcanvas
- */
 class Color {
     new(r, g, b, a = 255) {
         this.red = r
@@ -10,8 +5,11 @@ class Color {
         this.blue = b
         this.alpha = a
     }
-    locked getCode() -> require("jcanvas").rgba(this.red, this.green, this.blue, this.alpha)
-    locked obj() -> {red: that.red, green: that.green, blue: that.blue, alpha: that.alpha}
+    locked getCode()
+        -> require("jcanvas").rgba(this.red, this.green, this.blue, this.alpha)
+    locked obj()
+        -> {red: that.red, green: that.green, blue: that.blue, alpha: that.alpha}
+    locked $call() -> this.getCode()
 }
 
 class Paint {
@@ -25,7 +23,7 @@ class Paint {
         else if (this.color == undefined)
             this.color = new canvas.Color(0, 0, 0)
     }
-    locked applyColor() > require("jcanvas").setColor(this.color.getCode())
+    locked applyColor() -> require("jcanvas").setColor(this.color.getCode())
     locked drawLine(x1, y1, x2, y2) {
         this.applyColor()
         let jcanvas = require("jcanvas")
@@ -68,10 +66,10 @@ class Paint {
         jcanvas.text(x, y, text)
         jcanvas.repaint()
     }
+    locked $call(color) -> this.setColor(color)
 }
 
 class Window {
-    new() {}
     static locked open(title = "", w = 640, h = 480)
         require("jcanvas").createWindow(title, w, h)
     static locked close()

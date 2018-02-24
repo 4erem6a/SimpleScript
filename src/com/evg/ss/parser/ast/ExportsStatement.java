@@ -1,10 +1,8 @@
 package com.evg.ss.parser.ast;
 
-import com.evg.ss.exceptions.execution.InvalidExportTypeException;
 import com.evg.ss.exceptions.inner.SSExportsException;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
-import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 
 public final class ExportsStatement extends Statement {
@@ -17,8 +15,6 @@ public final class ExportsStatement extends Statement {
     @Override
     public void execute() {
         final Value exports = expression.eval();
-        if (!(exports instanceof MapValue))
-            throw new InvalidExportTypeException(exports.getType());
         throw new SSExportsException(exports);
     }
 

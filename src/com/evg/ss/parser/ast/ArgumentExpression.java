@@ -26,6 +26,10 @@ public final class ArgumentExpression {
         return defaultValue;
     }
 
+    public boolean isVariadic() {
+        return isVariadic;
+    }
+
     @Override
     public int hashCode() {
         return name.hashCode()

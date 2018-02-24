@@ -18,7 +18,6 @@ import com.evg.ss.parser.ast.Expression;
 import com.evg.ss.parser.ast.Statement;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
-import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Value;
 
 import java.io.File;
@@ -31,7 +30,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 10, 1, 0);
+    public static Version VERSION = new Version(1, 11, 0, 0);
 
     private List<Token> tokens;
 
@@ -174,14 +173,14 @@ public final class SimpleScript {
             return new MSCGenerator(this).generate();
         }
 
-        public MapValue require() {
+        public Value require() {
             try {
                 SS.Scopes.up();
                 program.execute();
                 SS.Scopes.down();
             } catch (SSExportsException e) {
                 SS.Scopes.down();
-                return (MapValue) e.getValue();
+                return e.getValue();
             }
             return null;
         }

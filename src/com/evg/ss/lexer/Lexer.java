@@ -54,7 +54,9 @@ public final class Lexer extends AbstractLexer {
         OPERATOR_TOKEN_MAP.put(">>", TokenType.ArAr);
         OPERATOR_TOKEN_MAP.put("<<", TokenType.AlAl);
         OPERATOR_TOKEN_MAP.put("##", TokenType.NsNs);
+        OPERATOR_TOKEN_MAP.put("..", TokenType.DtDt);
         OPERATOR_TOKEN_MAP.put(">>>", TokenType.ArArAr);
+        OPERATOR_TOKEN_MAP.put("...", TokenType.DtDtDt);
         OPERATOR_TOKEN_MAP.put("=?", TokenType.EqQm);
         OPERATOR_TOKEN_MAP.put(":", TokenType.Cl);
         OPERATOR_TOKEN_MAP.put(".", TokenType.Dt);
@@ -218,8 +220,8 @@ public final class Lexer extends AbstractLexer {
         final StringBuilder buffer = new StringBuilder();
         char current = peek(0);
         while (Character.isDigit(current) || current == '.' || current == '_') {
-            if (current == '.' && buffer.indexOf(".") != -1)
-                throw new InvalidTokenDefinitionException(TokenType.Number, calculatePosition());
+            if (current == '.' && peek(1) == '.')
+                break;
             if (current != '_')
                 buffer.append(current);
             current = next();

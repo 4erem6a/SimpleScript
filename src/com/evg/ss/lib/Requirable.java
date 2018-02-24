@@ -1,7 +1,7 @@
 package com.evg.ss.lib;
 
-import com.evg.ss.values.MapValue;
+import com.evg.ss.values.Value;
 
 public interface Requirable {
-    MapValue require();
+    Value require();
 }

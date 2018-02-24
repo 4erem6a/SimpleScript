@@ -66,6 +66,8 @@ public final class Parser extends AbstractParser {
     }
 
     private Statement statement() {
+        if (lookMatch(0, TokenType.Sc))
+            return new ExpressionStatement(UndefinedValue.UndefinedExpression);
         if (match(TokenType.Let)) {
             return let();
         } else if (match(TokenType.If)) {
@@ -85,6 +87,8 @@ public final class Parser extends AbstractParser {
         } else if (match(TokenType.Function)) {
             return functionDefinition();
         } else if (match(TokenType.Return)) {
+            if (lookMatch(0, TokenType.Sc))
+                return new ReturnStatement(UndefinedValue.UndefinedExpression);
             return new ReturnStatement(expression());
         } else if (match(TokenType.Foreach)) {
             return foreach();
@@ -192,14 +196,8 @@ public final class Parser extends AbstractParser {
         final boolean variadic;
         final String name = consume(TokenType.Word).getValue();
         final Expression value;
-        if (match(TokenType.Dt)) {
-            consume(TokenType.Dt);
-            consume(TokenType.Dt);
-            variadic = true;
-        } else variadic = false;
+        variadic = match(TokenType.DtDtDt);
         if (match(TokenType.Eq)) {
-            if (variadic)
-                throw new ParserException("Variadic arguments can't have any default value.");
             value = expression();
         } else value = null;
         return new ArgumentExpression(name, variadic, value);
@@ -309,10 +307,29 @@ public final class Parser extends AbstractParser {
     }
 
     private Expression expression() {
-        return low();
+        return assignment();
     }
 
-    private Expression low() {
+    private Expression assignment() {
+        Expression result = ternary();
+        while (true) {
+            if (match(TokenType.Qm)) {
+                final Expression ifTrue = ternary();
+                consume(TokenType.Cl);
+                final Expression ifFalse = ternary();
+                result = new TernaryExpression(result, ifTrue, ifFalse);
+                continue;
+            }
+            if (match(TokenType.Eq)) {
+                result = new AssignmentExpression(result, ternary());
+                continue;
+            }
+            break;
+        }
+        return result;
+    }
+
+    private Expression ternary() {
         Expression result = logicalOr();
         while (true) {
             if (match(TokenType.Qm)) {
@@ -320,10 +337,6 @@ public final class Parser extends AbstractParser {
                 consume(TokenType.Cl);
                 final Expression ifFalse = logicalOr();
                 result = new TernaryExpression(result, ifTrue, ifFalse);
-                continue;
-            }
-            if (match(TokenType.Eq)) {
-                result = new AssignmentExpression(result, logicalOr());
                 continue;
             }
             break;
@@ -460,18 +473,30 @@ public final class Parser extends AbstractParser {
     }
 
     private Expression multiplicative() {
-        Expression result = unary();
+        Expression result = range();
         while (true) {
             if (match(TokenType.St)) {
-                result = new BinaryExpression(BinaryOperations.Multiplication, result, unary());
+                result = new BinaryExpression(BinaryOperations.Multiplication, result, range());
                 continue;
             }
             if (match(TokenType.Sl)) {
-                result = new BinaryExpression(BinaryOperations.Division, result, unary());
+                result = new BinaryExpression(BinaryOperations.Division, result, range());
                 continue;
             }
             if (match(TokenType.Pr)) {
-                result = new BinaryExpression(BinaryOperations.Modulo, result, unary());
+                result = new BinaryExpression(BinaryOperations.Modulo, result, range());
+                continue;
+            }
+            break;
+        }
+        return result;
+    }
+
+    private Expression range() {
+        Expression result = unary();
+        while (true) {
+            if (match(TokenType.DtDt)) {
+                result = new BinaryExpression(BinaryOperations.Range, result, unary());
                 continue;
             }
             break;
@@ -512,8 +537,24 @@ public final class Parser extends AbstractParser {
         Expression result = primary();
         while (true) {
             if (match(TokenType.Dt)) {
-                final Expression field = mapAccessKey();
-                result = new ContainerAccessExpression(result, field);
+                if (match(TokenType.Class)) {
+                    result = new UnaryExpression(UnaryOperations.ClassAccess, result);
+                } else if (match(TokenType.Static)) {
+                    result = new UnaryExpression(UnaryOperations.StaticAccess, result);
+                } else if (match(TokenType.New)) {
+                    result = new UnaryExpression(UnaryOperations.ConstructorAccess, result);
+                } else if (match(TokenType.Type)) {
+                    result = new TypeofExpression(result);
+                } else if (match(TokenType.Catch)) {
+                    final Expression handler;
+                    if (match(TokenType.Lp)) {
+                        handler = expression();
+                        consume(TokenType.Rp);
+                    } else handler = null;
+                    result = new CatchExpression(result, handler);
+                } else {
+                    result = new ContainerAccessExpression(result, mapAccessKey());
+                }
                 continue;
             }
             if (match(TokenType.Lc)) {
@@ -525,11 +566,21 @@ public final class Parser extends AbstractParser {
             if (match(TokenType.Lp)) {
                 final List<Expression> args = new ArrayList<>();
                 if (!match(TokenType.Rp)) {
-                    do args.add(expression()); while (match(TokenType.Cm));
+                    boolean lastArray = false;
+                    do {
+                        args.add(expression());
+                        if (match(TokenType.DtDtDt)) {
+                            lastArray = true;
+                            break;
+                        }
+                    }
+                    while (match(TokenType.Cm));
+                    final Expression[] argsArray = args.toArray(new Expression[0]);
+                    result = new FunctionCallExpression(result, lastArray, argsArray);
                     consume(TokenType.Rp);
+                } else {
+                    result = new FunctionCallExpression(result, false);
                 }
-                final Expression[] argsArray = args.toArray(new Expression[args.size()]);
-                result = new FunctionCallExpression(result, argsArray);
                 continue;
             }
             if (match(TokenType.PlPl)) {
@@ -758,19 +809,22 @@ public final class Parser extends AbstractParser {
     private Expression map() {
         final MapExpression map = new MapExpression();
         if (!match(TokenType.Rb)) {
-            do {
-                if (match(TokenType.Rb))
-                    return map;
+            while (!match(TokenType.Rb)) {
+                final boolean isLocked = match(TokenType.Locked);
                 final Expression key = mapDefinitionKey();
                 final Expression value;
-                if (match(TokenType.Cl) || match(TokenType.Eq))
-                    value = expression();
-                else if (lookMatch(0, TokenType.Lp))
+                if (lookMatch(0, TokenType.Lp)) {
                     value = anonymousFunction();
-                else value = NullValue.NullExpression;
+                    ((AnonymousFunctionExpression) value).setLocked(isLocked);
+                } else {
+                    if (!match(TokenType.Eq) && !match(TokenType.Cl))
+                        value = NullValue.NullExpression;
+                    else value = expression();
+                }
+                if (!match(TokenType.Sc))
+                    match(TokenType.Cm);
                 map.addField(key, value);
-            } while (match(TokenType.Cm) || match(TokenType.Sc));
-            consume(TokenType.Rb);
+            }
         }
         if (match(TokenType.Extends)) {
             final Expression base = expression();

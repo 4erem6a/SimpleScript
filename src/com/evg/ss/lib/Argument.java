@@ -36,4 +36,9 @@ public final class Argument {
                 ^ (value == null ? 1 : value.hashCode())
                 ^ Boolean.hashCode(isVariadic);
     }
+
+    @Override
+    public String toString() {
+        return String.format("{name: %s, default: %b, variadic: %b}", name, value != null, isVariadic);
+    }
 }

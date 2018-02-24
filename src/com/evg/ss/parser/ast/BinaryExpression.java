@@ -2,6 +2,7 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.lib.Converter;
 import com.evg.ss.lib.MapMatcher;
+import com.evg.ss.modules.utils.utils;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.*;
@@ -65,6 +66,8 @@ public final class BinaryExpression extends Expression {
                 return is(leftValue, rightValue);
             case As:
                 return as(leftValue, rightValue);
+            case Range:
+                return utils.range(leftValue, rightValue);
             default:
                 return new NullValue();
         }
@@ -219,7 +222,9 @@ public final class BinaryExpression extends Expression {
 
     private Value is(Value left, Value right) {
         if (right instanceof TypeValue)
-            return getBinaryComparison(Value.of(left.getType()), Value.of(((TypeValue) right).getValue()));
+            if (((TypeValue) right).getValue() == Type.Object)
+                return Value.of(left instanceof ObjectValue);
+            else return getBinaryComparison(Value.of(left.getType()), Value.of(((TypeValue) right).getValue()));
         else if (left instanceof MapValue && right instanceof MapValue)
             return Value.of(new MapMatcher((MapValue) left).match((MapValue) right));
         else if (left instanceof MapValue && right instanceof ArrayValue)
@@ -299,7 +304,9 @@ public final class BinaryExpression extends Expression {
         Compare("=?"),
 
         Is(" is "),
-        As(" as ");
+        As(" as "),
+
+        Range("..");
         private String key;
 
         BinaryOperations(String operationKey) {

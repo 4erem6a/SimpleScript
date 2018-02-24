@@ -1,12 +1,12 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.InvalidAssignmentTargetException;
+import com.evg.ss.exceptions.execution.InvalidValueTypeException;
+import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
-import com.evg.ss.values.BoolValue;
-import com.evg.ss.values.NullValue;
-import com.evg.ss.values.NumberValue;
-import com.evg.ss.values.Value;
+import com.evg.ss.values.*;
+import com.evg.ss.values.ClassValue;
 
 /**
  * @author 4erem6a
@@ -38,9 +38,38 @@ public final class UnaryExpression extends Expression {
             case PostfixIncrement:
             case PostfixDecrement:
                 return changeValue(operator);
+            case StaticAccess:
+                return _static(value);
+            case ClassAccess:
+                return _class(value);
+            case ConstructorAccess:
+                return _new(value);
             default:
                 return new NullValue();
         }
+    }
+
+    private Value _new(Value value) {
+        if (value.getType() != Type.Object)
+            throw new InvalidValueTypeException(value.getType());
+        final SSFunction ctor = ((ObjectValue) value).getConstructor();
+        if (ctor == null)
+            return new NullValue();
+        return Value.of(ctor);
+    }
+
+    private Value _class(Value value) {
+        if (value.getType() == Type.Object)
+            return ((ObjectValue) value).getSSClass();
+        else if (value.getType() == Type.Class)
+            return value;
+        throw new InvalidValueTypeException(value.getType());
+    }
+
+    private Value _static(Value value) {
+        if (value.getType() == Type.Class)
+            return ((ClassValue) value).getStaticContext();
+        throw new InvalidValueTypeException(value.getType());
     }
 
     private Value changeValue(UnaryOperations operation) {
@@ -109,7 +138,10 @@ public final class UnaryExpression extends Expression {
         PrefixIncrement("++"),
         PrefixDecrement("--"),
         PostfixIncrement("++"),
-        PostfixDecrement("--");
+        PostfixDecrement("--"),
+        StaticAccess(" static "),
+        ClassAccess(" class "),
+        ConstructorAccess(" new ");
         private String key;
 
         UnaryOperations(String operationKey) {

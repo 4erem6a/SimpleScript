@@ -49,7 +49,9 @@ public enum TokenType {
     AlAl("<<"),         //<<
     EqQm("=?"),         //=?
     NsNs("##"),         //##
+    DtDt(".."),         //..
     ArArAr(">>>"),      //>>>
+    DtDtDt("..."),      //...
     Cl(":"),            //:
     Dt("."),            //.
     Cm(","),            //,

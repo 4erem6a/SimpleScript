@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.Arguments;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.visitors.ResultVisitor;
@@ -8,6 +9,7 @@ import com.evg.ss.values.FunctionValue;
 import com.evg.ss.values.Value;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public final class AnonymousFunctionExpression extends Expression implements Lockable {
 
@@ -21,7 +23,11 @@ public final class AnonymousFunctionExpression extends Expression implements Loc
     }
 
     public SSFunction toSSFunction() {
-        return new SSFunction(SS.CallContext.get(), args, body);
+        return new SSFunction(SS.CallContext.get(),
+                new Arguments(Arrays.stream(args)
+                        .map(ArgumentExpression::getArgument)
+                        .collect(Collectors.toList())),
+                body);
     }
 
     @Override

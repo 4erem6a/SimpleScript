@@ -256,4 +256,11 @@ public abstract class AbstractVisitor implements Visitor {
     public void visit(ClassDefinitionStatement target) {
         target.getClassExpression().accept(this);
     }
+
+    @Override
+    public void visit(CatchExpression target) {
+        target.getExpression().accept(this);
+        if (target.getHandler() != null)
+            target.getHandler().accept(this);
+    }
 }

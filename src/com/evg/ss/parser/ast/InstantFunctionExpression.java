@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.Arguments;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.visitors.ResultVisitor;
@@ -17,7 +18,7 @@ public final class InstantFunctionExpression extends Expression implements Locka
 
     @Override
     public Value eval() {
-        final SSFunction function = new SSFunction(SS.CallContext.get(), new ArgumentExpression[0], body);
+        final SSFunction function = new SSFunction(SS.CallContext.get(), new Arguments(), body);
         function.setLocked(locked);
         function.setName("$instant");
         return function.execute();

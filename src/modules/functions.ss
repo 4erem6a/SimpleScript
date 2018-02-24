@@ -1,26 +1,19 @@
-//SimpleScript'StandardLibrary: functions
-//Version: 1.1
-/*Dependencies:
- *  --- none ---
- */
 exports {
+    locked IDENTITY(x) -> x
 
-    IDENTITY: locked function(x) -> x,
+    locked ADD(a, b) -> a + b
+    locked SUB(a, b) -> a - b
+    locked DIV(a, b) -> a / b
+    locked MLT(a, b) -> a * b
+    locked MOD(a, b) -> a % b
 
-    ADD: locked function(a, b) -> a + b,
-    SUB: locked function(a, b) -> a - b,
-    DIV: locked function(a, b) -> a / b,
-    MLT: locked function(a, b) -> a * b,
-    MOD: locked function(a, b) -> a % b,
+    locked CONCAT(a, b) -> `${a}${b}`
+    locked CONCATLN(a, b) -> `${a}\n${b}`
 
-    CONCAT: locked function(a, b) -> a + "" + b,
-    CONCATLN: locked function(a, b) -> a + "\n" + b,
+    locked BOOLEAN_NEGATION(x) -> !x
+    locked BITWISE_NEGATION(x) -> ~x
+    locked NUMERIC_NEGATION(x) -> -x
 
-    BOOLEAN_NEGATION: locked function(x) -> !x,
-    BITWISE_NEGATION: locked function(x) -> ~x,
-    NUMERIC_NEGATION: locked function(x) -> -x,
-
-    COMPARISON: locked function(a, b) -> a =? b,
-    NEG_COMPARISON: locked function(a, b) -> -(a =? b)
-
+    locked COMPARISON(a, b) -> a =? b
+    locked NEG_COMPARISON(a, b) -> -(a =? b)
 }

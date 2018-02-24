@@ -3,8 +3,14 @@ package com.evg.ss.values;
 import com.evg.ss.lib.ConstructorFunction;
 import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SSFunction;
+import com.evg.ss.modules.jfunctions.jfunctions;
+import com.evg.ss.util.args.Arguments;
 
-public class FunctionValue implements Value, Callable, NewCallable {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class FunctionValue implements Value, Callable, NewCallable, Container {
 
     private Function value;
 
@@ -79,4 +85,32 @@ public class FunctionValue implements Value, Callable, NewCallable {
                 ? ((ConstructorFunction) value).executeAsNew(args)
                 : new UndefinedValue();
     }
+
+    @Override
+    public Value get(Value key) {
+        switch (key.asString()) {
+            case "apply":
+                return Value.of(this::apply);
+            case "info":
+                return Value.of(this::info);
+        }
+        return new UndefinedValue();
+    }
+
+    private Value apply(Value... args) {
+        if (Arguments.checkArgc(args, 1) == -1)
+            Arguments.checkArgcOrDie(args, 2);
+        final List<Value> _args = new ArrayList<>();
+        _args.add(this);
+        Collections.addAll(_args, args);
+        return jfunctions.execute(_args.toArray(new Value[0]));
+    }
+
+    private Value info(Value... args) {
+        Arguments.checkArgcOrDie(args, 0);
+        return jfunctions.info(this);
+    }
+
+    @Override
+    public void set(Value key, Value value) { }
 }

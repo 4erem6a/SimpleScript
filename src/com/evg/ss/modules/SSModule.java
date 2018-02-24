@@ -8,7 +8,6 @@ import com.evg.ss.exceptions.execution.ModuleNotFoundException;
 import com.evg.ss.lib.Function;
 import com.evg.ss.lib.Requirable;
 import com.evg.ss.util.builders.SSMapBuilder;
-import com.evg.ss.values.MapValue;
 import com.evg.ss.values.UndefinedValue;
 import com.evg.ss.values.Value;
 
@@ -145,7 +144,6 @@ public abstract class SSModule implements Requirable {
                 .filter(m -> m.getParameterCount() == 1)
                 .filter(m -> m.getReturnType().equals(Value.class))
                 .filter(m -> m.getParameterTypes()[0].equals(Value[].class))
-                .filter(Method::isVarArgs)
                 .filter(m -> m.isAnnotationPresent(SSExports.class))
                 .collect(Collectors.toList());
         final List<Field> exportFields = Arrays.stream(moduleClass.getFields())
@@ -177,5 +175,5 @@ public abstract class SSModule implements Requirable {
         return builder::build;
     }
 
-    public abstract MapValue require();
+    public abstract Value require();
 }

@@ -66,7 +66,6 @@ public final class IdentifierDeclarationValidator extends LintVisitor {
         if (target.isModifierPresent(LINTER_IGNORE))
             return;
         target.accept(new LintFunctionAdder());
-        target.accept(new LintClassAdder());
         if (target.isLocked()) {
             final SS.Scopes scopes = lock();
             super.visit(target);
@@ -189,13 +188,6 @@ public final class IdentifierDeclarationValidator extends LintVisitor {
     private class LintFunctionAdder extends AbstractVisitor {
         @Override
         public void visit(FunctionDefinitionStatement target) {
-            registerIdentifier(target.getName(), DUMMY_IDENTIFIER);
-        }
-    }
-
-    private class LintClassAdder extends AbstractVisitor {
-        @Override
-        public void visit(ClassDefinitionStatement target) {
             registerIdentifier(target.getName(), DUMMY_IDENTIFIER);
         }
     }

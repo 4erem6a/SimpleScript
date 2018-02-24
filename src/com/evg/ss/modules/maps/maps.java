@@ -8,26 +8,39 @@ import com.evg.ss.values.*;
 public final class maps {
 
     @SSExports("MAP_EMPTY")
-    private final static Value MAP_EMPTY = new MapValue();
+    public final static Value MAP_EMPTY = new MapValue();
 
     @SSExports("toArray")
-    private static Value toArray(Value... args) {
+    public static Value toArray(Value... args) {
+        Arguments.checkArgcOrDie(args, 1);
         if (!Arguments.checkArgTypes(args, Type.Map))
             return new UndefinedValue();
         return ((MapValue) args[0]).toArray();
     }
 
     @SSExports("size")
-    private static Value size(Value... args) {
+    public static Value size(Value... args) {
+        Arguments.checkArgcOrDie(args, 1);
         if (!Arguments.checkArgTypes(args, Type.Map))
             return new UndefinedValue();
         return new NumberValue(((MapValue) args[0]).size());
     }
 
     @SSExports("match")
-    private static Value match(Value... args) {
+    public static Value match(Value... args) {
+        Arguments.checkArgcOrDie(args, 2);
         if (!Arguments.checkArgTypes(args, Type.Map, Type.Map))
             return new UndefinedValue();
         return Value.of(new MapMatcher(((MapValue) args[0])).match(((MapValue) args[1])));
+    }
+
+    @SSExports("remove")
+    public static Value remove(Value... args) {
+        Arguments.checkArgcOrDie(args, 2);
+        if (!Arguments.checkArgTypes(args, Type.Map, null))
+            return new UndefinedValue();
+        final MapValue value = ((MapValue) args[0]);
+        value.getMapReference().remove(args[1]);
+        return new UndefinedValue();
     }
 }

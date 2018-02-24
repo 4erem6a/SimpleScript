@@ -24,9 +24,9 @@ public final class jfunctions {
         for (Argument arg : function.getArgs())
             array.setElement(new SSMapBuilder()
                     .setField("name", Value.of(arg.getName()))
-                    .setField("isDefault", Value.of(arg.getValue() == null))
+                    .setField("isDefault", Value.of(arg.getValue() != null))
                     .setField("isVariadic", Value.of(arg.isVariadic()))
-                    .setMethod("default", a -> (arg.getValue() == null ? new NullValue() : arg.getValue().eval()))
+                    .setMethod("default", a -> (arg.getValue() == null ? new UndefinedValue() : arg.getValue().eval()))
                     .build());
         builder.setField("args", array.build());
         return builder.build();

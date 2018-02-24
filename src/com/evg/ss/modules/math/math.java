@@ -5,14 +5,13 @@ import com.evg.ss.lib.SimpleFunction;
 import com.evg.ss.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
-import com.evg.ss.values.MapValue;
 import com.evg.ss.values.Type;
 import com.evg.ss.values.UndefinedValue;
 import com.evg.ss.values.Value;
 
 public final class math extends SSModule {
     @Override
-    public MapValue require() {
+    public Value require() {
         final SSMapBuilder math = new SSMapBuilder();
         math.setMethod("sin", new MathFunction(1, args -> Value.of(Math.sin(args[0].asNumber()))));
         math.setMethod("cos", new MathFunction(1, args -> Value.of(Math.cos(args[0].asNumber()))));

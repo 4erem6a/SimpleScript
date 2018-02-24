@@ -2,10 +2,7 @@ package com.evg.ss.lib.msc;
 
 import com.evg.ss.parser.ast.*;
 import com.evg.ss.parser.visitors.ResultVisitor;
-import com.evg.ss.values.BoolValue;
-import com.evg.ss.values.NumberValue;
-import com.evg.ss.values.StringValue;
-import com.evg.ss.values.Value;
+import com.evg.ss.values.*;
 
 import java.util.Map;
 
@@ -20,6 +17,8 @@ public class MSCVisitor implements ResultVisitor<String> {
         for (ArgumentExpression arg : args) {
             final StringBuilder argBuilder = new StringBuilder();
             argBuilder.append(arg.getName());
+            if (arg.isVariadic())
+                argBuilder.append("...");
             if (arg.getDefaultValue() != null)
                 argBuilder.append(String.format("=%s", arg.getDefaultValue().accept(this)));
             builder.append(argBuilder.append(',').toString());
@@ -27,24 +26,41 @@ public class MSCVisitor implements ResultVisitor<String> {
         return args.length > 0 ? builder.deleteCharAt(builder.length() - 1).toString() : "";
     }
 
-    private String processArgs(Expression... args) {
+    private String processArgs(boolean lastArray, Expression... args) {
         final StringBuilder builder = new StringBuilder();
         for (Expression arg : args)
             builder.append(arg.accept(this)).append(",");
-        return args.length > 0 ? builder.deleteCharAt(builder.length() - 1).toString() : "";
+        if (args.length > 0)
+            builder.deleteCharAt(builder.length() - 1);
+        if (lastArray)
+            builder.append("...");
+        return builder.toString();
+    }
+
+    private String processModifiers(Node node) {
+        final StringBuilder builder = new StringBuilder();
+        for (String mod : node.getModifiers().keySet())
+            builder.append("##").append(mod);
+        if (node.getModifiers().size() > 0)
+            builder.append(" ");
+        return builder.toString();
     }
 
     @Override
     public String visit(AnonymousFunctionExpression target) {
-        return String.format("%sfunction(%s)%s",
-                (target.isLocked() ? "locked " : ""),
-                processArgDefinition(target.getArgs()),
-                target.getBody().accept(this));
+        return processModifiers(target) +
+                String.format("%sfunction(%s)%s",
+                        (target.isLocked() ? "locked " : ""),
+                        processArgDefinition(target.getArgs()),
+                        target.getBody().accept(this));
     }
 
     @Override
     public String visit(ContainerAccessExpression target) {
-        return String.format("%s[%s]", target.getTarget().accept(this), target.getKey().accept(this));
+        return processModifiers(target) +
+                String.format("%s[%s]",
+                        target.getTarget().accept(this),
+                        target.getKey().accept(this));
     }
 
     @Override
@@ -52,17 +68,25 @@ public class MSCVisitor implements ResultVisitor<String> {
         final StringBuilder builder = new StringBuilder();
         for (Expression expression : target.getExpressions())
             builder.append(expression.accept(this)).append(",");
-        return String.format("[%s]", builder.deleteCharAt(builder.length() - 1).toString());
+        return processModifiers(target) + String.format("[%s]",
+                builder.deleteCharAt(builder.length() - 1).toString());
     }
 
     @Override
     public String visit(AssignmentExpression target) {
-        return String.format("%s=%s", target.getTarget().accept(this), target.getValue().accept(this));
+        return processModifiers(target) +
+                String.format("%s=%s",
+                        target.getTarget().accept(this),
+                        target.getValue().accept(this));
     }
 
     @Override
     public String visit(BinaryExpression target) {
-        return String.format("(%s%s%s)", target.getLeft().accept(this), target.getOperation().getKey(), target.getRight().accept(this));
+        return processModifiers(target) +
+                String.format("(%s%s%s)",
+                        target.getLeft().accept(this),
+                        target.getOperation().getKey(),
+                        target.getRight().accept(this));
     }
 
     @Override
@@ -70,45 +94,56 @@ public class MSCVisitor implements ResultVisitor<String> {
         final StringBuilder builder = new StringBuilder();
         for (Statement statement : target.getStatements())
             builder.append(statement.accept(this)).append(";");
-        return String.format("%sblock{%s}", (target.isLocked() ? "locked " : ""), builder.toString());
+        return processModifiers(target) +
+                String.format("%sblock{%s}",
+                        (target.isLocked() ? "locked " : ""),
+                        builder.toString());
     }
 
     @Override
     public String visit(BreakStatement target) {
-        return "break";
+        return processModifiers(target) + "break";
     }
 
     @Override
     public String visit(ConstTypeExpression target) {
-        return target.getTypename();
+        return processModifiers(target) + target.getTypename();
     }
 
     @Override
     public String visit(ContinueStatement target) {
-        return "continue";
+        return processModifiers(target) + "continue";
     }
 
     @Override
     public String visit(DoWhileStatement target) {
-        return String.format("do %s while(%s)", target.getBody().accept(this), target.getCondition().accept(this));
+        return processModifiers(target) +
+                String.format("do %s while(%s)",
+                        target.getBody().accept(this),
+                        target.getCondition().accept(this));
     }
 
     @Override
     public String visit(ExportsStatement target) {
-        return String.format("exports %s", target.getExpression().accept(this));
+        return processModifiers(target) +
+                String.format("exports %s",
+                        target.getExpression().accept(this));
     }
 
     @Override
     public String visit(ExpressionStatement target) {
-        return String.format(">%s", target.getExpression().accept(this));
+        return processModifiers(target) +
+                String.format(">%s",
+                        target.getExpression().accept(this));
     }
 
     @Override
     public String visit(ForEachStatement target) {
-        return String.format("foreach(%s in %s)%s",
-                target.getIteratorDefinition().accept(this),
-                target.getTarget().accept(this),
-                target.getBody().accept(this));
+        return processModifiers(target) +
+                String.format("foreach(%s in %s)%s",
+                        target.getIteratorDefinition().accept(this),
+                        target.getTarget().accept(this),
+                        target.getBody().accept(this));
     }
 
     @Override
@@ -116,82 +151,102 @@ public class MSCVisitor implements ResultVisitor<String> {
         final Statement ini = target.getInitialization();
         final Expression cond = target.getCondition();
         final Statement iter = target.getIteration();
-        return String.format("for(%s;%s;%s)%s",
-                ini == null ? "" : ini.accept(this),
-                cond == null ? "" : cond.accept(this),
-                iter == null ? "" : iter.accept(this),
-                target.getBody().accept(this));
+        return processModifiers(target) +
+                String.format("for(%s;%s;%s)%s",
+                        ini == null ? "" : ini.accept(this),
+                        cond == null ? "" : cond.accept(this),
+                        iter == null ? "" : iter.accept(this),
+                        target.getBody().accept(this));
     }
 
     @Override
     public String visit(FunctionCallExpression target) {
-        return String.format("%s(%s)",
-                target.getValue().accept(this),
-                processArgs(target.getArgs()));
+        return processModifiers(target) +
+                String.format("%s(%s)",
+                        target.getValue().accept(this),
+                        processArgs(target.isLastArray(), target.getArgs()));
     }
 
     @Override
     public String visit(FunctionDefinitionStatement target) {
-        return String.format("%sfunction %s(%s)%s",
-                (target.isLocked() ? "locked " : ""),
-                target.getName(),
-                processArgDefinition(target.getFunction().getArgs()),
-                target.getFunction().getBody().accept(this));
+        return processModifiers(target) +
+                String.format("%sfunction %s(%s)%s",
+                        (target.isLocked() ? "locked " : ""),
+                        target.getName(),
+                        processArgDefinition(target.getFunction().getArgs()),
+                        target.getFunction().getBody().accept(this));
     }
 
     @Override
     public String visit(IfStatement target) {
         final Statement _else = target.getElseStatement();
-        return String.format("if(%s)%s%s",
-                target.getCondition().accept(this),
-                target.getIfStatement().accept(this),
-                _else == null ? "" : String.format(" else %s", _else.accept(this)));
+        return processModifiers(target) +
+                String.format("if(%s)%s%s",
+                        target.getCondition().accept(this),
+                        target.getIfStatement().accept(this),
+                        _else == null ? "" : String.format(" else %s", _else.accept(this)));
     }
 
     @Override
     public String visit(InterpolatedStringExpression target) {
-        return String.format("`%s`", target.getString());
+        return processModifiers(target) +
+                String.format("`%s`", target.getString());
     }
 
     @Override
     public String visit(LetExpression target) {
         final Expression value = target.getValue();
-        return String.format("let %s%s",
-                target.getName(),
-                value == null ? "" : String.format("=%s", value.accept(this)));
+        return processModifiers(target) +
+                String.format("let %s%s",
+                        target.getName(),
+                        value == null ? "" : String.format("=%s", value.accept(this)));
     }
 
     @Override
     public String visit(LetStatement target) {
         final boolean _const = target.isConst();
         final Expression value = target.getValue();
-        return String.format("let%s %s%s",
-                _const ? " const" : "",
-                target.getName(),
-                value == null ? "" : String.format("=%s", value.accept(this)));
+        return processModifiers(target) +
+                String.format("let%s %s%s",
+                        _const ? " const" : "",
+                        target.getName(),
+                        value == null ? "" : String.format("=%s", value.accept(this)));
     }
 
     @Override
     public String visit(MapExpression target) {
         final StringBuilder builder = new StringBuilder();
         for (Map.Entry<Expression, Expression> entry : target.getMap().entrySet())
-            builder.append(entry.getKey().accept(this)).append(":").append(entry.getValue().accept(this)).append(",");
-        return String.format("{%s}", target.getMap().entrySet().size() > 0 ? builder.deleteCharAt(builder.length() - 1).toString() : "");
+            builder.append(entry.getKey().accept(this))
+                    .append(":")
+                    .append(entry.getValue().accept(this))
+                    .append(",");
+        return processModifiers(target) +
+                String.format("{%s}",
+                        target.getMap().entrySet().size() > 0
+                                ? builder.deleteCharAt(builder.length() - 1).toString()
+                                : "");
     }
 
     @Override
     public String visit(RequireExpression target) {
-        return String.format("require(\"%s\")", target.getPath());
+        return processModifiers(target) +
+                String.format("require(\"%s\")",
+                        target.getPath());
     }
 
     @Override
-    public String visit(ValueCloneExpression valueCloneExpression) {
-        return String.format("@%s", valueCloneExpression.getExpression().accept(this));
+    public String visit(ValueCloneExpression target) {
+        return processModifiers(target) +
+                String.format("@%s",
+                        target.getExpression().accept(this));
     }
 
     @Override
     public String visit(ReturnStatement target) {
-        return String.format("return %s", target.getExpression().accept(this));
+        return processModifiers(target) +
+                String.format("return %s",
+                        target.getExpression().accept(this));
     }
 
     private String processCase(SwitchStatement.Case _case) {
@@ -205,17 +260,19 @@ public class MSCVisitor implements ResultVisitor<String> {
         final StringBuilder builder = new StringBuilder();
         for (SwitchStatement.Case _case : target.getCases())
             builder.append(processCase(_case));
-        return String.format("switch(%s){%s}",
-                target.getValue().accept(this),
-                builder.toString());
+        return processModifiers(target) +
+                String.format("switch(%s){%s}",
+                        target.getValue().accept(this),
+                        builder.toString());
     }
 
     @Override
     public String visit(TernaryExpression target) {
-        return String.format("(%s?%s:%s)",
-                target.getCondition().accept(this),
-                target.getOnTrue().accept(this),
-                target.getOnFalse().accept(this));
+        return processModifiers(target) +
+                String.format("(%s?%s:%s)",
+                        target.getCondition().accept(this),
+                        target.getOnTrue().accept(this),
+                        target.getOnFalse().accept(this));
     }
 
     @Override
@@ -225,9 +282,10 @@ public class MSCVisitor implements ResultVisitor<String> {
 
     @Override
     public String visit(UnaryExpression target) {
-        return String.format("%s%s",
-                target.getOperator().getKey(),
-                target.getExpression().accept(this));
+        return processModifiers(target) +
+                String.format("%s%s",
+                        target.getOperator().getKey(),
+                        target.getExpression().accept(this));
     }
 
     @Override
@@ -235,79 +293,103 @@ public class MSCVisitor implements ResultVisitor<String> {
         final StringBuilder builder = new StringBuilder();
         for (Statement statement : target.getStatements())
             builder.append(statement.accept(this)).append(";");
-        return builder.toString();
+        return processModifiers(target) + builder.toString();
     }
 
     @Override
     public String visit(ValueExpression target) {
+        final String mods = processModifiers(target);
         final Value value = target.getValue();
         if (value instanceof StringValue)
-            return String.format("\"%s\"", value.asString());
+            return mods + String.format("\"%s\"", value.asString());
         if (value instanceof NumberValue) {
             if (value.asNumber() == Double.NaN)
-                return "nan";
-            return String.format("%s", value.asNumber());
+                return mods + "nan";
+            return mods + String.format("%s", value.asNumber());
         }
         if (value instanceof BoolValue) {
             if (value.asBoolean())
-                return "true";
-            return "false";
+                return mods + "true";
+            return mods + "false";
         }
-        return "null";
+        if (value instanceof NullValue)
+            return mods + "null";
+        return mods + "undefined";
     }
 
     @Override
     public String visit(VariableExpression target) {
-        return target.getName();
+        return processModifiers(target) + target.getName();
     }
 
     @Override
     public String visit(WhileStatement target) {
-        return String.format("while(%s)%s",
-                target.getCondition().accept(this),
-                target.getBody().accept(this));
+        return processModifiers(target) +
+                String.format("while(%s)%s",
+                        target.getCondition().accept(this),
+                        target.getBody().accept(this));
     }
 
     @Override
-    public String visit(NameofExpression nameofExpression) {
-        return String.format("nameof(%s)", nameofExpression.getName());
+    public String visit(NameofExpression target) {
+        return processModifiers(target) +
+                String.format("nameof(%s)",
+                        target.getName());
     }
 
     @Override
-    public String visit(TypeExpression typeExpression) {
-        return String.format("type(%s)", typeExpression.getType().accept(this));
+    public String visit(TypeExpression target) {
+        return processModifiers(target) +
+                String.format("type(%s)",
+                        target.getType().accept(this));
     }
 
     @Override
-    public String visit(ImportStatement importStatement) {
-        return String.format("import %s", importStatement.getPath().accept(this));
+    public String visit(ImportStatement target) {
+        return processModifiers(target) +
+                String.format("import %s",
+                        target.getPath().accept(this));
     }
 
     @Override
-    public String visit(ThisExpression thisExpression) {
-        return "this";
+    public String visit(ThisExpression target) {
+        return processModifiers(target) + "this";
     }
 
-    public String visit(ThatExpression thisExpression) {
-        return "that";
-    }
-
-    @Override
-    public String visit(NewExpression newExpression) {
-        return String.format("new %s", newExpression.getFunctionCall().accept(this));
+    public String visit(ThatExpression target) {
+        return processModifiers(target) + "that";
     }
 
     @Override
-    public String visit(ThrowStatement throwStatement) {
-        return String.format("throw %s", throwStatement.getExpression().accept(this));
+    public String visit(CatchExpression target) {
+        String result = String.format("%s.catch",
+                target.getExpression().accept(this));
+        if (target.getHandler() != null)
+            result += String.format("(%s)", target.getHandler().accept(this));
+        return result;
+    }
+
+    @Override
+    public String visit(NewExpression target) {
+        return processModifiers(target) +
+                String.format("new %s",
+                        target.getFunctionCall().accept(this));
+    }
+
+    @Override
+    public String visit(ThrowStatement target) {
+        return processModifiers(target) +
+                String.format("throw %s",
+                        target.getExpression().accept(this));
     }
 
     @Override
     public String visit(TryCatchFinallyStatement target) {
-        return String.format("try %s %s finally %s",
-                target.getTry().accept(this),
-                target.getCatches().stream().map(this::processCatch).reduce(String::concat),
-                target.getFinally().accept(this));
+        return processModifiers(target) +
+                String.format("try %s %s finally %s",
+                        target.getTry().accept(this),
+                        target.getCatches().stream().map(this::processCatch).reduce(String::concat),
+                        target.getFinally().accept(this));
     }
 
     private String processCatch(TryCatchFinallyStatement.Catch _catch) {
@@ -320,7 +402,9 @@ public class MSCVisitor implements ResultVisitor<String> {
 
     @Override
     public String visit(InstantFunctionExpression target) {
-        return String.format("function %s", cutKeyword("block", target.getBody().accept(this)));
+        return processModifiers(target) +
+                String.format("function %s",
+                        cutKeyword("block", target.getBody().accept(this)));
     }
 
     @Override
@@ -338,12 +422,15 @@ public class MSCVisitor implements ResultVisitor<String> {
                     .append(";");
         for (AnonymousClassExpression.ASTClassMember member : target.getMembers())
             builder.append(processClassMember(member));
-        return builder.append("}").toString();
+        return processModifiers(target) + builder.append("}").toString();
     }
 
     @Override
-    public String visit(ClassDefinitionStatement classDefinitionStatement) {
-        return String.format("class %s %s", classDefinitionStatement.getName(), cutKeyword("class", classDefinitionStatement.getClassExpression().accept(this)));
+    public String visit(ClassDefinitionStatement target) {
+        return processModifiers(target) +
+                String.format("class %s %s",
+                        target.getName(),
+                        cutKeyword("class", target.getClassExpression().accept(this)));
     }
 
     private String processClassMember(AnonymousClassExpression.ASTClassMember member) {

@@ -3,7 +3,7 @@ package com.evg.ss.values;
 import com.evg.ss.exceptions.execution.ClassMethodAccessException;
 import com.evg.ss.exceptions.execution.IdentifierAlreadyExistsException;
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
-import com.evg.ss.lib.Argument;
+import com.evg.ss.lib.Arguments;
 import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.ast.ReturnStatement;
@@ -31,7 +31,7 @@ public class ClassValue implements Value, Container, NewCallable {
         this.base = base;
         this.constructor = (constructor == null
                 ? base == null
-                ? new SSFunction(null, new Argument[0], new ReturnStatement(new ValueExpression()))
+                ? new SSFunction(null, new Arguments(), new ReturnStatement(new ValueExpression()))
                 : base.constructor
                 : constructor);
         this.members = new HashMap<>();
@@ -61,8 +61,6 @@ public class ClassValue implements Value, Container, NewCallable {
     public Value get(Value key) {
         if (key.getType() != Type.String)
             throw new InvalidValueTypeException(key.getType());
-        if (key.asString().equals("static"))
-            return staticContext;
         final ClassMember member = getMemberByName(getStaticMembers(), key.asString());
         if (member != null)
             return staticContext.get(key);
@@ -105,13 +103,12 @@ public class ClassValue implements Value, Container, NewCallable {
 
     public ObjectValue construct(Value... args) {
         final ObjectValue object = createObject_v2(false);
-        if (constructor != null) {
-            final SSFunction constructor = new SSFunction(object,
-                    this.constructor.getArgs().toArray(new Argument[0]),
-                    this.constructor.getBody());
-            constructor.setName(getMethodName(name, "new"));
-            constructor.execute(args);
-        }
+        final SSFunction constructor = new SSFunction(object,
+                this.constructor.getArgs(),
+                this.constructor.getBody());
+        constructor.setName(getMethodName(name, "new"));
+        constructor.execute(args);
+        object.setConstructor(constructor);
         return object;
     }
 
@@ -184,6 +181,7 @@ public class ClassValue implements Value, Container, NewCallable {
     @Override
     public int hashCode() {
         return members.hashCode()
+                ^ Type.Class.hashCode()
                 ^ (constructor == null ? 1 : constructor.hashCode())
                 ^ (base == null ? 1 : base.hashCode());
     }

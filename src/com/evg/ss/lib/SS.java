@@ -45,8 +45,8 @@ public final class SS {
             return (callContext == null
                     ? null
                     : callContext.parent == null
-                        ? null
-                        : callContext.parent.context);
+                    ? null
+                    : callContext.parent.context);
         }
 
         public static MapValue getParent(int depth) {

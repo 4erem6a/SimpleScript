@@ -1,8 +1,11 @@
 package com.evg.ss.values;
 
+import com.evg.ss.lib.SSFunction;
+
 public class ObjectValue extends MapValue {
 
     private final ClassValue _class;
+    private SSFunction constructor = null;
 
     public ObjectValue(ClassValue _class) {
         this._class = _class;
@@ -11,6 +14,14 @@ public class ObjectValue extends MapValue {
     public ObjectValue(MapValue map, ClassValue _class) {
         super(map);
         this._class = _class;
+    }
+
+    public SSFunction getConstructor() {
+        return constructor;
+    }
+
+    public void setConstructor(SSFunction constructor) {
+        this.constructor = constructor;
     }
 
     public ClassValue getSSClass() {
