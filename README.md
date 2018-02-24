@@ -42,9 +42,9 @@ List of supported flags:
 ```
 ## Hello, world!
 Code:
-```
-let const io = require("io")//Require "io" module from standard library.
-io.println("Hello, world!") //Print line "Hello, world" to STDOUT.
+```js
+let const io = require("io") //Require "io" module from standard library.
+io.println("Hello, world!")  //Print line "Hello, world" to STDOUT.
 ```
 Command: `ss -f program.ss -e -li`
 Result:
@@ -55,7 +55,7 @@ Hello, world!
 ## Expression mode:
 With `-m expression` flag, you can evaluate your code as an expresson.
 Example:
-```
+```js
 CommandLine> ss -s "(2 + 2) * 2" -e -m expression -li
 >8.00000
 ```
