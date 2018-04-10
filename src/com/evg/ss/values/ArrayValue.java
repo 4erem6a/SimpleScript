@@ -36,7 +36,7 @@ public class ArrayValue implements Value, Container, Iterable<Value> {
 
     @Override
     public Boolean asBoolean() {
-        return false;
+        return true;
     }
 
     @Override
@@ -56,13 +56,13 @@ public class ArrayValue implements Value, Container, Iterable<Value> {
     }
 
     @Override
-    public Type getType() {
-        return Type.Array;
+    public Types getType() {
+        return Types.Array;
     }
 
     @Override
     public int compareTo(Value o) {
-        if (o.getType() != Type.Array)
+        if (o.getType() != Types.Array)
             return -1;
         else return compareArrays(value, ((ArrayValue) o).value);
     }
@@ -83,7 +83,7 @@ public class ArrayValue implements Value, Container, Iterable<Value> {
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(value) ^ Type.Array.hashCode();
+        return Arrays.hashCode(value) ^ Types.Array.hashCode();
     }
 
     @Override
@@ -125,7 +125,7 @@ public class ArrayValue implements Value, Container, Iterable<Value> {
 
     @Override
     public void set(Value key, Value value) {
-        if (key.getType() == Type.Number) {
+        if (key.getType() == Types.Number) {
             final int index = key.asNumber().intValue();
             if (index < 0 || index >= this.value.length)
                 throw new IndexOutOfBoundsException(index);

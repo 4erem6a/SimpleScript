@@ -91,7 +91,7 @@ public abstract class LintVisitor extends AbstractVisitor {
     }
 
     @Override
-    public void visit(FunctionCallExpression target) {
+    public void visit(CallExpression target) {
         if (!target.isModifierPresent(LINTER_IGNORE))
             super.visit(target);
     }
@@ -224,12 +224,6 @@ public abstract class LintVisitor extends AbstractVisitor {
 
     @Override
     public void visit(RequireExpression target) {
-        if (!target.isModifierPresent(LINTER_IGNORE))
-            super.visit(target);
-    }
-
-    @Override
-    public void visit(ValueCloneExpression target) {
         if (!target.isModifierPresent(LINTER_IGNORE))
             super.visit(target);
     }

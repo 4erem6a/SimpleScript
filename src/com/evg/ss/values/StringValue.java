@@ -69,13 +69,13 @@ public class StringValue implements Value, Container {
     }
 
     @Override
-    public Type getType() {
-        return Type.String;
+    public Types getType() {
+        return Types.String;
     }
 
     @Override
     public int compareTo(Value o) {
-        return (o.getType() == Type.Null || o.getType() == Type.Undefined ? -1 : value.compareTo(o.asString()));
+        return (o.getType() == Types.Null || o.getType() == Types.Undefined ? -1 : value.compareTo(o.asString()));
     }
 
     @Override
@@ -90,7 +90,7 @@ public class StringValue implements Value, Container {
 
     @Override
     public int hashCode() {
-        return value.hashCode() ^ Type.String.hashCode();
+        return value.hashCode() ^ Types.String.hashCode();
     }
 
     @Override
@@ -117,7 +117,7 @@ public class StringValue implements Value, Container {
 
     @Override
     public void set(Value key, Value value) {
-        if (key.getType() == Type.Number) {
+        if (key.getType() == Types.Number) {
             final int index = key.asNumber().intValue();
             if (index < 0 || index >= this.value.length())
                 throw new IndexOutOfBoundsException(index);

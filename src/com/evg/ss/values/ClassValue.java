@@ -2,12 +2,12 @@ package com.evg.ss.values;
 
 import com.evg.ss.exceptions.execution.ClassMethodAccessException;
 import com.evg.ss.exceptions.execution.IdentifierAlreadyExistsException;
-import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.lib.Arguments;
 import com.evg.ss.lib.Function;
 import com.evg.ss.lib.SSFunction;
 import com.evg.ss.parser.ast.ReturnStatement;
 import com.evg.ss.parser.ast.ValueExpression;
+import com.evg.ss.util.builders.SSMapBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class ClassValue implements Value, Container, NewCallable {
 
     private final ClassValue base;
-    private final Map<String, ClassMember> members;
+    private final Map<Value, ClassMember> members;
     private final SSFunction constructor;
     private final ObjectValue staticContext;
     private String name = null;
@@ -36,11 +36,11 @@ public class ClassValue implements Value, Container, NewCallable {
                 : constructor);
         this.members = new HashMap<>();
         for (ClassMember member : members) {
-            if (this.members.containsKey(member.name))
-                throw new IdentifierAlreadyExistsException(member.name);
-            this.members.put(member.name, member);
+            if (this.members.containsKey(member.key))
+                throw new IdentifierAlreadyExistsException(member.key.asString());
+            this.members.put(member.key, member);
         }
-        staticContext = createObject_v2(true);
+        staticContext = createObject(true);
     }
 
     private static String getMethodName(String className, String memberName) {
@@ -51,17 +51,15 @@ public class ClassValue implements Value, Container, NewCallable {
         return members.values().stream().filter(m -> m.isStatic).collect(Collectors.toList());
     }
 
-    private ClassMember getMemberByName(List<ClassMember> members, String name) {
-        return members.stream().anyMatch(m -> m.name.equals(name))
-                ? members.stream().filter(m -> m.name.equals(name)).findFirst().get()
+    private ClassMember getMemberByKey(List<ClassMember> members, Value key) {
+        return members.stream().anyMatch(m -> m.key.equals(key))
+                ? members.stream().filter(m -> m.key.equals(key)).findFirst().get()
                 : null;
     }
 
     @Override
     public Value get(Value key) {
-        if (key.getType() != Type.String)
-            throw new InvalidValueTypeException(key.getType());
-        final ClassMember member = getMemberByName(getStaticMembers(), key.asString());
+        final ClassMember member = getMemberByKey(getStaticMembers(), key);
         if (member != null)
             return staticContext.get(key);
         return new UndefinedValue();
@@ -69,9 +67,7 @@ public class ClassValue implements Value, Container, NewCallable {
 
     @Override
     public void set(Value key, Value value) {
-        if (key.getType() != Type.String)
-            throw new InvalidValueTypeException(key.getType());
-        final ClassMember member = getMemberByName(getStaticMembers(), key.asString());
+        final ClassMember member = getMemberByKey(getStaticMembers(), key);
         if (member == null)
             return;
         if (member instanceof ClassMethod) {
@@ -102,7 +98,7 @@ public class ClassValue implements Value, Container, NewCallable {
     }
 
     public ObjectValue construct(Value... args) {
-        final ObjectValue object = createObject_v2(false);
+        final ObjectValue object = createObject(false);
         final SSFunction constructor = new SSFunction(object,
                 this.constructor.getArgs(),
                 this.constructor.getBody());
@@ -112,21 +108,21 @@ public class ClassValue implements Value, Container, NewCallable {
         return object;
     }
 
-    private ObjectValue createObject_v2(boolean _static) {
+    private ObjectValue createObject(boolean _static) {
         final ObjectValue object;
         if (base == null)
             object = new ObjectValue(this);
-        else object = base.createObject_v2(_static);
+        else object = new ObjectValue(base.createObject(_static), this);
         for (ClassMember member : members.values()) {
             if (member.isStatic && !_static || !member.isStatic && _static)
                 continue;
             if (member instanceof ClassField)
-                object.getMapReference().put(Value.of(member.getName()), ((ClassField) member).getValue());
+                object.getMapReference().put(member.getKey(), ((ClassField) member).getValue());
             if (member instanceof ClassMethod) {
                 final Value method = Value.of(((ClassMethod) member).getFunction()).clone();
-                ((SSFunction) ((FunctionValue) method).getValue()).setName(getMethodName(name, member.getName()));
+                ((SSFunction) ((FunctionValue) method).getValue()).setName(getMethodName(name, member.getKey().asString()));
                 ((SSFunction) ((FunctionValue) method).getValue()).setCallContext(object);
-                object.getMapReference().put(Value.of(member.getName()), method);
+                object.getMapReference().put(member.getKey(), method);
             }
         }
         return object;
@@ -143,7 +139,7 @@ public class ClassValue implements Value, Container, NewCallable {
 
     @Override
     public Boolean asBoolean() {
-        return false;
+        return true;
     }
 
     @Override
@@ -157,8 +153,8 @@ public class ClassValue implements Value, Container, NewCallable {
     }
 
     @Override
-    public Type getType() {
-        return Type.Class;
+    public Types getType() {
+        return Types.Class;
     }
 
     @Override
@@ -168,7 +164,7 @@ public class ClassValue implements Value, Container, NewCallable {
 
     @Override
     public int compareTo(Value o) {
-        if (o.getType() == Type.Class)
+        if (o.getType() == Types.Class)
             return hashCode() - o.hashCode();
         return -1;
     }
@@ -181,7 +177,7 @@ public class ClassValue implements Value, Container, NewCallable {
     @Override
     public int hashCode() {
         return members.hashCode()
-                ^ Type.Class.hashCode()
+                ^ Types.Class.hashCode()
                 ^ (constructor == null ? 1 : constructor.hashCode())
                 ^ (base == null ? 1 : base.hashCode());
     }
@@ -191,18 +187,30 @@ public class ClassValue implements Value, Container, NewCallable {
         return construct(args);
     }
 
+    public MapValue getSignature() {
+        final SSMapBuilder builder;
+        if (base == null)
+            builder = new SSMapBuilder();
+        else builder = new SSMapBuilder(base.getSignature());
+        for (Map.Entry<Value, ClassMember> memberEntry : members.entrySet()) {
+            if (!memberEntry.getValue().isStatic())
+                builder.setField(memberEntry.getKey(), new UndefinedValue());
+        }
+        return builder.build();
+    }
+
     public static abstract class ClassMember {
 
         private final boolean isStatic;
-        private final String name;
+        private final Value key;
 
-        public ClassMember(boolean isStatic, String name) {
+        public ClassMember(boolean isStatic, Value key) {
             this.isStatic = isStatic;
-            this.name = name;
+            this.key = key;
         }
 
-        public String getName() {
-            return name;
+        public Value getKey() {
+            return key;
         }
 
         public boolean isStatic() {
@@ -213,14 +221,13 @@ public class ClassValue implements Value, Container, NewCallable {
     public static class ClassField extends ClassMember {
         private Value value;
 
-        public ClassField(boolean isStatic, String name, Value value) {
-            super(isStatic, name);
+        public ClassField(boolean isStatic, Value key, Value value) {
+            super(isStatic, key);
             this.value = value;
         }
 
-        public ClassField(boolean isStatic, String name) {
-            super(isStatic, name);
-            this.value = new NullValue();
+        public ClassField(boolean isStatic, Value name) {
+            this(isStatic, name, new NullValue());
         }
 
         public Value getValue() {
@@ -235,7 +242,7 @@ public class ClassValue implements Value, Container, NewCallable {
         public int hashCode() {
             return value.hashCode()
                     ^ Boolean.hashCode(isStatic())
-                    ^ getName().hashCode()
+                    ^ getKey().hashCode()
                     ^ 1024;
         }
     }
@@ -243,8 +250,8 @@ public class ClassValue implements Value, Container, NewCallable {
     public static class ClassMethod extends ClassMember {
         private final Function function;
 
-        public ClassMethod(boolean isStatic, String name, Function function) {
-            super(isStatic, name);
+        public ClassMethod(boolean isStatic, Value key, Function function) {
+            super(isStatic, key);
             this.function = function;
         }
 
@@ -256,7 +263,7 @@ public class ClassValue implements Value, Container, NewCallable {
         public int hashCode() {
             return function.hashCode()
                     ^ Boolean.hashCode(isStatic())
-                    ^ getName().hashCode()
+                    ^ getKey().hashCode()
                     ^ 2048;
         }
     }

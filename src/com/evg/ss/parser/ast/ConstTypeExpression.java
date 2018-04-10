@@ -1,13 +1,14 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
-import com.evg.ss.values.Type;
+import com.evg.ss.values.Types;
 import com.evg.ss.values.Value;
 
 public final class ConstTypeExpression extends Expression {
 
-    private Type type;
+    private Types type;
     private String typename;
 
     public ConstTypeExpression(String type) {
@@ -15,31 +16,31 @@ public final class ConstTypeExpression extends Expression {
         this.typename = type;
     }
 
-    private static Type getType(String type) {
+    private static Types getType(String type) {
         switch (type.toLowerCase()) {
             case "function":
-                return Type.Function;
+                return Types.Function;
             case "map":
-                return Type.Map;
+                return Types.Map;
             case "number":
-                return Type.Number;
+                return Types.Number;
             case "array":
-                return Type.Array;
+                return Types.Array;
             case "string":
-                return Type.String;
+                return Types.String;
             case "type":
-                return Type.Type;
+                return Types.Type;
             case "null":
-                return Type.Null;
+                return Types.Null;
             case "boolean":
             case "bool":
-                return Type.Boolean;
+                return Types.Boolean;
             case "class":
-                return Type.Class;
+                return Types.Class;
             case "object":
-                return Type.Object;
+                return Types.Object;
             default:
-                return Type.Undefined;
+                return Types.Undefined;
         }
     }
 
@@ -47,7 +48,7 @@ public final class ConstTypeExpression extends Expression {
         return typename;
     }
 
-    public Type getType() {
+    public Types getType() {
         return type;
     }
 
@@ -69,5 +70,10 @@ public final class ConstTypeExpression extends Expression {
     @Override
     public int hashCode() {
         return type.hashCode() ^ typename.hashCode() ^ (8 * 38 * 31);
+    }
+
+    @Override
+    public String toString() {
+        return new MSCGenerator(this).generate();
     }
 }

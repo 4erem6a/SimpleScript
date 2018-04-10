@@ -2,6 +2,7 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.IdentifierAlreadyExistsException;
 import com.evg.ss.lib.SS;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.NullValue;
@@ -38,7 +39,7 @@ public final class LetStatement extends Statement {
 
     @Override
     public String toString() {
-        return String.format("let %s%s = %s\n", isConst ? "const " : "", name, value);
+        return new MSCGenerator(this).generate();
     }
 
     @Override

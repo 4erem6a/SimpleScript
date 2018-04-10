@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Value;
@@ -22,7 +23,7 @@ public final class TernaryExpression extends Expression {
 
     @Override
     public String toString() {
-        return String.format("[%s ? %s : %s]", condition, onTrue, onFalse);
+        return new MSCGenerator(this).generate();
     }
 
     @Override

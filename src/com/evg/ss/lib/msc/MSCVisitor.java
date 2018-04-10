@@ -85,7 +85,7 @@ public class MSCVisitor implements ResultVisitor<String> {
         return processModifiers(target) +
                 String.format("(%s%s%s)",
                         target.getLeft().accept(this),
-                        target.getOperation().getKey(),
+                        target.getOperation().getSpacedKey(),
                         target.getRight().accept(this));
     }
 
@@ -160,7 +160,7 @@ public class MSCVisitor implements ResultVisitor<String> {
     }
 
     @Override
-    public String visit(FunctionCallExpression target) {
+    public String visit(CallExpression target) {
         return processModifiers(target) +
                 String.format("%s(%s)",
                         target.getValue().accept(this),
@@ -236,13 +236,6 @@ public class MSCVisitor implements ResultVisitor<String> {
     }
 
     @Override
-    public String visit(ValueCloneExpression target) {
-        return processModifiers(target) +
-                String.format("@%s",
-                        target.getExpression().accept(this));
-    }
-
-    @Override
     public String visit(ReturnStatement target) {
         return processModifiers(target) +
                 String.format("return %s",
@@ -282,39 +275,43 @@ public class MSCVisitor implements ResultVisitor<String> {
 
     @Override
     public String visit(UnaryExpression target) {
-        switch (target.getOperator()) {
+        switch (target.getOperation()) {
             case UnaryPlus:
             case UnaryMinus:
             case BitwiseNot:
             case LogicalNot:
             case PrefixIncrement:
             case PrefixDecrement:
+            case ValueClone:
                 return processModifiers(target) +
                         String.format("%s%s",
-                                target.getOperator().getKey(),
+                                target.getOperation().getSpacedKey(),
                                 target.getExpression().accept(this));
             case PostfixIncrement:
             case PostfixDecrement:
             case StaticAccess:
             case ClassAccess:
             case ConstructorAccess:
+            case PrototypeAccess:
                 return processModifiers(target) +
                         String.format("%s%s",
                                 target.getExpression().accept(this),
-                                target.getOperator().getKey());
+                                target.getOperation().getKey());
         }
         return processModifiers(target) +
                 String.format("%s%s",
-                        target.getOperator().getKey(),
+                        target.getOperation().getSpacedKey(),
                         target.getExpression().accept(this));
     }
 
     @Override
     public String visit(UnitedStatement target) {
+        if (!target.isModifierPresent("United"))
+            target.modify("United");
         final StringBuilder builder = new StringBuilder();
         for (Statement statement : target.getStatements())
             builder.append(statement.accept(this)).append(";");
-        return processModifiers(target) + builder.toString();
+        return processModifiers(target) + String.format("block{%s}", builder.toString());
     }
 
     @Override
@@ -461,7 +458,7 @@ public class MSCVisitor implements ResultVisitor<String> {
         if (member instanceof AnonymousClassExpression.ASTClassMethod)
             if (((AnonymousClassExpression.ASTClassMethod) member).getFunction().isLocked())
                 builder.append("locked ");
-        builder.append(member.getName());
+        builder.append(member.getKey());
         if (member instanceof AnonymousClassExpression.ASTClassMethod)
             builder.append("(")
                     .append(processArgDefinition(((AnonymousClassExpression.ASTClassMethod) member).getFunction().getArgs()))

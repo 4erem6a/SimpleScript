@@ -1,10 +1,12 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
+import com.evg.ss.lib.Operations;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.ClassValue;
-import com.evg.ss.values.Type;
+import com.evg.ss.values.Types;
 import com.evg.ss.values.Value;
 
 import java.util.ArrayList;
@@ -32,8 +34,8 @@ public final class AnonymousClassExpression extends Expression {
         final Value base;
         if (this.base != null) {
             base = this.base.eval();
-            if (base.getType() != Type.Class)
-                throw new InvalidValueTypeException(base.getType());
+            if (base.getType() != Types.Class)
+                throw new InvalidValueTypeException(base.getType(), Operations.Class);
         } else base = null;
         return new ClassValue(base == null ? null : ((ClassValue) base),
                 constructor == null ? null : constructor.toSSFunction(),
@@ -66,22 +68,27 @@ public final class AnonymousClassExpression extends Expression {
         return visitor.visit(this);
     }
 
+    @Override
+    public String toString() {
+        return new MSCGenerator(this).generate();
+    }
+
     public static abstract class ASTClassMember {
 
         private final boolean isStatic;
-        private final String name;
+        private final Expression key;
 
-        public ASTClassMember(boolean isStatic, String name) {
+        public ASTClassMember(boolean isStatic, Expression key) {
             this.isStatic = isStatic;
-            this.name = name;
+            this.key = key;
         }
 
         public boolean isStatic() {
             return isStatic;
         }
 
-        public String getName() {
-            return name;
+        public Expression getKey() {
+            return key;
         }
 
         public abstract ClassValue.ClassMember toClassMember();
@@ -91,8 +98,8 @@ public final class AnonymousClassExpression extends Expression {
 
         private final Expression value;
 
-        public ASTClassField(boolean isStatic, String name, Expression value) {
-            super(isStatic, name);
+        public ASTClassField(boolean isStatic, Expression key, Expression value) {
+            super(isStatic, key);
             this.value = value;
         }
 
@@ -102,7 +109,7 @@ public final class AnonymousClassExpression extends Expression {
 
         @Override
         public ClassValue.ClassMember toClassMember() {
-            return new ClassValue.ClassField(isStatic(), getName(), value.eval());
+            return new ClassValue.ClassField(isStatic(), getKey().eval(), value.eval());
         }
     }
 
@@ -110,8 +117,8 @@ public final class AnonymousClassExpression extends Expression {
 
         private final AnonymousFunctionExpression function;
 
-        public ASTClassMethod(boolean isStatic, String name, AnonymousFunctionExpression function) {
-            super(isStatic, name);
+        public ASTClassMethod(boolean isStatic, Expression key, AnonymousFunctionExpression function) {
+            super(isStatic, key);
             this.function = function;
         }
 
@@ -121,7 +128,7 @@ public final class AnonymousClassExpression extends Expression {
 
         @Override
         public ClassValue.ClassMember toClassMember() {
-            return new ClassValue.ClassMethod(isStatic(), getName(), function.toSSFunction());
+            return new ClassValue.ClassMethod(isStatic(), getKey().eval(), function.toSSFunction());
         }
     }
 }

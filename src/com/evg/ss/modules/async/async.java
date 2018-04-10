@@ -32,7 +32,7 @@ public final class async {
     @SSExports("await")
     public static Value await(Value... args) {
         Arguments.checkArgcOrDie(args, 1, 2);
-        if (args[0].getType() != Type.Function)
+        if (args[0].getType() != Types.Function)
             return new UndefinedValue();
         final Function function = ((FunctionValue) args[0]).getValue();
         switch (args.length) {
@@ -41,7 +41,7 @@ public final class async {
             }
             case 2: {
                 final Value[] _args;
-                if (args[1].getType() == Type.Array) {
+                if (args[1].getType() == Types.Array) {
                     _args = ((ArrayValue) args[1]).getValue();
                 } else _args = new Value[]{args[1]};
                 return _await(function, _args);

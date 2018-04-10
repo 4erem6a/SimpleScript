@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 
 public final class Converter {
 
-    private final Type from, to;
+    private final Types from, to;
 
-    public Converter(Type from, Type to) {
+    public Converter(Types from, Types to) {
         this.from = from;
         this.to = to;
     }
@@ -31,7 +31,7 @@ public final class Converter {
     }
 
     public Value convert(Value target) {
-        if (to == Type.Null)
+        if (to == Types.Null)
             return new NullValue();
         switch (from) {
             case Number:

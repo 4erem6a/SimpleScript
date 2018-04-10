@@ -80,7 +80,7 @@ public class interpreter {
     }
 
     private static Value callContextUp(Value... args) {
-        if (!Arguments.checkArgTypes(args, Type.Map))
+        if (!Arguments.checkArgTypes(args, Types.Map))
             return new UndefinedValue();
         SS.CallContext.up(((MapValue) args[0]));
         return new NullValue();
@@ -145,7 +145,7 @@ public class interpreter {
 
     @SSExports("eval")
     public static Value eval(Value... args) {
-        if (!Arguments.checkArgTypes(args, Type.String))
+        if (!Arguments.checkArgTypes(args, Types.String))
             return new UndefinedValue();
         final String source = args[0].asString();
         final SimpleScript ss = SimpleScript.fromSource(source);

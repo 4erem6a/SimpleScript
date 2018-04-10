@@ -27,7 +27,7 @@ public interface Value extends Comparable<Value> {
         return new FunctionValue(value);
     }
 
-    static Value of(Type value) {
+    static Value of(Types value) {
         return new TypeValue(value);
     }
 
@@ -39,7 +39,7 @@ public interface Value extends Comparable<Value> {
 
     Object asObject();
 
-    Type getType();
+    Types getType();
 
     Value clone();
 

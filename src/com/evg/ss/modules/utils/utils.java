@@ -29,9 +29,9 @@ public final class utils {
     public static Value range(Value... args) {
         Arguments.checkArgcOrDie(args, 1, 2);
         if (args.length == 1)
-            if (!Arguments.checkArgTypes(args, Type.Number))
+            if (!Arguments.checkArgTypes(args, Types.Number))
                 return new UndefinedValue();
-            else if (!Arguments.checkArgTypes(args, Type.Number, Type.Number))
+            else if (!Arguments.checkArgTypes(args, Types.Number, Types.Number))
                 return new UndefinedValue();
         int from = Math.round(args.length == 1 ? 0 : args[0].asNumber().intValue());
         int to = Math.round(args[args.length == 1 ? 0 : 1].asNumber().intValue());
@@ -54,7 +54,7 @@ public final class utils {
     @SSExports("getClass")
     public static Value getClass(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
-        if (!Arguments.checkArgTypes(args, Type.Object))
+        if (!Arguments.checkArgTypes(args, Types.Object))
             return new UndefinedValue();
         return ((ObjectValue) args[0]).getSSClass();
     }

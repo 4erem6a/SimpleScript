@@ -47,11 +47,11 @@ public abstract class AbstractLexer {
         return new SourcePosition(line, col);
     }
 
-    protected void addToken(TokenType type) {
+    protected void addToken(TokenTypes type) {
         addToken(type, "");
     }
 
-    protected void addToken(TokenType type, String text) {
+    protected void addToken(TokenTypes type, String text) {
         tokens.add(new Token(type, text, calculatePosition()));
     }
 

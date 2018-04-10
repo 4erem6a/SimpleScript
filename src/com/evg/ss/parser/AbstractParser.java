@@ -2,7 +2,7 @@ package com.evg.ss.parser;
 
 import com.evg.ss.exceptions.parser.UnexpectedTokenException;
 import com.evg.ss.lexer.Token;
-import com.evg.ss.lexer.TokenType;
+import com.evg.ss.lexer.TokenTypes;
 import com.evg.ss.parser.ast.Expression;
 import com.evg.ss.parser.ast.Statement;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class AbstractParser {
 
-    protected static final Token EOF = new Token(TokenType.EOF, "");
+    protected static final Token EOF = new Token(TokenTypes.EOF, "");
 
     protected final List<Token> tokens;
     protected final int size;
@@ -26,7 +26,7 @@ public abstract class AbstractParser {
 
     public abstract Expression express();
 
-    protected boolean match(TokenType type) {
+    protected boolean match(TokenTypes type) {
         if (!lookMatch(0, type))
             return false;
         pos++;
@@ -34,14 +34,14 @@ public abstract class AbstractParser {
     }
 
     protected boolean match(String word) {
-        if (!lookMatch(0, TokenType.Word)
+        if (!lookMatch(0, TokenTypes.Word)
                 || !get(0).getValue().equals(word))
             return false;
         pos++;
         return true;
     }
 
-    protected boolean lookMatch(int pos, TokenType type) {
+    protected boolean lookMatch(int pos, TokenTypes type) {
         return compareTokenType(get(pos), type);
     }
 
@@ -51,7 +51,7 @@ public abstract class AbstractParser {
         return tokens.get(position);
     }
 
-    protected Token consume(TokenType type) {
+    protected Token consume(TokenTypes type) {
         final Token current = get(0);
         if (!compareTokenType(current, type))
             throw new UnexpectedTokenException(type, current);
@@ -60,10 +60,10 @@ public abstract class AbstractParser {
     }
 
     protected Token consume(String word) {
-        if (!lookMatch(0, TokenType.Word)
+        if (!lookMatch(0, TokenTypes.Word)
                 || !get(0).getValue().equals(word))
             throw new UnexpectedTokenException(get(0).getPosition(), word);
-        return consume(TokenType.Word);
+        return consume(TokenTypes.Word);
     }
 
     protected Token consume() {
@@ -72,7 +72,7 @@ public abstract class AbstractParser {
         return current;
     }
 
-    protected boolean compareTokenType(Token token, TokenType type) {
+    protected boolean compareTokenType(Token token, TokenTypes type) {
         return token.getType() == type;
     }
 

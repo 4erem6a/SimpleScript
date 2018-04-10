@@ -1,6 +1,7 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.inner.SSBreakException;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -12,7 +13,7 @@ public final class BreakStatement extends Statement {
 
     @Override
     public String toString() {
-        return "break\n";
+        return new MSCGenerator(this).generate();
     }
 
     @Override

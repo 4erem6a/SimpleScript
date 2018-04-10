@@ -1,6 +1,7 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.lib.SS;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.ClassValue;
@@ -38,5 +39,10 @@ public final class ClassDefinitionStatement extends Statement {
 
     public AnonymousClassExpression getClassExpression() {
         return classExpression;
+    }
+
+    @Override
+    public String toString() {
+        return new MSCGenerator(this).generate();
     }
 }

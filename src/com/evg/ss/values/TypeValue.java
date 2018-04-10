@@ -2,13 +2,13 @@ package com.evg.ss.values;
 
 public class TypeValue implements Value {
 
-    private Type value;
+    private Types value;
 
-    public TypeValue(Type value) {
+    public TypeValue(Types value) {
         this.value = value;
     }
 
-    public Type getValue() {
+    public Types getValue() {
         return value;
     }
 
@@ -19,7 +19,7 @@ public class TypeValue implements Value {
 
     @Override
     public Boolean asBoolean() {
-        return false;
+        return true;
     }
 
     @Override
@@ -33,8 +33,8 @@ public class TypeValue implements Value {
     }
 
     @Override
-    public Type getType() {
-        return Type.Type;
+    public Types getType() {
+        return Types.Type;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class TypeValue implements Value {
 
     @Override
     public int hashCode() {
-        return value.hashCode() ^ Type.Type.hashCode();
+        return value.hashCode() ^ Types.Type.hashCode();
     }
 
     @Override

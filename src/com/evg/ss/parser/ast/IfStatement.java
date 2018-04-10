@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -23,7 +24,7 @@ public final class IfStatement extends Statement {
 
     @Override
     public String toString() {
-        return String.format("if [%s] %s else %s\n", condition, ifStatement, elseStatement);
+        return new MSCGenerator(this).generate();
     }
 
     @Override

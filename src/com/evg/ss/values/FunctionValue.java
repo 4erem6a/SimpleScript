@@ -1,6 +1,7 @@
 package com.evg.ss.values;
 
 import com.evg.ss.lib.*;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSArrayBuilder;
 import com.evg.ss.util.builders.SSMapBuilder;
@@ -24,7 +25,7 @@ public class FunctionValue implements Value, Callable, NewCallable, Container {
 
     @Override
     public Boolean asBoolean() {
-        return false;
+        return true;
     }
 
     @Override
@@ -38,13 +39,13 @@ public class FunctionValue implements Value, Callable, NewCallable, Container {
     }
 
     @Override
-    public Type getType() {
-        return Type.Function;
+    public Types getType() {
+        return Types.Function;
     }
 
     @Override
     public int compareTo(Value o) {
-        return (o.getType() == Type.Function ? hashCode() - o.hashCode() : -1);
+        return (o.getType() == Types.Function ? hashCode() - o.hashCode() : -1);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class FunctionValue implements Value, Callable, NewCallable, Container {
 
     @Override
     public int hashCode() {
-        return value.hashCode() ^ Type.Function.hashCode();
+        return value.hashCode() ^ Types.Function.hashCode();
     }
 
     @Override
@@ -96,6 +97,12 @@ public class FunctionValue implements Value, Callable, NewCallable, Container {
                 return Value.of(value.hashCode());
             case "isUDF":
                 return Value.of(value instanceof SSFunction);
+            case "toString":
+                if (value instanceof SSFunction)
+                    return Value.of(args -> Value.of(String.format("%s: %s",
+                            getType().toString().toLowerCase(),
+                            new MSCGenerator(((SSFunction) value).getBody()).generate())));
+                else return Value.of(args -> Value.of(asString()));
         }
         return new UndefinedValue();
     }
@@ -103,14 +110,14 @@ public class FunctionValue implements Value, Callable, NewCallable, Container {
     private Value apply(Value... args) {
         if (Arguments.checkArgc(args, 1) == -1)
             Arguments.checkArgcOrDie(args, 2);
-        if (args.length == 2 && args[0].getType() != Type.Map)
+        if (args.length == 2 && args[0].getType() != Types.Map)
             return new UndefinedValue();
         final MapValue callContext = args.length == 2
                 ? ((MapValue) args[0]) : null;
         final Value __args = new Converter(
                 args[args.length - 1].getType(),
-                Type.Array).convert(args[args.length - 1]);
-        if (__args.getType() == Type.Undefined)
+                Types.Array).convert(args[args.length - 1]);
+        if (__args.getType() == Types.Undefined)
             return new UndefinedValue();
         final Value[] _args = ((ArrayValue) __args).getValue();
         if (!(value instanceof SSFunction) && callContext != null)

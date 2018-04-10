@@ -1,7 +1,6 @@
 package com.evg.ss.modules.arrays;
 
 import com.evg.ss.exceptions.execution.InvalidValueException;
-import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.lib.Function;
 import com.evg.ss.modules.SSExports;
 import com.evg.ss.util.args.Arguments;
@@ -15,7 +14,7 @@ public final class arrays {
 
     @SSExports("sort")
     public static Value sort(Value... args) {
-        if (!Arguments.checkArgTypes(args, Type.Array, Type.Function))
+        if (!Arguments.checkArgTypes(args, Types.Array, Types.Function))
             return new UndefinedValue();
         final Value[] array = ((ArrayValue) args[0]).getValue().clone();
         final Function function = ((FunctionValue) args[1]).getValue();
@@ -25,7 +24,7 @@ public final class arrays {
 
     @SSExports("sortBy")
     public static Value sortBy(Value... args) {
-        if (!Arguments.checkArgTypes(args, Type.Array, Type.Function))
+        if (!Arguments.checkArgTypes(args, Types.Array, Types.Function))
             return new UndefinedValue();
         final Value[] array = ((ArrayValue) args[0]).getValue().clone();
         final Function function = ((FunctionValue) args[1]).getValue();
@@ -36,7 +35,7 @@ public final class arrays {
     @SSExports("create")
     public static Value create(Value... args) {
         for (Value value : args)
-            if (!Arguments.checkArgTypes(new Value[]{value}, Type.Number))
+            if (!Arguments.checkArgTypes(new Value[]{value}, Types.Number))
                 return new UndefinedValue();
         final int[] sizeArr = Arrays.stream(args).mapToInt(v -> v.asNumber().intValue()).toArray();
         for (int size : sizeArr)
@@ -64,9 +63,9 @@ public final class arrays {
     @SSExports("length")
     public static Value length(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
-        if (!Arguments.checkArgTypes(args, Type.Array) &&
-                !Arguments.checkArgTypes(args, Type.String))
-            throw new InvalidValueTypeException(args[0].getType());
+        if (!Arguments.checkArgTypes(args, Types.Array) &&
+                !Arguments.checkArgTypes(args, Types.String))
+            return new UndefinedValue();
         final ArrayValue array = args[0] instanceof StringValue ?
                 ((StringValue) args[0]).asCharArray() :
                 ((ArrayValue) args[0]);
@@ -76,9 +75,9 @@ public final class arrays {
     @SSExports("resize")
     public static Value resize(Value... args) {
         Arguments.checkArgcOrDie(args, 2);
-        if (!Arguments.checkArgTypes(args, Type.Array, Type.Number) &&
-                !Arguments.checkArgTypes(args, Type.String, Type.Number))
-            throw new InvalidValueTypeException(args[0].getType());
+        if (!Arguments.checkArgTypes(args, Types.Array, Types.Number) &&
+                !Arguments.checkArgTypes(args, Types.String, Types.Number))
+            return new UndefinedValue();
         final ArrayValue array = args[0] instanceof StringValue ?
                 ((StringValue) args[0]).asCharArray() :
                 ((ArrayValue) args[0]);
@@ -89,9 +88,9 @@ public final class arrays {
     @SSExports("copy")
     public static Value copy(Value... args) {
         Arguments.checkArgcOrDie(args, 5);
-        if (!Arguments.checkArgTypes(args, Type.Array, Type.Number, Type.Array, Type.Number, Type.Number) &&
-                !Arguments.checkArgTypes(args, Type.String, Type.Number, Type.String, Type.Number, Type.Number))
-            throw new InvalidValueTypeException(args[0].getType());
+        if (!Arguments.checkArgTypes(args, Types.Array, Types.Number, Types.Array, Types.Number, Types.Number) &&
+                !Arguments.checkArgTypes(args, Types.String, Types.Number, Types.String, Types.Number, Types.Number))
+            return new UndefinedValue();
         final ArrayValue from = args[0] instanceof StringValue ?
                 ((StringValue) args[0]).asCharArray() :
                 ((ArrayValue) args[0]);

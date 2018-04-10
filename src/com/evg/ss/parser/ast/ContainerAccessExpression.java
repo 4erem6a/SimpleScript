@@ -1,6 +1,8 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
+import com.evg.ss.lib.Operations;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Container;
@@ -21,7 +23,7 @@ public final class ContainerAccessExpression extends Expression implements Acces
         final Value target = this.target.eval();
         if (target instanceof Container)
             return ((Container) target).get(key.eval());
-        throw new InvalidValueTypeException(target.getType());
+        throw new InvalidValueTypeException(target.getType(), Operations.ContainerAccess);
     }
 
     @Override
@@ -34,7 +36,7 @@ public final class ContainerAccessExpression extends Expression implements Acces
         final Value target = this.target.eval();
         if (target instanceof Container)
             ((Container) target).set(key.eval(), value);
-        else throw new InvalidValueTypeException(target.getType());
+        else throw new InvalidValueTypeException(target.getType(), Operations.ContainerAccess);
         return eval();
     }
 
@@ -58,7 +60,7 @@ public final class ContainerAccessExpression extends Expression implements Acces
 
     @Override
     public String toString() {
-        return String.format("%s[%s]", target, key);
+        return new MSCGenerator(this).generate();
     }
 
     @Override

@@ -13,7 +13,7 @@ public final class io {
     public static Value print(Value... args) {
         if (args != null)
             for (Value arg : args)
-                System.out.print(StringValue.asStringValue(arg).asString() + " ");
+                System.out.print(StringValue.asStringValue(arg).asString());
         return new NullValue();
     }
 
@@ -21,7 +21,7 @@ public final class io {
     public static Value println(Value... args) {
         if (args != null)
             for (Value arg : args)
-                System.out.print(StringValue.asStringValue(arg).asString() + " ");
+                System.out.print(StringValue.asStringValue(arg).asString());
         System.out.println();
         return new NullValue();
     }

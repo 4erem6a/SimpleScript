@@ -11,9 +11,10 @@ import java.util.function.Consumer;
 public class MapValue implements Value, Container, Callable, Iterable<Map.Entry<Value, Value>> {
 
     private Map<Value, Value> map = new HashMap<>();
+    private MapValue prototype = null;
 
     public MapValue(MapValue map) {
-        map.forEach(e -> this.map.put(e.getKey(), e.getValue()));
+        prototype = map;
     }
 
     public MapValue() {
@@ -30,6 +31,8 @@ public class MapValue implements Value, Container, Callable, Iterable<Map.Entry<
     public Value get(Value key) {
         if (map.containsKey(key))
             return map.get(key);
+        if (prototype != null)
+            return prototype.get(key);
         return new UndefinedValue();
     }
 
@@ -88,7 +91,7 @@ public class MapValue implements Value, Container, Callable, Iterable<Map.Entry<
 
     @Override
     public Boolean asBoolean() {
-        return false;
+        return true;
     }
 
     @Override
@@ -100,8 +103,11 @@ public class MapValue implements Value, Container, Callable, Iterable<Map.Entry<
                     .append(entry.getValue().asString())
                     .append(",");
         if (builder.charAt(builder.length() - 1) == ',')
-            return builder.deleteCharAt(builder.length() - 1).append("}").toString();
-        return builder.append("}").toString();
+            builder.deleteCharAt(builder.length() - 1);
+        builder.append("}");
+        if (prototype == null)
+            return builder.toString();
+        return builder.append(" extends ").append(prototype.asString()).toString();
     }
 
     @Override
@@ -110,8 +116,8 @@ public class MapValue implements Value, Container, Callable, Iterable<Map.Entry<
     }
 
     @Override
-    public Type getType() {
-        return Type.Map;
+    public Types getType() {
+        return Types.Map;
     }
 
     @Override
@@ -128,12 +134,15 @@ public class MapValue implements Value, Container, Callable, Iterable<Map.Entry<
 
     @Override
     public int hashCode() {
-        return map.hashCode() ^ Type.Map.hashCode();
+        return map.hashCode() ^ Types.Map.hashCode();
     }
 
     @Override
     public Value clone() {
-        final MapValue result = new MapValue();
+        final MapValue result;
+        if (prototype == null)
+            result = new MapValue();
+        else result = new MapValue(((MapValue) prototype.clone()));
         result.map = this.getMap();
         return result;
     }
@@ -143,8 +152,16 @@ public class MapValue implements Value, Container, Callable, Iterable<Map.Entry<
         if (!map.containsKey(Value.of("$call")))
             return new UndefinedValue();
         final Value call = map.get(Value.of("$call"));
-        if (call.getType() != Type.Function)
+        if (call.getType() != Types.Function)
             return new UndefinedValue();
         return ((FunctionValue) call).call(args);
+    }
+
+    public MapValue getPrototype() {
+        return prototype;
+    }
+
+    public void setPrototype(MapValue prototype) {
+        this.prototype = prototype;
     }
 }

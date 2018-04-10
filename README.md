@@ -2,19 +2,18 @@
 ## Description:
 SimpleScript is a general-purpose scripting programming language created as hobby project.
 SS suports imperative, functional & object-oriented programmig paradigms.
-## Latest changelog: (1.11.1.0)
-* Added constant function arguments.
-* Added `<FunctionValue>.name` property.
-* Added `<FunctionValue>.hashCode` property.
-* Added `<FunctionValue>.isUDF` property.
-* Added locked constructors.
-* Removed `jfunctions` module.
-* Removed `types` module.
-* Improved type convertion.
-* Improved `MSCGenerator`.
-* Reserved `super` keyword.
+## Latest changelog: (1.12.0.0)
+* Added map prototypes.
+* Added compound assignment operators.
+* Added binary shift operators.
+* Improved std modules.
+* Reserved `delete` keyword.
+* Decreased `ValueClone` operator precedance.
+* Added value clone inheritance.
+* Added `<Function>.toString` method.
+* Added `map-base` module.
 ## Roadmap:
-* Binary shifts.
+* Optimization.
 * `http` module.
 ## Installation:
 1. Install Java 8+.
@@ -46,10 +45,10 @@ Code:
 let const io = require("io") //Require "io" module from standard library.
 io.println("Hello, world!")  //Print line "Hello, world" to STDOUT.
 ```
-Command: `ss -f program.ss -e -li`
+Command: `ss -f program.ss -e -li`  
 Result:
-```
-CommandLine> java -jar C:\SS\SimpleScript.jar -f C:\SS\program.ss -e -li
+```js
+CommandLine> ss -f C:\SS\program.ss -e -li
 Hello, world!
 ```
 ## Expression mode:

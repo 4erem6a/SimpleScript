@@ -86,12 +86,12 @@ public final class SSFunction implements ConstructorFunction {
         final List<Value> argList = new ArrayList<>();
         int i = 0;
         for (; i < args.length; i++) {
-            if (this.args.get(i).isVariadic() && args[i].getType() != Type.Array) {
+            if (this.args.get(i).isVariadic() && args[i].getType() != Types.Array) {
                 final SSArrayBuilder varArgBuilder = new SSArrayBuilder();
                 for (; i < args.length; i++)
                     varArgBuilder.setElement(args[i]);
                 argList.add(varArgBuilder.build());
-            } else if (this.args.get(i).hasValue() && args[i].getType() == Type.Undefined) {
+            } else if (this.args.get(i).hasValue() && args[i].getType() == Types.Undefined) {
                 argList.add(this.args.get(i).getValue().eval());
             } else {
                 argList.add(args[i]);

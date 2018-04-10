@@ -13,7 +13,7 @@ public final class SSClassBuilder {
 
     private final ClassValue base;
     private SSFunction constructor = null;
-    private Map<String, ClassValue.ClassMember> members = new HashMap<>();
+    private Map<Value, ClassValue.ClassMember> members = new HashMap<>();
 
     public SSClassBuilder(ClassValue base) {
         this.base = base;
@@ -28,34 +28,40 @@ public final class SSClassBuilder {
         return this;
     }
 
-    public SSClassBuilder setField(String name) {
-        members.put(name, new ClassValue.ClassField(false, name));
-        return this;
-    }
-
-    public SSClassBuilder setField(String name, Value value) {
-        members.put(name, new ClassValue.ClassField(false, name, value));
-        return this;
-    }
-
-    public SSClassBuilder setStaticField(String name) {
-        members.put(name, new ClassValue.ClassField(true, name));
+    public SSClassBuilder setStaticField(Value key, Value value) {
+        members.put(key, new ClassValue.ClassField(true, key, value));
         return this;
     }
 
     public SSClassBuilder setStaticField(String name, Value value) {
-        members.put(name, new ClassValue.ClassField(true, name, value));
+        return setStaticField(Value.of(name), value);
+    }
+
+    public SSClassBuilder setMethod(Value key, Function function) {
+        members.put(key, new ClassValue.ClassMethod(false, key, function));
         return this;
     }
 
     public SSClassBuilder setMethod(String name, Function function) {
-        members.put(name, new ClassValue.ClassField(false, name));
+        return setMethod(Value.of(name), function);
+    }
+
+    public SSClassBuilder setField(Value key, Value value) {
+        members.put(key, new ClassValue.ClassField(false, key, value));
         return this;
     }
 
-    public SSClassBuilder setStaticMethod(String name, Function function) {
-        members.put(name, new ClassValue.ClassField(true, name));
+    public SSClassBuilder setField(String name, Value value) {
+        return setField(Value.of(name), value);
+    }
+
+    public SSClassBuilder setStaticMethod(Value key, Function function) {
+        members.put(key, new ClassValue.ClassMethod(true, key, function));
         return this;
+    }
+
+    public SSClassBuilder setStaticMMethod(String name, Function function) {
+        return setStaticMethod(Value.of(name), function);
     }
 
     public ClassValue build() {

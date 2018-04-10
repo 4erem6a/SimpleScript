@@ -12,12 +12,12 @@ public class UndefinedValue implements Value {
 
     @Override
     public Double asNumber() {
-        return null;
+        return Double.NaN;
     }
 
     @Override
     public Boolean asBoolean() {
-        return null;
+        return false;
     }
 
     @Override
@@ -27,17 +27,17 @@ public class UndefinedValue implements Value {
 
     @Override
     public Object asObject() {
-        return null;
+        return this;
     }
 
     @Override
-    public Type getType() {
-        return Type.Undefined;
+    public Types getType() {
+        return Types.Undefined;
     }
 
     @Override
     public int compareTo(Value o) {
-        return (o.getType() == Type.Undefined ? 0 : -1);
+        return (o.getType() == Types.Undefined ? 0 : -1);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UndefinedValue implements Value {
 
     @Override
     public int hashCode() {
-        return Type.Undefined.hashCode();
+        return Types.Undefined.hashCode();
     }
 
     @Override

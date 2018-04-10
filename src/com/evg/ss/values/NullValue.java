@@ -31,13 +31,13 @@ public class NullValue implements Value {
     }
 
     @Override
-    public Type getType() {
-        return Type.Null;
+    public Types getType() {
+        return Types.Null;
     }
 
     @Override
     public int compareTo(Value o) {
-        return (o.getType() == Type.Null ? 0 : -1);
+        return (o.getType() == Types.Null ? 0 : -1);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class NullValue implements Value {
 
     @Override
     public int hashCode() {
-        return Type.Null.hashCode();
+        return Types.Null.hashCode();
     }
 
     @Override

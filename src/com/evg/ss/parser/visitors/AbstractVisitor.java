@@ -86,7 +86,7 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(FunctionCallExpression target) {
+    public void visit(CallExpression target) {
         target.getValue().accept(this);
         Arrays.stream(target.getArgs()).forEach(a -> a.accept(this));
     }
@@ -208,11 +208,6 @@ public abstract class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(RequireExpression target) {
-    }
-
-    @Override
-    public void visit(ValueCloneExpression target) {
-        target.getExpression().accept(this);
     }
 
     @Override

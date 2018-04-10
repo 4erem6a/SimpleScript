@@ -32,13 +32,13 @@ public class BoolValue implements Value {
     }
 
     @Override
-    public Type getType() {
-        return Type.Boolean;
+    public Types getType() {
+        return Types.Boolean;
     }
 
     @Override
     public int compareTo(Value o) {
-        return o.getType() == Type.Null || o.getType() == Type.Undefined ? -1 : Boolean.compare(value, o.asBoolean());
+        return o.getType() == Types.Null || o.getType() == Types.Undefined ? -1 : Boolean.compare(value, o.asBoolean());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class BoolValue implements Value {
 
     @Override
     public int hashCode() {
-        return Boolean.hashCode(value) ^ Type.Boolean.hashCode();
+        return Boolean.hashCode(value) ^ Types.Boolean.hashCode();
     }
 
     @Override

@@ -18,7 +18,7 @@ public abstract class Node {
 
     public abstract <TResult> TResult accept(ResultVisitor<TResult> visitor);
 
-    public final void modify(String modifier) {
+    public final void modify(String modifier) throws ModifierAlreadySetException {
         if (modifiers.containsKey(modifier))
             throw new ModifierAlreadySetException(modifier);
         modifiers.put(modifier, modifier);

@@ -5,7 +5,6 @@ import com.evg.ss.lib.Identifier;
 import com.evg.ss.lib.SS;
 import com.evg.ss.lib.containers.IdentifierMap;
 import com.evg.ss.parser.ast.*;
-import com.evg.ss.parser.visitors.AbstractVisitor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,14 +64,27 @@ public final class IdentifierDeclarationValidator extends LintVisitor {
     public void visit(BlockStatement target) {
         if (target.isModifierPresent(LINTER_IGNORE))
             return;
-        target.accept(new LintFunctionAdder());
+        if (target.isModifierPresent("United")) {
+            new UnitedStatement(target.getStatements()).accept(this);
+            return;
+        }
         if (target.isLocked()) {
             final SS.Scopes scopes = lock();
-            super.visit(target);
+            target.getStatements().stream()
+                    .filter(s -> s instanceof FunctionDefinitionStatement)
+                    .forEach(s -> registerIdentifier(((FunctionDefinitionStatement) s).getName(), DUMMY_IDENTIFIER));
+            target.getStatements().stream()
+                    .filter(s -> !(s instanceof FunctionDefinitionStatement))
+                    .forEach(s -> s.accept(this));
             unlock(scopes);
         } else {
             up();
-            super.visit(target);
+            target.getStatements().stream()
+                    .filter(s -> s instanceof FunctionDefinitionStatement)
+                    .forEach(s -> registerIdentifier(((FunctionDefinitionStatement) s).getName(), DUMMY_IDENTIFIER));
+            target.getStatements().stream()
+                    .filter(s -> !(s instanceof FunctionDefinitionStatement))
+                    .forEach(s -> s.accept(this));
             down();
         }
     }
@@ -189,12 +201,5 @@ public final class IdentifierDeclarationValidator extends LintVisitor {
             return;
         registerIdentifier(target.getName(), DUMMY_IDENTIFIER);
         super.visit(target);
-    }
-
-    private class LintFunctionAdder extends AbstractVisitor {
-        @Override
-        public void visit(FunctionDefinitionStatement target) {
-            registerIdentifier(target.getName(), DUMMY_IDENTIFIER);
-        }
     }
 }

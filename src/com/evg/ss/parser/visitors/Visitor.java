@@ -32,7 +32,7 @@ public interface Visitor {
 
     void visit(ForStatement target);
 
-    void visit(FunctionCallExpression target);
+    void visit(CallExpression target);
 
     void visit(FunctionDefinitionStatement target);
 
@@ -75,8 +75,6 @@ public interface Visitor {
     void visit(NewExpression target);
 
     void visit(RequireExpression target);
-
-    void visit(ValueCloneExpression target);
 
     void visit(ThrowStatement target);
 

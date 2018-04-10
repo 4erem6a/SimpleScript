@@ -2,6 +2,7 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.SSThrownException;
 import com.evg.ss.lib.SS;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -75,6 +76,11 @@ public final class TryCatchFinallyStatement extends Statement {
                 ^ catches.hashCode()
                 ^ (_finally == null ? 1 : _finally.hashCode())
                 ^ (38 * 8 * 31);
+    }
+
+    @Override
+    public String toString() {
+        return new MSCGenerator(this).generate();
     }
 
     public static class Catch {

@@ -2,10 +2,12 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.SSThrownException;
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
+import com.evg.ss.lib.Operations;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.FunctionValue;
-import com.evg.ss.values.Type;
+import com.evg.ss.values.Types;
 import com.evg.ss.values.UndefinedValue;
 import com.evg.ss.values.Value;
 
@@ -22,8 +24,8 @@ public final class CatchExpression extends Expression {
     @Override
     public Value eval() {
         final Value handler = this.handler == null ? null : this.handler.eval();
-        if (handler != null && handler.getType() != Type.Function)
-            throw new InvalidValueTypeException(handler.getType());
+        if (handler != null && handler.getType() != Types.Function)
+            throw new InvalidValueTypeException(handler.getType(), Operations.Catch);
         try {
             return expression.eval();
         } catch (SSThrownException e) {
@@ -49,5 +51,10 @@ public final class CatchExpression extends Expression {
     @Override
     public <TResult> TResult accept(ResultVisitor<TResult> visitor) {
         return visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        return new MSCGenerator(this).generate();
     }
 }

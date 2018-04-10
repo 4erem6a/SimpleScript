@@ -13,7 +13,7 @@ public final class maps {
     @SSExports("toArray")
     public static Value toArray(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
-        if (!Arguments.checkArgTypes(args, Type.Map))
+        if (!Arguments.checkArgTypes(args, Types.Map))
             return new UndefinedValue();
         return ((MapValue) args[0]).toArray();
     }
@@ -21,7 +21,7 @@ public final class maps {
     @SSExports("size")
     public static Value size(Value... args) {
         Arguments.checkArgcOrDie(args, 1);
-        if (!Arguments.checkArgTypes(args, Type.Map))
+        if (!Arguments.checkArgTypes(args, Types.Map))
             return new UndefinedValue();
         return new NumberValue(((MapValue) args[0]).size());
     }
@@ -29,7 +29,7 @@ public final class maps {
     @SSExports("match")
     public static Value match(Value... args) {
         Arguments.checkArgcOrDie(args, 2);
-        if (!Arguments.checkArgTypes(args, Type.Map, Type.Map))
+        if (!Arguments.checkArgTypes(args, Types.Map, Types.Map))
             return new UndefinedValue();
         return Value.of(new MapMatcher(((MapValue) args[0])).match(((MapValue) args[1])));
     }
@@ -37,7 +37,7 @@ public final class maps {
     @SSExports("remove")
     public static Value remove(Value... args) {
         Arguments.checkArgcOrDie(args, 2);
-        if (!Arguments.checkArgTypes(args, Type.Map, null))
+        if (!Arguments.checkArgTypes(args, Types.Map, null))
             return new UndefinedValue();
         final MapValue value = ((MapValue) args[0]);
         value.getMapReference().remove(args[1]);

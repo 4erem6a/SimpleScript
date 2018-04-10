@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.ArrayValue;
@@ -41,5 +42,10 @@ public final class ArrayExpression extends Expression {
     @Override
     public int hashCode() {
         return Arrays.hashCode(expressions) ^ (3 * 43 * 31);
+    }
+
+    @Override
+    public String toString() {
+        return new MSCGenerator(this).generate();
     }
 }

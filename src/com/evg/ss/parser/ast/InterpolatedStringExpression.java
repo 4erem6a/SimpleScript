@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.util.interpolation.InterpolatedString;
@@ -20,7 +21,7 @@ public final class InterpolatedStringExpression extends ValueExpression {
 
     @Override
     public String toString() {
-        return String.format("$[%s]", string);
+        return new MSCGenerator(this).generate();
     }
 
     public String getString() {

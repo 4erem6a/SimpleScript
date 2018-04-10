@@ -2,7 +2,8 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.lib.Converter;
 import com.evg.ss.lib.MapMatcher;
-import com.evg.ss.modules.utils.utils;
+import com.evg.ss.lib.Operations;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.*;
@@ -15,9 +16,9 @@ import javafx.util.Pair;
 public final class BinaryExpression extends Expression {
 
     private final Expression left, right;
-    private final BinaryOperations operation;
+    private final Operations operation;
 
-    public BinaryExpression(BinaryOperations operation, Expression left, Expression right) {
+    public BinaryExpression(Operations operation, Expression left, Expression right) {
         this.left = left;
         this.right = right;
         this.operation = operation;
@@ -36,7 +37,7 @@ public final class BinaryExpression extends Expression {
                 return divide(leftValue, rightValue);
             case Multiplication:
                 return multiply(leftValue, rightValue);
-            case Modulo:
+            case Modulus:
                 return mod(leftValue, rightValue);
             case BitwiseOr:
                 return new NumberValue(leftValue.asNumber().intValue() | rightValue.asNumber().intValue());
@@ -44,6 +45,12 @@ public final class BinaryExpression extends Expression {
                 return new NumberValue(leftValue.asNumber().intValue() ^ rightValue.asNumber().intValue());
             case BitwiseXor:
                 return new NumberValue(leftValue.asNumber().intValue() ^ rightValue.asNumber().intValue());
+            case LShift:
+                return new NumberValue(leftValue.asNumber().intValue() << rightValue.asNumber().intValue());
+            case RShift:
+                return new NumberValue(leftValue.asNumber().intValue() >> rightValue.asNumber().intValue());
+            case URShift:
+                return new NumberValue(leftValue.asNumber().intValue() >>> rightValue.asNumber().intValue());
             case LogicalOr:
                 return new BoolValue(leftValue.asBoolean() || rightValue.asBoolean());
             case LogicalAnd:
@@ -66,8 +73,6 @@ public final class BinaryExpression extends Expression {
                 return is(leftValue, rightValue);
             case As:
                 return as(leftValue, rightValue);
-            case Range:
-                return utils.range(leftValue, rightValue);
             default:
                 return new NullValue();
         }
@@ -222,7 +227,7 @@ public final class BinaryExpression extends Expression {
 
     private Value is(Value left, Value right) {
         if (right instanceof TypeValue)
-            if (((TypeValue) right).getValue() == Type.Object)
+            if (((TypeValue) right).getValue() == Types.Object)
                 return Value.of(left instanceof ObjectValue);
             else return getBinaryComparison(Value.of(left.getType()), Value.of(((TypeValue) right).getValue()));
         else if (left instanceof MapValue && right instanceof MapValue)
@@ -237,12 +242,12 @@ public final class BinaryExpression extends Expression {
     }
 
     private Value getBinaryComparison(Value left, Value right) {
-        return new BinaryExpression(BinaryOperations.Equals, new ValueExpression(left),
+        return new BinaryExpression(Operations.Equals, new ValueExpression(left),
                 new ValueExpression(right)).eval();
     }
 
     private Value as(Value left, Value right) {
-        final Type targetType;
+        final Types targetType;
         if (right instanceof TypeValue)
             targetType = ((TypeValue) right).getValue();
         else targetType = right.getType();
@@ -251,7 +256,7 @@ public final class BinaryExpression extends Expression {
 
     @Override
     public String toString() {
-        return String.format("[%s %s %s]", left, operation.key, right);
+        return new MSCGenerator(this).generate();
     }
 
     @Override
@@ -267,7 +272,7 @@ public final class BinaryExpression extends Expression {
         return right;
     }
 
-    public BinaryOperations getOperation() {
+    public Operations getOperation() {
         return operation;
     }
 
@@ -279,42 +284,5 @@ public final class BinaryExpression extends Expression {
     @Override
     public int hashCode() {
         return left.hashCode() ^ right.hashCode() ^ operation.hashCode() ^ (5 * 41 * 31);
-    }
-
-    public enum BinaryOperations {
-        Addition("+"),
-        Subtraction("-"),
-        Division("/"),
-        Multiplication("*"),
-        Modulo("%"),
-
-        BitwiseOr("|"),
-        BitwiseAnd("&"),
-        BitwiseXor("^"),
-
-        LogicalOr("||"),
-        LogicalAnd("&&"),
-
-        LessThen("<"),
-        GreaterThen(">"),
-        GreaterThenOrEquals(">="),
-        LessThenOrEquals("<="),
-        Equals("=="),
-        NotEquals("!="),
-        Compare("=?"),
-
-        Is(" is "),
-        As(" as "),
-
-        Range("..");
-        private String key;
-
-        BinaryOperations(String operationKey) {
-            this.key = operationKey;
-        }
-
-        public String getKey() {
-            return key;
-        }
     }
 }

@@ -15,7 +15,7 @@ public final class MapMatcher {
     }
 
     public boolean match(MapValue target) {
-        return target.getMap().size() == keys.size() && keys.stream().allMatch(target.getMap()::containsKey);
+        return keys.stream().allMatch(target.getMap()::containsKey);
     }
 
 }

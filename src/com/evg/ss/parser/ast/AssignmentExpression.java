@@ -1,6 +1,7 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.InvalidAssignmentTargetException;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.Value;
@@ -27,7 +28,7 @@ public final class AssignmentExpression extends Expression implements Accessible
     @Override
     public Value set(Value value) {
         if (!(target instanceof Accessible))
-            throw new InvalidAssignmentTargetException();
+            throw new InvalidAssignmentTargetException(target);
         return ((Accessible) target).set(value);
     }
 
@@ -52,5 +53,10 @@ public final class AssignmentExpression extends Expression implements Accessible
     @Override
     public int hashCode() {
         return target.hashCode() ^ value.hashCode() ^ (4 * 42 * 31);
+    }
+
+    @Override
+    public String toString() {
+        return new MSCGenerator(this).generate();
     }
 }

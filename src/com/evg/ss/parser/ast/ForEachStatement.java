@@ -5,6 +5,7 @@ import com.evg.ss.exceptions.inner.SSBreakException;
 import com.evg.ss.exceptions.inner.SSContinueException;
 import com.evg.ss.exceptions.inner.SSInnerException;
 import com.evg.ss.lib.SS;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.util.builders.SSMapBuilder;
@@ -66,7 +67,7 @@ public final class ForEachStatement extends Statement {
 
     @Override
     public String toString() {
-        return String.format("foreach [%s:%s] %s\n", iteratorDefinition, target, body);
+        return new MSCGenerator(this).generate();
     }
 
     @Override

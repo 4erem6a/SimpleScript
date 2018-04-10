@@ -1,7 +1,7 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.lib.SS;
-import com.evg.ss.parser.visitors.FunctionAdder;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -26,18 +26,31 @@ public final class BlockStatement extends Statement implements Lockable {
 
     @Override
     public void execute() {
-        this.accept(new FunctionAdder());
+        if (isModifierPresent("United")) {
+            new UnitedStatement(statements).execute();
+            return;
+        }
         if (locked) {
             SS.Scopes scopes = SS.Scopes.lock();
             try {
-                statements.forEach(Statement::execute);
+                statements.stream()
+                        .filter(s -> s instanceof FunctionDefinitionStatement)
+                        .forEach(Statement::execute);
+                statements.stream()
+                        .filter(s -> !(s instanceof FunctionDefinitionStatement))
+                        .forEach(Statement::execute);
             } finally {
                 SS.Scopes.unlock(scopes);
             }
         } else {
             SS.Scopes.up();
             try {
-                statements.forEach(Statement::execute);
+                statements.stream()
+                        .filter(s -> s instanceof FunctionDefinitionStatement)
+                        .forEach(Statement::execute);
+                statements.stream()
+                        .filter(s -> !(s instanceof FunctionDefinitionStatement))
+                        .forEach(Statement::execute);
             } finally {
                 SS.Scopes.down();
             }
@@ -46,11 +59,7 @@ public final class BlockStatement extends Statement implements Lockable {
 
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder("block [\n");
-        for (Statement statement : statements)
-            builder.append(statement);
-        builder.append("]");
-        return builder.toString();
+        return new MSCGenerator(this).generate();
     }
 
     @Override

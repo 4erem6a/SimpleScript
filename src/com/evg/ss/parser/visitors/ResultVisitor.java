@@ -32,7 +32,7 @@ public interface ResultVisitor<TResult> {
 
     TResult visit(ForStatement target);
 
-    TResult visit(FunctionCallExpression target);
+    TResult visit(CallExpression target);
 
     TResult visit(FunctionDefinitionStatement target);
 
@@ -75,8 +75,6 @@ public interface ResultVisitor<TResult> {
     TResult visit(NewExpression target);
 
     TResult visit(RequireExpression target);
-
-    TResult visit(ValueCloneExpression target);
 
     TResult visit(ThrowStatement target);
 

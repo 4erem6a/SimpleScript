@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.modules.SSModule;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
@@ -24,7 +25,7 @@ public final class RequireExpression extends Expression {
 
     @Override
     public String toString() {
-        return String.format("require(%s)\n", path);
+        return new MSCGenerator(this).generate();
     }
 
     @Override

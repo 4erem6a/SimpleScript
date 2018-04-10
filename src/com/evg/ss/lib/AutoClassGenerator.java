@@ -45,7 +45,7 @@ public final class AutoClassGenerator {
             fields.add(
                     new AnonymousClassExpression.ASTClassField(
                             false,
-                            arg.getName(),
+                            new ValueExpression(arg.getName()),
                             value == null
                                     ? NullValue.NullExpression
                                     : value));

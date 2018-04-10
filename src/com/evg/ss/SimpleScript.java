@@ -30,7 +30,7 @@ import java.util.List;
 
 public final class SimpleScript {
 
-    public static Version VERSION = new Version(1, 11, 1, 0);
+    public static Version VERSION = new Version(1, 12, 0, 0);
 
     private List<Token> tokens;
 
@@ -74,6 +74,22 @@ public final class SimpleScript {
     public static SimpleScript fromFile(String path) throws IOException, SSLexerException {
         final String source = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
         return fromSource(source);
+    }
+
+    public static Value eval(String source) {
+        try {
+            return fromSource(source).express().eval();
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    public static <TValue extends Value> TValue evalAs(String source) {
+        try {
+            return ((TValue) fromSource(source).express().eval());
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 
     public CompiledScript compile() throws SSParserException {

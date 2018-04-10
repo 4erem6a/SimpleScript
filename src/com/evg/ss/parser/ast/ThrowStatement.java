@@ -1,6 +1,7 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.SSThrownException;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -34,5 +35,10 @@ public final class ThrowStatement extends Statement {
     @Override
     public int hashCode() {
         return expression.hashCode() ^ (37 * 9 * 31);
+    }
+
+    @Override
+    public String toString() {
+        return new MSCGenerator(this).generate();
     }
 }

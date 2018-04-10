@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -9,6 +10,13 @@ import java.util.List;
 public final class UnitedStatement extends Statement {
 
     private List<Statement> statements = new ArrayList<>();
+
+    public UnitedStatement(List<Statement> statements) {
+        this.statements = statements;
+    }
+
+    public UnitedStatement() {
+    }
 
     public void addStatement(Statement statement) {
         statements.add(statement);
@@ -21,11 +29,7 @@ public final class UnitedStatement extends Statement {
 
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder("union [\n");
-        for (Statement statement : statements)
-            builder.append(statement);
-        builder.append("]");
-        return builder.toString();
+        return new MSCGenerator(this).generate();
     }
 
     @Override
@@ -40,6 +44,16 @@ public final class UnitedStatement extends Statement {
 
     public List<Statement> getStatements() {
         return statements;
+    }
+
+    public int size() {
+        return statements.size();
+    }
+
+    public Statement first() {
+        if (statements.size() >= 1)
+            return statements.get(0);
+        return null;
     }
 
     @Override

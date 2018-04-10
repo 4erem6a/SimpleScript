@@ -15,6 +15,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -61,16 +62,25 @@ public abstract class SSModule implements Requirable {
         if (LOADED_MODULES.containsKey(name))
             return LOADED_MODULES.get(name);
         final String path;
-        if (name.startsWith("/")) {
+        if (name.startsWith(".")) {
             if (!Environment.envVariableExists(Environment.EXECUTABLE_PATH))
                 throw new ModuleNotFoundException(name);
             final String execPath = Environment.getEnvVariable(Environment.EXECUTABLE_PATH).asString();
-            path = execPath + name;
+            path = Paths.get(execPath, name.substring(1)).toAbsolutePath().toString();
         } else path = name;
         final SimpleScript.CompiledScript script = tryLoadModule(path);
         if (script == null)
             throw new ModuleNotFoundException(name);
-        return script;
+        return () -> {
+            final Value execPathBuffer = Environment.getEnvVariable(Environment.EXECUTABLE_PATH);
+            final Value execFileBuffer = Environment.getEnvVariable(Environment.EXECUTABLE_FILE);
+            Environment.putEnvVariable(Environment.EXECUTABLE_PATH, Value.of(Paths.get(path).getParent().toString()), true);
+            Environment.putEnvVariable(Environment.EXECUTABLE_FILE, Value.of(path), true);
+            final Value module = script.require();
+            Environment.setEnvVariable(Environment.EXECUTABLE_PATH, execPathBuffer);
+            Environment.setEnvVariable(Environment.EXECUTABLE_FILE, execFileBuffer);
+            return module;
+        };
     }
 
     public static void loadModulesByPath(String path) {

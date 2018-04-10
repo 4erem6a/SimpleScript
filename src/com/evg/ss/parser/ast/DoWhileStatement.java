@@ -2,6 +2,7 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.inner.SSBreakException;
 import com.evg.ss.exceptions.inner.SSContinueException;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -29,7 +30,7 @@ public final class DoWhileStatement extends Statement {
 
     @Override
     public String toString() {
-        return String.format("do %s while %s\n", body, condition);
+        return new MSCGenerator(this).generate();
     }
 
     @Override

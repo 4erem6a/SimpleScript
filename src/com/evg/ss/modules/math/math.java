@@ -5,7 +5,7 @@ import com.evg.ss.lib.SimpleFunction;
 import com.evg.ss.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
-import com.evg.ss.values.Type;
+import com.evg.ss.values.Types;
 import com.evg.ss.values.UndefinedValue;
 import com.evg.ss.values.Value;
 
@@ -67,7 +67,7 @@ public final class math extends SSModule {
             if (getArgc() != -1)
                 Arguments.checkArgcOrDie(args, getArgc());
             for (Value arg : args)
-                if (arg.getType() != Type.Number)
+                if (arg.getType() != Types.Number)
                     return new UndefinedValue();
             return getCallback().execute(args);
         }

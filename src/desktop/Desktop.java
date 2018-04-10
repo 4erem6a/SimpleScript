@@ -4,6 +4,7 @@ import com.evg.ss.Environment;
 import com.evg.ss.SimpleScript;
 import com.evg.ss.exceptions.SSLintException;
 import com.evg.ss.exceptions.SSThrownException;
+import com.evg.ss.exceptions.execution.ModuleLoadingException;
 import com.evg.ss.exceptions.execution.SSExecutionException;
 import com.evg.ss.exceptions.inner.SSInnerException;
 import com.evg.ss.exceptions.lexer.SSLexerException;
@@ -74,7 +75,11 @@ public final class Desktop {
             else modulePaths.add(mpValue);
             for (String path : modulePaths) {
                 log("\tLoading modules: %s\n", path);
-                SSModule.loadModulesByPath(path);
+                try {
+                    SSModule.loadModulesByPath(path);
+                } catch (ModuleLoadingException e) {
+                    exitWithMessage(e.getMessage());
+                }
             }
         }
         log("Complete\n");
@@ -164,7 +169,9 @@ public final class Desktop {
                 try {
                     compiledScript.execute();
                 } catch (SSThrownException e) {
-                    exitWithMessage("Uncaught thrown value: %s", e.getValue().asString());
+                    exitWithMessage("Uncaught thrown value: %s\n%s",
+                            e.getValue().asString(),
+                            getStackTrace());
                 } catch (Exception e) {
                     except(e);
                 }
@@ -184,7 +191,9 @@ public final class Desktop {
                 try {
                     ((FunctionValue) SS.Identifiers.get("main").getValue()).getValue().execute(programArgs);
                 } catch (SSThrownException e) {
-                    exitWithMessage("Uncaught thrown value: %s", e.getValue().asString());
+                    exitWithMessage("Uncaught thrown value: %s\n%s",
+                            e.getValue().asString(),
+                            getStackTrace());
                 } catch (Exception e) {
                     except(e);
                 }
@@ -198,21 +207,25 @@ public final class Desktop {
     }
 
     private static void except(Exception e) {
-        final Optional<String> stackTrace = CallStack.getCalls().stream()
-                .map(call -> call.toString() + "\n")
-                .reduce(String::concat);
         if (DEBUG)
             e.printStackTrace();
         if (e instanceof SSExecutionException)
-            exitWithMessage("\nError: \n\t%s\n\t%s\nStackTrace: \n%s\n",
+            exitWithMessage("\nError: \n\t%s\n\t%s\n%s",
                     e.getClass().getSimpleName(),
                     e.getMessage(),
-                    stackTrace.orElse("--- no calls ---"));
+                    getStackTrace());
         else if (e instanceof SSInnerException) {
             exitWithMessage("\nError: \n\t%s\n\t%s\n",
                     e.getClass().getSimpleName(),
                     ((SSInnerException) e).onInvalidUsage());
         } else exitWithMessage("\nError: \n\t%s\n\t%s\n", e.getClass().getSimpleName(), e.getMessage());
+    }
+
+    private static String getStackTrace() {
+        final Optional<String> stackTrace = CallStack.getCalls().stream()
+                .map(call -> call.toString() + "\n")
+                .reduce(String::concat);
+        return String.format("StackTrace:\n%s\n", stackTrace.orElse("--- no calls ---"));
     }
 
     private static void exitWithMessage(String message, Object... format) {

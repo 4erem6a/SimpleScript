@@ -2,6 +2,7 @@ package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.InvalidCallContextException;
 import com.evg.ss.lib.SS;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.MapValue;
@@ -31,5 +32,10 @@ public final class ThisExpression extends Expression {
     @Override
     public int hashCode() {
         return (36 * 10 * 31);
+    }
+
+    @Override
+    public String toString() {
+        return new MSCGenerator(this).generate();
     }
 }

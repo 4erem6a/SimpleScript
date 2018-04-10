@@ -1,6 +1,7 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.inner.SSReturnException;
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 
@@ -19,7 +20,7 @@ public final class ReturnStatement extends Statement {
 
     @Override
     public String toString() {
-        return String.format("return %s\n", expression);
+        return new MSCGenerator(this).generate();
     }
 
     @Override

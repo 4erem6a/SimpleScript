@@ -32,13 +32,13 @@ public class NumberValue implements Value {
     }
 
     @Override
-    public Type getType() {
-        return Type.Number;
+    public Types getType() {
+        return Types.Number;
     }
 
     @Override
     public int compareTo(Value o) {
-        return (o.getType() == Type.Null || o.getType() == Type.Undefined ? -1 : Double.compare(value, o.asNumber()));
+        return (o.getType() == Types.Null || o.getType() == Types.Undefined ? -1 : Double.compare(value, o.asNumber()));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class NumberValue implements Value {
 
     @Override
     public int hashCode() {
-        return Double.hashCode(value) ^ Type.Number.hashCode();
+        return Double.hashCode(value) ^ Types.Number.hashCode();
     }
 
     @Override

@@ -28,7 +28,6 @@ public final class InterpolatedString {
             if (!ss.isExpressible())
                 throw new InvalidInterpolationException(source);
             string = matcher.replaceFirst(ss.express().eval().asString());
-            matcher = pattern.matcher(string);
         }
         return string;
     }

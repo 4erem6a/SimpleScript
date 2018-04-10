@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.parser.visitors.Visitor;
 import com.evg.ss.values.*;
@@ -48,7 +49,7 @@ public class ValueExpression extends Expression {
 
     @Override
     public String toString() {
-        return value.asString();
+        return new MSCGenerator(this).generate();
     }
 
     @Override
