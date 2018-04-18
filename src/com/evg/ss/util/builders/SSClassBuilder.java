@@ -60,7 +60,7 @@ public final class SSClassBuilder {
         return this;
     }
 
-    public SSClassBuilder setStaticMMethod(String name, Function function) {
+    public SSClassBuilder setStaticMethod(String name, Function function) {
         return setStaticMethod(Value.of(name), function);
     }
 

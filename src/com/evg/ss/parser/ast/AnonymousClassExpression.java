@@ -18,15 +18,29 @@ public final class AnonymousClassExpression extends Expression {
     private AnonymousFunctionExpression constructor;
     private List<ASTClassMember> members = new ArrayList<>();
     private Expression base;
+    private String name;
 
     public AnonymousClassExpression(AnonymousFunctionExpression constructor, List<ASTClassMember> members, Expression base) {
-        this.constructor = constructor;
-        this.members = members;
-        this.base = base;
+        this(constructor, members, base, null);
     }
 
     public AnonymousClassExpression(AnonymousFunctionExpression constructor, Expression base) {
-        this(constructor, new ArrayList<>(), base);
+        this(constructor, new ArrayList<>(), base, null);
+    }
+
+    public AnonymousClassExpression(AnonymousFunctionExpression constructor, List<ASTClassMember> members, Expression base, String name) {
+        this.constructor = constructor;
+        this.members = members;
+        this.base = base;
+        this.name = name;
+    }
+
+    public AnonymousClassExpression(AnonymousFunctionExpression constructor, Expression base, String name) {
+        this(constructor, new ArrayList<>(), base, name);
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -39,7 +53,7 @@ public final class AnonymousClassExpression extends Expression {
         } else base = null;
         return new ClassValue(base == null ? null : ((ClassValue) base),
                 constructor == null ? null : constructor.toSSFunction(),
-                members.stream().map(ASTClassMember::toClassMember).collect(Collectors.toList()));
+                members.stream().map(ASTClassMember::toClassMember).collect(Collectors.toList()), name);
     }
 
     public void addMember(ASTClassMember member) {

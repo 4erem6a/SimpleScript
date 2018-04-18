@@ -13,7 +13,7 @@ class Color {
 }
 
 class Paint {
-    new(color = null) {
+    new(color = undefined) {
         this.setColor(color)
     }
     locked setColor(color) {

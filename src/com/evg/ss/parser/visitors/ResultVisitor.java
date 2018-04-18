@@ -68,8 +68,6 @@ public interface ResultVisitor<TResult> {
 
     TResult visit(TypeExpression target);
 
-    TResult visit(ImportStatement target);
-
     TResult visit(ThisExpression target);
 
     TResult visit(NewExpression target);

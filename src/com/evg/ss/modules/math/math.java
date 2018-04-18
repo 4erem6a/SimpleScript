@@ -6,7 +6,6 @@ import com.evg.ss.modules.SSModule;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSMapBuilder;
 import com.evg.ss.values.Types;
-import com.evg.ss.values.UndefinedValue;
 import com.evg.ss.values.Value;
 
 public final class math extends SSModule {
@@ -66,9 +65,9 @@ public final class math extends SSModule {
         public Value execute(Value... args) {
             if (getArgc() != -1)
                 Arguments.checkArgcOrDie(args, getArgc());
-            for (Value arg : args)
-                if (arg.getType() != Types.Number)
-                    return new UndefinedValue();
+            for (int i = 0; i < args.length; i++)
+                if (args[i].getType() != Types.Number)
+                    args[i] = Value.of(args[i].asNumber());
             return getCallback().execute(args);
         }
     }

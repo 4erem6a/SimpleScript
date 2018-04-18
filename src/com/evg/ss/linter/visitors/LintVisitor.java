@@ -199,12 +199,6 @@ public abstract class LintVisitor extends AbstractVisitor {
     }
 
     @Override
-    public void visit(ImportStatement target) {
-        if (!target.isModifierPresent(LINTER_IGNORE))
-            super.visit(target);
-    }
-
-    @Override
     public void visit(ThisExpression target) {
         if (!target.isModifierPresent(LINTER_IGNORE))
             super.visit(target);

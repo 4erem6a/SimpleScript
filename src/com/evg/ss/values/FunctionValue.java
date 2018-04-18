@@ -30,7 +30,11 @@ public class FunctionValue implements Value, Callable, NewCallable, Container {
 
     @Override
     public String asString() {
-        return getType().toString().toLowerCase();
+        final String name;
+        if (this.value instanceof SSFunction)
+            name = ((SSFunction) this.value).getName();
+        else name = null;
+        return "function" + (name == null ? "" : " " + name);
     }
 
     @Override

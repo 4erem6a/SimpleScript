@@ -6,7 +6,7 @@ public enum Operations {
     UnaryPlus("+"),
     UnaryMinus("-"),
     BitwiseNot("~"),
-    LogicalNot("!"),
+    BooleanNot("!"),
     PrefixIncrement("++"),
     PrefixDecrement("--"),
     PostfixIncrement("++"),
@@ -15,6 +15,7 @@ public enum Operations {
     ClassAccess(".class"),
     ConstructorAccess(".new"),
     PrototypeAccess(".super"),
+    FieldDeletion(".delete"),
     ValueClone("@"),
 
     //Assignment:
@@ -38,8 +39,8 @@ public enum Operations {
     URShift(">>>"),
 
     ////Boolean
-    LogicalOr("||"),
-    LogicalAnd("&&"),
+    BooleanOr("||"),
+    BooleanAnd("&&"),
 
     LessThen("<"),
     GreaterThen(">"),

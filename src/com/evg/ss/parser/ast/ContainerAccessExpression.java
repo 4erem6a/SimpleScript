@@ -1,6 +1,7 @@
 package com.evg.ss.parser.ast;
 
 import com.evg.ss.exceptions.execution.InvalidValueTypeException;
+import com.evg.ss.exceptions.execution.SelfReferencedAssignmentException;
 import com.evg.ss.lib.Operations;
 import com.evg.ss.lib.msc.MSCGenerator;
 import com.evg.ss.parser.visitors.ResultVisitor;
@@ -34,6 +35,8 @@ public final class ContainerAccessExpression extends Expression implements Acces
     @Override
     public Value set(Value value) {
         final Value target = this.target.eval();
+        if (target == value)
+            throw new SelfReferencedAssignmentException(this);
         if (target instanceof Container)
             ((Container) target).set(key.eval(), value);
         else throw new InvalidValueTypeException(target.getType(), Operations.ContainerAccess);

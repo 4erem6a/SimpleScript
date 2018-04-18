@@ -17,10 +17,20 @@ public final class AnonymousFunctionExpression extends Expression implements Loc
     private ArgumentExpression[] args;
     private Statement body;
     private boolean locked = false;
+    private String name;
 
-    public AnonymousFunctionExpression(ArgumentExpression[] args, Statement body) {
+    public AnonymousFunctionExpression(ArgumentExpression[] args, Statement body, String name) {
         this.args = args;
         this.body = body;
+        this.name = name;
+    }
+
+    public AnonymousFunctionExpression(ArgumentExpression[] args, Statement body) {
+        this(args, body, null);
+    }
+
+    public String getName() {
+        return name;
     }
 
     public SSFunction toSSFunction() {
@@ -28,7 +38,7 @@ public final class AnonymousFunctionExpression extends Expression implements Loc
                 new Arguments(Arrays.stream(args)
                         .map(ArgumentExpression::getArgument)
                         .collect(Collectors.toList())),
-                body);
+                body, name);
     }
 
     @Override

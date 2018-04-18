@@ -33,7 +33,7 @@ public final class UnaryExpression extends Expression implements Accessible {
                 return negateValue(value);
             case BitwiseNot:
                 return new NumberValue(~value.asNumber().intValue());
-            case LogicalNot:
+            case BooleanNot:
                 return new BoolValue(!value.asBoolean());
             case PrefixIncrement:
             case PrefixDecrement:
@@ -77,8 +77,10 @@ public final class UnaryExpression extends Expression implements Accessible {
     }
 
     private Value _class(Value value) {
-        if (value.getType() == Types.Object)
-            return ((ObjectValue) value).getSSClass();
+        if (value.getType() == Types.Map)
+            if (value instanceof ObjectValue)
+                return ((ObjectValue) value).getSSClass();
+            else return new UndefinedValue();
         else if (value.getType() == Types.Class)
             return value;
         throw new InvalidValueTypeException(value.getType(), Operations.ClassAccess);

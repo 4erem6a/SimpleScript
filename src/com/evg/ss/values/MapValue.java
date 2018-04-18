@@ -1,5 +1,6 @@
 package com.evg.ss.values;
 
+import com.evg.ss.lib.SSFunction;
 import com.evg.ss.util.builders.SSArrayBuilder;
 
 import java.util.HashMap;
@@ -143,7 +144,13 @@ public class MapValue implements Value, Container, Callable, Iterable<Map.Entry<
         if (prototype == null)
             result = new MapValue();
         else result = new MapValue(((MapValue) prototype.clone()));
-        result.map = this.getMap();
+        for (Map.Entry<Value, Value> entry : this.map.entrySet()) {
+            final Value value = entry.getValue().clone();
+            if (value instanceof FunctionValue)
+                if (((FunctionValue) value).getValue() instanceof SSFunction)
+                    ((SSFunction) ((FunctionValue) value).getValue()).setCallContext(result);
+            result.map.put(entry.getKey(), value);
+        }
         return result;
     }
 

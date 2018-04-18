@@ -11,14 +11,16 @@ public final class AutoClassGenerator {
 
     private final List<ArgumentExpression> args;
     private final Expression base;
+    private final String name;
 
-    public AutoClassGenerator(List<ArgumentExpression> classArgs, Expression base) {
-        this.args = classArgs;
+    public AutoClassGenerator(List<ArgumentExpression> args, Expression base, String name) {
+        this.args = args;
         this.base = base;
+        this.name = name;
     }
 
     public AnonymousClassExpression generate() {
-        return new AnonymousClassExpression(constructor(), fields(), base);
+        return new AnonymousClassExpression(constructor(), fields(), base, name);
     }
 
     private AnonymousFunctionExpression constructor() {

@@ -2,6 +2,7 @@ package com.evg.ss.modules.interpreter;
 
 import com.evg.ss.SimpleScript;
 import com.evg.ss.lib.CallStack;
+import com.evg.ss.lib.Identifier;
 import com.evg.ss.lib.SS;
 import com.evg.ss.modules.SSExports;
 import com.evg.ss.modules.SSModule;
@@ -12,7 +13,7 @@ import com.evg.ss.values.*;
 
 import java.util.Deque;
 
-public class interpreter {
+public final class interpreter {
 
     @SSExports("version")
     public static final Value _Version = Value.of(SimpleScript.VERSION.toString());
@@ -111,6 +112,7 @@ public class interpreter {
 
     @SSExports("variable")
     public static Value variable(Value... args) {
+        Arguments.checkArgcOrDie(args, 1, 2);
         if (args.length == 1)
             return getVariable(args);
         else if (args.length == 2)
@@ -120,8 +122,12 @@ public class interpreter {
 
     private static Value getVariable(Value... args) {
         final String name = args[0].asString();
-        final Value value = SS.Identifiers.getValue(name);
-        return value == null ? new UndefinedValue() : value;
+        final Identifier identifier = SS.Identifiers.get(name);
+        return identifier == null ? new UndefinedValue() : new SSMapBuilder()
+                .setField("name", Value.of(name))
+                .setField("value", identifier.getValue())
+                .setField("isConst", Value.of(identifier.isConst()))
+                .build();
     }
 
     private static Value setVariable(Value... args) {

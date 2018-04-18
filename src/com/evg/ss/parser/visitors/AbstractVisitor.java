@@ -187,11 +187,6 @@ public abstract class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(ImportStatement target) {
-        target.getPath().accept(this);
-    }
-
-    @Override
     public void visit(ThisExpression target) {
 
     }

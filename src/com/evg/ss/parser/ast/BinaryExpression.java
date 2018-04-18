@@ -1,5 +1,6 @@
 package com.evg.ss.parser.ast;
 
+import com.evg.ss.exceptions.execution.InvalidValueTypeException;
 import com.evg.ss.lib.Converter;
 import com.evg.ss.lib.MapMatcher;
 import com.evg.ss.lib.Operations;
@@ -26,56 +27,64 @@ public final class BinaryExpression extends Expression {
 
     @Override
     public Value eval() {
-        final Value leftValue = left.eval();
-        final Value rightValue = right.eval();
         switch (operation) {
             case Addition:
-                return add(leftValue, rightValue);
+                return add(left.eval(), right.eval());
             case Subtraction:
-                return subtract(leftValue, rightValue);
+                return subtract(left.eval(), right.eval());
             case Division:
-                return divide(leftValue, rightValue);
+                return divide(left.eval(), right.eval());
             case Multiplication:
-                return multiply(leftValue, rightValue);
+                return multiply(left.eval(), right.eval());
             case Modulus:
-                return mod(leftValue, rightValue);
+                return mod(left.eval(), right.eval());
             case BitwiseOr:
-                return new NumberValue(leftValue.asNumber().intValue() | rightValue.asNumber().intValue());
+                return new NumberValue(left.eval().asNumber().intValue() | right.eval().asNumber().intValue());
             case BitwiseAnd:
-                return new NumberValue(leftValue.asNumber().intValue() ^ rightValue.asNumber().intValue());
+                return new NumberValue(left.eval().asNumber().intValue() ^ right.eval().asNumber().intValue());
             case BitwiseXor:
-                return new NumberValue(leftValue.asNumber().intValue() ^ rightValue.asNumber().intValue());
+                return new NumberValue(left.eval().asNumber().intValue() ^ right.eval().asNumber().intValue());
             case LShift:
-                return new NumberValue(leftValue.asNumber().intValue() << rightValue.asNumber().intValue());
+                return new NumberValue(left.eval().asNumber().intValue() << right.eval().asNumber().intValue());
             case RShift:
-                return new NumberValue(leftValue.asNumber().intValue() >> rightValue.asNumber().intValue());
+                return new NumberValue(left.eval().asNumber().intValue() >> right.eval().asNumber().intValue());
             case URShift:
-                return new NumberValue(leftValue.asNumber().intValue() >>> rightValue.asNumber().intValue());
-            case LogicalOr:
-                return new BoolValue(leftValue.asBoolean() || rightValue.asBoolean());
-            case LogicalAnd:
-                return new BoolValue(leftValue.asBoolean() && rightValue.asBoolean());
+                return new NumberValue(left.eval().asNumber().intValue() >>> right.eval().asNumber().intValue());
+            case BooleanOr:
+                return new BoolValue(left.eval().asBoolean() || right.eval().asBoolean());
+            case BooleanAnd:
+                return new BoolValue(left.eval().asBoolean() && right.eval().asBoolean());
             case LessThen:
-                return new BoolValue(leftValue.compareTo(rightValue) < 0);
+                return new BoolValue(left.eval().compareTo(right.eval()) < 0);
             case GreaterThen:
-                return new BoolValue(leftValue.compareTo(rightValue) > 0);
+                return new BoolValue(left.eval().compareTo(right.eval()) > 0);
             case GreaterThenOrEquals:
-                return new BoolValue(leftValue.compareTo(rightValue) >= 0);
+                return new BoolValue(left.eval().compareTo(right.eval()) >= 0);
             case LessThenOrEquals:
-                return new BoolValue(leftValue.compareTo(rightValue) <= 0);
+                return new BoolValue(left.eval().compareTo(right.eval()) <= 0);
             case Equals:
-                return new BoolValue(leftValue.compareTo(rightValue) == 0);
+                return new BoolValue(left.eval().compareTo(right.eval()) == 0);
             case NotEquals:
-                return new BoolValue(leftValue.compareTo(rightValue) != 0);
+                return new BoolValue(left.eval().compareTo(right.eval()) != 0);
             case Compare:
-                return Value.of(leftValue.compareTo(rightValue));
+                return Value.of(left.eval().compareTo(right.eval()));
             case Is:
-                return is(leftValue, rightValue);
+                return is(left.eval(), right.eval());
             case As:
-                return as(leftValue, rightValue);
+                return as(left.eval(), right.eval());
+            case FieldDeletion:
+                return delete(left.eval(), right.eval());
             default:
                 return new NullValue();
         }
+    }
+
+    private Value delete(Value leftValue, Value rightValue) {
+        if (leftValue.getType() != Types.Map)
+            throw new InvalidValueTypeException(leftValue.getType(), Operations.FieldDeletion);
+        if (((MapValue) leftValue).containsKey(left.eval()))
+            ((MapValue) leftValue).getMapReference().remove(left.eval());
+        return leftValue;
     }
 
     private Value divide(Value leftValue, Value rightValue) {
@@ -238,6 +247,8 @@ public final class BinaryExpression extends Expression {
             return getBinaryComparison(left, ((MapValue) right).toArray());
         else if (left instanceof ObjectValue && right instanceof ClassValue)
             return Value.of(((ObjectValue) left).isInstanceOfClass(((ClassValue) right)));
+        else if (left instanceof ClassValue && right instanceof ClassValue)
+            return Value.of(((ClassValue) left).is(((ClassValue) right)));
         else return getBinaryComparison(left, right);
     }
 

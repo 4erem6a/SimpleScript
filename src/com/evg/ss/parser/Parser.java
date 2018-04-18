@@ -100,16 +100,12 @@ public final class Parser extends AbstractParser {
             return new ExportsStatement(expression());
         } else if (match(TokenTypes.Ar)) {
             return new ExpressionStatement(expression());
-        } else if (match(TokenTypes.Import)) {
-            return new ImportStatement(expression());
         } else if (match(TokenTypes.Throw)) {
             return new ThrowStatement(expression());
         } else if (match(TokenTypes.Try)) {
             return _try();
         } else if (match(TokenTypes.Class)) {
             return _class();
-//        } else if (match(TokenTypes.Delete)) {
-//            return delete();
         } else if (match(TokenTypes.Locked)) {
             return lockedStatement();
         } else if (lookMatch(0, TokenTypes.Ex) && lookMatch(1, TokenTypes.NsNs)) {
@@ -255,6 +251,8 @@ public final class Parser extends AbstractParser {
         final Expression condition = expression();
         consume(TokenTypes.Rp);
         final Statement ifStatement = statementOrBlock();
+        if (!(ifStatement instanceof BlockStatement))
+            match(TokenTypes.Sc);
         final Statement elseStatement;
         if (match(TokenTypes.Else))
             elseStatement = statementOrBlock();
@@ -352,6 +350,14 @@ public final class Parser extends AbstractParser {
                 result = new CompoundAssignmentProcessor(Operations.URShift, result, ternary()).processBinary();
                 continue;
             }
+            if (match(TokenTypes.AmAmEq)) {
+                result = new CompoundAssignmentProcessor(Operations.BooleanAnd, result, ternary()).processBinary();
+                continue;
+            }
+            if (match(TokenTypes.VbVbEq)) {
+                result = new CompoundAssignmentProcessor(Operations.BooleanOr, result, ternary()).processBinary();
+                continue;
+            }
             break;
         }
         return result;
@@ -376,7 +382,7 @@ public final class Parser extends AbstractParser {
         Expression result = logicalAnd();
         while (true) {
             if (match(TokenTypes.VbVb)) {
-                result = new BinaryExpression(Operations.LogicalOr, result, logicalAnd());
+                result = new BinaryExpression(Operations.BooleanOr, result, logicalAnd());
                 continue;
             }
             break;
@@ -388,7 +394,7 @@ public final class Parser extends AbstractParser {
         Expression result = bitwiseOr();
         while (true) {
             if (match(TokenTypes.AmAm)) {
-                result = new BinaryExpression(Operations.LogicalAnd, result, bitwiseOr());
+                result = new BinaryExpression(Operations.BooleanAnd, result, bitwiseOr());
                 continue;
             }
             break;
@@ -471,6 +477,11 @@ public final class Parser extends AbstractParser {
                 result = new BinaryExpression(Operations.Is, result, shift());
                 continue;
             }
+            if (lookMatch(0, TokenTypes.Ex) && lookMatch(1, TokenTypes.Is)) {
+                consume(TokenTypes.Ex);
+                consume(TokenTypes.Is);
+                result = new UnaryExpression(Operations.BooleanNot, new BinaryExpression(Operations.Is, result, shift()));
+            }
             if (match(TokenTypes.As)) {
                 result = new BinaryExpression(Operations.As, result, shift());
                 continue;
@@ -521,18 +532,36 @@ public final class Parser extends AbstractParser {
     }
 
     private Expression multiplicative() {
-        Expression result = unary();
+        Expression result = pipeline();
         while (true) {
             if (match(TokenTypes.St)) {
-                result = new BinaryExpression(Operations.Multiplication, result, unary());
+                result = new BinaryExpression(Operations.Multiplication, result, pipeline());
                 continue;
             }
             if (match(TokenTypes.Sl)) {
-                result = new BinaryExpression(Operations.Division, result, unary());
+                result = new BinaryExpression(Operations.Division, result, pipeline());
                 continue;
             }
             if (match(TokenTypes.Pr)) {
-                result = new BinaryExpression(Operations.Modulus, result, unary());
+                result = new BinaryExpression(Operations.Modulus, result, pipeline());
+                continue;
+            }
+            break;
+        }
+        return result;
+    }
+
+    private Expression pipeline() {
+        Expression result = unary();
+        while (true) {
+            if (match(TokenTypes.VbAr)) {
+                result = new CallExpression(unary(), false, result);
+                continue;
+            }
+            if (lookMatch(0, TokenTypes.DtDtDt) && lookMatch(1, TokenTypes.VbAr)) {
+                consume(TokenTypes.DtDtDt);
+                consume(TokenTypes.VbAr);
+                result = new CallExpression(unary(), true, result);
                 continue;
             }
             break;
@@ -554,7 +583,7 @@ public final class Parser extends AbstractParser {
             return new UnaryExpression(Operations.PrefixDecrement, allocation());
         }
         if (match(TokenTypes.Ex)) {
-            return new UnaryExpression(Operations.LogicalNot, allocation());
+            return new UnaryExpression(Operations.BooleanNot, allocation());
         }
         if (match(TokenTypes.Tl)) {
             return new UnaryExpression(Operations.BitwiseNot, allocation());
@@ -593,6 +622,11 @@ public final class Parser extends AbstractParser {
                         consume(TokenTypes.Rp);
                     } else handler = null;
                     result = new CatchExpression(result, handler);
+                } else if (match(TokenTypes.Delete)) {
+                    consume(TokenTypes.Lp);
+                    final Expression key = expression();
+                    consume(TokenTypes.Rp);
+                    result = new BinaryExpression(Operations.FieldDeletion, result, key);
                 } else {
                     result = new ContainerAccessExpression(result, mapAccessKey());
                 }
@@ -719,7 +753,7 @@ public final class Parser extends AbstractParser {
                 return new InstantFunctionExpression(block());
             return anonymousFunction();
         } else if (match(TokenTypes.Class)) {
-            if (lookMatch(0, TokenTypes.Lp))
+            if (lookMatch(0, TokenTypes.Lp) || lookMatch(0, TokenTypes.Word) && lookMatch(1, TokenTypes.Lp))
                 return autoClass();
             return anonymousClass();
         } else if (match(TokenTypes.Locked)) {
@@ -733,6 +767,7 @@ public final class Parser extends AbstractParser {
     }
 
     private Expression autoClass() {
+        final String name = lookMatch(0, TokenTypes.Word) ? consume(TokenTypes.Word).getValue() : null;
         match(TokenTypes.Lp);
         List<ArgumentExpression> classArgs = new ArrayList<>();
         if (!match(TokenTypes.Rp)) {
@@ -740,10 +775,11 @@ public final class Parser extends AbstractParser {
             consume(TokenTypes.Rp);
         }
         final Expression base = (match(TokenTypes.Extends) ? expression() : null);
-        return new AutoClassGenerator(classArgs, base).generate();
+        return new AutoClassGenerator(classArgs, base, name).generate();
     }
 
     private Expression anonymousClass() {
+        final String name = lookMatch(0, TokenTypes.Word) ? consume(TokenTypes.Word).getValue() : null;
         AnonymousFunctionExpression constructor = null;
         final List<AnonymousClassExpression.ASTClassMember> members = new ArrayList<>();
         final Expression base;
@@ -762,7 +798,7 @@ public final class Parser extends AbstractParser {
                 match(TokenTypes.Sc);
             } else members.add(classMember());
         }
-        return new AnonymousClassExpression(constructor, members, base);
+        return new AnonymousClassExpression(constructor, members, base, name);
     }
 
     private AnonymousClassExpression.ASTClassMember classMember() {
@@ -906,6 +942,7 @@ public final class Parser extends AbstractParser {
     }
 
     private Expression anonymousFunction() {
+        final String name = lookMatch(0, TokenTypes.Word) ? consume(TokenTypes.Word).getValue() : null;
         final List<ArgumentExpression> args = new ArrayList<>();
         consume(TokenTypes.Lp);
         if (!match(TokenTypes.Rp))
@@ -917,7 +954,7 @@ public final class Parser extends AbstractParser {
         if (match(TokenTypes.MnAr)) {
             body = new ReturnStatement(expression());
         } else body = statementOrBlock();
-        return new AnonymousFunctionExpression(args.toArray(new ArgumentExpression[0]), body);
+        return new AnonymousFunctionExpression(args.toArray(new ArgumentExpression[0]), body, name);
     }
 
     private Expression array() {

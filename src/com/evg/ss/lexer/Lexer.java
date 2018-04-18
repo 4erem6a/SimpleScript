@@ -65,8 +65,11 @@ public final class Lexer extends AbstractLexer {
         OPERATOR_TOKEN_MAP.put("^=", TokenTypes.CrEq);
         OPERATOR_TOKEN_MAP.put("~=", TokenTypes.TlEq);
         OPERATOR_TOKEN_MAP.put("@=", TokenTypes.AtEq);
+        OPERATOR_TOKEN_MAP.put("|>", TokenTypes.VbAr);
         OPERATOR_TOKEN_MAP.put(">>=", TokenTypes.ArArEq);
         OPERATOR_TOKEN_MAP.put("<<=", TokenTypes.AlAlEq);
+        OPERATOR_TOKEN_MAP.put("&&=", TokenTypes.AmAmEq);
+        OPERATOR_TOKEN_MAP.put("||=", TokenTypes.VbVbEq);
         OPERATOR_TOKEN_MAP.put(">>>", TokenTypes.ArArAr);
         OPERATOR_TOKEN_MAP.put("...", TokenTypes.DtDtDt);
         OPERATOR_TOKEN_MAP.put(">>>=", TokenTypes.ArArArEq);

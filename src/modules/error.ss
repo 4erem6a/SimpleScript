@@ -6,7 +6,7 @@ class Error {
     }
     locked printStackTrace() {
         foreach (let item in this.stack)
-            require('io').println(item)
+            require('io').println(item.name, ': function[', item.name, ']:', item.hashCode)
     }
 }
 

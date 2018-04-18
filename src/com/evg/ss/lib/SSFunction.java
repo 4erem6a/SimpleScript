@@ -35,6 +35,11 @@ public final class SSFunction implements ConstructorFunction {
         this.callContext = callContext == null ? new MapValue() : callContext;
     }
 
+    public SSFunction(MapValue callContext, Arguments args, Statement body, String name) {
+        this(callContext, args, body);
+        this.name = name;
+    }
+
     private void tryValidateArgs(Value... args) {
         final int minArgc = this.args.minArgc();
         final int maxArgc = this.args.maxArgc() == -1 ? args.length : this.args.maxArgc();

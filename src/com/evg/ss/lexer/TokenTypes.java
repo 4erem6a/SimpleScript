@@ -60,8 +60,11 @@ public enum TokenTypes {
     CrEq("^="),         //^=
     TlEq("~="),         //~=
     AtEq("@="),         //@=
+    VbAr("|>"),         //|>
     ArArEq(">>="),      //>>=
     AlAlEq("<<="),      //<<=
+    VbVbEq("||="),      //||=
+    AmAmEq("&&="),      //&&=
     ArArAr(">>>"),      //>>>
     DtDtDt("..."),      //...
     ArArArEq(">>>="),   //>>>=

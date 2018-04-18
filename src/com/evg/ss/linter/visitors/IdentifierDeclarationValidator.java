@@ -152,15 +152,6 @@ public final class IdentifierDeclarationValidator extends LintVisitor {
     }
 
     @Override
-    public void visit(ImportStatement target) {
-        if (target.isModifierPresent(LINTER_IGNORE))
-            return;
-        super.visit(target);
-        final String name = ((ValueExpression) ((ContainerAccessExpression) target.getPath()).getKey()).getValue().asString();
-        registerIdentifier(name, DUMMY_IDENTIFIER);
-    }
-
-    @Override
     public void visit(VariableExpression target) {
         if (target.isModifierPresent(LINTER_IGNORE))
             return;

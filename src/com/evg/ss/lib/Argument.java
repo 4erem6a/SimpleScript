@@ -16,6 +16,10 @@ public final class Argument {
         this.isConst = isConst;
     }
 
+    public Argument(String name) {
+        this(name, false, false, null);
+    }
+
     public boolean isConst() {
         return isConst;
     }

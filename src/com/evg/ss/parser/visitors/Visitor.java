@@ -68,8 +68,6 @@ public interface Visitor {
 
     void visit(TypeExpression target);
 
-    void visit(ImportStatement target);
-
     void visit(ThisExpression target);
 
     void visit(NewExpression target);

@@ -2,19 +2,24 @@
 ## Description:
 SimpleScript is a general-purpose scripting programming language created as hobby project.
 SS suports imperative, functional & object-oriented programmig paradigms.
-## Latest changelog: (1.12.0.0)
-* Added map prototypes.
-* Added compound assignment operators.
-* Added binary shift operators.
-* Improved std modules.
-* Reserved `delete` keyword.
-* Decreased `ValueClone` operator precedance.
-* Added value clone inheritance.
-* Added `<Function>.toString` method.
-* Added `map-base` module.
+## Latest changelog: (1.12.1.0)
+* Added `|>` operator.
+* Added `!is` operator.
+* Added `&&=` and `||=` operators.
+* Added named anonymous functions and classes.
+* Removed `import` statement.
+* Removed `collection` module.
+* Added `sequence` module.
+* Added `stringf` module.
+* Added `;` support between `if` and `else`.
+* Fixed string interpolation.
+* Fixed `jcanvas` module.
+* Fixed map value cloning.
+* Added `SelfReferencedAssignmentException`.
 ## Roadmap:
 * Optimization.
-* `http` module.
+* JAR module loading.
+* SS modules.
 ## Installation:
 1. Install Java 8+.
 2. Download latest version: [releases](https://github.com/4erem6a/SimpleScript/releases).

@@ -23,10 +23,6 @@ public class ClassValue implements Value, Container, NewCallable {
     private final ObjectValue staticContext;
     private String name = null;
 
-    public ClassValue(ClassValue base, SSFunction constructor) {
-        this(base, constructor, new ArrayList<>());
-    }
-
     public ClassValue(ClassValue base, SSFunction constructor, List<ClassMember> members) {
         this.base = base;
         this.constructor = (constructor == null
@@ -41,6 +37,11 @@ public class ClassValue implements Value, Container, NewCallable {
             this.members.put(member.key, member);
         }
         staticContext = createObject(true);
+    }
+
+    public ClassValue(ClassValue base, SSFunction constructor, List<ClassMember> members, String name) {
+        this(base, constructor, members);
+        this.name = name;
     }
 
     private static String getMethodName(String className, String memberName) {
@@ -144,7 +145,7 @@ public class ClassValue implements Value, Container, NewCallable {
 
     @Override
     public String asString() {
-        return "class";
+        return "class" + (this.name == null ? "" : " " + this.name);
     }
 
     @Override
@@ -197,6 +198,10 @@ public class ClassValue implements Value, Container, NewCallable {
                 builder.setField(memberEntry.getKey(), new UndefinedValue());
         }
         return builder.build();
+    }
+
+    public boolean is(ClassValue _class) {
+        return this.equals(_class) || this.base != null && this.base.is(_class);
     }
 
     public static abstract class ClassMember {

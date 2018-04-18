@@ -1,5 +1,6 @@
 package com.evg.ss.lib.msc;
 
+import com.evg.ss.lib.Operations;
 import com.evg.ss.parser.ast.*;
 import com.evg.ss.parser.visitors.ResultVisitor;
 import com.evg.ss.values.*;
@@ -49,8 +50,9 @@ public class MSCVisitor implements ResultVisitor<String> {
     @Override
     public String visit(AnonymousFunctionExpression target) {
         return processModifiers(target) +
-                String.format("%sfunction(%s)%s",
+                String.format("%sfunction%s(%s)%s",
                         (target.isLocked() ? "locked " : ""),
+                        target.getName() == null ? "" : String.format(" %s", target.getName()),
                         processArgDefinition(target.getArgs()),
                         target.getBody().accept(this));
     }
@@ -68,6 +70,8 @@ public class MSCVisitor implements ResultVisitor<String> {
         final StringBuilder builder = new StringBuilder();
         for (Expression expression : target.getExpressions())
             builder.append(expression.accept(this)).append(",");
+        if (builder.length() == 0)
+            builder.append(',');
         return processModifiers(target) + String.format("[%s]",
                 builder.deleteCharAt(builder.length() - 1).toString());
     }
@@ -83,7 +87,9 @@ public class MSCVisitor implements ResultVisitor<String> {
     @Override
     public String visit(BinaryExpression target) {
         return processModifiers(target) +
-                String.format("(%s%s%s)",
+                String.format(target.getOperation() == Operations.FieldDeletion
+                                ? "(%s%s(%s))"
+                                : "(%s%s%s)",
                         target.getLeft().accept(this),
                         target.getOperation().getSpacedKey(),
                         target.getRight().accept(this));
@@ -279,7 +285,7 @@ public class MSCVisitor implements ResultVisitor<String> {
             case UnaryPlus:
             case UnaryMinus:
             case BitwiseNot:
-            case LogicalNot:
+            case BooleanNot:
             case PrefixIncrement:
             case PrefixDecrement:
             case ValueClone:
@@ -363,13 +369,6 @@ public class MSCVisitor implements ResultVisitor<String> {
     }
 
     @Override
-    public String visit(ImportStatement target) {
-        return processModifiers(target) +
-                String.format("import %s",
-                        target.getPath().accept(this));
-    }
-
-    @Override
     public String visit(ThisExpression target) {
         return processModifiers(target) + "this";
     }
@@ -427,7 +426,8 @@ public class MSCVisitor implements ResultVisitor<String> {
 
     @Override
     public String visit(AnonymousClassExpression target) {
-        final StringBuilder builder = new StringBuilder("class");
+        final StringBuilder builder = new StringBuilder(
+                String.format("class%s", target.getName() == null ? "" : " " + target.getName()));
         if (target.getBase() != null)
             builder.append(" extends ")
                     .append(target.getBase().accept(this));
@@ -458,7 +458,7 @@ public class MSCVisitor implements ResultVisitor<String> {
         if (member instanceof AnonymousClassExpression.ASTClassMethod)
             if (((AnonymousClassExpression.ASTClassMethod) member).getFunction().isLocked())
                 builder.append("locked ");
-        builder.append(member.getKey());
+        builder.append(member.getKey().accept(this));
         if (member instanceof AnonymousClassExpression.ASTClassMethod)
             builder.append("(")
                     .append(processArgDefinition(((AnonymousClassExpression.ASTClassMethod) member).getFunction().getArgs()))

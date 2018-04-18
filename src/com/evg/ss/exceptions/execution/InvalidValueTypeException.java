@@ -10,6 +10,6 @@ public final class InvalidValueTypeException extends SSExecutionException {
     }
 
     public InvalidValueTypeException(Types type, Operations operation) {
-        super(String.format("Invalid value type to performing operation: %s -> '%s'", type, operation.getKey()));
+        super(String.format("Invalid value type to performing operation: %s -> %s", type, operation.getKey()));
     }
 }

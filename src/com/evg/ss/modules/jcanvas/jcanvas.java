@@ -22,10 +22,19 @@ public final class jcanvas {
     private static JFrame frame = null;
     private static CanvasPanel panel = null;
     private static Graphics2D graphics = null;
-    private static BufferedImage img = null;
-
     @SSExports("line")
     public static final Value line = Value.of(intConsumer4Convert(jcanvas::line));
+    @SSExports("oval")
+    public static final Value oval = Value.of(intConsumer4Convert(jcanvas::oval));
+    @SSExports("foval")
+    public static final Value foval = Value.of(intConsumer4Convert(jcanvas::foval));
+    @SSExports("rect")
+    public static final Value rect = Value.of(intConsumer4Convert(jcanvas::rect));
+    @SSExports("frect")
+    public static final Value frect = Value.of(intConsumer4Convert(jcanvas::frect));
+    @SSExports("clip")
+    public static final Value clip = Value.of(intConsumer4Convert(jcanvas::clip));
+    private static BufferedImage img = null;
 
     private static void line(int x1, int y1, int x2, int y2) {
         if (graphics == null)
@@ -33,17 +42,11 @@ public final class jcanvas {
         graphics.drawLine(x1, y1, x2, y2);
     }
 
-    @SSExports("oval")
-    public static final Value oval = Value.of(intConsumer4Convert(jcanvas::oval));
-
     private static void oval(int x, int y, int w, int h) {
         if (graphics == null)
             return;
         graphics.drawOval(x, y, w, h);
     }
-
-    @SSExports("foval")
-    public static final Value foval = Value.of(intConsumer4Convert(jcanvas::foval));
 
     private static void foval(int x, int y, int w, int h) {
         if (graphics == null)
@@ -51,26 +54,17 @@ public final class jcanvas {
         graphics.fillOval(x, y, w, h);
     }
 
-    @SSExports("rect")
-    public static final Value rect = Value.of(intConsumer4Convert(jcanvas::rect));
-
     private static void rect(int x, int y, int w, int h) {
         if (graphics == null)
             return;
         graphics.drawRect(x, y, w, h);
     }
 
-    @SSExports("frect")
-    public static final Value frect = Value.of(intConsumer4Convert(jcanvas::frect));
-
     private static void frect(int x, int y, int w, int h) {
         if (graphics == null)
             return;
         graphics.fillRect(x, y, w, h);
     }
-
-    @SSExports("clip")
-    public static final Value clip = Value.of(intConsumer4Convert(jcanvas::clip));
 
     private static void clip(int x, int y, int w, int h) {
         if (graphics == null)

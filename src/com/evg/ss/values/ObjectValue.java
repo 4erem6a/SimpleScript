@@ -1,6 +1,5 @@
 package com.evg.ss.values;
 
-import com.evg.ss.lib.MapMatcher;
 import com.evg.ss.lib.SSFunction;
 
 public class ObjectValue extends MapValue {
@@ -29,8 +28,11 @@ public class ObjectValue extends MapValue {
     }
 
     public boolean isInstanceOfClass(ClassValue _class) {
-        return this._class.equals(_class)
-                || _class.getBase() != null && isInstanceOfClass(_class.getBase())
-                || new MapMatcher(this).match(_class.getSignature());
+        return this._class.equals(_class) || _class.getBase() != null && isInstanceOfClass(_class.getBase());
+    }
+
+    @Override
+    public Value clone() {
+        return new ObjectValue(((MapValue) super.clone()), _class);
     }
 }

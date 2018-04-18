@@ -3,7 +3,10 @@ package com.evg.ss.modules.utils;
 import com.evg.ss.modules.SSExports;
 import com.evg.ss.util.args.Arguments;
 import com.evg.ss.util.builders.SSArrayBuilder;
-import com.evg.ss.values.*;
+import com.evg.ss.values.NumberValue;
+import com.evg.ss.values.Types;
+import com.evg.ss.values.UndefinedValue;
+import com.evg.ss.values.Value;
 
 public final class utils {
 
@@ -49,13 +52,5 @@ public final class utils {
     public static Value refcmp(Value... args) {
         Arguments.checkArgcOrDie(args, 2);
         return Value.of(args[0] == args[1]);
-    }
-
-    @SSExports("getClass")
-    public static Value getClass(Value... args) {
-        Arguments.checkArgcOrDie(args, 1);
-        if (!Arguments.checkArgTypes(args, Types.Object))
-            return new UndefinedValue();
-        return ((ObjectValue) args[0]).getSSClass();
     }
 }
