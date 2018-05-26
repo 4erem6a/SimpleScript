@@ -3,67 +3,90 @@
 SimpleScript is a general-purpose scripting programming language created as hobby project.
 SS suports imperative, functional & object-oriented programmig paradigms.
 ## Latest changelog: (1.12.1.0)
-* Added `|>` operator.
-* Added `!is` operator.
-* Added `&&=` and `||=` operators.
-* Added named anonymous functions and classes.
-* Removed `import` statement.
-* Removed `collection` module.
-* Added `sequence` module.
-* Added `stringf` module.
-* Added `;` support between `if` and `else`.
-* Fixed string interpolation.
-* Fixed `jcanvas` module.
-* Fixed map value cloning.
-* Added `SelfReferencedAssignmentException`.
+* Added `|>` (pipeline) operator
+* Added `!is` (is not) operator
+* Added `&&=` (augmented assignment (boolean and)) operator
+* Added `||=` (augmented assignment (boolean or)) operator
+* Added named anonymous functions and classes
+* Removed `import` statement
+* Removed `collection` module
+* Added `sequence` module
+* Added `stringf` module
+* Added `;` support between `if` and `else`
+* Fixed string interpolation
+* Fixed `jcanvas` module
+* Fixed map value cloning
+* Added `SelfReferencedAssignmentException`
+* Added self referenced assignment checking
 ## Roadmap:
-* Optimization.
-* JAR module loading.
-* SS modules.
-## Installation:
-1. Install Java 8+.
-2. Download latest version: [releases](https://github.com/4erem6a/SimpleScript/releases).
-3. Extract SimpleScript.jar manually or use an installer.
+* Optimization
+* JAR module loading
+* Modules
+## Requirements:
++ Java 8+
+## Examples:
+Hello world!:  
+```js
+    const io = require('io');
+    io.println('Hello, world!');
+    //OUTPUT: Hello world!
+```
+Factorial:  
+```js
+    const io = require('io');
+    io.println(factorial(10));
+    function factorial(n)
+        -> n == 1 ? n : n * factorial(n - 1);
+    //OUTPUT: 3628800
+```
+Person:  
+```js
+    const io = require('io');
+    class Person(name, age = 0);
+    io.println(new Person('Sample', 21));
+    //OUTPUT: {name:Sample,age:21.0}
+```
 ## Usage:
-You can run SS code from command line.
-Use `ss.cmd` script or run `SimpleScript.jar` manually.
-List of supported flags:
+You can run SS programs through command line using `ss.cmd` (included in release archive) or `java -jar SimpleScript.jar`.
+You can use following flags to specify source or configure interpreter itself:
 ```
     -f <file>       Specifies source file
     -s <source>     Specifies source
-    -r              Compiles program to SimpleScript
+    -r              Translates AST back to SimpleScript and prints the result
     -e              Executes program
     -mp <path(s)>   Specifies folder(s) to load modules from
-    -m <mode>       Specifies execution mode:
-        program (Default)   Executes source as a sequence of staements
-        main                Executes `main(args)` function
-        expression          Evaluates source as an expression and prints result
+                    You can specify several folders by separating them with ';' (semicolon)
+                    Example:    ./foler1;./folder2
+    -m <mode>       Specifies execution mode, can be one of theese values:
+        program/p   (Default)   Executes source as a sequence of staements
+        main/m                  Executes `main(args)` function (must be top-level)
+        expression/e            Evaluates source as an expression and prints result
     -c <charset>    Specifies source charset (UTF-8 by default)
     -l              Enables log
-    -d              Debug mode
-    -li             Enables linter (Static code analyzer)
+    -d              Debug mode  (Prints java stack trace if an exception occurs)
+    -li             Enables linter (Static source code analyzer)
     -a <args...>    Specifies program args
 ```
-## Hello, world!
-Code:
-```js
-let const io = require("io") //Require "io" module from standard library.
-io.println("Hello, world!")  //Print line "Hello, world" to STDOUT.
-```
-Command: `ss -f program.ss -e -li`  
-Result:
-```js
-CommandLine> ss -f C:\SS\program.ss -e -li
-Hello, world!
-```
 ## Expression mode:
-With `-m expression` flag, you can evaluate your code as an expresson.
+With `-m expression` or `-m e` flag enabled, you can evaluate your code as an expresson.
 Example:
 ```js
-CommandLine> ss -s "(2 + 2) * 2" -e -m expression -li
->8.00000
+    CommandLine>: ss -s "(2 + 2) * 2" -e -m expression -li
+    > 8.00000
 ```
+## ss.cmd:
+Usage of `ss.cmd` instead of `java` gives you following benefits:
+* `ss <file>` or `ss run <file>` to execute file  
+    * This also means that you can execute source files by dragging
+* `ss eval <expression>` to evaluate expression
+* `ss version` to display interpreter version installed
+    * Same as `ss eval "require('interpreter').version"
+* `ss module <command>` to word with `/modules/` directory in SimpleScript folder:
+    * `ss module list` to display list of existing modules
+    * `ss module exists <name>` to check module existance
+    * `ss module remove <name>` to remove specified module
+    * `ss module install <file>` to copy specified file into modules directory
 ## Syntax highlighting:
-[VS Code highlighting plugin](https://marketplace.visualstudio.com/items?itemName=4erem6a.ss)(Updated to 1.2.1 for SS v1.9.3+)
+[VS Code highlighting plugin](https://marketplace.visualstudio.com/items?itemName=4erem6a.ss)
 ## Documentation:
 [Coming Soon]()
